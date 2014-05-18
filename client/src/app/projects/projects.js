@@ -199,32 +199,32 @@ angular.module('projects', [
 		$scope.project.productOwner = $scope.project.productOwner || undefined;
 		$scope.project.scrumMaster = $scope.project.scrumMaster || undefined;
 
-		var updateProjectListForUsers = function (newUserId, prevUserId, projectList) {
+		// var updateProjectListForUsers = function (newUserId, prevUserId, projectList) {
 
-			// Add the project to the users list of projects
-			if( angular.isDefined(newUserId) ){
-				var user = $scope.usersLookup[newUserId];
-				if( !angular.isArray(user[projectList]) ){
-					user[projectList] = [];
-				}
-				user[projectList].push($scope.project.$id());
-				console.log("added project to the " + projectList);
-				console.log(user[projectList]);
-			}
+		// 	// Add the project to the users list of projects
+		// 	if( angular.isDefined(newUserId) ){
+		// 		var user = $scope.usersLookup[newUserId];
+		// 		if( !angular.isArray(user[projectList]) ){
+		// 			user[projectList] = [];
+		// 		}
+		// 		user[projectList].push($scope.project.$id());
+		// 		console.log("added project to the " + projectList);
+		// 		console.log(user[projectList]);
+		// 	}
 
-			// Remove the project from the users list of projects
-			if( angular.isDefined(prevUserId) ){
-				var user = $scope.usersLookup[prevUserId];
-				if( angular.isArray(user[projectList]) ){
-					var projectidx = user[projectList].indexOf($scope.project.$id());
-					if(projectidx >= 0) {
-						user[projectList].splice(projectidx, 1);
-					}
-					console.log("removed project from the "+ projectList);
-					console.log(user[projectList]);
-				}
-			}
-		};
+		// 	// Remove the project from the users list of projects
+		// 	if( angular.isDefined(prevUserId) ){
+		// 		var user = $scope.usersLookup[prevUserId];
+		// 		if( angular.isArray(user[projectList]) ){
+		// 			var projectidx = user[projectList].indexOf($scope.project.$id());
+		// 			if(projectidx >= 0) {
+		// 				user[projectList].splice(projectidx, 1);
+		// 			}
+		// 			console.log("removed project from the "+ projectList);
+		// 			console.log(user[projectList]);
+		// 		}
+		// 	}
+		// };
 
 		// clear the project from the old user and add it to the new user
 		$scope.$watch('project.scrumMaster', function (newScrumMaster, oldScrumMaster) {
@@ -296,43 +296,43 @@ angular.module('projects', [
 			return $scope.project.isDevTeamMember(user.$id());
 		};
 
-		$scope.addMember = function(user, list) {
-			console.log("adding member");
-			var userId = user.$id();
-			list.push(userId);
-			console.log($scope.project.teamMembers);
-			// updateProjectListForUsers(userId, undefined, projectRole);
-		};
+		// $scope.addMember = function(user, list) {
+		// 	console.log("adding member");
+		// 	var userId = user.$id();
+		// 	list.push(userId);
+		// 	console.log($scope.project.teamMembers);
+		// 	// updateProjectListForUsers(userId, undefined, projectRole);
+		// };
 
-		$scope.removeMember = function(user, list) {
-			// Remove the user from the team members list
-			var userId = user.$id();
-			var idx = list.indexOf(userId);
-			if(idx >= 0) {
-				list.splice(idx, 1);
-			}
-			// Remove the project from the list of projects of the user
-			// updateProjectListForUsers(undefined, userId, projectRole);
-		};
+		// $scope.removeMember = function(user, list) {
+		// 	// Remove the user from the team members list
+		// 	var userId = user.$id();
+		// 	var idx = list.indexOf(userId);
+		// 	if(idx >= 0) {
+		// 		list.splice(idx, 1);
+		// 	}
+		// 	// Remove the project from the list of projects of the user
+		// 	// updateProjectListForUsers(undefined, userId, projectRole);
+		// };
 
-		$scope.addTeamMember = function(user) {
-			console.log("adding team member");
-			var userId = user.$id();
-			$scope.project.teamMembers.push(userId);
-			console.log($scope.project.teamMembers);
-			updateProjectListForUsers(userId, undefined, 'teamMemberOfProjects');
-		};
+		// $scope.addTeamMember = function(user) {
+		// 	console.log("adding team member");
+		// 	var userId = user.$id();
+		// 	$scope.project.teamMembers.push(userId);
+		// 	console.log($scope.project.teamMembers);
+		// 	updateProjectListForUsers(userId, undefined, 'teamMemberOfProjects');
+		// };
 
-		$scope.removeTeamMember = function(teamMember) {
-			// Remove the user from the team members list
-			var teamMemberId = teamMember.$id();
-			var idx = $scope.project.teamMembers.indexOf(teamMemberId);
-			if(idx >= 0) {
-				$scope.project.teamMembers.splice(idx, 1);
-			}
-			// Remove the project from the list of projects of the user
-			updateProjectListForUsers(undefined, teamMemberId, 'teamMemberOfProjects');
-		};
+		// $scope.removeTeamMember = function(teamMember) {
+		// 	// Remove the user from the team members list
+		// 	var teamMemberId = teamMember.$id();
+		// 	var idx = $scope.project.teamMembers.indexOf(teamMemberId);
+		// 	if(idx >= 0) {
+		// 		$scope.project.teamMembers.splice(idx, 1);
+		// 	}
+		// 	// Remove the project from the list of projects of the user
+		// 	updateProjectListForUsers(undefined, teamMemberId, 'teamMemberOfProjects');
+		// };
 
 		$scope.possibleStakeHolderFilter = function(user) {
 			return $scope.project.canActAsStakeHolder(user.$id()) && !$scope.project.isStakeHolder(user.$id());
@@ -352,25 +352,25 @@ angular.module('projects', [
 		// 	);
 		// };
 
-		$scope.addStakeHolder = function(user) {
-			console.log("adding stake holder");
-			var userId = user.$id();
-			$scope.project.stakeHolders.push(userId);
-			console.log($scope.project.stakeHolders);
-			updateProjectListForUsers(userId, undefined, 'stakeHolderOfProjects');
-		};
+		// $scope.addStakeHolder = function(user) {
+		// 	console.log("adding stake holder");
+		// 	var userId = user.$id();
+		// 	$scope.project.stakeHolders.push(userId);
+		// 	console.log($scope.project.stakeHolders);
+		// 	updateProjectListForUsers(userId, undefined, 'stakeHolderOfProjects');
+		// };
 
-		$scope.removeStakeHolder = function(stakeHolder) {
-			// Remove the user from the stake holders list
-			var stakeHolderId = stakeHolder.$id();
-			var idx = $scope.project.stakeHolders.indexOf(stakeHolderId);
-			if(idx >= 0) {
-				$scope.project.stakeHolders.splice(idx, 1);
-			}
+		// $scope.removeStakeHolder = function(stakeHolder) {
+		// 	// Remove the user from the stake holders list
+		// 	var stakeHolderId = stakeHolder.$id();
+		// 	var idx = $scope.project.stakeHolders.indexOf(stakeHolderId);
+		// 	if(idx >= 0) {
+		// 		$scope.project.stakeHolders.splice(idx, 1);
+		// 	}
 
-			// Remove the project from the list of projects of the user
-			updateProjectListForUsers(undefined, stakeHolderId, 'stakeHolderOfProjects');
-		};
+		// 	// Remove the project from the list of projects of the user
+		// 	updateProjectListForUsers(undefined, stakeHolderId, 'stakeHolderOfProjects');
+		// };
 
 	}
 ])

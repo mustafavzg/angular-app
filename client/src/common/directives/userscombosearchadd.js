@@ -75,6 +75,26 @@ angular.module('directives.userscombosearchadd', [
 						return users;
 					};
 
+					$scope.addMember = function(user, list) {
+						console.log("adding member");
+						var userId = user.$id();
+						list.push(userId);
+						console.log($scope.project.teamMembers);
+						// updateProjectListForUsers(userId, undefined, projectRole);
+					};
+
+					$scope.removeMember = function(user, list) {
+						// Remove the user from the team members list
+						var userId = user.$id();
+						var idx = list.indexOf(userId);
+						if(idx >= 0) {
+							list.splice(idx, 1);
+						}
+						// Remove the project from the list of projects of the user
+						// updateProjectListForUsers(undefined, userId, projectRole);
+					};
+
+
 					$scope.$watchCollection('filteredUsers', function (newUsers, oldUsers) {
 						console.log("filtered users watch called");
 						if( !angular.equals(newUsers, oldUsers) ){

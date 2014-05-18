@@ -6,6 +6,7 @@
 		<div class="col-md-6">
 			<div class="panel panel-default">
 				<!-- action="removeTeamMember(user)"  -->
+					 <!-- action="removeAction({user: user})" -->
 				<users
 					 root-div-class="panel-body" 
 					 collection-name="{{collectionName}}" 
@@ -13,7 +14,7 @@
 					 helptip="{{helptip}}" 
 					 user-ids="userIds"
 					 users-look-up="lookUpUsers(userids)"
-					 action="removeAction({user: user})"
+					 action="removeMember(user, userIds)"
 					 action-name="Remove" 
 					 action-icon="remove-sign" 
 					 action-button-class="btn-warning">
@@ -30,13 +31,14 @@
 				<!-- in-list-action-name="{{itemName}}" -->
 				<!-- in-list-action-filter="isTeamMemberFilter(user)" -->
 
+					 <!-- add-action="addAction({user: user})" -->
 				<findusers
 					 root-div-class="panel-body"
 					 label="{{searchLabel}}"
 					 helptip="{{searchHelptip}}"
 					 placeholder="{{searchPlaceholder}}"
 					 add-action-name="Add"
-					 add-action="addAction({user: user})"
+					 add-action="addMember(user, userIds)"
 					 add-action-filter="addActionFilter({user: user})"
 					 in-list-action-name="{{itemName}}"
 					 in-list-action-filter="inListActionFilter({user: user})"
