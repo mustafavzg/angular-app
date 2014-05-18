@@ -56,9 +56,9 @@ dialogModule.provider("$dialog", function(){
 
     // The `Dialog` class represents a modal dialog. The dialog class can be invoked by providing an options object
     // containing at lest template or templateUrl and controller:
-    // 
+    //
     //     var d = new Dialog({templateUrl: 'foo.html', controller: 'BarController'});
-    // 
+    //
     // Dialogs can also be created using templateUrl and controller as distinct arguments:
     //
     //     var d = new Dialog('path/to/dialog.html', MyDialogController);
@@ -109,7 +109,7 @@ dialogModule.provider("$dialog", function(){
       if(controller){
         options.controller = controller;
       }
-      
+
       if(!(options.template || options.templateUrl)) {
         throw new Error('Dialog.open expected template or templateUrl, neither found. Use options or open method to specify them.');
       }

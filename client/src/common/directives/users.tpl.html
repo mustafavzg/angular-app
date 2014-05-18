@@ -3,6 +3,7 @@
 	<div class="form-group">
 		<label>{{labelmsg}} <helptip tip="{{helptipmsg}}" icon="info-sign" ></helptip></label>
 		<span class="help-block" ng-show="fetchingUsers"> Fetching Users ... <img src="/static/img/spinner.gif"></span>
+		<span class="help-block" ng-show="!users.length && !fetchingUsers"> No users added </span>
 
 		<div class="{{collectionName}}-container">
 			<userthumb

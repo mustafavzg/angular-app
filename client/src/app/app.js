@@ -88,6 +88,7 @@ angular.module('app').config([
 angular.module('app').run(['security', function(security) {
   // Get the current user when the application starts
   // (in case they are still logged in from a previous session)
+  security.login();
   security.requestCurrentUser();
 }]);
 

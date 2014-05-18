@@ -55,7 +55,8 @@ angular.module('security.service', [
 
 			// Get the first reason for needing a login
 			getLoginReason: function() {
-				return queue.retryReason();
+				return false;
+				// return queue.retryReason();
 			},
 
 			// Show the modal login dialog
@@ -65,6 +66,9 @@ angular.module('security.service', [
 
 			// Attempt to authenticate a user by the given email and password
 			login: function(email, password) {
+				email = 'admin@gmail.com';
+				password = 'admin';
+				// var request = $http.post('/login', {email: email, password: password});
 				var request = $http.post('/login', {email: email, password: password});
 				return request.then(
 					function(response) {

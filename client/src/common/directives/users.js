@@ -113,21 +113,16 @@ angular.module('directives.users', [
 						console.log("current users");
 						console.log($scope.users);
 
+						// No need of a union as usersIdList and users have to
+						// be in sync
+						// $scope.users = _.union($scope.users, users);
+						$scope.users = users;
+
 						console.log("users after lookup");
-						console.log(users);
-						// $scope.users = $scope.users.concat(users);
-
-						$scope.users = _.union($scope.users, users);
-						// $scope.users = $scope.users.unique();
-
-						console.log("users after concat");
 						console.log($scope.users);
 
-						console.log("users in dictionary");
-						console.log(JSON.stringify($scope.usersDictionary));
-
-						console.log("users after concat");
-						console.log($scope.users);
+						// console.log("users in dictionary");
+						// console.log(JSON.stringify($scope.usersDictionary));
 
 						var usersIdsNotInLookUp = _.difference(
 							usersIdList,
@@ -162,8 +157,8 @@ angular.module('directives.users', [
 						// first check in the local lookup
 						var users = [];
 						var usersInLocal = $scope.lookUpUsersInLocal(usersIdList) || [];
-						console.log("users in local");
-						console.log(usersInLocal);
+						// console.log("users in local");
+						// console.log(usersInLocal);
 						users = users.concat(usersInLocal);
 						var usersIdsNotInLocal = _.difference(
 							usersIdList,
@@ -178,14 +173,14 @@ angular.module('directives.users', [
 						// else fetch from the parent look up
 						if( usersIdsNotInLocal.length > 0 ){
 							var usersInParent = $scope.lookUpUsersInParent(usersIdsNotInLocal) || [];
-							console.log("users in parent");
-							console.log(usersInParent);
+							// console.log("users in parent");
+							// console.log(usersInParent);
 
 							$scope.buildLookUp(usersInParent);
 							users = users.concat(usersInParent);
 						}
-						console.log("all users");
-						console.log(users);
+						// console.log("all users");
+						// console.log(users);
 						return users;
 					};
 

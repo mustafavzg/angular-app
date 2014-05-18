@@ -196,20 +196,10 @@ angular.module('projects', [
 	function($scope, Users, _) {
 		$scope.project.teamMembers = $scope.project.teamMembers || [];
 		$scope.project.stakeHolders = $scope.project.stakeHolders || [];
-		$scope.project.productOwner = $scope.project.productOwner || undefined;
-		$scope.project.scrumMaster = $scope.project.scrumMaster || undefined;
 
-		// Clear the project from the old user and add it to the new user
-		$scope.$watch('project.scrumMaster', function (newScrumMaster, oldScrumMaster) {
-			if( newScrumMaster !== oldScrumMaster ){
-				updateProjectListForUsers(newScrumMaster, oldScrumMaster, 'scrumMasterOfProjects');
-			}
-		});
-		$scope.$watch('project.productOwner', function (newProductOwner, oldProductOwner) {
-			if( newProductOwner !== oldProductOwner ){
-				updateProjectListForUsers(newProductOwner, oldProductOwner, 'productOwnerOfProjects');
-			}
-		});
+		// keeping productOwner/scrumMaster in a list to use the users search combo widget
+		$scope.productOwners = (angular.isDefined($scope.project.productOwner)) ? [$scope.project.productOwner] : [];
+		$scope.scrumMasters = (angular.isDefined($scope.project.scrumMaster)) ? [$scope.project.scrumMaster] : [];
 
 		//prepare users lookup, just keep references for easier lookup
 		$scope.usersLookup = {};
@@ -221,22 +211,7 @@ angular.module('projects', [
 		// $scope.buildLookUp($scope.users);
 		// $scope.user = $scope.users[0];
 
-		$scope.productOwnerCandidates = function() {
-			return $scope.users.filter(
-				function(user) {
-					return $scope.usersLookup[user.$id()] && $scope.project.canActAsProductOwner(user.$id());
-				}
-			);
-		};
-
-		$scope.scrumMasterCandidates = function() {
-			return $scope.users.filter(
-				function(user) {
-					return $scope.usersLookup[user.$id()] && $scope.project.canActAsScrumMaster(user.$id());
-				}
-			);
-		};
-
+		// Team Members
 		$scope.possibleTeamMemberFilter = function(user) {
 			return $scope.project.canActAsDevTeamMember(user.$id()) && !$scope.project.isDevTeamMember(user.$id());
 		};
@@ -245,6 +220,7 @@ angular.module('projects', [
 			return $scope.project.isDevTeamMember(user.$id());
 		};
 
+		// Stake Holders
 		$scope.possibleStakeHolderFilter = function(user) {
 			return $scope.project.canActAsStakeHolder(user.$id()) && !$scope.project.isStakeHolder(user.$id());
 		};
@@ -252,6 +228,37 @@ angular.module('projects', [
 		$scope.isStakeHolderFilter = function(user) {
 			return $scope.project.isStakeHolder(user.$id());
 		};
+
+		// Product Owner
+		$scope.$watchCollection('productOwners', function (newProductOwner, oldProductOwner) {
+			if( !angular.equals(newProductOwner, oldProductOwner) ){
+				$scope.project.productOwner = newProductOwner[0];
+			}
+		});
+
+		$scope.possibleProductOwnerFilter = function(user) {
+			return $scope.project.canActAsProductOwner(user.$id()) && !$scope.project.isProductOwner(user.$id());
+		};
+
+		$scope.isProductOwnerFilter = function(user) {
+			return $scope.project.isProductOwner(user.$id());
+		};
+
+		// Scrum Master
+		$scope.$watchCollection('scrumMasters', function (newScrumMaster, oldScrumMaster) {
+			if( !angular.equals(newScrumMaster, oldScrumMaster) ){
+				$scope.project.scrumMaster = newScrumMaster[0];
+			}
+		});
+
+		$scope.possibleScrumMasterFilter = function(user) {
+			return $scope.project.canActAsScrumMaster(user.$id()) && !$scope.project.isScrumMaster(user.$id());
+		};
+
+		$scope.isScrumMasterFilter = function(user) {
+			return $scope.project.isScrumMaster(user.$id());
+		};
+
 	}
 ])
 ;

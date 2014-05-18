@@ -44,13 +44,14 @@ angular.module('directives.datelookup', [
 				scope.format = scope.formats[3];
 
 				scope.showError = function (error) {
-					return scope.ngform.dateField.$error[error];
+					// return scope.ngform.dateField.$error[error];
+					return scope.ngform.$error[error];
 				}
 
 				scope.setValidationClasses = function () {
 					return {
-						'has-success' : scope.ngform.dateField.$valid,
-						'has-error' : scope.ngform.dateField.$invalid
+						'has-success' : scope.ngform.$valid,
+						'has-error' : scope.ngform.$invalid
 					};
 				}
 

@@ -26,6 +26,7 @@ angular.module('directives.userscombosearchadd', [
  				searchLabel: '@',
 				searchHelptip: '@',
 				searchPlaceholder: '@',
+ 				singleMemberList: '@',
 				removeAction: '&',
 				addAction: '&',
 				addActionFilter: '&',
@@ -78,20 +79,34 @@ angular.module('directives.userscombosearchadd', [
 					$scope.addMember = function(user, list) {
 						console.log("adding member");
 						var userId = user.$id();
-						list.push(userId);
-						console.log($scope.project.teamMembers);
+
+						if( $scope.singleMemberList ){
+							list.pop();
+							list.push(userId);
+							console.log("list is");
+							console.log(list);
+						}
+						else {
+							list.push(userId);
+						}
+
 						// updateProjectListForUsers(userId, undefined, projectRole);
 					};
 
 					$scope.removeMember = function(user, list) {
 						// Remove the user from the team members list
-						var userId = user.$id();
-						var idx = list.indexOf(userId);
-						if(idx >= 0) {
-							list.splice(idx, 1);
+						if( $scope.singleMemberList ){
+							list.pop();
 						}
-						// Remove the project from the list of projects of the user
-						// updateProjectListForUsers(undefined, userId, projectRole);
+						else {
+							var userId = user.$id();
+							var idx = list.indexOf(userId);
+							console.log("list is");
+							console.log(list);
+							if(idx >= 0) {
+								list.splice(idx, 1);
+							}
+						}
 					};
 
 

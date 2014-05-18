@@ -64,35 +64,6 @@
 			<!-- row -->
 
 			<div ng-controller="TeamMembersController">
-				<!-- row -->
-				<div class="row">
-					<div class="col-md-6" >
-
-						<div class="form-group">
-							<label>Product Owner</label>
-							<select class="form-control " ng-model="project.productOwner"
-									ng-options="user.$id() as user.getFullName() for user in productOwnerCandidates()" required>
-								<option value="">-- choose --</option>
-							</select>
-						</div>
-
-					</div>
-
-					<div class="col-md-6">
-
-						<div class="form-group">
-							<label>Scrum Master</label>
-							<select class="form-control" ng-model="project.scrumMaster"
-									ng-options="user.$id() as user.getFullName() for user in scrumMasterCandidates()" required>
-								<option value="">-- choose --</option>
-							</select>
-						</div>
-
-					</div>
-
-				</div>
-				<!-- row -->
-
 				<users-combo-search-add
 					 combo-label="Add Stake Holders"
 					 label="Stake Holders"
@@ -108,6 +79,36 @@
 				</users-combo-search-add>
 
 				<users-combo-search-add
+					 single-member-list="true"
+					 combo-label="Add Product Owner"
+					 label="Product Owner"
+					 collection-name="productOwner"
+					 item-name="Product Owner"
+					 helptip="Add product owner from the 'Find People' widget to the right"
+					 user-ids="productOwners"
+					 search-label="Find People"
+					 search-helptip="Search for and add product owner from here"
+					 search-placeholder="Search for people to add as product owner"
+					 add-action-filter="possibleProductOwnerFilter(user)"
+					 in-list-action-filter="isProductOwnerFilter(user)">
+				</users-combo-search-add>
+
+				<users-combo-search-add
+					 single-member-list="true"
+					 combo-label="Add Scrum Master"
+					 label="Scrum Master"
+					 collection-name="scrumMaster"
+					 item-name="Scrum Master"
+					 helptip="Add scrum master from the 'Find People' widget to the right"
+					 user-ids="scrumMasters"
+					 search-label="Find People"
+					 search-helptip="Search for and add scrum master from here"
+					 search-placeholder="Search for people to add as scrum master"
+					 add-action-filter="possibleScrumMasterFilter(user)"
+					 in-list-action-filter="isScrumMasterFilter(user)">
+				</users-combo-search-add>
+
+				<users-combo-search-add
 					 combo-label="Build Team"
 					 label="Team"
 					 collection-name="team"
@@ -120,10 +121,9 @@
 					 add-action-filter="possibleTeamMemberFilter(user)"
 					 in-list-action-filter="isTeamMemberFilter(user)">
 				</users-combo-search-add>
-
 			</div>
-			<!-- team members controller -->
 
+			<!-- team members controller -->
 
 		</div>
 		<!-- panel body -->

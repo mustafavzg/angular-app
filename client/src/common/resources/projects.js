@@ -36,7 +36,7 @@ angular.module('resources.projects')
 			return this.stakeHolders.indexOf(userId) >= 0;
 		};
 		Projects.prototype.canActAsStakeHolder = function (userId) {
-			return (!this.isProductOwner(userId) && !this.isScrumMaster(userId) && !this.isDevTeamMember(userId)
+			return (!this.isScrumMaster(userId) && !this.isDevTeamMember(userId)
 			);
 		};
 
