@@ -1,21 +1,62 @@
-<table class="table table-bordered table-condensed table-striped table-hover">
-    <thead>
-    <tr>
-        <th class="span3">Name</th>
-        <th class="span5">Description</th>
-        <th class="span2">My Role(s)</th>
-        <th class="span2">Tools</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr ng-repeat="project in projects">
-        <td ng-click="manageBacklog(project)">{{project.name}}</td>
-        <td ng-click="manageBacklog(project)">{{project.desc}}</td>
-        <td>{{ getMyRoles(project) }}</td>
-        <td>
-            <a ng-click="manageBacklog(project)">Product backlog</a>
-            <a ng-click="manageSprints(project)">Sprints</a>
-        </td>
-    </tr>
-    </tbody>
+<button type="button" class="btn btn-primary btn-block" ng-click="new()">New Project</button>
+
+<!-- <div class="bordered bordered-hover"> -->
+<!-- 	<button class="btn-block" ng-click="new()"><h4>New Project</h4></button> -->
+<!-- </div> -->
+
+<hr />
+
+<!-- <ul class="media-list"> -->
+<!--   <li class="media" ng-repeat="project in projects"> -->
+<!--     <\!-- <a class="pull-left" href="#"> -\-> -->
+<!--     <\!--   <img class="media-object" src="..." alt="..."> -\-> -->
+<!--     <\!-- </a> -\-> -->
+<!--     <div class="media-body hover-pointer" ng-click="viewProject(project)"> -->
+<!--       <h4 class="media-heading">{{project.name}}</h4> -->
+<!-- 	  <p>{{project.description}}</p> -->
+<!--     </div> -->
+<!--   <hr /> -->
+<!--   </li> -->
+<!-- </ul> -->
+
+<table class="table table-condensed table-striped table-hover">
+	<thead>
+		<tr>
+			<th class="col-md-4">Name</th>
+			<th class="col-md-8">Description</th>
+			<!-- <th class="span2">My Role(s)</th> -->
+			<!-- <th class="span2">Tools</th> -->
+		</tr>
+	<tbody>
+		<tr ng-repeat="project in projects">
+			<td ng-click="viewProject(project)">{{project.name}}</td>
+			<td ng-click="viewProject(project)">{{project.description}}</td>
+			<!-- <td>{{ getMyRoles(project) }}</td> -->
+			<!-- <td> -->
+			<!-- 	<a ng-click="manageBacklog(project)">Product backlog</a> -->
+			<!-- 	<a ng-click="manageSprints(project)">Sprints</a> -->
+			<!-- </td> -->
+		</tr>
+	</tbody>
 </table>
+
+<!-- <table class="table table-bordered-outer table-condensed table-striped table-hover"> -->
+<!-- 	<thead> -->
+<!-- 		<tr> -->
+<!-- 			<th class="span3">Name</th> -->
+<!-- 			<th class="span5">Description</th> -->
+<!-- 			<th class="span2">My Role(s)</th> -->
+<!-- 			<th class="span2">Tools</th> -->
+<!-- 		</tr> -->
+<!-- 	<tbody> -->
+<!-- 		<tr ng-repeat="project in projects2"> -->
+<!-- 			<td ng-click="viewProject(project)">{{project.name}}</td> -->
+<!-- 			<td ng-click="viewProject(project)">{{project.desc}}</td> -->
+<!-- 			<td>{{ getMyRoles(project) }}</td> -->
+<!-- 			<td> -->
+<!-- 				<a ng-click="manageBacklog(project)">Product backlog</a> -->
+<!-- 				<a ng-click="manageSprints(project)">Sprints</a> -->
+<!-- 			</td> -->
+<!-- 		</tr> -->
+<!-- 	</tbody> -->
+<!-- </table> -->

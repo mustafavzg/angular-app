@@ -1,14 +1,19 @@
-<div class="well">
-    <h4>Sprint</h4>
+<div class="bordered">
+    <legend>
+		Sprint
+		<span class="pull-right hover-pointer" ng-click="sprintscrudhelpers.view(sprint.$id())" ng-cloak><i class="icon-circle-arrow-left"></i><a>Back</a></span>
+	</legend>
     <hr>
     <form name="form" crud-edit="sprint">
         <div class="row-fluid">
+
             <div class="span6">
                 <label>Name</label>
                 <input type="text" name="name" ng-model="sprint.name" class="span10" required autofocus>
                 <label>Capacity</label>
                 <input type="number" name="description" ng-model="sprint.capacity" class="span5" required>
             </div>
+
             <div class="span6">
                 <label>Start date</label>
                 <input type="text" name="name" ng-model="sprint.start" class="span5" required>
@@ -20,9 +25,10 @@
         <h4>Sprint backlog</h4>
         <hr>
         <div class="row-fluid">
+
             <div class="span6">
                 <label>Currently in the sprint's backlog</label>
-                <table class="table table-bordered table-condensed table-striped table-hover">
+                <table class="table table-bordered table-condensed table-striped-color table-hover">
                     <thead>
                     <tr>
                         <th class="span8">Name</th>
@@ -51,6 +57,7 @@
                     </tfoot>
                 </table>
             </div>
+
             <div class="span6">
                 <label>Product backlog</label>
                 <table class="table table-bordered table-condensed table-striped table-hover">
@@ -75,6 +82,8 @@
                     </tbody>
                 </table>
             </div>
+
+
         </div>
         <hr>
         <div>

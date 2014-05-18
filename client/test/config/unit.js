@@ -3,18 +3,24 @@ basePath = '../..';
 
 // list of files / patterns to load in the browser
 files = [
-  JASMINE,
-  JASMINE_ADAPTER,
-  'vendor/jquery/jquery.js',
-  'vendor/angular/angular.js',
-  'vendor/angular/angular-route.js',
-  'vendor/mongolab/mongolab-resource.js',
-  'test/vendor/angular/angular-mocks.js',
-  'vendor/angular-ui/**/*.js',
-  'src/**/*.js',
-  'test/unit/**/*.spec.js',
-  'dist/templates/**/*.js'
+	JASMINE,
+	JASMINE_ADAPTER,
+	'vendor/jquery/jquery.js',
+	'vendor/angular/angular.js',
+	'vendor/angular/angular-route.js',
+	'vendor/mongolab/mongolab-resource.js',
+	// 'vendor/mongolab/mongolab-resource-2.js',
+	'vendor/mongolab/athenawebapp-resource.js',
+	'vendor/underscore/underscore.js',
+	'vendor/angular-underscore-module/angular-underscore-module.js',
+	'test/vendor/angular/angular-mocks.js',
+	'vendor/angular-ui/**/*.js',
+	'src/**/*.js',
+	'test/unit/**/*.spec.js',
+	'dist/templates/**/*.js'
 ];
+
+// frameworks = ["jasmine"];
 
 // use dots reporter, as travis terminal does not support escaping sequences
 // possible values: 'dots' || 'progress'
@@ -50,7 +56,7 @@ autoWatchInterval = 0;
 // - Opera
 // - Safari
 // - PhantomJS
-browsers = ['Chrome'];
+browsers = ['Firefox'];
 
 // Continuous Integration mode
 // if true, it capture browsers, run tests and exit

@@ -1,5 +1,8 @@
-<div class="well">
-    <h4>Product backlog item</h4>
+<div class="bordered">
+    <legend>
+		Product backlog item
+		<span class="pull-right hover-pointer" ng-click="backlogItemscrudhelpers.view(backlogItem.$id())" ng-cloak><i class="icon-circle-arrow-left"></i><a>Back</a></span>		
+	</legend>
     <hr>
     <form name="form" crud-edit="backlogItem">
         <label>Name</label>

@@ -11,4 +11,5 @@ angular.module('directives.crud.buttons', [])
       '  <button type="button" class="btn btn-danger remove" ng-click="remove()" ng-show="canRemove()">Remove</button>'+
       '</div>'
   };
+		  // '<button type="button" class="btn btn-primary" ng-click="showMe()">Show Me</button>'+
 });

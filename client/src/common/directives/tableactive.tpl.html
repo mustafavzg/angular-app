@@ -1,0 +1,60 @@
+<div ng-class="rootDivClass">
+
+	<!-- Header -->
+	<div class="row" >
+		<div class="col-md-12">
+			<!-- <span class="pull-left" ng-click="manageBacklog(project)"> -->
+			<span class="pull-left" ng-click="manageResources()">
+				<span class="pull-left">
+					<strong><a class="hover-pointer">{{resourcePrettyName}}</a></strong>
+				</span>
+		</div>
+	</div>
+
+	<!-- Pagination -->
+	<div class="row">
+		<div class="col-md-12">
+			<span class="pull-right">
+				<pagination boundary-links="true" total-items="filtereditems.length" items-per-page="itemsPerPage" ng-model="currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+
+			</span>
+		</div>
+	</div>
+
+	<!-- Search field -->
+	<div class="form-group">
+		<input type="text" class="form-control" id="query" ng-model="query" ng-disabled="!items.length" placeholder="Search {{resourcePrettyNameAlt}} ... "/>
+	</div>
+
+	<hr />
+
+	<!-- Display the table -->
+	<table class="table table-condensed table-striped table-hover table-sort">
+		<thead>
+			<tr>
+				<th ng-repeat="column in tableColumns" class="column.widthClass" ng-click="itemsSort.sort(column.key)" >
+					{{column.prettyName}}
+					<i class="glyphicon" ng-class="{'glyphicon-chevron-up': itemsSort.isSortUp(column.key), 'glyphicon-chevron-down': itemsSort.isSortDown(column.key)}"></i>
+					<!-- <i ng-class="{'glyphicon glyphicon-chevron-up': itemsSort.isSortUp(column.key), 'glyphicon glyphicon-chevron-down': itemsSort.isSortDown(column.key)}"></i> -->
+				</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			<tr ng-repeat="item in pageitems = ((filtereditems = (items | filter:{name:query} | orderBy:itemsSort.sortField:itemsSort.reverse)) | pagination:currentPage:itemsPerPage)" ng-click="itemsCrudHelpers.view(item.$id())">
+				<td ng-repeat="column in tableColumns">
+					{{item[column.key]}}
+				</td>
+			</tr>
+			<tr ng-show="fetchingitems">
+				<td colspan="4">Fetching {{resourcePrettyNameAlt}} ...
+					<span><a href="#"><img src="/static/img/spinner.gif"></a></span>
+				</td>
+			</tr>
+			<tr ng-show="!items.length && !fetchingitems">
+				<td colspan="4">No {{resourcePrettyNameAlt}} found</td>
+			</tr>
+		</tbody>
+	</table>
+
+</div>

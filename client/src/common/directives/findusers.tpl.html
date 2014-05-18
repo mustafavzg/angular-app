@@ -1,0 +1,33 @@
+<div class="{{rootDivClass}}">
+	<!-- <div class="form-group"> -->
+		<div class="form-group has-feedback">
+			<label>{{labelmsg}} <helptip tip="{{helptipmsg}}" icon="info-sign" ></helptip></label>
+			<input type="text" id="query" ng-model="query" ng-change="getUsers(query)" class="form-control" placeholder="{{placeholderText}} ... ">
+
+			<!-- <input type="text" id="query" ng-model="query" typeahead="user.$id() as user.getFullName() for user in getUsers($viewValue) | orderBy:'lastName'" typeahead-loading="loadingUsers" typeahead-on-select="onSelect($item, $model, $label)" class="form-control" placeholder="Search for people to add as team members ... "> -->
+			<!-- <i ng-show="loadingUsers" class="glyphicon glyphicon-refresh form-control-feedback"></i> -->
+			<!-- <span ng-show="loadingUsers" class="glyphicon glyphicon-refresh form-control-feedback"></span> -->
+
+			<span class="form-control-feedback" ng-show="loadingUsers"><img src="/static/img/spinner.gif"></span>
+			<span class="help-block" ng-show="noUsersFound" >No matching users for "{{query}}"</span>
+		</div>
+	<!-- </div> -->
+
+	<userthumb 
+		 user="user" 
+		 action="addAction({user: user})" 
+		 action-name="{{addActionName}}" 
+		 action-icon="plus-sign" 
+		 action-button-class="btn-success" 
+		 ng-repeat="user in candidates(users) | orderBy:'lastName'">
+	</userthumb>
+
+	<userthumb
+		 user="user" 
+		 action-name="{{inListActionName}}" 
+		 action-icon="thumbs-up" 
+		 action-button-class="btn-success" 
+		 action-disabled="true" 
+		 ng-repeat="user in members(users) | orderBy:'lastName'">
+	</userthumb>
+</div>

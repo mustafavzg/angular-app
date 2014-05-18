@@ -1,0 +1,178 @@
+<div class="panel panel-default">
+	<div class="panel-heading">
+        <legend>
+			Project
+			<span class="pull-right hover-pointer" ng-click="projectscrudhelpers.view(project.$id())" ng-cloak><i class="icon-circle-arrow-left"></i><a>Back</a></span>
+		</legend>
+	</div>
+
+    <form name="form" crud-edit="project">
+
+    <!-- <form name="form"> -->
+		<div class="panel-body">
+			<div class="row">
+				<div class="col-md-6">
+					<div class="form-group">
+						<label>Name</label>
+						<input type="text" name="name" class="form-control" ng-model="project.name" required autofocus>
+					</div>
+
+					<div class="form-group">
+						<label>Description</label>
+						<textarea rows="10" cols="10" name="description" class="form-control" ng-model="project.description">
+						</textarea>
+					</div>
+					
+				</div>
+				
+				<div class="col-md-6">
+
+					<div class="row">
+						<div class="col-md-6">
+							<!-- <input type="hidden" name="startDate" class="form-control" ng-model="project.startDate" required> -->
+
+							<datelookup name="startDate" date="project.startdate" label="Start Date" required="true"></datelookup>
+							<!-- <datelookup name="startDate" date="projectedit.date" required="true"></datelookup> -->
+ 							<!-- {{project.startdate | date:'dd/MM/yyyy @ h:mma'}} -->
+ 							<!-- {{projectedit.date | date:'dd/MM/yyyy @ h:mma'}} {{projectedit.date | date:'dd/MM/yyyy @ h:mma'}} -->
+							<!-- {{form.['startDate'].$valid}}  -->
+							<!-- {{form.$pristine}}{{form.$dirty}}{{form.$valid}}{{form.$invalid}} -->
+
+							<!-- <div class="input-group"> -->
+							<!-- 	<input type="text" class="form-control" datepicker-popup="{{projectedit.format}}" ng-model="projectedit.dt" is-open="projectedit.opened" min-date="projectedit.minDate" max-date="'2015-06-22'" datepicker-options="projectedit.dateOptions" date-disabled="projectedit.disabled(date, mode)" ng-required="true" close-text="Close" /> -->
+							<!-- 	<span class="input-group-btn"> -->
+							<!-- 		<button type="button" class="btn btn-default" ng-click="projectedit.open($event)"><i class="glyphicon glyphicon-calendar"></i></button> -->
+							<!-- 	</span> -->
+							<!-- </div> -->
+
+							<!-- <p class="input-group"> -->
+							<!-- 	<input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="dt" is-open="opened" min-date="minDate" max-date="'2015-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" /> -->
+							<!-- 	<span class="input-group-btn"> -->
+							<!-- 		<button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button> -->
+							<!-- 	</span> -->
+							<!-- 	{{opened}} -->
+							<!-- </p> -->
+
+							<!-- <div class="form-group"> -->
+							<!-- 	<label>Start date</label> -->
+							<!-- 	<div class="input-group"> -->
+							<!-- 		<input type="text" name="startDate" class="form-control" datepicker-popup="dd/MM/yyyy" ng-model="project.startDate" is-open="opened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close"/> -->
+							<!-- 		<span class="input-group-btn"> -->
+							<!-- 			<button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button> -->
+							<!-- 		</span> -->
+							<!-- 	</div> -->
+							<!-- </div> -->
+
+
+						</div>
+
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>End date</label>
+								<input type="date" name="endDate" class="form-control" ng-model="project.endDate" required>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group">
+								<label>Project Profile</label>
+								<input type="number" name="projectProfileID" class="form-control" ng-model="project.projectProfile.ID" required>
+							</div>
+
+							<div class="form-group">
+								<label>Priority</label>
+								<input type="number" name="priority" class="form-control" ng-model="project.priority" required>
+							</div>
+
+							<div class="form-group">
+								<label>Estimation</label>
+								<input type="number" name="weight" class="form-control" ng-model="project.weight" required>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- <\!-- hp -\-> -->
+				<!-- <div class="span6" ng-controller="TeamMembersController"> -->
+
+				<!--     <label>Product Owner</label> -->
+				<!--     <select class="span12" ng-model="project.productOwner" -->
+				<!--             ng-options="user.$id() as user.getFullName() for user in productOwnerCandidates()" required> -->
+				<!--         <option value="">-- choose --</option> -->
+				<!--     </select> -->
+
+				<!--     <label>Scrum Master</label> -->
+				<!--     <select class="span12" ng-model="project.scrumMaster" -->
+				<!--             ng-options="user.$id() as user.getFullName() for user in scrumMasterCandidates()" required> -->
+				<!--         <option value="">-- choose --</option> -->
+				<!--     </select> -->
+
+				<!--     <label>Stake Holders</label> -->
+				<!--     <table class="table table-bordered table-condensed table-striped table-hover"> -->
+				<!--         <thead> -->
+				<!--         <tr> -->
+				<!--             <th>User</th> -->
+				<!--             <th>&nbsp;</th> -->
+				<!--         </tr> -->
+				<!--         </thead> -->
+				<!--         <tbody> -->
+				<!--         <tr ng-repeat="userId in project.stakeHolders"> -->
+				<!--             <td>{{usersLookup[userId].getFullName()}}</td> -->
+				<!--             <td> -->
+				<!--                 <button class="btn btn-small" ng-click="removeStakeHolder(userId)">Remove</button> -->
+				<!--             </td> -->
+				<!--         </tr> -->
+				<!--         <tr> -->
+				<!--             <td><select class="span6" ng-model="selStakeHolder" -->
+				<!--                         ng-options="user.$id() as user.getFullName() for user in stakeHolderCandidates()"></select> -->
+				<!--             </td> -->
+				<!--             <td> -->
+				<!--                 <button class="btn btn-small" ng-click="addStakeHolder(selStakeHolder)" ng-disabled="!selStakeHolder">Add -->
+				<!--                 </button> -->
+				<!--             </td> -->
+				<!--         </tr> -->
+				<!--         </tbody> -->
+				<!--     </table> -->
+				
+
+				<!--     <label>Development Team</label> -->
+				<!--     <table class="table table-bordered table-condensed table-striped table-hover"> -->
+				<!--         <thead> -->
+				<!--         <tr> -->
+				<!--             <th>User</th> -->
+				<!--             <th>&nbsp;</th> -->
+				<!--         </tr> -->
+				<!--         </thead> -->
+				<!--         <tbody> -->
+				<!--         <tr ng-repeat="userId in project.teamMembers"> -->
+				<!--             <td>{{usersLookup[userId].getFullName()}}</td> -->
+				<!--             <td> -->
+				<!--                 <button class="btn btn-small" ng-click="removeTeamMember(userId)">Remove</button> -->
+				<!--             </td> -->
+				<!--         </tr> -->
+				<!--         <tr> -->
+				<!--             <td><select class="span6" ng-model="selTeamMember" -->
+				<!--                         ng-options="user.$id() as user.getFullName() for user in teamMemberCandidates()"></select> -->
+				<!--             </td> -->
+				<!--             <td> -->
+				<!--                 <button class="btn btn-small" ng-click="addTeamMember(selTeamMember)" ng-disabled="!selTeamMember">Add -->
+				<!--                 </button> -->
+				<!--             </td> -->
+				<!--         </tr> -->
+				<!--         </tbody> -->
+				<!--     </table> -->
+				<!-- <\!-- hp -\-> -->
+				<!-- </div> -->
+			</div>
+		</div>
+		<div class="panel-footer">
+			<div class="row">
+				<hr>
+				<crud-buttons class="col-md-6"></crud-buttons>
+			</div>
+		</div>
+    </form>
+</div>

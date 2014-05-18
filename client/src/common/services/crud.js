@@ -63,20 +63,35 @@ angular.module('services.crud').factory('crudEditMethods', function () {
   };
 });
 
-angular.module('services.crud').factory('crudListMethods', ['$location', function ($location) {
+angular.module('services.crud').factory('crudListMethods', [
+	'$location',
+	function ($location) {
 
-  return function (pathPrefix) {
+		return function (pathPrefix) {
 
-    var mixin = {};
+			var mixin = {};
 
-    mixin['new'] = function () {
-      $location.path(pathPrefix+'/new');
-    };
+			mixin['new'] = function () {
+				console.log("CALLIN NEW:"+pathPrefix+'/new');
+				$location.path(pathPrefix+'/new');
+			};
 
-    mixin['edit'] = function (itemId) {
-      $location.path(pathPrefix+'/'+itemId);
-    };
+			mixin['view'] = function (itemId) {
+				if( angular.isDefined(itemId) ){
+					console.log('CALLING VIEW  '+pathPrefix+'/'+itemId+'/view');
+					$location.path(pathPrefix+'/'+itemId+'/view');
+				}
+				else {
+					console.log('CALLING VIEW  '+pathPrefix+'/'+itemId+'/view');
+					$location.path(pathPrefix);
+				}
+			};
 
-    return mixin;
-  };
-}]);
+			mixin['edit'] = function (itemId) {
+				$location.path(pathPrefix+'/'+itemId+'/edit');
+			};
+
+			return mixin;
+		};
+	}
+]);

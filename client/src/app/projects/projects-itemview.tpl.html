@@ -1,0 +1,82 @@
+<div id="container-project-face-view row">
+
+	<!-- -------------------------------------------------- -->
+	<!-- Project Header -->
+	<!-- -------------------------------------------------- -->
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			<strong>Project</strong>
+		</div>
+	</div>
+
+	<!-- -------------------------------------------------- -->
+	<!-- Project Title, Description -->
+	<!-- -------------------------------------------------- -->
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<div class="media">
+				<a class="btn btn-primary media-object pull-right" role="button" ng-click="projectsCrudHelpers.edit(project.$id())" ng-cloak>Edit Project</a>
+				<!-- <span class="badge media-object pull-left" ng-cloak><strong>{{project.$id()}}</strong></span> -->
+				<div class="badge" ng-cloak><strong>{{project.$id()}}</strong></div>
+				<div class="media-body">
+					<h4 class="media-heading">{{project.name}}</h4>
+					<p>{{project.desc}}</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- -------------------------------------------------- -->
+	<!-- Project attributes -->
+	<!-- -------------------------------------------------- -->
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<div class="bs-glyphicons">
+				<ul class="bs-glyphicons-list">
+					<li ng-repeat="attribute in project.attributeValuesToDisplay | orderBy:'ordering'">
+						<span class="glyphicon-class">{{ attribute.name }}</span>
+						<!-- if glyphicon is defined -->
+						<span ng-show="!!attribute.glyphiconclass" ng-class="[attribute.glyphiconclass]"></span>
+						<span ng-show="!!attribute.glyphiconclass" class="glyphicon-class">{{ attribute.value }}</span>
+						<!-- else -->
+						<span ng-show="!attribute.glyphiconclass" class="glyphicon">{{ attribute.value }}</span>
+						<!-- endif -->
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	
+	<!-- -------------------------------------------------- -->
+	<!-- Other Entities -->
+	<!-- TODO: Implement this with ng-repeat or in separate template files -->
+	<!-- -------------------------------------------------- -->
+	<div class="panel panel-default">
+		<tabset justified="true" type="pills">
+			
+			<tab heading="Product Backlog">
+				<tableactive items="backlogItems" fetchingitems="fetchingBacklogItems" resourceconf="backlogItemsConf" ></tableactive>
+			</tab>
+
+			<tab heading="Sprints">
+				<tableactive items="sprints" fetchingitems="fetchingSprints" resourceconf="sprintsConf" ></tableactive>
+			</tab>
+
+			<tab heading="Tasks">
+				<tableactive items="tasks" fetchingitems="fetchingTasks" resourceconf="tasksConf" ></tableactive>
+			</tab>
+
+			<tab heading="Stake Holders">
+				<tableactive items="stakeHolders" fetchingitems="fetchingStakeHolders" resourceconf="stakeHoldersConf" ></tableactive>
+			</tab>
+
+			<tab heading="Team Members">
+				<tableactive items="teamMembers" fetchingitems="fetchingTeamMembers" resourceconf="teamMembersConf" ></tableactive>
+			</tab>
+
+			
+		</tabset>
+	</div>
+	<!-- Other Entities End -->
+
+</div>

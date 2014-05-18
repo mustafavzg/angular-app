@@ -1,0 +1,52 @@
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<label>{{comboLabel}}</label>
+	</div>
+	<div class="panel-body">
+		<div class="col-md-6">
+			<div class="panel panel-default">
+				<!-- action="removeTeamMember(user)"  -->
+				<users
+					 root-div-class="panel-body" 
+					 collection-name="{{collectionName}}" 
+					 label="{{label}}" 
+					 helptip="{{helptip}}" 
+					 user-ids="userIds"
+					 users-look-up="lookUpUsers(userids)"
+					 action="removeAction({user: user})"
+					 action-name="Remove" 
+					 action-icon="remove-sign" 
+					 action-button-class="btn-warning">
+				</users>
+			</div>
+			<!-- panel -->
+		</div>
+		<!-- col -->
+
+		<div class="col-md-6">
+			<div class="panel panel-default">
+				<!-- add-action="addTeamMember(user)" -->
+				<!-- add-action-filter="possibleTeamMemberFilter(user)" -->
+				<!-- in-list-action-name="{{itemName}}" -->
+				<!-- in-list-action-filter="isTeamMemberFilter(user)" -->
+
+				<findusers
+					 root-div-class="panel-body"
+					 label="{{searchLabel}}"
+					 helptip="{{searchHelptip}}"
+					 placeholder="{{searchPlaceholder}}"
+					 add-action-name="Add"
+					 add-action="addAction({user: user})"
+					 add-action-filter="addActionFilter({user: user})"
+					 in-list-action-name="{{itemName}}"
+					 in-list-action-filter="inListActionFilter({user: user})"
+					 users="filteredUsers">
+				</findusers>
+			</div>
+			<!-- panel -->
+		</div>
+		<!-- col -->
+	</div>
+
+</div>
+

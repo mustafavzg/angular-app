@@ -1,0 +1,147 @@
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<legend>
+			Project
+			<span class="pull-right hover-pointer" ng-click="projectscrudhelpers.view(project.$id())" ng-cloak><i class="icon-circle-arrow-left"></i><a>Back</a></span>
+		</legend>
+	</div>
+
+	<!-- <form name="form"> -->
+	<form name="form" crud-edit="project">
+
+		<div class="panel-body">
+			<!-- row -->
+			<div class="row">
+				<div class="col-md-6">
+					<div class="form-group">
+						<label>Name</label>
+						<input type="text" name="name" class="form-control" ng-model="project.name" required autofocus>
+					</div>
+
+					<div class="form-group">
+						<label>Description</label>
+						<textarea rows="10" cols="10" name="description" class="form-control" ng-model="project.description">
+						</textarea>
+					</div>
+				</div>
+
+				<div class="col-md-6">
+
+					<datecombofromto
+						 name="dateCombo"
+						 from-date="project.startdate"
+						 to-date="project.enddate"
+						 from-date-label="Start Date"
+						 to-date-label="End Date"
+						 from-date-required="true"
+						 to-date-required="true">
+					</datecombofromto>
+
+					<!-- </div> -->
+
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group">
+								<label>Project Profile</label>
+								<input type="number" name="projectProfileID" class="form-control" ng-model="project.projectProfile.ID" required>
+							</div>
+
+							<div class="form-group">
+								<label>Priority</label>
+								<input type="number" name="priority" class="form-control" ng-model="project.priority" required>
+							</div>
+
+							<div class="form-group">
+								<label>Estimation</label>
+								<input type="number" name="weight" class="form-control" ng-model="project.weight" required>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+			<!-- row -->
+
+			<div ng-controller="TeamMembersController">
+				<!-- row -->
+				<div class="row">
+					<div class="col-md-6" >
+
+						<div class="form-group">
+							<label>Product Owner</label>
+							<select class="form-control " ng-model="project.productOwner"
+									ng-options="user.$id() as user.getFullName() for user in productOwnerCandidates()" required>
+								<option value="">-- choose --</option>
+							</select>
+						</div>
+
+					</div>
+
+					<div class="col-md-6">
+
+						<div class="form-group">
+							<label>Scrum Master</label>
+							<select class="form-control" ng-model="project.scrumMaster"
+									ng-options="user.$id() as user.getFullName() for user in scrumMasterCandidates()" required>
+								<option value="">-- choose --</option>
+							</select>
+						</div>
+
+					</div>
+
+				</div>
+				<!-- row -->
+
+				<users-combo-search-add
+					 combo-label="Add Stake Holders"
+					 label="Stake Holders"
+					 collection-name="stakeHolder"
+					 item-name="Stake Holder"
+					 helptip="Add stake holders from the 'Find People' widget to the right"
+					 user-ids="project.stakeHolders"
+					 search-label="Find People"
+					 search-helptip="Search for and add stake holders from here"
+					 search-placeholder="Search for people to add as stake holders"
+					 remove-action="removeStakeHolder(user)"
+					 add-action="addStakeHolder(user)"
+					 add-action-filter="possibleStakeHolderFilter(user)"
+					 in-list-action-filter="isStakeHolderFilter(user)">
+				</users-combo-search-add>
+
+				<users-combo-search-add
+					 combo-label="Build Team"
+					 label="Team"
+					 collection-name="team"
+					 item-name="Team Member"
+					 helptip="Build your team by adding members from the 'Find People' widget to the right"
+					 user-ids="project.teamMembers"
+					 search-label="Find People"
+					 search-helptip="Search for and add team members from here"
+					 search-placeholder="Search for people to add as team members"
+					 remove-action="removeMember(user, project.teamMembers)"
+					 add-action="addMember(user, project.teamMembers)"
+					 add-action-filter="possibleTeamMemberFilter(user)"
+					 in-list-action-filter="isTeamMemberFilter(user)">
+				</users-combo-search-add>
+					 <!-- remove-action="removeTeamMember(user)" -->
+					 <!-- add-action="addTeamMember(user)" -->
+					 <!-- remove-action="removeMember(user, project.teamMembers, 'teamMemberOfProjects')" -->
+					 <!-- add-action="addMember(user, project.teamMembers, 'teamMemberOfProjects')" -->
+
+
+			</div>
+			<!-- team members controller -->
+
+
+		</div>
+		<!-- panel body -->
+
+		<div class="panel-footer">
+			<div class="row">
+				<hr>
+				<crud-buttons class="col-md-6"></crud-buttons>
+			</div>
+		</div>
+	</form>
+</div>

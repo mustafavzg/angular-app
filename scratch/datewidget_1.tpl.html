@@ -1,0 +1,13 @@
+<ng-form>
+	<!-- <ng-form name='dateFieldForm'> -->
+	<div class="input-group">
+		{{date | date:'dd/MM/yyyy @ h:mma'}}
+		{{ngform.$pristine}}{{ngform.$dirty}}{{ngform.$valid}}{{ngform.$invalid}}
+		{{formstates()}}
+		<!-- <input type="text" name="name" class="form-control" datepicker-popup="{{format}}" ng-model="date" is-open="opened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="required" close-text="Close" /> -->
+		<input type="text" name="dateField" class="form-control" datepicker-popup="{{format}}" ng-model="date" is-open="opened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="required" close-text="Close" />
+		<span class="input-group-btn">
+			<button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+		</span>
+	</div>
+</ng-form>

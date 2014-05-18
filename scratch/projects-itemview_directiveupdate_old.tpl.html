@@ -1,0 +1,312 @@
+<div id="container-project-face-view row">
+
+	<!-- -------------------------------------------------- -->
+	<!-- Project Header -->
+	<!-- -------------------------------------------------- -->
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			<strong>Project</strong>
+		</div>
+	</div>
+
+	<!-- -------------------------------------------------- -->
+	<!-- Project Title, Description -->
+	<!-- -------------------------------------------------- -->
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<div class="media">
+				<a class="btn btn-primary media-object pull-right" role="button">Edit Project</a>
+				<!-- <span class="badge media-object pull-left" ng-cloak><strong>{{project.$id()}}</strong></span> -->
+				<div class="badge" ng-cloak><strong>{{project.$id()}}</strong></div>
+				<div class="media-body">
+					<h4 class="media-heading">{{project.name}}</h4>
+					<p>{{project.desc}}</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- -------------------------------------------------- -->
+	<!-- Project attributes -->
+	<!-- -------------------------------------------------- -->
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<div class="bs-glyphicons">
+				<ul class="bs-glyphicons-list">
+					<li ng-repeat="attribute in project.attributeValuesToDisplay | orderBy:'ordering'">
+						<span class="glyphicon-class">{{ attribute.name }}</span>
+						<!-- if glyphicon is defined -->
+						<span ng-show="!!attribute.glyphiconclass" ng-class="[attribute.glyphiconclass]"></span>
+						<span ng-show="!!attribute.glyphiconclass" class="glyphicon-class">{{ attribute.value }}</span>
+						<!-- else -->
+						<span ng-show="!attribute.glyphiconclass" class="glyphicon">{{ attribute.value }}</span>
+						<!-- endif -->
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	
+	<!-- -------------------------------------------------- -->
+	<!-- Other Entities -->
+	<!-- TODO: Implement this with ng-repeat or in separate template files -->
+	<!-- -------------------------------------------------- -->
+	<div class="panel panel-default">
+		<tabset justified="true" type="pills">
+			<tab heading="Product Backlog">
+				<div class="panel-body">
+
+					<!-- <hello></hello> -->
+
+					<!-- <hello foobar="{{backlogitemsPaginate}}" foobareq="backlogitemsSort.sortField" foobarfun="hola" ></hello> -->
+
+					<!-- <p>{{hola('mundo old')}}</p> -->
+					<!-- <hello foobar="{{backlogitemsPaginate.currentPage}}"></hello> -->
+					<!-- <hello foobareq="backlogitemsSort.sortField"></hello> -->
+					<!-- <hello foobarfun="hola(somcrap)"></hello> -->
+					<!-- <hello foobarfun="hola('and what is this going to do', 'and what about this')"></hello> -->
+
+					<!-- <hello foobar="{{backlogitemsPaginate.currentPage}}" foobareq="backlogitemsSort.sortField" foobarfun="hola" ></hello> -->
+					<!-- <tableactive resource="productbacklog" items="backlogitems" itemsperpage="backlogitemsPaginate.itemsPerPage" tablecolumns="['name', 'description', 'priority', 'estimation']" fetchingitems="fetchingbacklogitems" itemscrudhelpers="backlogitemscrudhelpers" resourceconf="backlogitemsconf" ></tableactive> -->
+
+					<tableactive items="backlogitems" fetchingitems="fetchingbacklogitems" resourceconf="backlogitemsconf" ></tableactive>
+
+					<!-- <div class="row" > -->
+					<!-- 	<div class="col-md-12"> -->
+					<!-- 		<span class="pull-left" ng-click="manageBacklog(project)"> -->
+					<!-- 			<strong><a class="hover-pointer">Product Backlog</a></strong> -->
+					<!-- 		</span> -->
+					<!-- 	</div> -->
+					<!-- </div> -->
+
+					<!-- <div class="row"> -->
+					<!-- 	<div class="col-md-12"> -->
+					<!-- 		<span class="pull-right"> -->
+					<!-- 			<pagination boundary-links="true" total-items="filteredbacklogitems.length" items-per-page="backlogitemsPaginate.itemsPerPage" ng-model="backlogitemsPaginate.currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination> -->
+
+					<!-- 		</span> -->
+					<!-- 	</div> -->
+					<!-- </div> -->
+
+					<!-- <div class="form-group"> -->
+					<!-- 	<input type="text" class="form-control" id="backlogquery" ng-model="backlogquery" ng-disabled="!backlogitems.length"  placeholder="Search Backlog Items ... "/> -->
+					<!-- </div> -->
+
+					<!-- <hr /> -->
+					<!-- <table class="table table-condensed table-striped table-hover table-sort"> -->
+					<!-- 	<thead> -->
+					<!-- 		<tr> -->
+					<!-- 			<th class="col-md-2" ng-click="backlogitemsSort.sort('name')" > -->
+					<!-- 				Name -->
+					<!-- 				<i ng-class="{'glyphicon glyphicon-chevron-up': backlogitemsSort.isSortUp('name'), 'glyphicon glyphicon-chevron-down': backlogitemsSort.isSortDown('name')}"></i> -->
+					<!-- 			</th> -->
+					<!-- 			<th class="col-md-4" ng-click="backlogitemsSort.sort('description')" > -->
+					<!-- 				Description -->
+					<!-- 				<i ng-class="{'glyphicon glyphicon-chevron-up':backlogitemsSort.isSortUp('description'), 'glyphicon glyphicon-chevron-down':backlogitemsSort.isSortDown('description')}"></i> -->
+					<!-- 			</th> -->
+					<!-- 			<th class="col-md-1" ng-click="backlogitemsSort.sort('priority')" > -->
+					<!-- 				Priority -->
+					<!-- 				<i ng-class="{'glyphicon glyphicon-chevron-up':backlogitemsSort.isSortUp('priority'), 'glyphicon glyphicon-chevron-down':backlogitemsSort.isSortDown('priority')}"></i> -->
+					<!-- 			</th> -->
+					<!-- 			<th class="col-md-1" ng-click="backlogitemsSort.sort('estimation')" > -->
+					<!-- 				Estimation -->
+					<!-- 				<i ng-class="{'glyphicon glyphicon-chevron-up':backlogitemsSort.isSortUp('estimation'), 'glyphicon glyphicon-chevron-down':backlogitemsSort.isSortDown('estimation')}"></i> -->
+					<!-- 			</th> -->
+					<!-- 		</tr> -->
+					<!-- 	</thead> -->
+
+					<!-- 	<tbody> -->
+
+					<!-- 		<tr ng-repeat="backlogItem in pagebacklogitems = ((filteredbacklogitems = (backlogitems | filter:{name:backlogquery} | orderBy:backlogitemsSort.sortField:backlogitemsSort.reverse)) | pagination:backlogitemsPaginate.currentPage:backlogitemsPaginate.itemsPerPage)" ng-click="backlogitemscrudhelpers.view(backlogItem.$id())"> -->
+					<!-- 			<td>{{backlogItem.name}}</td> -->
+					<!-- 			<td>{{backlogItem.desc}}</td> -->
+					<!-- 			<td>{{backlogItem.priority}}</td> -->
+					<!-- 			<td>{{backlogItem.estimation}}</td> -->
+					<!-- 		</tr> -->
+					<!-- 		<tr ng-show="fetchingbacklogitems"> -->
+					<!-- 			<td colspan="4">Fetching Backlog Items ... -->
+					<!-- 				<span><a href="#"><img src="/static/img/spinner.gif"></a></span> -->
+					<!-- 			</td> -->
+					<!-- 		</tr> -->
+					<!-- 		<tr ng-show="!backlogitems.length && !fetchingbacklogitems"> -->
+					<!-- 			<td colspan="4">No items in the backlog</td> -->
+					<!-- 		</tr> -->
+					<!-- 	</tbody> -->
+					<!-- </table> -->
+
+				</div>
+			</tab>
+
+			<tab heading="Sprints">
+				<div class="panel-body">
+					<div>
+						<span class="pull-left hover-pointer" ng-click="manageSprints(project)">
+							<strong><a>Sprints</a></strong>
+						</span>
+						<span class="pull-right">
+							<div class="form-group">
+								<input type="text" class="form-control" id="sprintquery" ng-model="sprintquery" ng-disabled="!sprints.length" placeholder="Search Sprints ... "/>
+							</div>
+						</span>
+					</div>
+					<table class="table table-condensed table-striped table-hover">
+						<thead>
+							<tr>
+								<th>Name</th>
+								<th>Start date</th>
+								<th>End date</th>
+								<th>Status</th>
+								<!-- <th>Tasks</th> -->
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="sprint in sprints | filter:{name:sprintquery}"  ng-click="sprintscrudhelpers.view(sprint.$id())">
+								<td>{{sprint.name}}</td>
+								<td>{{sprint.start}}</td>
+								<td>{{sprint.end}}</td>
+								<td>ACTIVEDUMMY</td>
+								<!-- <td> -->
+								<!--	<button type="button" class="btn btn-mini" ng-click="sprintscrudhelpers.tasks(sprint, $event)">Tasks</button> -->
+								<!-- </td> -->
+							</tr>
+							<tr ng-show="fetchingsprints">
+								<td colspan="5">Fetching Sprints ...
+									<span><a href="#"><img src="/static/img/spinner.gif"></a></span>
+								</td>
+							</tr>
+							<tr ng-show="!sprints.length && !fetchingsprints">
+								<td colspan="5">No sprints defined</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</tab>
+			<tab heading="Tasks">
+				<div class="panel-body">
+					<div>
+						<span class="pull-left hover-pointer" ng-click="manageTasks(project)">
+							<strong><a>Tasks</a></strong>
+						</span>
+						<span class="pull-right">
+							<div class="form-group">
+								<input type="text" class="form-control" id="taskquery" ng-model="taskquery" ng-disabled="!tasks.length" placeholder="Search Tasks ... "/>
+							</div>
+						</span>
+					</div>
+					<table class="table table-condensed table-striped table-hover">
+						<thead>
+							<tr>
+								<th>Name</th>
+								<th>Description</th>
+								<th>Estimation</th>
+								<th>Remaining</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="task in tasks | filter:{name:taskquery}"  ng-click="taskscrudhelpers.view(task.$id())">
+								<td>{{task.name}}</td>
+								<td>{{task.desc}}</td>
+								<td>{{task.estimation}}</td>
+								<td>{{task.remaining}}</td>
+							</tr>
+							<tr ng-show="fetchingtasks">
+								<td colspan="5">Fetching Tasks ...
+									<span><a href="#"><img src="/static/img/spinner.gif"></a></span>
+								</td>
+							</tr>
+							<tr ng-show="!tasks.length && !fetchingtasks">
+								<td colspan="5">No tasks defined</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</tab>
+			<tab heading="Stake Holders">
+				<div class="panel-body">
+					<div>
+						<span class="pull-left hover-pointer" ng-click="manageStakeHolders(project)">
+							<strong><a>Stake Holders</a></strong>
+						</span>
+						<span class="pull-right">
+							<div class="form-group">
+								<input type="text" class="form-control" id="stakeHolderquery" ng-model="stakeHolderquery" ng-disabled="!stakeHolders.length" placeholder="Search Stake Holders ... "/>
+							</div>
+						</span>
+					</div>
+					<table class="table table-condensed table-striped table-hover">
+						<thead>
+							<tr>
+								<th></th>
+								<th>First name</th>
+								<th>Last name</th>
+								<th>Username</th>
+
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="stakeHolder in stakeHolders | filter:stakeHolderquery"  ng-click="stakeHolderscrudhelpers.view(stakeHolder.$id())">
+								<td><gravatar email="stakeHolder.username" size="50" default-image="'monsterid'"></gravatar></td>
+								<td>{{stakeHolder.firstName}}</td>
+								<td>{{stakeHolder.lastName}}</td>
+								<td>{{stakeHolder.username}}</td>
+
+							</tr>
+							<tr ng-show="fetchingStakeHolders">
+								<td colspan="5">Fetching Stake Holders ...
+									<span><a href="#"><img src="/static/img/spinner.gif"></a></span>
+								</td>
+							</tr>
+							<tr ng-show="!stakeHolders.length && !fetchingStakeHolders">
+								<td colspan="5">No Stake holders found</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</tab>
+			<tab heading="Team Members">
+				<div class="panel-body">
+					<div>
+						<span class="pull-left hover-pointer" ng-click="manageTeamMembers(project)">
+							<strong><a>Team Members</a></strong>
+						</span>
+						<span class="pull-right">
+							<div class="form-group">
+								<input type="text" class="form-control" id="teamMemberQuery" ng-model="teamMemberquery" ng-disabled="!teamMembers.length" placeholder="Search Team Members ... "/>
+							</div>
+						</span>
+					</div>
+					<table class="table table-condensed table-striped table-hover">
+						<thead>
+							<tr>
+								<th></th>
+								<th>First name</th>
+								<th>Last name</th>
+								<th>Username</th>
+
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="teamMember in teamMembers | filter:teamMemberquery"  ng-click="teammemberscrudhelpers.view(teamMember.$id())">
+								<td><gravatar email="teamMember.username" size="50" default-image="'monsterid'"></gravatar></td>
+								<td>{{teamMember.firstName}}</td>
+								<td>{{teamMember.lastName}}</td>
+								<td>{{teamMember.username}}</td>
+
+							</tr>
+							<tr ng-show="fetchingTeamMembers">
+								<td colspan="5">Fetching Team Members ...
+									<span><a href="#"><img src="/static/img/spinner.gif"></a></span>
+								</td>
+							</tr>
+							<tr ng-show="!teamMembers.length && !fetchingTeamMembers">
+								<td colspan="5">No team members found</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</tab>
+		</tabset>
+	</div>
+	<!-- Other Entities End -->
+
+</div>

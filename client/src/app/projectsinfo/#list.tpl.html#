@@ -1,0 +1,20 @@
+<h3>Projects info</h3>
+<div class="accordion">
+  Search: <input ng-model="query">
+</div>
+
+<div class="accordion">
+  <div ng-repeat="project in projects | filter:{name:query}" class="accordion-group">
+
+	<!-- <div ng-class="{active:project.showDescription}" ng-mouseover="toggleDescription(project)"> -->
+	<div class="accordion-heading accordion-toggle" ng-class="{active:project.showDescription}" ng-mouseover="displayDescription(project)" ng-mouseleave="hideDescription(project)">
+	<!-- <div class="accordion-heading accordion-toggle" ng-class="{active:project.showDescription}" ng-mouseover="toggleDescription(project)"> -->
+		{{project.name}}
+	</div>
+	<div class="accordion-inner" ng-show="project.showDescription">
+		<p>{{project.desc}}</p>
+	</div>
+  </div>
+  {{previousproject.name}}
+</div>
+

@@ -1,0 +1,18 @@
+<ng-form>
+	<div class="row">
+		<div class="form-group" ng-class="setValidationClasses()">
+			<div class="col-md-6">
+				<datelookup name="fromDate" date="fromDate" label="{{fromDateLabel}}" required="{{fromDateRequired}}"></datelookup>
+			</div>
+
+			<div class="col-md-6">
+				<datelookup name="toDate" date="toDate" label="{{toDateLabel}}" required="{{toDateRequired}}"></datelookup>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12" ng-class="setValidationClasses()">
+			<span class="help-block" ng-show="showError('datecombocheck')" >{{toDateLabel}} must be greater than {{fromDateLabel}}</span>							
+		</div>
+	</div>
+</ng-form>

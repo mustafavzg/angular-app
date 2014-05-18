@@ -198,10 +198,16 @@ describe('CRUD scope mix-ins', function () {
       expect($location.path()).toEqual('/prefix/new');
     });
 
+    it('should support view method', function () {
+      angular.extend($rootScope, crudListMethods('/prefix'));
+      $rootScope.view('someId');
+      expect($location.path()).toEqual('/prefix/someId/view');
+    });
+
     it('should support edit method', function () {
       angular.extend($rootScope, crudListMethods('/prefix'));
       $rootScope.edit('someId');
-      expect($location.path()).toEqual('/prefix/someId');
+      expect($location.path()).toEqual('/prefix/someId/edit');
     });
   });
 });

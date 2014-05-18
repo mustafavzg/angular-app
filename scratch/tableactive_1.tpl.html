@@ -1,0 +1,73 @@
+<div ng-class="rootDivClass">
+	<div class="row" >
+		<div class="col-md-12">
+			<!-- <span class="pull-left" ng-click="manageBacklog(project)"> -->
+			<span class="pull-left" ng-click="manageResources()">
+			<span class="pull-left">
+				<strong><a class="hover-pointer">{{resourcePrettyName}}</a></strong>
+			</span>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-12">
+			<span class="pull-right">
+				<pagination boundary-links="true" total-items="filtereditems.length" items-per-page="itemsPerPage" ng-model="currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+
+			</span>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<input type="text" class="form-control" id="query" ng-model="query" ng-disabled="!items.length" placeholder="Search {{resourcePrettyNameAlt}} ... "/>
+	</div>
+
+	<hr />
+	<table class="table table-condensed table-striped table-hover table-sort">
+		<thead>
+			<tr>
+				<th ng-repeat="column in tableColumns" class="column.widthClass" ng-click="itemsSort.sort(column.key)" >
+					{{column.prettyName}}
+					<i ng-class="{'glyphicon glyphicon-chevron-up': itemsSort.isSortUp(column.key), 'glyphicon glyphicon-chevron-down': itemsSort.isSortDown(column.key)}"></i>
+				</th>
+				<!-- <th class="col-md-2" ng-click="itemsSort.sort('name')" > -->
+				<!-- 	Name -->
+				<!-- 	<i ng-class="{'glyphicon glyphicon-chevron-up': itemsSort.isSortUp('name'), 'glyphicon glyphicon-chevron-down': itemsSort.isSortDown('name')}"></i> -->
+				<!-- </th> -->
+				<!-- <th class="col-md-4" ng-click="itemsSort.sort('description')" > -->
+				<!-- 	Description -->
+				<!-- 	<i ng-class="{'glyphicon glyphicon-chevron-up':itemsSort.isSortUp('description'), 'glyphicon glyphicon-chevron-down':itemsSort.isSortDown('description')}"></i> -->
+				<!-- </th> -->
+				<!-- <th class="col-md-1" ng-click="itemsSort.sort('priority')" > -->
+				<!-- 	Priority -->
+				<!-- 	<i ng-class="{'glyphicon glyphicon-chevron-up':itemsSort.isSortUp('priority'), 'glyphicon glyphicon-chevron-down':itemsSort.isSortDown('priority')}"></i> -->
+				<!-- </th> -->
+				<!-- <th class="col-md-1" ng-click="itemsSort.sort('estimation')" > -->
+				<!-- 	Estimation -->
+				<!-- 	<i ng-class="{'glyphicon glyphicon-chevron-up':itemsSort.isSortUp('estimation'), 'glyphicon glyphicon-chevron-down':itemsSort.isSortDown('estimation')}"></i> -->
+				<!-- </th> -->
+			</tr>
+		</thead>
+
+		<tbody>
+
+			<tr ng-repeat="item in pageitems = ((filtereditems = (items | filter:{name:query} | orderBy:itemsSort.sortField:itemsSort.reverse)) | pagination:currentPage:itemsPerPage)" ng-click="itemsCrudHelpers.view(item.$id())">
+				<td ng-repeat="column in tableColumns">
+					{{item[column.key]}}
+				</td>
+				<!-- <td>{{item.name}}</td> -->
+				<!-- <td>{{item.desc}}</td> -->
+				<!-- <td>{{item.priority}}</td> -->
+				<!-- <td>{{item.estimation}}</td> -->
+			</tr>
+			<tr ng-show="fetchingitems">
+				<td colspan="4">Fetching {{resourcePrettyNameAlt}} ...
+					<span><a href="#"><img src="/static/img/spinner.gif"></a></span>
+				</td>
+			</tr>
+			<tr ng-show="!items.length && !fetchingitems">
+				<td colspan="4">No {{resourcePrettyNameAlt}} found</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

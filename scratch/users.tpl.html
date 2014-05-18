@@ -1,0 +1,20 @@
+<div class="{{rootDivClass}}">
+	<div class="form-group has-feedback">
+		<label>{{labelmsg}} <helptip tip="{{helptipmsg}}" icon="info-sign" ></helptip></label>
+		<div class="form-control-feedback" ng-show="fetchingUsers">
+			<span> Fetching Users ... <a href="#"><img src="/static/img/spinner.gif"></a></span>
+		</div>
+
+				<!-- action="action({user: user})" -->
+		<div class="{{collectionName}}-container">
+			<userthumb
+				user="user"
+				action="action({'user': user})"
+				action-name="{{actionName}}"
+				action-icon="{{actionIcon}}"
+				action-button-class="{{actionButtonClass}}"
+				ng-repeat="user in users | orderBy:'lastName'">
+			</userthumb>
+		</div>
+	</div>
+</div>

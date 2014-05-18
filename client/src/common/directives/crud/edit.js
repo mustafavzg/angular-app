@@ -69,11 +69,19 @@ angular.module('directives.crud.edit', [])
         }
       };
 
-      // The following functions can be called to modify the behaviour of elements in the form
-      // - e.g. ng-disable="!canSave()"
-      scope.canSave = function() {
-        return form.$valid && !angular.equals(resource, original);
-      };
+	  // The following functions can be called to modify the behaviour of elements in the form
+	  // - e.g. ng-disable="!canSave()"
+	  scope.canSave = function() {
+		  return form.$valid && !angular.equals(resource, original);
+	  };
+	  scope.showMe = function() {
+		  console.log(resource);
+		  console.log(original);
+		  console.log("form is valid? " + form.$valid);
+		  console.log("objects are not equal? " + !angular.equals(resource, original));
+		  return form.$valid && !angular.equals(resource, original);
+	  };
+
       scope.canRevert = function() {
         return !angular.equals(resource, original);
       };
@@ -101,6 +109,9 @@ angular.module('directives.crud.edit', [])
       scope.showError = function(fieldName, error) {
         return form[fieldName].$error[error];
       };
+
+		console.log("PRINTING THE FORM OBJECT");
+		console.log(form);
     }
   };
 }]);
