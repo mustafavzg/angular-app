@@ -119,13 +119,15 @@
 					 search-label="Find People"
 					 search-helptip="Search for and add team members from here"
 					 search-placeholder="Search for people to add as team members"
-					 remove-action="removeMember(user, project.teamMembers)"
-					 add-action="addMember(user, project.teamMembers)"
+					 remove-action="removeTeamMember(user)"
+					 add-action="addTeamMember(user)"
 					 add-action-filter="possibleTeamMemberFilter(user)"
 					 in-list-action-filter="isTeamMemberFilter(user)">
 				</users-combo-search-add>
 					 <!-- remove-action="removeTeamMember(user)" -->
 					 <!-- add-action="addTeamMember(user)" -->
+					 <!-- remove-action="removeMember(user, project.teamMembers)" -->
+					 <!-- add-action="addMember(user, project.teamMembers)" -->
 					 <!-- remove-action="removeMember(user, project.teamMembers, 'teamMemberOfProjects')" -->
 					 <!-- add-action="addMember(user, project.teamMembers, 'teamMemberOfProjects')" -->
 

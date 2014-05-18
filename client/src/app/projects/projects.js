@@ -315,7 +315,6 @@ angular.module('projects', [
 			// updateProjectListForUsers(undefined, userId, projectRole);
 		};
 
-
 		$scope.addTeamMember = function(user) {
 			console.log("adding team member");
 			var userId = user.$id();
