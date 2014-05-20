@@ -84,9 +84,9 @@ angular.module('directives.users', [
 					};
 
 					$scope.$watchCollection('users', function (newUsers, oldUsers) {
-						console.log("seems like users model changed");
+						// console.log("seems like users model changed");
 						if( !angular.equals(newUsers, oldUsers) ){
-							console.log("users model has changed");
+							// console.log("users model has changed");
 							$scope.buildLookUp(newUsers);
 
 							// This is unnecessarily expensive, and only useful
@@ -110,16 +110,16 @@ angular.module('directives.users', [
 						$scope.fetchingUsers = true;
 						var users = $scope.lookUpUsers(usersIdList) || [];
 						// $scope.users = users;
-						console.log("current users");
-						console.log($scope.users);
+						// console.log("current users");
+						// console.log($scope.users);
 
 						// No need of a union as usersIdList and users have to
 						// be in sync
 						// $scope.users = _.union($scope.users, users);
 						$scope.users = users;
 
-						console.log("users after lookup");
-						console.log($scope.users);
+						// console.log("users after lookup");
+						// console.log($scope.users);
 
 						// console.log("users in dictionary");
 						// console.log(JSON.stringify($scope.usersDictionary));
