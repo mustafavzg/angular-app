@@ -1,18 +1,23 @@
 <div class="{{rootDivClass}}">
 	<!-- <div class="form-group has-feedback"> -->
 	<div class="form-group">
-		<label>{{labelmsg}} <helptip tip="{{helptipmsg}}" icon="info-sign" ></helptip></label>
+		<label ng-show="labelmsg">{{labelmsg}} <helptip ng-show="helptipmsg" tip="{{helptipmsg}}" icon="info-sign" ></helptip></label>
 		<span class="help-block" ng-show="fetchingUsers"> Fetching Users ... <img src="/static/img/spinner.gif"></span>
 		<span class="help-block" ng-show="!users.length && !fetchingUsers"> No users added </span>
 
 		<div class="{{collectionName}}-container">
+				<!-- role-function="roleFunction{{user: user}}" -->
+				<!-- role-function="roleFunction{{'userId': userId}}" -->
 			<userthumb
 				user="user"
 				action="action({user: user})"
 				action-name="{{actionName}}"
 				action-icon="{{actionIcon}}"
 				action-button-class="{{actionButtonClass}}"
-				ng-repeat="user in users | orderBy:'lastName'">
+				action-disabled="{{actionDisabled}}"
+				action-hidden="{{actionHidden}}"
+				role-function="roleFunction({user: user})"
+				ng-repeat="user in users | filter:isDefined | orderBy:'lastName'">
 			</userthumb>
 		</div>
 	</div>

@@ -47,20 +47,55 @@ angular.module('resources.projects')
 			return !this.isProductOwner(userId) && !this.isStakeHolder(userId);
 		};
 
-		Projects.prototype.getRoles = function (userId) {
-			console.log("USERID is " + userId);
-			var roles = [];
-			if (this.isProductOwner(userId)) {
-				roles.push('PO');
-			} else {
-				if (this.isScrumMaster(userId)){
-					roles.push('SM');
+		var roles = {
+			PO: {
+				name: 'Product Owner',
+				description: 'Product owner is responsible for creating new requirements in the backlog',
+				icon: 'glyphicon glyphicon-tower',
+				ordering: 1
+			},
+			SH: {
+				name: 'Stake Holder',
+				description: 'Stake Holder like product owner is responsible for creating new requirements in the backlog',
+				icon: 'glyphicon glyphicon-header',
+				ordering: 2
+			},
+			SM: {
+				name: 'Scrum Master',
+				description: 'Scrum Master is responsible to manage the resources to achieve the sprint objectives',
+				icon: 'glyphicon glyphicon-eye-open',
+				ordering: 3
+			},
+			TM: {
+				name: 'Team Member',
+				description: 'Team member works on the tasks assigned',
+				icon: 'glyphicon glyphicon-user',
+				ordering: 4
+			}
+		};
+
+		// Projects.prototype.getUserRoles = function (userId) {
+		Projects.prototype.getUserRoles = function (user) {
+			var userRoles = [];
+			if( angular.isDefined(user) ){
+				var userId = user.$id();
+				// console.log("USERID is " + userId);
+				if ( this.isProductOwner(userId) ) {
+					userRoles.push(roles['PO']);
 				}
-				if (this.isDevTeamMember(userId)){
-					roles.push('DEV');
+				else if ( this.isStakeHolder(userId) ) {
+					userRoles.push(roles['SH']);
+				}
+				else {
+					if (this.isScrumMaster(userId)){
+						userRoles.push(roles['SM']);
+					}
+					if (this.isDevTeamMember(userId)){
+						userRoles.push(roles['TM']);
+					}
 				}
 			}
-			return roles;
+			return userRoles;
 		};
 
 		return Projects;

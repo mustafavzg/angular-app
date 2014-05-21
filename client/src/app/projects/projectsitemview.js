@@ -11,6 +11,7 @@ angular.module('projectsitemview', [
 	'filters.pagination',
 	'directives.tableactive',
 	'directives.test',
+	'directives.users',
 	'underscore'
 ])
 
@@ -199,12 +200,12 @@ angular.module('projectsitemview', [
 		security.requestCurrentUser().then(
 			function (currentUser) {
 				if( angular.isDefined(currentUser) ){
-					var userroles = project.getRoles(currentUser.id);
-					$scope.project.attributesToDisplay.userroles = {
-						name : 'Your Roles',
-						value : userroles,
-						ordering : 6
-					};
+					// var userroles = project.getUserRoles(currentUser.id);
+					// $scope.project.attributesToDisplay.userroles = {
+					// 	name : 'Your Roles',
+					// 	value : userroles,
+					// 	ordering : 6
+					// };
 				}
 			},
 			function (response) {
@@ -216,9 +217,12 @@ angular.module('projectsitemview', [
 		/**************************************************
 		 * Fetch the product owner name
 		 **************************************************/
+		$scope.fetchingProductOwner = true;
 		Users.getById(
 			project.productOwner,
 			function (productOwner, responsestatus, responseheaders, responseconfig) {
+				$scope.productOwner = productOwner;
+				$scope.fetchingProductOwner = false;
 				var productOwnerName = productOwner.getFullName();
 				$scope.project.attributesToDisplay.productowner = {
 					name : 'Product Owner',
@@ -229,6 +233,7 @@ angular.module('projectsitemview', [
 				console.log("Succeded to fetch product owner");
 			},
 			function (response, responsestatus, responseheaders, responseconfig) {
+				$scope.fetchingProductOwner = false;
 				console.log("Failed to fetch product owner");
 				console.log(response);
 			}
@@ -237,9 +242,12 @@ angular.module('projectsitemview', [
 		/**************************************************
 		 * Fetch the scrum master name
 		 **************************************************/
+		$scope.fetchingScrumMaster = true;
 		Users.getById(
 			project.scrumMaster,
 			function (scrumMaster, responsestatus, responseheaders, responseconfig) {
+				$scope.fetchingScrumMaster = false;
+				$scope.scrumMaster = scrumMaster;
 				var scrumMasterName = scrumMaster.getFullName();
 				$scope.project.attributesToDisplay.scrummaster = {
 					name : 'Scrum Master',
@@ -250,6 +258,7 @@ angular.module('projectsitemview', [
 				console.log("Succeded to fetch scrum master");
 			},
 			function (response, responsestatus, responseheaders, responseconfig) {
+				$scope.fetchingScrumMaster = false;
 				console.log("Failed to fetch scrum master");
 				console.log(response);
 			}
@@ -399,7 +408,7 @@ angular.module('projectsitemview', [
 		$scope.tasksCrudHelpers = {};
 		angular.extend($scope.tasksCrudHelpers, crudListMethods('/projects/'+project.$id()+'/tasks'));
 
-		$scope.manageTasks = function (project) {
+		$scope.manageTasks = function () {
 			$location.path('/projects/'+project.$id()+'/tasks');
 		};
 
@@ -472,7 +481,7 @@ angular.module('projectsitemview', [
 		$scope.stakeHoldersCrudHelpers = {};
 		angular.extend($scope.stakeHoldersCrudHelpers, crudListMethods('/projects/'+project.$id()+'/users'));
 
-		$scope.manageStakeHolders = function (project) {
+		$scope.manageStakeHolders = function () {
 			$location.path('/projects/'+project.$id()+'/edit');
 		};
 
@@ -534,15 +543,36 @@ angular.module('projectsitemview', [
 
 		// angular.extend($scope.teammembersCrudHelpers, crudListMethods('/users'));
 
-		$scope.manageTeamMembers = function (project) {
+		$scope.viewUser = function (user) {
+			$scope.teammembersCrudHelpers.view(user.$id());
+		};
+
+		$scope.manageTeamMembers = function () {
 			$location.path('/projects/'+project.$id()+'/edit');
 		};
+
+		// $scope.rolesFilter = function(user) {
+		// 	var roles = [];
+		// 	if( $scope.project.isDevTeamMember(user.$id()) ){
+		// 		roles.push('Team Member');
+		// 	}
+		// 	if( $scope.project.isStakeHolder(user.$id()) ){
+		// 		roles.push('Stake Holder');
+		// 	}
+		// 	if( $scope.project.isStakeHolder(user.$id()) ){
+		// 		roles.push('Stake Holder');
+		// 	}
+
+		// };
 
 		Users.getByIds(
 			project.teamMembers,
 			function (teamMembers) {
 				$scope.teamMembers = teamMembers;
+				// $scope.teamMembers = $scope.teamMembers.concat(teamMembers);
 				$scope.fetchingTeamMembers = false;
+				console.log("fetched team members");
+
 			},
 			function (response) {
 				console.log("Failed to fetch team members");

@@ -97,16 +97,22 @@ angular.module('security.service', [
 
 			// Ask the backend to see if a user is already authenticated - this may be from a previous session.
 			requestCurrentUser: function() {
-				if ( service.isAuthenticated() ) {
-					return $q.when(service.currentUser);
-				} else {
-					return $http.get('/current-user').then(
-						function(response) {
-							service.currentUser = response.data.user;
-							return service.currentUser;
-						}
-					);
-				}
+				return $http.get('/current-user').then(
+					function(response) {
+						service.currentUser = response.data.user;
+						return service.currentUser;
+					}
+				);
+				// if ( service.isAuthenticated() ) {
+				// 	return $q.when(service.currentUser);
+				// } else {
+				// 	return $http.get('/current-user').then(
+				// 		function(response) {
+				// 			service.currentUser = response.data.user;
+				// 			return service.currentUser;
+				// 		}
+				// 	);
+				// }
 			},
 
 			// Information about the current user

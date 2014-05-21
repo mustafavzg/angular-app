@@ -1,14 +1,29 @@
 <div class="thumbnail thumbnail-user">
+	<p>{{ user.getFullName() }}</p>		
+ 	<!-- <div class="caption"> -->
+	<!-- </div> -->
 	<img src="/static/img/foouser.jpg" class="photo">
 	<!-- <gravatar email="user.email" size="50" default-image="'monsterid'"></gravatar> -->
-	<div class="caption">
-		<p>{{ user.getFullName() }}</p>
-		<p>
-			<!-- <button class="btn btn-xs btn-success" ng-click="addTeamMember(user.$id())"> -->
-			<!-- <button class="btn btn-xs {{actionButtonClass}}" ng-click="action({userId: user.$id()})" ng-disabled="{{actionDisabled}}"> -->
-			<button class="btn btn-xs {{actionButtonClass}}" ng-click="action({user: user})" ng-disabled="{{actionDisabled}}">
-				<span class="glyphicon glyphicon-{{actionIcon}}"></span> {{actionName}}
-			</button>
-		</p>
+	<!-- <p><span class="{{role.icon}}" ng-repeat="role in roleFunction({user: user})" tooltip="{{role.name}}"></span></p> -->
+	<div class="roles" ng-show="rolesDefined"><span class="{{role.icon}}" ng-repeat="role in roleFunction({user: user})" tooltip="{{role.name}}" tooltip-placement="bottom"></span></div>
+	<div class="caption" >
+		<button class="btn btn-block btn-xs {{actionButtonClass}}" ng-click="action({user: user})" ng-disabled="{{actionDisabled}}" ng-hide="{{actionHidden}}">
+			<span class="glyphicon glyphicon-{{actionIcon}}"></span> {{actionName}}
+		</button>
 	</div>
+
+	<!-- <div class="caption"> -->
+	<!-- 	<\!-- <p>{{ user.getFullName() }}</p> -\-> -->
+	<!-- 	<\!-- <p><span class="{{role.icon}}" ng-repeat="role in roleFunction({user: user})">{{role.name}}</span></p> -\-> -->
+
+	<!-- 	<\!-- <p><span class="{{role.icon}}" ng-repeat="role in roleFunction({userId: user.$id()})">{{role.name}}</span></p> -\-> -->
+
+	<!-- 	<p> -->
+	<!-- 		<\!-- <button class="btn btn-xs btn-success" ng-click="addTeamMember(user.$id())"> -\-> -->
+	<!-- 		<\!-- <button class="btn btn-xs {{actionButtonClass}}" ng-click="action({userId: user.$id()})" ng-disabled="{{actionDisabled}}"> -\-> -->
+	<!-- 		<button class="btn btn-xs {{actionButtonClass}}" ng-click="action({user: user})" ng-disabled="{{actionDisabled}}" ng-hide="{{actionHidden}}"> -->
+	<!-- 			<span class="glyphicon glyphicon-{{actionIcon}}"></span> {{actionName}} -->
+	<!-- 		</button> -->
+	<!-- 	</p> -->
+	<!-- </div> -->
 </div>

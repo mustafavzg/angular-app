@@ -18,18 +18,22 @@ angular.module('directives.users', [
 				rootDivClass: '@',
 				collectionName: '@',
  				label: '@',
-				helptip: '@',
-				action: '&',
-				actionName: '@',
-				actionIcon: '@',
-				actionButtonClass: '@',
+				helptip: '@?',
+				action: '&?',
+				actionName: '@?',
+				actionIcon: '@?',
+				actionButtonClass: '@?',
+				actionDisabled: '@?',
+				actionHidden: '@?',
 				// Either users or userIds have to be defined by the directive users
 				users: '=?',
 				userIds: '=?',
 				// when using userIds it is recomended to define a lookup function
 				// otherwise this directive will fetch the users from the server
 				// and that could be a bit slow
-				usersLookUp: '&?'
+				usersLookUp: '&?',
+				roleFunction: '&?',
+				fetchingUsers: '=?'
 			},
 			controller: [
 				'$scope',
@@ -38,13 +42,18 @@ angular.module('directives.users', [
 				'Users',
 				'_',
 				function ($scope, $element, $attrs, Users, _) {
-					$scope.labelmsg = $scope.label || "Team";
-					$scope.helptipmsg = $scope.helptip || "Build your team" ;
+					$scope.labelmsg = $scope.label;
+					$scope.helptipmsg = $scope.helptip;
 
-					$scope.actionDisabled = $scope.actionDisabled || false;
+					$scope.actionHidden = $scope.actionHidden || false;
+					$scope.actionDisabled = $scope.actionDisabled || $scope.actionHidden || false;
 					$scope.action = $scope.action || function () {/*a dummy action*/};
 
 					$scope.users = $scope.users || [];
+
+					$scope.isDefined = function (user) {
+						return (angular.isDefined(user)) ? 1 : 0;
+					}
 
 					// build a local dictionary
 					$scope.usersDictionary = {};
@@ -84,26 +93,14 @@ angular.module('directives.users', [
 					};
 
 					$scope.$watchCollection('users', function (newUsers, oldUsers) {
-						// console.log("seems like users model changed");
+						console.log("seems like users model changed");
 						if( !angular.equals(newUsers, oldUsers) ){
 							// console.log("users model has changed");
 							$scope.buildLookUp(newUsers);
-
-							// This is unnecessarily expensive, and only useful
-							// when the list of users is prohibitively large
-							// So keeping the watch expression simple for now
-							// var newUserIds = $scope.getUserIds(newUsers);
-							// var oldUserIds = $scope.getUserIds(oldUsers);
-							// var removeIds = _.difference(oldUserIds, newUserIds);
-							// var addIds = _.difference(newUserIds, oldUserIds);
-							// // console.log("add IDS: " + addIds);
-							// // console.log("remove IDS: " + removeIds);
-							// if( addIds.length > 0 ){
-							// 	$scope.buildLookUp(newUsers);
-							// }
+							// console.log("users in directive");
+							// console.log(newUsers);
 						}
 					});
-
 
 					$scope.fetchUsersByIds = function (usersIdList) {
 

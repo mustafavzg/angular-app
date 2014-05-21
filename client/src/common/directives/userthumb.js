@@ -12,15 +12,24 @@ angular.module('directives.userthumb', [
 			// require: '^form',
 			scope: {
 				user: '=',
-				action: '&',
-				actionName: '@',
-				actionIcon: '@',
-				actionButtonClass: '@',
-				actionDisabled: '@?'
+				action: '&?',
+				roleFunction: '&?',
+				actionName: '@?',
+				actionIcon: '@?',
+				actionButtonClass: '@?',
+				actionDisabled: '@?',
+				actionHidden: '@?'
 			},
 			link: function(scope, element, attrs) {
 
-				scope.actionDisabled = scope.actionDisabled || false;
+ 				// console.log("user roles are");
+				// console.log(scope.roleFunction({user: scope.user}));
+				if( angular.isDefined(scope.roleFunction) ){
+					scope.rolesDefined = true
+				}
+
+				scope.actionHidden = scope.actionHidden || false;
+				scope.actionDisabled = scope.actionDisabled || scope.actionHidden || false;
 				scope.action = scope.action || function () {/*a dummy action*/};
 
 				// scope.date = scope.date || new Date();
