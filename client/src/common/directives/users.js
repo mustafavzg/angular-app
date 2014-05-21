@@ -15,12 +15,12 @@ angular.module('directives.users', [
 			replace: true,
 			// require: '^form',
 			scope: {
-				rootDivClass: '@?',
-				collectionName: '@?',
- 				label: '@?',
+				rootDivClass: '@',
+				collectionName: '@',
+ 				label: '@',
 				helptip: '@?',
 				action: '&?',
-				// actionName: '@?',
+				actionName: '@?',
 				actionIcon: '@?',
 				actionButtonClass: '@?',
 				actionDisabled: '@?',
@@ -33,11 +33,11 @@ angular.module('directives.users', [
 				// and that could be a bit slow
 				usersLookUp: '&?',
 				roleFunction: '&?',
-				fetchingUsers: '=?',
+				fetchingUsers: '=?'
 				// using options one can setup some of the
 				// above attributes, direct attributes
 				// will override the attributes setup in options
-				options: '=?'
+				// options: '=?'
 			},
 			controller: [
 				'$scope',
@@ -46,34 +46,38 @@ angular.module('directives.users', [
 				'Users',
 				'_',
 				function ($scope, $element, $attrs, Users, _) {
-					$scope.options = $scope.options || {};
+
+					$scope.labelmsg = $scope.label;
+					$scope.helptipmsg = $scope.helptip;
+
+					// $scope.options = $scope.options || {};
 
 					console.log("options are");
 					console.log($scope.options);
 
-					$scope.rootDivClass = $scope.rootDivClass || $scope.options.rootDivClass;
-					$scope.collectionName = $scope.collectionName || $scope.options.collectionName;
-					$scope.labelmsg = $scope.label || $scope.options.label;
-					$scope.helptipmsg = $scope.helptip || $scope.options.helptip;
+					// $scope.rootDivClass = $scope.rootDivClass || $scope.options.rootDivClass;
+					// $scope.collectionName = $scope.collectionName || $scope.options.collectionName;
+					// $scope.labelmsg = $scope.label || $scope.options.label;
+					// $scope.helptipmsg = $scope.helptip || $scope.options.helptip;
 
 					// action function should be specified as a direct attribute
 					$scope.action = $scope.action || function () {/*a dummy action*/};
 
-					var actionOptions = $scope.options.action || {};
+					// var actionOptions = $scope.options.action || {};
 
-					// console.log("actionOptions");
-					// console.log(actionOptions);
+					// // console.log("actionOptions");
+					// // console.log(actionOptions);
 
-					// action options could be specified in the options attribute
-					console.log("this is not happening " + actionOptions.name);
-					$scope.actionName = $scope.actionName || actionOptions.name;
-					$scope.actionIcon = $scope.actionIcon || actionOptions.icon;
-					$scope.actionButtonClass = $scope.actionButtonClass || actionOptions.buttonClass;
-					$scope.actionHidden = $scope.actionHidden || actionOptions.hidden || false;
-					$scope.actionDisabled = $scope.actionDisabled || $scope.actionHidden || actionOptions.disabled || false;
+					// // action options could be specified in the options attribute
+					// console.log("this is not happening " + actionOptions.name);
+					// $scope.actionName = $scope.actionName || actionOptions.name;
+					// $scope.actionIcon = $scope.actionIcon || actionOptions.icon;
+					// $scope.actionButtonClass = $scope.actionButtonClass || actionOptions.buttonClass;
+					// $scope.actionHidden = $scope.actionHidden || false;
+					// $scope.actionDisabled = $scope.actionDisabled || $scope.actionHidden || false;
 
-					// console.log("scope options");
-					// console.log($scope);
+					console.log("scope options");
+					console.log($scope);
 
 					$scope.users = $scope.users || [];
 
@@ -231,19 +235,19 @@ angular.module('directives.users', [
 					}
 
 				}
-			],
-			link: function(scope, element, attrs) {
-				var actionOptions = scope.options.action || {};
-				console.log("actionOptions");
-				console.log(actionOptions);
+			]
+			// link: function(scope, element, attrs) {
+			// 	var actionOptions = scope.options.action || {};
+			// 	console.log("actionOptions");
+			// 	console.log(actionOptions);
 
-				scope.actionName = scope.actionName || actionOptions.name;
-				scope.actionIcon = scope.actionIcon || actionOptions.icon;
+			// 	scope.actionName = scope.actionName || actionOptions.name;
+			// 	scope.actionIcon = scope.actionIcon || actionOptions.icon;
 
-				console.log("scope options");
-				console.log(scope);
+			// 	console.log("scope options");
+			// 	console.log(scope);
 
-			}
+			// }
 		};
 	}
 ])
