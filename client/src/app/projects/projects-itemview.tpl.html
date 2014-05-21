@@ -66,148 +66,33 @@
 				<tableactive items="tasks" fetchingitems="fetchingTasks" resourceconf="tasksConf" ></tableactive>
 			</tab>
 
-			<tab heading="Stake Holders">
-				<tableactive items="stakeHolders" fetchingitems="fetchingStakeHolders" resourceconf="stakeHoldersConf" ></tableactive>
-				<!-- <users -->
-				<!-- 	 root-div-class="panel-body" -->
-				<!-- 	 collection-name="stakeHolders" -->
-				<!-- 	 label="Stake Holders" -->
-				<!-- 	 users="stakeHolders" -->
-				<!-- 	 action-hidden="true" -->
-				<!-- 	 > -->
-				<!-- </users> -->
+			<!-- <tab heading="Stake Holders"> -->
+			<!-- 	<tableactive items="stakeHolders" fetchingitems="fetchingStakeHolders" resourceconf="stakeHoldersConf" ></tableactive> -->
+			<!-- 	<\!-- <users -\-> -->
+			<!-- 	<\!-- 	 root-div-class="panel-body" -\-> -->
+			<!-- 	<\!-- 	 collection-name="stakeHolders" -\-> -->
+			<!-- 	<\!-- 	 label="Stake Holders" -\-> -->
+			<!-- 	<\!-- 	 users="stakeHolders" -\-> -->
+			<!-- 	<\!-- 	 action-hidden="true" -\-> -->
+			<!-- 	<\!-- 	 > -\-> -->
+			<!-- 	<\!-- </users> -\-> -->
 
-			</tab>
+			<!-- </tab> -->
 
-			<tab heading="Team Members">
-				<tableactive items="teamMembers" fetchingitems="fetchingTeamMembers" resourceconf="teamMembersConf" ></tableactive>
-				<!-- <users -->
-				<!-- 	 root-div-class="panel-body" -->
-				<!-- 	 collection-name="teamMembers" -->
-				<!-- 	 label="Team" -->
-				<!-- 	 users="teamMembers" -->
-				<!-- 	 action-hidden="true" -->
-				<!-- 	 fetching-users="fetchingTeamMembers" -->
-				<!-- 	 > -->
-				<!-- </users> -->
-			</tab>
+			<!-- <tab heading="Team Members"> -->
+			<!-- 	<tableactive items="teamMembers" fetchingitems="fetchingTeamMembers" resourceconf="teamMembersConf" ></tableactive> -->
+			<!-- 	<\!-- <users -\-> -->
+			<!-- 	<\!-- 	 root-div-class="panel-body" -\-> -->
+			<!-- 	<\!-- 	 collection-name="teamMembers" -\-> -->
+			<!-- 	<\!-- 	 label="Team" -\-> -->
+			<!-- 	<\!-- 	 users="teamMembers" -\-> -->
+			<!-- 	<\!-- 	 action-hidden="true" -\-> -->
+			<!-- 	<\!-- 	 fetching-users="fetchingTeamMembers" -\-> -->
+			<!-- 	<\!-- 	 > -\-> -->
+			<!-- 	<\!-- </users> -\-> -->
+			<!-- </tab> -->
 
 			<tab heading="Team">
-				<!-- <tableactive items="teamMembers" fetchingitems="fetchingTeamMembers" resourceconf="teamMembersConf" ></tableactive> -->
-				<div class="panel-body">
-					<div class="col-md-6">
-						<div class="panel panel-default">
-							<div class="panel-body">
-								<users
-									 root-div-class="inline-block"
-									 collection-name="scrumMasters"
-									 label="Scrum Master"
-									 users="[scrumMaster]"
-									 action="viewUser(user)"
-									 action-name="Go"
-									 action-icon="hand-right"
-									 action-button-class="btn-info"
-									 role-function="project.getUserRoles(user)"
-									 fetching-users="fetchingScrumMaster"
-									 >
-								</users>
-
-								<users
-									 root-div-class="inline-block"
-									 collection-name="teamMembers"
-									 label="Team"
-									 users="teamMembers"
-									 action="viewUser(user)"
-									 action-name="Go"
-									 action-icon="hand-right"
-									 action-button-class="btn-info"
-									 role-function="project.getUserRoles(user)"
-									 fetching-users="fetchingTeamMembers"
-									 >
-								</users>
-							</div>
-							<!-- div panel-body -->
-						</div>
-						<!-- div panel -->
-					</div>
-					<!-- div col -->
-
-					<div class="col-md-6">
-						<div class="panel panel-default">
-							<div class="panel-body">
-								<users
-									 root-div-class="inline-block"
-									 collection-name="productOwners"
-									 label="Product Owner"
-									 users="[productOwner]"
-									 action="viewUser(user)"
-									 action-name="Go"
-									 action-icon="hand-right"
-									 action-button-class="btn-info"
-									 role-function="project.getUserRoles(user)"
-									 fetching-users="fetchingProductOwner"
-									 >
-								</users>
-
-								<users
-									 root-div-class="inline-block"
-									 collection-name="stakeHolders"
-									 label="Stake Holders"
-									 users="stakeHolders"
-									 action="viewUser(user)"
-									 action-name="Go"
-									 action-icon="hand-right"
-									 action-button-class="btn-info"
-									 role-function="project.getUserRoles(user)"
-									 fetching-users="fetchingStakeHolders"
-									 >
-								</users>
-							</div>
-							<!-- div panel-body -->
-						</div>
-						<!-- div panel -->
-					</div>	
-					<!-- div col -->
-				</div>
-				<!-- panel-body -->
-
-				<!-- -------------------------------------------------- -->
-				<div class="panel-body">
-					<div class="panel panel-default">
-						<div class="panel-body">
-							<users
-								 root-div-class="inline-block"
-								 collection-name="scrumMasters"
-								 label="Scrum Master"
-								 users="[scrumMaster]"
-								 action="viewUser(user)"
-								 action-name="Go"
-								 action-icon="hand-right"
-								 action-button-class="btn-info"
-								 role-function="project.getUserRoles(user)"
-								 fetching-users="fetchingScrumMaster"
-								 >
-							</users>
-
-							<users
-								 root-div-class="inline-block"
-								 collection-name="teamMembers"
-								 label="Team"
-								 users="teamMembers"
-								 action="viewUser(user)"
-								 action-name="Go"
-								 action-icon="hand-right"
-								 action-button-class="btn-info"
-								 role-function="project.getUserRoles(user)"
-								 fetching-users="fetchingTeamMembers"
-								 >
-							</users>
-						</div>
-					</div>
-				</div>
-
-				<!-- -------------------------------------------------- -->
-
 				<div class="panel-body">
 					<!-- Scrum Master and Team Members -->
 					<div class="col-md-6">
@@ -232,18 +117,28 @@
 								<!-- div col -->
 								<div class="col-md-8">
 									<users
-										 root-div-class="inline-block"
-										 collection-name="teamMembers"
-										 label="Team"
 										 users="teamMembers"
 										 action="viewUser(user)"
-										 action-name="Go"
-										 action-icon="hand-right"
-										 action-button-class="btn-info"
+										 options="teamMembersConf"
 										 role-function="project.getUserRoles(user)"
 										 fetching-users="fetchingTeamMembers"
 										 >
 									</users>
+
+									<!-- <users -->
+									<!-- 	 root-div-class="inline-block" -->
+									<!-- 	 collection-name="teamMembers" -->
+									<!-- 	 label="Team" -->
+									<!-- 	 users="teamMembers" -->
+									<!-- 	 action="viewUser(user)" -->
+									<!-- 	 action-name="Go" -->
+									<!-- 	 action-icon="hand-right" -->
+									<!-- 	 action-button-class="btn-info" -->
+									<!-- 	 role-function="project.getUserRoles(user)" -->
+									<!-- 	 fetching-users="fetchingTeamMembers" -->
+									<!-- 	 > -->
+									<!-- </users> -->
+
 								</div>
 								<!-- div col -->
 

@@ -196,23 +196,24 @@ angular.module('projectsitemview', [
 		/**************************************************
 		 * Set the roles once we have the user
 		 **************************************************/
+		// Commenting this for now until we need the currentUser
 		// $q.when(security.requestCurrentUser()).then(
-		security.requestCurrentUser().then(
-			function (currentUser) {
-				if( angular.isDefined(currentUser) ){
-					// var userroles = project.getUserRoles(currentUser.id);
-					// $scope.project.attributesToDisplay.userroles = {
-					// 	name : 'Your Roles',
-					// 	value : userroles,
-					// 	ordering : 6
-					// };
-				}
-			},
-			function (response) {
-				console.log("Failed to fetch project roles");
-				console.log(response);
-			}
-		);
+		// security.requestCurrentUser().then(
+		// 	function (currentUser) {
+		// 		if( angular.isDefined(currentUser) ){
+		// 			var userroles = project.getUserRoles(currentUser.id);
+		// 			$scope.project.attributesToDisplay.userroles = {
+		// 				name : 'Your Roles',
+		// 				value : userroles,
+		// 				ordering : 6
+		// 			};
+		// 		}
+		// 	},
+		// 	function (response) {
+		// 		console.log("Failed to fetch project roles");
+		// 		console.log(response);
+		// 	}
+		// );
 
 		/**************************************************
 		 * Fetch the product owner name
@@ -551,20 +552,6 @@ angular.module('projectsitemview', [
 			$location.path('/projects/'+project.$id()+'/edit');
 		};
 
-		// $scope.rolesFilter = function(user) {
-		// 	var roles = [];
-		// 	if( $scope.project.isDevTeamMember(user.$id()) ){
-		// 		roles.push('Team Member');
-		// 	}
-		// 	if( $scope.project.isStakeHolder(user.$id()) ){
-		// 		roles.push('Stake Holder');
-		// 	}
-		// 	if( $scope.project.isStakeHolder(user.$id()) ){
-		// 		roles.push('Stake Holder');
-		// 	}
-
-		// };
-
 		Users.getByIds(
 			project.teamMembers,
 			function (teamMembers) {
@@ -581,39 +568,32 @@ angular.module('projectsitemview', [
 		);
 
 		$scope.teamMembersConf = {
-			resource : {
-				key : 'users',
-				prettyName : 'Team Members',
-				altPrettyName : 'Team Members',
-				link : $scope.manageTeamMembers,
-				rootDivClass : 'panel-body',
-				itemsCrudHelpers : $scope.teammembersCrudHelpers
-			},
-			pagination : {
-				currentPage : 1,
-				itemsPerPage : 10
-			},
-			sortinit : {
-				fieldKey : 'lastName',
-				reverse : false
-			},
-			tableColumns : [
-				{
-					key : 'lastName',
-					prettyName : 'Last Name',
-					widthClass : 'col-md-2'
-				},
-				{
-					key : 'firstName',
-					prettyName : 'First Name',
-					widthClass : 'col-md-2'
-				},
-				{
-					key : 'username',
-					prettyName : 'Username',
-					widthClass : 'col-md-1'
-				}
-			]
+			rootDivClass : 'inline-block',
+			collectionName : 'teamMembers',
+			label : 'Team',
+			// users: "teamMembers",
+			// action: "viewUser(user)",
+			action: {
+				name: "Go",
+				icon: "hand-right",
+				buttonClass: "btn-info"
+			}
+			// roleFunction: "project.getUserRoles(user)",
+			// fetchingUsers: "fetchingTeamMembers"
+			// link : $scope.manageTeamMembers,
+			// rootDivClass : 'panel-body',
+			// itemsCrudHelpers : $scope.teammembersCrudHelpers
 		};
+
+		// $scope.teamMembersConf = {
+		// 	resource : {
+		// 		key : 'users',
+		// 		prettyName : 'Team Members',
+		// 		altPrettyName : 'Team Members',
+		// 		link : $scope.manageTeamMembers,
+		// 		rootDivClass : 'panel-body',
+		// 		itemsCrudHelpers : $scope.teammembersCrudHelpers
+		// 	}
+		// };
 	}
 ]);
