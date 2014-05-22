@@ -68,39 +68,11 @@ angular.module('directives.users', [
 					// setup the directive model based on interpolation and expression attributes
 					modelInitializer.init($scope, $scope.self, $scope.initOptions, interpolationKeys, expressionKeys);
 
-					// for(var i = -1; ++i < interpolationKeys.length;){
-					// 	var option = interpolationKeys[i];
-					// 	$scope.self[option] = $scope.initOptions[option] || $scope[option];
-					// }
+					// console.log("options are");
+					// console.log($scope.initOptions);
 
-					// Setup expression & options
-					// for(var ia = -1; ++ia < expressionKeys.length;){
-					// 	var option = expressionKeys[ia];
-
-					// 	if ( angular.isDefined($scope.initOptions[option]) ) {
-					// 		$scope.self[option] = function (index) {
-					// 			var option = expressionKeys[ia];
-					// 			var fn = $scope.initOptions[option];
-					// 			return function (locals) {
-					// 				return fn(locals.user);
-					// 			};
-					// 		}(ia);
-					// 	}
-					// 	else if( angular.isDefined($scope[option]) ){
-					// 		$scope.self[option] = $scope[option];
-					// 	}
-					// 	else {
-					// 		$scope.self[option] = function () {
-					// 			// some dummy function
-					// 		}
-					// 	}
-					// }
-
-					console.log("options are");
-					console.log($scope.initOptions);
-
-					console.log("self options are");
-					console.log($scope.self);
+					// console.log("self options are");
+					// console.log($scope.self);
 
 					// action function should be specified as a direct attribute
 					$scope.action = $scope.action || function () {/*a dummy action*/};
