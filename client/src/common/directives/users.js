@@ -85,16 +85,8 @@ angular.module('directives.users', [
 						return (angular.isDefined(user)) ? 1 : 0;
 					}
 
-					$scope.newusersDictionary = dictionary;
+					$scope.usersDictionary = dictionary;
 					// build a local dictionary
-					$scope.usersDictionary = {};
-					// $scope.buildLookUp = function (users) {
-					// 	angular.forEach(users, function(value, key) {
-					// 		if( !angular.isDefined($scope.usersDictionary[value.$id()]) ){
-					// 			$scope.usersDictionary[value.$id()] = value;
-					// 		}
-					// 	});
-					// };
 
 					$scope.lookUpUsersInParent = function (usersIdList) {
 						if( angular.isDefined($scope.usersLookUp) ){
@@ -102,17 +94,6 @@ angular.module('directives.users', [
 						}
 						return [];
 					};
-
-					// $scope.lookUpUsersInLocal = function (usersIdList) {
-					// 	var users = [];
-					// 	users = _.map(usersIdList, function (userId) {
-					// 				return $scope.usersDictionary[userId];
-					// 			});
-					// 	users = _.filter(users, function (user) {
-					// 				return angular.isDefined(user);
-					// 			});
-					// 	return users;
-					// };
 
 					$scope.getUserIds = function (users) {
 						return _.map(
@@ -127,8 +108,7 @@ angular.module('directives.users', [
 						console.log("seems like users model changed");
 						if( !angular.equals(newUsers, oldUsers) ){
 							// console.log("users model has changed");
-							$scope.newusersDictionary.build(newUsers)
-							// $scope.buildLookUp(newUsers);
+							$scope.usersDictionary.build(newUsers)
 							// console.log("users in directive");
 							// console.log(newUsers);
 						}
@@ -150,9 +130,6 @@ angular.module('directives.users', [
 						// console.log("users after lookup");
 						// console.log($scope.users);
 
-						// console.log("users in dictionary");
-						// console.log(JSON.stringify($scope.usersDictionary));
-
 						var usersIdsNotInLookUp = _.difference(
 							usersIdList,
 							_.map(
@@ -168,8 +145,7 @@ angular.module('directives.users', [
 								usersIdsNotInLookUp,
 								function (users) {
 									$scope.fetchingUsers = false;
-									$scope.newusersDictionary.build(users);
-									// $scope.buildLookUp(users);
+									$scope.usersDictionary.build(users);
 									$scope.users = $scope.users.concat(users);
 								},
 								function (response) {
@@ -186,8 +162,8 @@ angular.module('directives.users', [
 					$scope.lookUpUsers = function (usersIdList) {
 						// first check in the local lookup
 						var users = [];
-						var usersInLocal = $scope.newusersDictionary.lookUp(usersIdList) || [];
-						// var usersInLocal = $scope.lookUpUsersInLocal(usersIdList) || [];
+						var usersInLocal = $scope.usersDictionary.lookUp(usersIdList) || [];
+
 						console.log("users in local");
 						console.log(usersInLocal);
 						users = users.concat(usersInLocal);
@@ -207,8 +183,7 @@ angular.module('directives.users', [
 							// console.log("users in parent");
 							// console.log(usersInParent);
 
-							$scope.newusersDictionary.build(usersInParent);
-							// $scope.buildLookUp(usersInParent);
+							$scope.usersDictionary.build(usersInParent);
 							users = users.concat(usersInParent);
 						}
 						// console.log("all users");

@@ -58,37 +58,10 @@ angular.module('directives.userscombosearchadd', [
 
 					// keep a users dictionary for look up of
 					// searched results by the 'users' widget
-					$scope.newusersDictionary = dictionary;
-					$scope.usersDictionary = {};
-					// $scope.buildLookUp = function (users) {
-					// 	angular.forEach(users, function(value, key) {
-					// 		if( !angular.isDefined($scope.usersDictionary[value.$id()]) ){
-					// 			$scope.usersDictionary[value.$id()] = value;
-					// 		}
-					// 	});
-					// };
-
-					// $scope.lookUpUsers = function (usersIdList) {
-					// 	var users = [];
-					// 	users = _.map(usersIdList, function (userId) {
-					// 				return $scope.usersDictionary[userId];
-					// 			});
-					// 	users = _.filter(users, function (user) {
-					// 				return angular.isDefined(user);
-					// 			});
-					// 	return users;
-					// };
+					$scope.usersDictionary = dictionary;
 
 					$scope.lookUpUsers = function (usersIdList) {
-						return $scope.newusersDictionary.lookUp(usersIdList)
-						// var users = [];
-						// users = _.map(usersIdList, function (userId) {
-						// 			return $scope.usersDictionary[userId];
-						// 		});
-						// users = _.filter(users, function (user) {
-						// 			return angular.isDefined(user);
-						// 		});
-						// return users;
+						return $scope.usersDictionary.lookUp(usersIdList)
 					};
 
 					$scope.addMember = function(user, list) {
@@ -104,7 +77,6 @@ angular.module('directives.userscombosearchadd', [
 						else {
 							list.push(userId);
 						}
-
 						// updateProjectListForUsers(userId, undefined, projectRole);
 					};
 
@@ -126,39 +98,13 @@ angular.module('directives.userscombosearchadd', [
 
 
 					$scope.$watchCollection('filteredUsers', function (newUsers, oldUsers) {
-						console.log("filtered users watch called");
 						if( !angular.equals(newUsers, oldUsers) ){
-							console.log("filtered users changed");
-							$scope.newusersDictionary.build(newUsers)
-							// $scope.buildLookUp(newUsers);
-							console.log("dictionary");
-							console.log($scope.usersDictionary);
+							$scope.usersDictionary.build(newUsers)
 						}
 					});
 
 				}
 			]
-			// link: function(scope, element, attrs) {
-			// 	scope.labelmsg = scope.labelmsg || "Find People";
-			// 	scope.helptipmsg = scope.helptipmsg || "Search for and add people" ;
-			// 	scope.placeholderText = scope.placeholderText || "Search for people to add" ;
-
-			// 	// scope.actionDisabled = scope.actionDisabled || false;
-			// 	// scope.action = scope.action || function () {/*a dummy action*/};
-
-			// 	// scope.date = scope.date || new Date();
-			// 	// scope.opened = false;
-
-			// 	// scope.setValidationClasses = function () {
-			// 	// 	return {
-			// 	// 		'has-success' : scope.ngform.dateField.$valid,
-			// 	// 		'has-error' : scope.ngform.dateField.$invalid
-			// 	// 	};
-			// 	// }
-
-			// 	// console.log("PRINTING THE FORM OBJECT from the isolated scope");
-			// 	// console.log(ngform);
-			// }
 		};
 	}
 ])
