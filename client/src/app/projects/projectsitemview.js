@@ -147,17 +147,6 @@ angular.module('projectsitemview', [
 	) {
 		$scope.project = project;
 
-		$scope.killfoo = "foo is alive";
-		$timeout(function () {
-			$scope.killfoo = "foo is dead";
-		}, 5000);
-
-		$scope.msg2 = 'hellooooo .... ';
-		$scope.killfoofunc = function (msg3, msg, msg2) {
-			return msg2 + msg + msg3;
-		};
-
-
 		$scope.projectsCrudHelpers = {};
 		angular.extend($scope.projectsCrudHelpers, crudListMethods('/projects'));
 
