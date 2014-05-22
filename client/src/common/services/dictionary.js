@@ -30,7 +30,6 @@ angular.module('services.dictionary').factory('dictionary', [
 				});
 				console.log("items in dictionary after build");
 				console.log(dictionary);
-
 			},
 			lookUp: function (itemsIdList) {
 				console.log("items in dictionary");

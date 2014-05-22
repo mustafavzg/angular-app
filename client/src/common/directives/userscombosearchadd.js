@@ -3,6 +3,7 @@ angular.module('directives.userscombosearchadd', [
 	'directives.findusers',
 	'directives.userthumb',
 	'directives.helptip',
+	'services.dictionary',
 	'resources.users',
 	'ui.bootstrap',
 	'underscore'
@@ -50,30 +51,44 @@ angular.module('directives.userscombosearchadd', [
 				'$element',
 				'$attrs',
 				'Users',
+				'dictionary',
 				'_',
-				function ($scope, $element, $attrs, Users, _) {
+				function ($scope, $element, $attrs, Users, dictionary, _) {
 					$scope.filteredUsers = [];
 
 					// keep a users dictionary for look up of
 					// searched results by the 'users' widget
+					$scope.newusersDictionary = dictionary;
 					$scope.usersDictionary = {};
-					$scope.buildLookUp = function (users) {
-						angular.forEach(users, function(value, key) {
-							if( !angular.isDefined($scope.usersDictionary[value.$id()]) ){
-								$scope.usersDictionary[value.$id()] = value;
-							}
-						});
-					};
+					// $scope.buildLookUp = function (users) {
+					// 	angular.forEach(users, function(value, key) {
+					// 		if( !angular.isDefined($scope.usersDictionary[value.$id()]) ){
+					// 			$scope.usersDictionary[value.$id()] = value;
+					// 		}
+					// 	});
+					// };
+
+					// $scope.lookUpUsers = function (usersIdList) {
+					// 	var users = [];
+					// 	users = _.map(usersIdList, function (userId) {
+					// 				return $scope.usersDictionary[userId];
+					// 			});
+					// 	users = _.filter(users, function (user) {
+					// 				return angular.isDefined(user);
+					// 			});
+					// 	return users;
+					// };
 
 					$scope.lookUpUsers = function (usersIdList) {
-						var users = [];
-						users = _.map(usersIdList, function (userId) {
-									return $scope.usersDictionary[userId];
-								});
-						users = _.filter(users, function (user) {
-									return angular.isDefined(user);
-								});
-						return users;
+						return $scope.newusersDictionary.lookUp(usersIdList)
+						// var users = [];
+						// users = _.map(usersIdList, function (userId) {
+						// 			return $scope.usersDictionary[userId];
+						// 		});
+						// users = _.filter(users, function (user) {
+						// 			return angular.isDefined(user);
+						// 		});
+						// return users;
 					};
 
 					$scope.addMember = function(user, list) {
@@ -114,7 +129,8 @@ angular.module('directives.userscombosearchadd', [
 						console.log("filtered users watch called");
 						if( !angular.equals(newUsers, oldUsers) ){
 							console.log("filtered users changed");
-							$scope.buildLookUp(newUsers);
+							$scope.newusersDictionary.build(newUsers)
+							// $scope.buildLookUp(newUsers);
 							console.log("dictionary");
 							console.log($scope.usersDictionary);
 						}
