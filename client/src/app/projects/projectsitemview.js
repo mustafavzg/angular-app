@@ -573,11 +573,17 @@ angular.module('projectsitemview', [
 			label : 'Team',
 			// users: "teamMembers",
 			// action: "viewUser(user)",
-			action: {
-				name: "Go",
-				icon: "hand-right",
-				buttonClass: "btn-info"
-			}
+			// actionName: "Go",
+			// actionIcon: "hand-right",
+			actionName: "Inbox",
+			actionIcon: "inbox",
+			actionButtonClass: "btn-info"
+			// actionHidden: "true"
+			// action: {
+			// 	name: "Go",
+			// 	icon: "hand-right",
+			// 	buttonClass: "btn-info"
+			// }
 			// roleFunction: "project.getUserRoles(user)",
 			// fetchingUsers: "fetchingTeamMembers"
 			// link : $scope.manageTeamMembers,

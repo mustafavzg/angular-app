@@ -33,11 +33,19 @@ angular.module('directives.users', [
 				// and that could be a bit slow
 				usersLookUp: '&?',
 				roleFunction: '&?',
-				fetchingUsers: '=?'
+				fetchingUsers: '=?',
+
+				// !!! FOR FUTURE REFERENCE : THIS WONT WORK !!!
+				// since the options we are trying to override
+				// are @ speced which cannot act as L-values
+
+				// FOUND A SOLUTION FOR THIS
+				// expose static parameters via scope.self
+
 				// using options one can setup some of the
 				// above attributes, direct attributes
 				// will override the attributes setup in options
-				// options: '=?'
+				initOptions: '=?'
 			},
 			controller: [
 				'$scope',
@@ -46,14 +54,43 @@ angular.module('directives.users', [
 				'Users',
 				'_',
 				function ($scope, $element, $attrs, Users, _) {
+					$scope.initOptions = $scope.initOptions || {};
 
-					$scope.labelmsg = $scope.label;
-					$scope.helptipmsg = $scope.helptip;
+					$scope.self = {};
+					var staticOptions = [
+						'rootDivClass',
+						'collectionName',
+						'label',
+						'helptip',
+						'actionName',
+						'actionIcon',
+						'actionButtonClass',
+						'actionHidden',
+						'actionDisabled'
+					];
+					for(var i = -1; ++i < staticOptions.length;){
+						var option = staticOptions[i];
+						$scope.self[option] = $scope[option] || $scope.initOptions[option];
+					}
+
+					// // Initialize static attributes
+					// $scope.self = {
+					// 	rootDivClass: $scope.rootDivClass,
+					// 	collectionName: $scope.collectionName,
+					// 	label: $scope.options.label || $scope.label,
+					// 	helptip: $scope.helptip
+					// };
+
+					// $scope.labelmsg = $scope.label;
+					// $scope.helptipmsg = $scope.helptip;
 
 					// $scope.options = $scope.options || {};
 
 					console.log("options are");
-					console.log($scope.options);
+					console.log($scope.initOptions);
+
+					console.log("self options are");
+					console.log($scope.self);
 
 					// $scope.rootDivClass = $scope.rootDivClass || $scope.options.rootDivClass;
 					// $scope.collectionName = $scope.collectionName || $scope.options.collectionName;
@@ -233,7 +270,6 @@ angular.module('directives.users', [
 							}
 						});
 					}
-
 				}
 			]
 			// link: function(scope, element, attrs) {

@@ -116,29 +116,28 @@
 								</div>
 								<!-- div col -->
 								<div class="col-md-8">
-									<!-- <users -->
-									<!-- 	 users="teamMembers" -->
-									<!-- 	 action="viewUser(user)" -->
-									<!-- 	 action-hidden="true" -->
-									<!-- 	 options="teamMembersConf" -->
-									<!-- 	 role-function="project.getUserRoles(user)" -->
-									<!-- 	 fetching-users="fetchingTeamMembers" -->
-									<!-- 	 > -->
-									<!-- </users> -->
-
 									<users
-										 root-div-class="inline-block"
-										 collection-name="teamMembers"
-										 label="Team"
 										 users="teamMembers"
 										 action="viewUser(user)"
-										 action-name="Go"
-										 action-icon="hand-right"
-										 action-button-class="btn-info"
+										 init-options="teamMembersConf"
 										 role-function="project.getUserRoles(user)"
 										 fetching-users="fetchingTeamMembers"
 										 >
 									</users>
+
+									<!-- <users -->
+									<!-- 	 root-div-class="inline-block" -->
+									<!-- 	 collection-name="teamMembers" -->
+									<!-- 	 label="Team" -->
+									<!-- 	 users="teamMembers" -->
+									<!-- 	 action="viewUser(user)" -->
+									<!-- 	 action-name="Go" -->
+									<!-- 	 action-icon="hand-right" -->
+									<!-- 	 action-button-class="btn-info" -->
+									<!-- 	 role-function="project.getUserRoles(user)" -->
+									<!-- 	 fetching-users="fetchingTeamMembers" -->
+									<!-- 	 > -->
+									<!-- </users> -->
 
 								</div>
 								<!-- div col -->
