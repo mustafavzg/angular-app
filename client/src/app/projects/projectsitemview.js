@@ -127,6 +127,7 @@ angular.module('projectsitemview', [
 	'$q',
 	'filterFilter',
 	'paginationFilter',
+	'$timeout',
 	'_',
 	function (
 		$scope,
@@ -141,9 +142,21 @@ angular.module('projectsitemview', [
 		$q,
 		filter,
 		paginationFilter,
+		$timeout,
 		_
 	) {
 		$scope.project = project;
+
+		$scope.killfoo = "foo is alive";
+		$timeout(function () {
+			$scope.killfoo = "foo is dead";
+		}, 5000);
+
+		$scope.msg2 = 'hellooooo .... ';
+		$scope.killfoofunc = function (msg3, msg, msg2) {
+			return msg2 + msg + msg3;
+		};
+
 
 		$scope.projectsCrudHelpers = {};
 		angular.extend($scope.projectsCrudHelpers, crudListMethods('/projects'));

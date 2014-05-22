@@ -53,6 +53,17 @@
 	<!-- -------------------------------------------------- -->
 	<div class="panel panel-default">
 		<tabset justified="true" type="pills">
+
+			<tab heading="Hello">
+				<div class="panel panel-default">
+					<!-- <hello foobar="{{project.$id()}} random string project.$id()" ></hello> -->
+
+					{{killfoo}}
+					<!-- <hello foobar="{{killfoo}}" ></hello> -->
+					<hello foobar="{{killfoo}}" foobardata="killfoo" foobarfun="killfoofunc(msg3, msg, msg2)" ></hello>
+
+				</div>
+			</tab>
 			
 			<tab heading="Product Backlog">
 				<tableactive items="backlogItems" fetchingitems="fetchingBacklogItems" resourceconf="backlogItemsConf" ></tableactive>

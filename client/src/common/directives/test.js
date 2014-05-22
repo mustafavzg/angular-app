@@ -8,14 +8,33 @@ angular.module('directives.test', [
 		// template : '<img id="map" src="http://www.lonelyplanet.com/maps/asia/india/map_of_india.jpg"  />',
 		templateUrl: 'directives/hello.tpl.html',
 		scope : {
-			foobar : '@',
-			foobareq : '=',
+			foobar : '@?',
+			foobardata : '=',
 			foobarfun : '&'
 		},
-		link : function(scope, element, attrs) {
+		controller: [
+			'$scope',
+			'$element',
+			'$attrs',
+			'$timeout',
+			function ($scope, $element, $attrs, $timeout) {
+				// $scope.foobar = $scope.foobar || "foobar has risen from the ashes";
+				$timeout(function () {
+					$scope.foobar = "foobar has risen from the ashes";
+				}, 7000);
+
+				$timeout(function () {
+					$scope.foobardata = "foobar has risen from the ashes by the data binding";
+				}, 10000);
+
+			}
+		],
+		link: function(scope, element, attrs) {
 			console.log("linking the directive");
 			scope.hello = 'and this is what i am saying';
 			scope.hello2 = scope.foobarfun({message : 'new mundo finally man this is the limit'});
+
+
 			// $('#map').click(function(e) {
 			// 	$('#marker').css('left', e.pageX).css('top', e.pageY)
 			// 	.show();
