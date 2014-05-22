@@ -431,8 +431,6 @@ angular.module('projectsitemview', [
 		angular.extend($scope.usersCrudHelpers, crudListMethods('/projects/'+project.$id()+'/users'));
 
 		$scope.viewUser = function (user) {
-			console.log("CALLING THE USUAL VERSION");
-			console.log("chagnin the route");
 			$scope.usersCrudHelpers.view(user.$id());
 		};
 
@@ -441,7 +439,7 @@ angular.module('projectsitemview', [
 		};
 
 		$scope.getUserRoles = function (user) {
-			console.log("getting user roles");
+			// console.log("getting user roles");
 			return project.getUserRoles(user);
 		};
 
@@ -504,19 +502,11 @@ angular.module('projectsitemview', [
 			}
 		);
 
-
 		/**************************************************
 		 * Fetch stake holders
 		 **************************************************/
 		$scope.fetchingStakeHolders = true;
 		$scope.stakeHolders = [];
-
-		// $scope.stakeHoldersCrudHelpers = {};
-		// angular.extend($scope.stakeHoldersCrudHelpers, crudListMethods('/projects/'+project.$id()+'/users'));
-
-		// $scope.manageStakeHolders = function () {
-		// 	$location.path('/projects/'+project.$id()+'/edit');
-		// };
 
 		Users.getByIds(
 			project.stakeHolders,
@@ -530,69 +520,11 @@ angular.module('projectsitemview', [
 			}
 		);
 
-		$scope.stakeHoldersConf = {
-			rootDivClass : 'inline-block',
-			collectionName : 'stakeHolders',
-			label : 'Stake Holders',
-			actionName: "Inbox",
-			actionIcon: "inbox",
-			actionButtonClass: "btn-info"
-		};
-
-		// $scope.stakeHoldersConf = {
-		// 	resource : {
-		// 		key : 'users',
-		// 		prettyName : 'Stake Holders',
-		// 		altPrettyName : 'Stake Holders',
-		// 		link : $scope.manageStakeHolders,
-		// 		rootDivClass : 'panel-body',
-		// 		itemsCrudHelpers : $scope.stakeHoldersCrudHelpers
-		// 	},
-		// 	pagination : {
-		// 		currentPage : 1,
-		// 		itemsPerPage : 10
-		// 	},
-		// 	sortinit : {
-		// 		fieldKey : 'lastName',
-		// 		reverse : false
-		// 	},
-		// 	tableColumns : [
-		// 		{
-		// 			key : 'lastName',
-		// 			prettyName : 'Last Name',
-		// 			widthClass : 'col-md-2'
-		// 		},
-		// 		{
-		// 			key : 'firstName',
-		// 			prettyName : 'First Name',
-		// 			widthClass : 'col-md-2'
-		// 		},
-		// 		{
-		// 			key : 'username',
-		// 			prettyName : 'Username',
-		// 			widthClass : 'col-md-1'
-		// 		}
-		// 	]
-		// };
-
 		/**************************************************
 		 * Fetch team members
 		 **************************************************/
 		$scope.fetchingTeamMembers = true;
 		$scope.teamMembers = [];
-
-		// $scope.teammembersCrudHelpers = {};
-		// angular.extend($scope.teammembersCrudHelpers, crudListMethods('/projects/'+project.$id()+'/users'));
-
-		// angular.extend($scope.teammembersCrudHelpers, crudListMethods('/users'));
-
-		// $scope.viewUser = function (user) {
-		// 	$scope.teammembersCrudHelpers.view(user.$id());
-		// };
-
-		// $scope.manageTeamMembers = function () {
-		// 	$location.path('/projects/'+project.$id()+'/edit');
-		// };
 
 		Users.getByIds(
 			project.teamMembers,
@@ -606,16 +538,5 @@ angular.module('projectsitemview', [
 				console.log(response);
 			}
 		);
-
-		$scope.teamMembersConf = {
-			// rootDivClass : 'inline-block',
-			collectionName : 'teamMembers',
-			label : 'Team'
-			// actionName: "Inbox",
-			// actionIcon: "inbox",
-			// actionButtonClass: "btn-info"
-		};
-		// angular.extend($scope.teamMembersConf, $scope.usersConf);
-
 	}
 ]);

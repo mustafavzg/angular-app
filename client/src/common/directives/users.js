@@ -1,4 +1,5 @@
 angular.module('directives.users', [
+	'services.modelInitializer',
 	'directives.userthumb',
 	'directives.helptip',
 	'resources.users',
@@ -13,7 +14,6 @@ angular.module('directives.users', [
 			restrict: 'E',
 			templateUrl: 'directives/users.tpl.html',
 			replace: true,
-			// require: '^form',
 			scope: {
 				rootDivClass: '@',
 				collectionName: '@',
@@ -28,23 +28,15 @@ angular.module('directives.users', [
 				// Either users or userIds have to be defined by the directive users
 				users: '=?',
 				userIds: '=?',
-				// when using userIds it is recomended to define a lookup function
+				// When using userIds it is recomended to define a lookup function
 				// otherwise this directive will fetch the users from the server
 				// and that could be a bit slow
 				usersLookUp: '&?',
 				roleFunction: '&?',
 				fetchingUsers: '=?',
-
-				// !!! FOR FUTURE REFERENCE : THIS WONT WORK !!!
-				// since the options we are trying to override
-				// are @ speced which cannot act as L-values
-
-				// FOUND A SOLUTION FOR THIS
-				// expose static parameters via scope.self
-
-				// using options one can setup some of the
-				// above attributes, initOptions attributes
-				// will override the direct attributes
+				// Using initOptions one can setup some of the
+				// above attributes
+				// initOptions attributes will override the direct attributes
 				initOptions: '=?'
 			},
 			controller: [
@@ -52,14 +44,13 @@ angular.module('directives.users', [
 				'$element',
 				'$attrs',
 				'Users',
+				'modelInitializer',
 				'_',
-				function ($scope, $element, $attrs, Users, _) {
+				function ($scope, $element, $attrs, Users, modelInitializer, _) {
+
 					$scope.initOptions = $scope.initOptions || {};
-
 					$scope.self = {};
-
-					// setup attribute interpolate @ options
-					var staticOptions = [
+					var interpolationKeys = [
 						'rootDivClass',
 						'collectionName',
 						'label',
@@ -70,90 +61,40 @@ angular.module('directives.users', [
 						'actionHidden',
 						'actionDisabled'
 					];
-					for(var i = -1; ++i < staticOptions.length;){
-						var option = staticOptions[i];
-						// $scope.self[option] = $scope[option] || $scope.initOptions[option];
-
-						$scope.self[option] = $scope.initOptions[option] || $scope[option];
-					}
-
-					// setup expression & options
-					var expOptions = [
+					var expressionKeys = [
 						'action',
 						'roleFunction'
 					];
-					for(var ia = -1; ++ia < expOptions.length;){
-						var option = expOptions[ia];
+					// setup the directive model based on interpolation and expression attributes
+					modelInitializer.init($scope, $scope.self, $scope.initOptions, interpolationKeys, expressionKeys);
 
-						// if( angular.isDefined($scope[option]) ){
-						// 	console.log("setup the ACtION ATT");
-						// 	$scope.self[option] = $scope[option];
-						// }
-						// else if ( angular.isDefined($scope.initOptions[option]) ) {
-						// 	console.log("setup the ACtION from INIT OPTIONS");
-						// 	$scope.self[option] = function (locals) {
-						// 		console.log("CALLIGN THE INITOPTIONS VERSION");
-						// 		return $scope.initOptions[option](locals.user);
-						// 	};
-						// }
+					// for(var i = -1; ++i < interpolationKeys.length;){
+					// 	var option = interpolationKeys[i];
+					// 	$scope.self[option] = $scope.initOptions[option] || $scope[option];
+					// }
 
-						if ( angular.isDefined($scope.initOptions[option]) ) {
-							console.log("setup the ACtION from INIT OPTIONS: " + option);
+					// Setup expression & options
+					// for(var ia = -1; ++ia < expressionKeys.length;){
+					// 	var option = expressionKeys[ia];
 
-							// var fn = $scope.initOptions[option];
-							// $scope.self[option] = function (locals) {
-							// 	console.log("CALLIGN THE INITOPTIONS VERSION");
-							// 	return fn(locals.user);
-							// };
-
-							$scope.self[option] = function (index) {
-								var option = expOptions[ia];
-								var fn = $scope.initOptions[option];
-								return function (locals) {
-									console.log("CALLIGN THE INITOPTIONS VERSION");
-									return fn(locals.user);
-								};
-							}(ia);
-
-							console.log($scope.self[option].toString());
-							console.log(JSON.stringify($scope.self[option]));
-						}
-						else if( angular.isDefined($scope[option]) ){
-							console.log("setup the ACtION ATT");
-							$scope.self[option] = $scope[option];
-						}
-						else {
-							$scope.self[option] = function () {
-								// some dummy function
-							}
-						}
-
-						// $scope.self[option] = function (locals) {
-						// 	if( angular.isDefined($scope[option]) ){
-						// 		$scope[option](locals);
-						// 	}
-						// 	else if ( angular.isDefined($scope.initOptions[option]) ) {
-						// 		$scope.initOptions[option](locals.user);
-						// 	}
-						// 	else {
-
-						// 	}
-						// 	// $scope[option] || $scope.initOptions[option];
-						// };
-					}
-
-					// // Initialize static attributes
-					// $scope.self = {
-					// 	rootDivClass: $scope.rootDivClass,
-					// 	collectionName: $scope.collectionName,
-					// 	label: $scope.options.label || $scope.label,
-					// 	helptip: $scope.helptip
-					// };
-
-					// $scope.labelmsg = $scope.label;
-					// $scope.helptipmsg = $scope.helptip;
-
-					// $scope.options = $scope.options || {};
+					// 	if ( angular.isDefined($scope.initOptions[option]) ) {
+					// 		$scope.self[option] = function (index) {
+					// 			var option = expressionKeys[ia];
+					// 			var fn = $scope.initOptions[option];
+					// 			return function (locals) {
+					// 				return fn(locals.user);
+					// 			};
+					// 		}(ia);
+					// 	}
+					// 	else if( angular.isDefined($scope[option]) ){
+					// 		$scope.self[option] = $scope[option];
+					// 	}
+					// 	else {
+					// 		$scope.self[option] = function () {
+					// 			// some dummy function
+					// 		}
+					// 	}
+					// }
 
 					console.log("options are");
 					console.log($scope.initOptions);
@@ -161,29 +102,8 @@ angular.module('directives.users', [
 					console.log("self options are");
 					console.log($scope.self);
 
-					// $scope.rootDivClass = $scope.rootDivClass || $scope.options.rootDivClass;
-					// $scope.collectionName = $scope.collectionName || $scope.options.collectionName;
-					// $scope.labelmsg = $scope.label || $scope.options.label;
-					// $scope.helptipmsg = $scope.helptip || $scope.options.helptip;
-
 					// action function should be specified as a direct attribute
 					$scope.action = $scope.action || function () {/*a dummy action*/};
-
-					// var actionOptions = $scope.options.action || {};
-
-					// // console.log("actionOptions");
-					// // console.log(actionOptions);
-
-					// // action options could be specified in the options attribute
-					// console.log("this is not happening " + actionOptions.name);
-					// $scope.actionName = $scope.actionName || actionOptions.name;
-					// $scope.actionIcon = $scope.actionIcon || actionOptions.icon;
-					// $scope.actionButtonClass = $scope.actionButtonClass || actionOptions.buttonClass;
-					// $scope.actionHidden = $scope.actionHidden || false;
-					// $scope.actionDisabled = $scope.actionDisabled || $scope.actionHidden || false;
-
-					console.log("scope options");
-					console.log($scope);
 
 					$scope.users = $scope.users || [];
 
@@ -323,13 +243,9 @@ angular.module('directives.users', [
 						$scope.fetchUsersByIds($scope.userIds);
 
 						$scope.$watchCollection('userIds', function (newUserIds, oldUserIds) {
-							// console.log("userids changed");
 							if( !angular.equals(newUserIds, oldUserIds) ){
-								// console.log("getting the users in watch");
 								var removeIds = _.difference(oldUserIds, newUserIds);
 								var addIds = _.difference(newUserIds, oldUserIds);
-								// console.log("add IDS: " + addIds);
-								// console.log("remove IDS: " + removeIds);
 								if( addIds.length > 0 ){
 									$scope.fetchUsersByIds(newUserIds);
 								}
@@ -339,20 +255,9 @@ angular.module('directives.users', [
 							}
 						});
 					}
+
 				}
 			]
-			// link: function(scope, element, attrs) {
-			// 	var actionOptions = scope.options.action || {};
-			// 	console.log("actionOptions");
-			// 	console.log(actionOptions);
-
-			// 	scope.actionName = scope.actionName || actionOptions.name;
-			// 	scope.actionIcon = scope.actionIcon || actionOptions.icon;
-
-			// 	console.log("scope options");
-			// 	console.log(scope);
-
-			// }
 		};
 	}
 ])
