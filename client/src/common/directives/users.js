@@ -43,8 +43,8 @@ angular.module('directives.users', [
 				// expose static parameters via scope.self
 
 				// using options one can setup some of the
-				// above attributes, direct attributes
-				// will override the attributes setup in options
+				// above attributes, initOptions attributes
+				// will override the direct attributes
 				initOptions: '=?'
 			},
 			controller: [
@@ -57,6 +57,8 @@ angular.module('directives.users', [
 					$scope.initOptions = $scope.initOptions || {};
 
 					$scope.self = {};
+
+					// setup attribute interpolate @ options
 					var staticOptions = [
 						'rootDivClass',
 						'collectionName',
@@ -70,7 +72,74 @@ angular.module('directives.users', [
 					];
 					for(var i = -1; ++i < staticOptions.length;){
 						var option = staticOptions[i];
-						$scope.self[option] = $scope[option] || $scope.initOptions[option];
+						// $scope.self[option] = $scope[option] || $scope.initOptions[option];
+
+						$scope.self[option] = $scope.initOptions[option] || $scope[option];
+					}
+
+					// setup expression & options
+					var expOptions = [
+						'action',
+						'roleFunction'
+					];
+					for(var ia = -1; ++ia < expOptions.length;){
+						var option = expOptions[ia];
+
+						// if( angular.isDefined($scope[option]) ){
+						// 	console.log("setup the ACtION ATT");
+						// 	$scope.self[option] = $scope[option];
+						// }
+						// else if ( angular.isDefined($scope.initOptions[option]) ) {
+						// 	console.log("setup the ACtION from INIT OPTIONS");
+						// 	$scope.self[option] = function (locals) {
+						// 		console.log("CALLIGN THE INITOPTIONS VERSION");
+						// 		return $scope.initOptions[option](locals.user);
+						// 	};
+						// }
+
+						if ( angular.isDefined($scope.initOptions[option]) ) {
+							console.log("setup the ACtION from INIT OPTIONS: " + option);
+
+							// var fn = $scope.initOptions[option];
+							// $scope.self[option] = function (locals) {
+							// 	console.log("CALLIGN THE INITOPTIONS VERSION");
+							// 	return fn(locals.user);
+							// };
+
+							$scope.self[option] = function (index) {
+								var option = expOptions[ia];
+								var fn = $scope.initOptions[option];
+								return function (locals) {
+									console.log("CALLIGN THE INITOPTIONS VERSION");
+									return fn(locals.user);
+								};
+							}(ia);
+
+							console.log($scope.self[option].toString());
+							console.log(JSON.stringify($scope.self[option]));
+						}
+						else if( angular.isDefined($scope[option]) ){
+							console.log("setup the ACtION ATT");
+							$scope.self[option] = $scope[option];
+						}
+						else {
+							$scope.self[option] = function () {
+								// some dummy function
+							}
+						}
+
+						// $scope.self[option] = function (locals) {
+						// 	if( angular.isDefined($scope[option]) ){
+						// 		$scope[option](locals);
+						// 	}
+						// 	else if ( angular.isDefined($scope.initOptions[option]) ) {
+						// 		$scope.initOptions[option](locals.user);
+						// 	}
+						// 	else {
+
+						// 	}
+						// 	// $scope[option] || $scope.initOptions[option];
+						// };
 					}
 
 					// // Initialize static attributes

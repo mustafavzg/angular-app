@@ -216,56 +216,6 @@ angular.module('projectsitemview', [
 		// );
 
 		/**************************************************
-		 * Fetch the product owner name
-		 **************************************************/
-		$scope.fetchingProductOwner = true;
-		Users.getById(
-			project.productOwner,
-			function (productOwner, responsestatus, responseheaders, responseconfig) {
-				$scope.productOwner = productOwner;
-				$scope.fetchingProductOwner = false;
-				var productOwnerName = productOwner.getFullName();
-				$scope.project.attributesToDisplay.productowner = {
-					name : 'Product Owner',
-					value : productOwnerName,
-					glyphiconclass : 'glyphicon glyphicon-user',
-					ordering : 7
-				};
-				console.log("Succeded to fetch product owner");
-			},
-			function (response, responsestatus, responseheaders, responseconfig) {
-				$scope.fetchingProductOwner = false;
-				console.log("Failed to fetch product owner");
-				console.log(response);
-			}
-		);
-
-		/**************************************************
-		 * Fetch the scrum master name
-		 **************************************************/
-		$scope.fetchingScrumMaster = true;
-		Users.getById(
-			project.scrumMaster,
-			function (scrumMaster, responsestatus, responseheaders, responseconfig) {
-				$scope.fetchingScrumMaster = false;
-				$scope.scrumMaster = scrumMaster;
-				var scrumMasterName = scrumMaster.getFullName();
-				$scope.project.attributesToDisplay.scrummaster = {
-					name : 'Scrum Master',
-					value : scrumMasterName,
-					glyphiconclass : 'glyphicon glyphicon-user',
-					ordering : 8
-				};
-				console.log("Succeded to fetch scrum master");
-			},
-			function (response, responsestatus, responseheaders, responseconfig) {
-				$scope.fetchingScrumMaster = false;
-				console.log("Failed to fetch scrum master");
-				console.log(response);
-			}
-		);
-
-		/**************************************************
 		 * Fetch backlog items
 		 **************************************************/
 		$scope.fetchingBacklogItems = true;
@@ -474,17 +424,99 @@ angular.module('projectsitemview', [
 		};
 
 		/**************************************************
+		 * Crud helpers for users
+		 **************************************************/
+
+		$scope.usersCrudHelpers = {};
+		angular.extend($scope.usersCrudHelpers, crudListMethods('/projects/'+project.$id()+'/users'));
+
+		$scope.viewUser = function (user) {
+			console.log("CALLING THE USUAL VERSION");
+			console.log("chagnin the route");
+			$scope.usersCrudHelpers.view(user.$id());
+		};
+
+		$scope.manageUsers = function () {
+			$location.path('/projects/'+project.$id()+'/edit');
+		};
+
+		$scope.getUserRoles = function (user) {
+			console.log("getting user roles");
+			return project.getUserRoles(user);
+		};
+
+		$scope.usersConf = {
+			rootDivClass: 'inline-block',
+			roleFunction: $scope.getUserRoles,
+			action: $scope.viewUser,
+			actionName: "Inbox",
+			actionIcon: "inbox",
+			actionButtonClass: "btn-info"
+		};
+
+		/**************************************************
+		 * Fetch the product owner name
+		 **************************************************/
+		$scope.fetchingProductOwner = true;
+		Users.getById(
+			project.productOwner,
+			function (productOwner, responsestatus, responseheaders, responseconfig) {
+				$scope.productOwner = productOwner;
+				$scope.fetchingProductOwner = false;
+				var productOwnerName = productOwner.getFullName();
+				$scope.project.attributesToDisplay.productowner = {
+					name : 'Product Owner',
+					value : productOwnerName,
+					glyphiconclass : 'glyphicon glyphicon-user',
+					ordering : 7
+				};
+				console.log("Succeded to fetch product owner");
+			},
+			function (response, responsestatus, responseheaders, responseconfig) {
+				$scope.fetchingProductOwner = false;
+				console.log("Failed to fetch product owner");
+				console.log(response);
+			}
+		);
+
+		/**************************************************
+		 * Fetch the scrum master name
+		 **************************************************/
+		$scope.fetchingScrumMaster = true;
+		Users.getById(
+			project.scrumMaster,
+			function (scrumMaster, responsestatus, responseheaders, responseconfig) {
+				$scope.fetchingScrumMaster = false;
+				$scope.scrumMaster = scrumMaster;
+				var scrumMasterName = scrumMaster.getFullName();
+				$scope.project.attributesToDisplay.scrummaster = {
+					name : 'Scrum Master',
+					value : scrumMasterName,
+					glyphiconclass : 'glyphicon glyphicon-user',
+					ordering : 8
+				};
+				console.log("Succeded to fetch scrum master");
+			},
+			function (response, responsestatus, responseheaders, responseconfig) {
+				$scope.fetchingScrumMaster = false;
+				console.log("Failed to fetch scrum master");
+				console.log(response);
+			}
+		);
+
+
+		/**************************************************
 		 * Fetch stake holders
 		 **************************************************/
 		$scope.fetchingStakeHolders = true;
 		$scope.stakeHolders = [];
 
-		$scope.stakeHoldersCrudHelpers = {};
-		angular.extend($scope.stakeHoldersCrudHelpers, crudListMethods('/projects/'+project.$id()+'/users'));
+		// $scope.stakeHoldersCrudHelpers = {};
+		// angular.extend($scope.stakeHoldersCrudHelpers, crudListMethods('/projects/'+project.$id()+'/users'));
 
-		$scope.manageStakeHolders = function () {
-			$location.path('/projects/'+project.$id()+'/edit');
-		};
+		// $scope.manageStakeHolders = function () {
+		// 	$location.path('/projects/'+project.$id()+'/edit');
+		// };
 
 		Users.getByIds(
 			project.stakeHolders,
@@ -499,67 +531,75 @@ angular.module('projectsitemview', [
 		);
 
 		$scope.stakeHoldersConf = {
-			resource : {
-				key : 'users',
-				prettyName : 'Stake Holders',
-				altPrettyName : 'Stake Holders',
-				link : $scope.manageStakeHolders,
-				rootDivClass : 'panel-body',
-				itemsCrudHelpers : $scope.stakeHoldersCrudHelpers
-			},
-			pagination : {
-				currentPage : 1,
-				itemsPerPage : 10
-			},
-			sortinit : {
-				fieldKey : 'lastName',
-				reverse : false
-			},
-			tableColumns : [
-				{
-					key : 'lastName',
-					prettyName : 'Last Name',
-					widthClass : 'col-md-2'
-				},
-				{
-					key : 'firstName',
-					prettyName : 'First Name',
-					widthClass : 'col-md-2'
-				},
-				{
-					key : 'username',
-					prettyName : 'Username',
-					widthClass : 'col-md-1'
-				}
-			]
+			rootDivClass : 'inline-block',
+			collectionName : 'stakeHolders',
+			label : 'Stake Holders',
+			actionName: "Inbox",
+			actionIcon: "inbox",
+			actionButtonClass: "btn-info"
 		};
+
+		// $scope.stakeHoldersConf = {
+		// 	resource : {
+		// 		key : 'users',
+		// 		prettyName : 'Stake Holders',
+		// 		altPrettyName : 'Stake Holders',
+		// 		link : $scope.manageStakeHolders,
+		// 		rootDivClass : 'panel-body',
+		// 		itemsCrudHelpers : $scope.stakeHoldersCrudHelpers
+		// 	},
+		// 	pagination : {
+		// 		currentPage : 1,
+		// 		itemsPerPage : 10
+		// 	},
+		// 	sortinit : {
+		// 		fieldKey : 'lastName',
+		// 		reverse : false
+		// 	},
+		// 	tableColumns : [
+		// 		{
+		// 			key : 'lastName',
+		// 			prettyName : 'Last Name',
+		// 			widthClass : 'col-md-2'
+		// 		},
+		// 		{
+		// 			key : 'firstName',
+		// 			prettyName : 'First Name',
+		// 			widthClass : 'col-md-2'
+		// 		},
+		// 		{
+		// 			key : 'username',
+		// 			prettyName : 'Username',
+		// 			widthClass : 'col-md-1'
+		// 		}
+		// 	]
+		// };
 
 		/**************************************************
 		 * Fetch team members
 		 **************************************************/
 		$scope.fetchingTeamMembers = true;
 		$scope.teamMembers = [];
-		$scope.teammembersCrudHelpers = {};
-		angular.extend($scope.teammembersCrudHelpers, crudListMethods('/projects/'+project.$id()+'/users'));
+
+		// $scope.teammembersCrudHelpers = {};
+		// angular.extend($scope.teammembersCrudHelpers, crudListMethods('/projects/'+project.$id()+'/users'));
 
 		// angular.extend($scope.teammembersCrudHelpers, crudListMethods('/users'));
 
-		$scope.viewUser = function (user) {
-			$scope.teammembersCrudHelpers.view(user.$id());
-		};
+		// $scope.viewUser = function (user) {
+		// 	$scope.teammembersCrudHelpers.view(user.$id());
+		// };
 
-		$scope.manageTeamMembers = function () {
-			$location.path('/projects/'+project.$id()+'/edit');
-		};
+		// $scope.manageTeamMembers = function () {
+		// 	$location.path('/projects/'+project.$id()+'/edit');
+		// };
 
 		Users.getByIds(
 			project.teamMembers,
 			function (teamMembers) {
 				$scope.teamMembers = teamMembers;
-				// $scope.teamMembers = $scope.teamMembers.concat(teamMembers);
 				$scope.fetchingTeamMembers = false;
 				console.log("fetched team members");
-
 			},
 			function (response) {
 				console.log("Failed to fetch team members");
@@ -568,38 +608,14 @@ angular.module('projectsitemview', [
 		);
 
 		$scope.teamMembersConf = {
-			rootDivClass : 'inline-block',
+			// rootDivClass : 'inline-block',
 			collectionName : 'teamMembers',
-			label : 'Team',
-			// users: "teamMembers",
-			// action: "viewUser(user)",
-			// actionName: "Go",
-			// actionIcon: "hand-right",
-			actionName: "Inbox",
-			actionIcon: "inbox",
-			actionButtonClass: "btn-info"
-			// actionHidden: "true"
-			// action: {
-			// 	name: "Go",
-			// 	icon: "hand-right",
-			// 	buttonClass: "btn-info"
-			// }
-			// roleFunction: "project.getUserRoles(user)",
-			// fetchingUsers: "fetchingTeamMembers"
-			// link : $scope.manageTeamMembers,
-			// rootDivClass : 'panel-body',
-			// itemsCrudHelpers : $scope.teammembersCrudHelpers
+			label : 'Team'
+			// actionName: "Inbox",
+			// actionIcon: "inbox",
+			// actionButtonClass: "btn-info"
 		};
+		// angular.extend($scope.teamMembersConf, $scope.usersConf);
 
-		// $scope.teamMembersConf = {
-		// 	resource : {
-		// 		key : 'users',
-		// 		prettyName : 'Team Members',
-		// 		altPrettyName : 'Team Members',
-		// 		link : $scope.manageTeamMembers,
-		// 		rootDivClass : 'panel-body',
-		// 		itemsCrudHelpers : $scope.teammembersCrudHelpers
-		// 	}
-		// };
 	}
 ]);

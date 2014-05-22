@@ -13,13 +13,13 @@
 				<!-- role-function="roleFunction{{'userId': userId}}" -->
 			<userthumb
 				user="user"
-				action="action({user: user})"
+				action="self.action({user: user})"
 				action-name="{{self.actionName}}"
 				action-icon="{{self.actionIcon}}"
 				action-button-class="{{self.actionButtonClass}}"
 				action-disabled="{{self.actionDisabled}}"
 				action-hidden="{{self.actionHidden}}"
-				role-function="roleFunction({user: user})"
+				role-function="self.roleFunction({user: user})"
 				ng-repeat="user in users | filter:isDefined | orderBy:'lastName'">
 			</userthumb>
 		</div>

@@ -99,45 +99,49 @@
 						<div class="panel panel-default">
 							<div class="panel-body">
 								<div class="col-md-4">
+
 									<users
-										 root-div-class="inline-block"
-										 collection-name="scrumMasters"
 										 label="Scrum Master"
 										 users="[scrumMaster]"
-										 action="viewUser(user)"
-										 action-name="Go"
-										 action-icon="hand-right"
-										 action-button-class="btn-info"
-										 role-function="project.getUserRoles(user)"
+										 collectionName="scrumMaster"
+										 init-options="usersConf"
 										 fetching-users="fetchingScrumMaster"
-										 >
-									</users>
-									
-								</div>
-								<!-- div col -->
-								<div class="col-md-8">
-									<users
-										 users="teamMembers"
-										 action="viewUser(user)"
-										 init-options="teamMembersConf"
-										 role-function="project.getUserRoles(user)"
-										 fetching-users="fetchingTeamMembers"
 										 >
 									</users>
 
 									<!-- <users -->
 									<!-- 	 root-div-class="inline-block" -->
-									<!-- 	 collection-name="teamMembers" -->
-									<!-- 	 label="Team" -->
-									<!-- 	 users="teamMembers" -->
+									<!-- 	 collection-name="scrumMasters" -->
+									<!-- 	 label="Scrum Master" -->
+									<!-- 	 users="[scrumMaster]" -->
 									<!-- 	 action="viewUser(user)" -->
 									<!-- 	 action-name="Go" -->
 									<!-- 	 action-icon="hand-right" -->
 									<!-- 	 action-button-class="btn-info" -->
 									<!-- 	 role-function="project.getUserRoles(user)" -->
+									<!-- 	 fetching-users="fetchingScrumMaster" -->
+									<!-- 	 > -->
+									<!-- </users> -->
+									
+								</div>
+								<!-- div col -->
+								<div class="col-md-8">
+									<!-- <users -->
+									<!-- 	 users="teamMembers" -->
+									<!-- 	 action="viewUser(user)" -->
+									<!-- 	 init-options="teamMembersConf" -->
+									<!-- 	 role-function="project.getUserRoles(user)" -->
 									<!-- 	 fetching-users="fetchingTeamMembers" -->
 									<!-- 	 > -->
 									<!-- </users> -->
+									<users
+										 label="Team"
+										 users="teamMembers"
+										 collectionName="teamMembers"
+										 init-options="usersConf"
+										 fetching-users="fetchingTeamMembers"
+										 >
+									</users>
 
 								</div>
 								<!-- div col -->
@@ -155,35 +159,64 @@
 							<div class="panel-body">
 								<div class="col-md-4">
 									<users
-										 root-div-class="inline-block"
-										 collection-name="productOwners"
 										 label="Product Owner"
 										 users="[productOwner]"
-										 action="viewUser(user)"
-										 action-name="Go"
-										 action-icon="hand-right"
-										 action-button-class="btn-info"
-										 role-function="project.getUserRoles(user)"
+										 collectionName="productOwner"
+										 init-options="usersConf"
 										 fetching-users="fetchingProductOwner"
 										 >
 									</users>
+
+									<!-- <users -->
+									<!-- 	 root-div-class="inline-block" -->
+									<!-- 	 collection-name="productOwners" -->
+									<!-- 	 label="Product Owner" -->
+									<!-- 	 users="[productOwner]" -->
+									<!-- 	 action="viewUser(user)" -->
+									<!-- 	 action-name="Go" -->
+									<!-- 	 action-icon="hand-right" -->
+									<!-- 	 action-button-class="btn-info" -->
+									<!-- 	 role-function="project.getUserRoles(user)" -->
+									<!-- 	 fetching-users="fetchingProductOwner" -->
+									<!-- 	 > -->
+									<!-- </users> -->
 								</div>
 								<!-- div col -->
 
 								<div class="col-md-8">
+
 									<users
-										 root-div-class="inline-block"
-										 collection-name="stakeHolders"
 										 label="Stake Holders"
 										 users="stakeHolders"
-										 action="viewUser(user)"
-										 action-name="Go"
-										 action-icon="hand-right"
-										 action-button-class="btn-info"
-										 role-function="project.getUserRoles(user)"
+										 collectionName="stakeHolders"
+										 init-options="usersConf"
 										 fetching-users="fetchingStakeHolders"
 										 >
 									</users>
+
+									<!-- <users -->
+									<!-- 	 users="stakeHolders" -->
+									<!-- 	 action="viewUser(user)" -->
+									<!-- 	 init-options="stakeHoldersConf" -->
+									<!-- 	 role-function="project.getUserRoles(user)" -->
+									<!-- 	 fetching-users="fetchingStakeHolders" -->
+									<!-- 	 > -->
+									<!-- </users> -->
+
+									<!-- <users -->
+									<!-- 	 root-div-class="inline-block" -->
+									<!-- 	 collection-name="stakeHolders" -->
+									<!-- 	 label="Stake Holders" -->
+									<!-- 	 users="stakeHolders" -->
+									<!-- 	 action="viewUser(user)" -->
+									<!-- 	 action-name="Go" -->
+									<!-- 	 action-icon="hand-right" -->
+									<!-- 	 action-button-class="btn-info" -->
+									<!-- 	 role-function="project.getUserRoles(user)" -->
+									<!-- 	 fetching-users="fetchingStakeHolders" -->
+									<!-- 	 > -->
+									<!-- </users> -->
+
 								</div>
 								<!-- div col -->
 
