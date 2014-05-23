@@ -445,14 +445,40 @@ angular.module('projectsitemview', [
 			return project.getUserRoles(user);
 		};
 
+		$scope.killfoo = "moo"
 		$scope.usersConf = {
 			rootDivClass: 'inline-block',
-			roleFunction: $scope.getUserRoles,
-			action: $scope.viewUser,
-			actionName: "Inbox",
+			// roleFunction: $scope.getUserRoles,
+			// action: $scope.viewUser,
+			// labelClickAction: $scope.manageUsers,
+			roleFunction: "getUserRoles(user)",
+			action: "viewUser(user)",
+			labelClickAction: "manageUsers()",
+			// actionName: "Inbox",
 			actionIcon: "inbox",
-			actionButtonClass: "btn-info"
+			actionButtonClass: "btn-info",
+			helptip: "foo"
 		};
+
+		$timeout(function () {
+			console.log("triggered it");
+			$scope.usersConf = {
+				rootDivClass: 'panel panel-default',
+				// roleFunction: $scope.getUserRoles,
+				// action: $scope.viewUser,
+				// labelClickAction: $scope.manageUsers,
+				roleFunction: "getUserRoles(user)",
+				action: "viewUser(user)",
+				labelClickAction: "manageUsers()",
+				// actionName: "bar",
+				actionIcon: "",
+				actionButtonClass: "",
+				helptip: ""
+			};
+			$scope.killfoo = "zoo"
+			console.log($scope.usersConf);
+		}, 10000);
+
 
 		/**************************************************
 		 * Fetch the product owner name
