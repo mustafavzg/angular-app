@@ -13,7 +13,8 @@ angular.module('directives.propertybar', [
 			// require: '^form',
 			scope: {
 				properties: '=',
-				rootDivClass: '@?'
+				rootDivClass: '@?',
+				reverse: '@?'
 			}
 			// link: function(scope, element, attrs) {
 			// }
