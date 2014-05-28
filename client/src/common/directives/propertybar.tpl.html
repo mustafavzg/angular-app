@@ -1,0 +1,23 @@
+<div class="bs-glyphicons {{rootDivClass}}">
+<!-- <div class="bs-glyphicons media-object pull-right"> -->
+	<ul class="bs-glyphicons-list">
+		<li ng-repeat="attribute in properties | orderBy:'ordering'">
+			<!-- if glyphicon is defined -->
+			<icon ng-show="!!attribute.icon" id="{{attribute.icon}}"></icon>
+			<span ng-show="!!attribute.icon" class="glyphicon-class">{{ attribute.value }}</span>
+			<!-- else -->
+			<span ng-show="!attribute.icon" class="glyphicon">{{ attribute.value }}</span>
+			<!-- endif -->
+		</li>
+		<!-- <li ng-repeat="attribute in properties | orderBy:'ordering'"> -->
+		<!-- 	<\!-- <span class="glyphicon-class">{{ attribute.name }}</span> -\-> -->
+		<!-- 	<\!-- if glyphicon is defined -\-> -->
+		<!-- 	<icon ng-show="!!attribute.glyphiconclass" id="{{attribute.icon}}"></icon> -->
+		<!-- 	<\!-- <span ng-show="!!attribute.glyphiconclass" ng-class="[attribute.glyphiconclass]"></span> -\-> -->
+		<!-- 	<span ng-show="!!attribute.glyphiconclass" class="glyphicon-class">{{ attribute.value }}</span> -->
+		<!-- 	<\!-- else -\-> -->
+		<!-- 	<span ng-show="!attribute.glyphiconclass" class="glyphicon">{{ attribute.value }}</span> -->
+		<!-- 	<\!-- endif -\-> -->
+		<!-- </li> -->
+	</ul>
+</div>
