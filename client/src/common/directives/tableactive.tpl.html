@@ -1,19 +1,26 @@
 <div ng-class="rootDivClass">
 
-	<!-- Header -->
-	<div class="row" >
-		<div class="col-md-12">
-			<!-- <span class="pull-left" ng-click="manageBacklog(project)"> -->
-			<span class="pull-left" ng-click="manageResources()">
-				<span class="pull-left">
-					<strong><a class="hover-pointer">{{resourcePrettyName}}</a></strong>
-				</span>
-		</div>
-	</div>
+	<!-- <\!-- Header -\-> -->
+	<!-- <div class="row" > -->
+	<!-- 	<div class="col-md-12"> -->
+	<!-- 		<\!-- <span class="pull-left" ng-click="manageBacklog(project)"> -\-> -->
+	<!-- 		<span class="pull-left" ng-click="manageResources()"> -->
+	<!-- 			<\!-- <span class="pull-left"> -\-> -->
+	<!-- 			<strong><a class="hover-pointer">{{resourcePrettyName}}</a></strong> -->
+	<!-- 		</span> -->
+
+	<!-- 	</div> -->
+	<!-- </div> -->
 
 	<!-- Pagination -->
 	<div class="row">
 		<div class="col-md-12">
+			<span class="pull-left" ng-click="manageResources()">
+				<label>
+					{{resourcePrettyName}} <action-icon tip="Manage {{resourcePrettyNameAlt || resourcePrettyName}}" icon="edit" action="manageResources()"></action-icon>
+				</label>
+			</span>
+
 			<span class="pull-right">
 				<pagination boundary-links="true" total-items="filtereditems.length" items-per-page="itemsPerPage" ng-model="currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
 

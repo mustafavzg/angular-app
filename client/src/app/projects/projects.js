@@ -13,6 +13,7 @@ angular.module('projects', [
 	'directives.findusers',
 	'directives.users',
 	'directives.userscombosearchadd',
+	'directives.icon',
 	'directives.test',
 	'services.crud',
 	'security.authorization',

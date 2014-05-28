@@ -10,6 +10,8 @@ angular.module('projectsitemview', [
 	'security.authorization',
 	'filters.pagination',
 	'directives.tableactive',
+	'directives.icon',
+	'directives.propertybar',
 	'directives.test',
 	'directives.users',
 	'underscore'
@@ -126,6 +128,7 @@ angular.module('projectsitemview', [
 	'security',
 	'$q',
 	'filterFilter',
+	'dateFilter',
 	'paginationFilter',
 	'$timeout',
 	'_',
@@ -141,6 +144,7 @@ angular.module('projectsitemview', [
 		security,
 		$q,
 		filter,
+		dateFilter,
 		paginationFilter,
 		$timeout,
 		_
@@ -161,26 +165,36 @@ angular.module('projectsitemview', [
 			priority : {
 				name : 'Priority',
 				value : project.priority,
+				glyphiconclass : 'glyphicon glyphicon-star',
+				icon : 'star',
 				ordering : 1
 			},
 			weight : {
 				name : 'Weight',
 				value : project.weight,
+				glyphiconclass : 'glyphicon glyphicon-tint',
+				icon : 'tint',
 				ordering : 2
 			},
 			startdate : {
 				name : 'Start Date',
-				value : project.startDate,
+				value : dateFilter(project.startdate, 'shortDate'),
+				glyphiconclass : 'glyphicon glyphicon-chevron-right',
+				icon : 'chevron-right',
 				ordering : 3
 			},
 			enddate : {
 				name : 'End Date',
-				value : project.endDate,
+				value : dateFilter(project.enddate, 'shortDate'),
+				glyphiconclass : 'glyphicon glyphicon-chevron-left',
+				icon : 'chevron-left',
 				ordering : 4
 			},
 			projectprofile : {
 				name : 'Project Profile',
 				value : $scope.project.projectProfile.ID,
+				glyphiconclass : 'glyphicon glyphicon-wrench',
+				icon : 'wrench',
 				ordering : 5
 			}
 		};
@@ -445,40 +459,31 @@ angular.module('projectsitemview', [
 			return project.getUserRoles(user);
 		};
 
-		$scope.killfoo = "moo"
 		$scope.usersConf = {
 			rootDivClass: 'inline-block',
-			// roleFunction: $scope.getUserRoles,
-			// action: $scope.viewUser,
-			// labelClickAction: $scope.manageUsers,
 			roleFunction: "getUserRoles(user)",
 			action: "viewUser(user)",
+			labelIcon: "edit",
 			labelClickAction: "manageUsers()",
-			// actionName: "Inbox",
+			actionName: "Inbox",
 			actionIcon: "inbox",
 			actionButtonClass: "btn-info",
-			helptip: "foo"
+			helptip: "Edit"
 		};
 
-		$timeout(function () {
-			console.log("triggered it");
-			$scope.usersConf = {
-				rootDivClass: 'panel panel-default',
-				// roleFunction: $scope.getUserRoles,
-				// action: $scope.viewUser,
-				// labelClickAction: $scope.manageUsers,
-				roleFunction: "getUserRoles(user)",
-				action: "viewUser(user)",
-				labelClickAction: "manageUsers()",
-				// actionName: "bar",
-				actionIcon: "",
-				actionButtonClass: "",
-				helptip: ""
-			};
-			$scope.killfoo = "zoo"
-			console.log($scope.usersConf);
-		}, 10000);
-
+		// $timeout(function () {
+		// 	$scope.usersConf = {
+		// 		rootDivClass: 'panel panel-default',
+		// 		// roleFunction: "",
+		// 		// action: "",
+		// 		// labelClickAction: "",
+		// 		actionName: "foo",
+		// 		actionIcon: "moo",
+		// 		actionButtonClass: "btn-warning",
+		// 		helptip: "foodit"
+		// 	};
+		// 	console.log("triggered it");
+		// }, 10000);
 
 		/**************************************************
 		 * Fetch the product owner name
@@ -490,12 +495,12 @@ angular.module('projectsitemview', [
 				$scope.productOwner = productOwner;
 				$scope.fetchingProductOwner = false;
 				var productOwnerName = productOwner.getFullName();
-				$scope.project.attributesToDisplay.productowner = {
-					name : 'Product Owner',
-					value : productOwnerName,
-					glyphiconclass : 'glyphicon glyphicon-user',
-					ordering : 7
-				};
+				// $scope.project.attributesToDisplay.productowner = {
+				// 	name : 'Product Owner',
+				// 	value : productOwnerName,
+				// 	glyphiconclass : 'glyphicon glyphicon-user',
+				// 	ordering : 7
+				// };
 				console.log("Succeded to fetch product owner");
 			},
 			function (response, responsestatus, responseheaders, responseconfig) {
@@ -515,12 +520,12 @@ angular.module('projectsitemview', [
 				$scope.fetchingScrumMaster = false;
 				$scope.scrumMaster = scrumMaster;
 				var scrumMasterName = scrumMaster.getFullName();
-				$scope.project.attributesToDisplay.scrummaster = {
-					name : 'Scrum Master',
-					value : scrumMasterName,
-					glyphiconclass : 'glyphicon glyphicon-user',
-					ordering : 8
-				};
+				// $scope.project.attributesToDisplay.scrummaster = {
+				// 	name : 'Scrum Master',
+				// 	value : scrumMasterName,
+				// 	glyphiconclass : 'glyphicon glyphicon-user',
+				// 	ordering : 8
+				// };
 				console.log("Succeded to fetch scrum master");
 			},
 			function (response, responsestatus, responseheaders, responseconfig) {

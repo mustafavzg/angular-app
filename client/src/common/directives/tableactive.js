@@ -1,4 +1,5 @@
 angular.module('directives.tableactive', [
+	'directives.actionicon',
 	'ui.bootstrap',
 	'filters.pagination'
 ])
@@ -20,39 +21,78 @@ angular.module('directives.tableactive', [
 				items: '=',
 				fetchingitems: '='
 			},
-			link: function(scope, element, attrs) {
-				console.log("LINKING THE TABLEACTIVE!!!!");
-				var conf = scope.resourceconf;
-				scope.currentPage = conf.pagination.currentPage;
-				scope.itemsPerPage = conf.pagination.itemsPerPage;
-				scope.itemsCrudHelpers = conf.resource.itemsCrudHelpers;
+			controller: [
+				'$scope',
+				'$element',
+				'$attrs',
+				function ($scope, $element, $attrs) {
 
-				scope.rootDivClass = conf.resource.rootDivClass;
-				scope.manageResources = conf.resource.link;
-				scope.resourcePrettyName = conf.resource.prettyName;
-				scope.resourcePrettyNameAlt = conf.resource.altPrettyName;
-				scope.tableColumns = conf.tableColumns;
+					console.log("LINKING THE TABLEACTIVE!!!!");
+					var conf = $scope.resourceconf;
+					$scope.currentPage = conf.pagination.currentPage;
+					$scope.itemsPerPage = conf.pagination.itemsPerPage;
+					$scope.itemsCrudHelpers = conf.resource.itemsCrudHelpers;
 
-				scope.itemsSort = {
-					sortField : conf.sortinit.fieldKey,
-					reverse : conf.sortinit.reverse,
-					sort : function(fieldname) {
-						if( this.sortField === fieldname){
-							this.reverse = !this.reverse;
-						}
-						else {
-							this.sortField = fieldname;
-							this.reverse = false;
-						}
-					},
-					isSortDown : function(fieldname) {
-						return (this.sortField === fieldname) && this.reverse;
-					},
-					isSortUp : function(fieldname) {
+					$scope.rootDivClass = conf.resource.rootDivClass;
+					$scope.manageResources = conf.resource.link;
+					$scope.resourcePrettyName = conf.resource.prettyName;
+					$scope.resourcePrettyNameAlt = conf.resource.altPrettyName;
+					$scope.tableColumns = conf.tableColumns;
+
+					$scope.itemsSort = {
+						sortField : conf.sortinit.fieldKey,
+						reverse : conf.sortinit.reverse,
+						sort : function(fieldname) {
+							if( this.sortField === fieldname){
+								this.reverse = !this.reverse;
+							}
+							else {
+								this.sortField = fieldname;
+								this.reverse = false;
+							}
+						},
+						isSortDown : function(fieldname) {
+							return (this.sortField === fieldname) && this.reverse;
+						},
+						isSortUp : function(fieldname) {
 						return (this.sortField === fieldname) && !this.reverse;
-					}
-				};
-			}
+						}
+					};
+				}
+			]
+			// link: function(scope, element, attrs) {
+			// 	console.log("LINKING THE TABLEACTIVE!!!!");
+			// 	var conf = scope.resourceconf;
+			// 	scope.currentPage = conf.pagination.currentPage;
+			// 	scope.itemsPerPage = conf.pagination.itemsPerPage;
+			// 	scope.itemsCrudHelpers = conf.resource.itemsCrudHelpers;
+
+			// 	scope.rootDivClass = conf.resource.rootDivClass;
+			// 	scope.manageResources = conf.resource.link;
+			// 	scope.resourcePrettyName = conf.resource.prettyName;
+			// 	scope.resourcePrettyNameAlt = conf.resource.altPrettyName;
+			// 	scope.tableColumns = conf.tableColumns;
+
+			// 	scope.itemsSort = {
+			// 		sortField : conf.sortinit.fieldKey,
+			// 		reverse : conf.sortinit.reverse,
+			// 		sort : function(fieldname) {
+			// 			if( this.sortField === fieldname){
+			// 				this.reverse = !this.reverse;
+			// 			}
+			// 			else {
+			// 				this.sortField = fieldname;
+			// 				this.reverse = false;
+			// 			}
+			// 		},
+			// 		isSortDown : function(fieldname) {
+			// 			return (this.sortField === fieldname) && this.reverse;
+			// 		},
+			// 		isSortUp : function(fieldname) {
+			// 			return (this.sortField === fieldname) && !this.reverse;
+			// 		}
+			// 	};
+			// }
 		};
 	}
 ])

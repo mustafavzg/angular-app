@@ -1,1 +1,8 @@
-<a href="#"><i class="glyphicon glyphicon-{{icon}}" tooltip="{{tip}}" ></i></a>
+<a href="#">
+	<!-- For now tooltip on separate tag to avoid -->
+	<!-- Multiple directives asking for isolated scopes error -->
+	<span tooltip="{{tip}}">
+		<icon id="{{icon}}"></icon>
+	</span>
+	<!-- <i class="glyphicon glyphicon-{{icon}}" tooltip="{{tip}}" ></i> -->
+</a>

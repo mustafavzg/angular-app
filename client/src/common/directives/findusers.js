@@ -1,5 +1,6 @@
 angular.module('directives.findusers', [
 	'directives.userthumb',
+	'directives.actionicon',
 	'resources.users',
 	'ui.bootstrap',
 	'underscore'

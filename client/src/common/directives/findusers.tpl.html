@@ -1,7 +1,7 @@
 <div class="{{rootDivClass}}">
 	<!-- <div class="form-group"> -->
 		<div class="form-group has-feedback">
-			<label>{{labelmsg}} <helptip tip="{{helptipmsg}}" icon="info-sign" ></helptip></label>
+			<label>{{labelmsg}} <action-icon tip="{{helptipmsg}}"></action-icon></label>
 			<input type="text" id="query" ng-model="query" ng-change="getUsers(query)" class="form-control" placeholder="{{placeholderText}} ... ">
 
 			<!-- <input type="text" id="query" ng-model="query" typeahead="user.$id() as user.getFullName() for user in getUsers($viewValue) | orderBy:'lastName'" typeahead-loading="loadingUsers" typeahead-on-select="onSelect($item, $model, $label)" class="form-control" placeholder="Search for people to add as team members ... "> -->

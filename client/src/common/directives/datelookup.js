@@ -1,4 +1,5 @@
 angular.module('directives.datelookup', [
+	'directives.icon',
 	'ui.bootstrap'
 ])
 

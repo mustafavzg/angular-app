@@ -1,8 +1,9 @@
 angular.module('directives.users', [
-	'services.modelInitializer',
+	'services.directiveInitializer',
 	'services.dictionary',
 	'directives.userthumb',
 	'directives.helptip',
+	'directives.actionicon',
 	'resources.users',
 	'ui.bootstrap',
 	'underscore'
@@ -34,10 +35,12 @@ angular.module('directives.users', [
 				// and that could be a bit slow
 				usersLookUp: '&?',
 				roleFunction: '&?',
+				labelIcon: '@?',
+				labelClickAction: '&?',
 				fetchingUsers: '=?',
 				// Using initOptions one can setup some of the
 				// above attributes
-				// initOptions attributes will override the direct attributes
+				// direct attributes will override the initOptions attributes
 				initOptions: '=?'
 			},
 			controller: [
@@ -45,30 +48,55 @@ angular.module('directives.users', [
 				'$element',
 				'$attrs',
 				'Users',
-				'modelInitializer',
+				'directiveInitializer',
 				'dictionary',
 				'_',
-				function ($scope, $element, $attrs, Users, modelInitializer, dictionary, _) {
+				function ($scope, $element, $attrs, Users, directiveInitializer, dictionary, _) {
 
 					$scope.initOptions = $scope.initOptions || {};
-					$scope.self = {};
-					var interpolationKeys = [
-						'rootDivClass',
-						'collectionName',
-						'label',
-						'helptip',
-						'actionName',
-						'actionIcon',
-						'actionButtonClass',
-						'actionHidden',
-						'actionDisabled'
-					];
-					var expressionKeys = [
-						'action',
-						'roleFunction'
-					];
+ 					$scope.self = {};
+					var attrsData = {
+						initOptions: $scope.initOptions,
+						attrs: $attrs,
+						interpolationKeys: [
+							'rootDivClass',
+							'collectionName',
+							'label',
+							'labelIcon',
+							'helptip',
+							'actionName',
+							'actionIcon',
+							'actionButtonClass',
+							'actionHidden',
+							'actionDisabled'
+						],
+						expressionKeys: [
+							'action',
+							'roleFunction',
+							'labelClickAction'
+						],
+						attrDefaults: {
+							// rootDivClass: 'inline-block',
+							// roleFunction: "getUserRoles(user)",
+							// action: "viewUser(user)",
+							// labelClickAction: "manageUsers()",
+							// // labelClickAction: function () {
+							// // 	console.log("this is the default click action");
+							// // },
+							// actionName: "Inbox",
+							// actionIcon: "inbox",
+							// // actionButtonClass: "btn-info",
+							// actionButtonClass: "btn-success",
+							// helptip: "Edit"
+						}
+					};
+
 					// setup the directive model based on interpolation and expression attributes
-					modelInitializer.init($scope, $scope.self, $scope.initOptions, interpolationKeys, expressionKeys);
+					directiveInitializer.init($scope, $scope.self, attrsData, true);
+					// directiveInitializer.init($scope, $attrs, $scope.self, $scope.initOptions, interpolationKeys, expressionKeys, attrDefaults, true);
+
+					console.log("ATTRIBUTES ARE");
+					console.log($attrs);
 
 					// console.log("options are");
 					// console.log($scope.initOptions);

@@ -1,4 +1,5 @@
 angular.module('directives.userthumb', [
+	'directives.icon',
 	'ui.bootstrap'
 ])
 

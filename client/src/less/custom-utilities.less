@@ -9,8 +9,7 @@
 .media-list li { cursor: pointer; }
 .nav-pills li { cursor: pointer; }
 
-// Change to pointer cursor when hovered over
-.hover-pointer a {
+.hover-pointer {
   cursor: pointer;
 }
 
@@ -136,22 +135,27 @@ textarea {
 
 // .bs-glyphicons{margin:0 auto;overflow:hidden}
 // .bs-glyphicons{margin:0 -19px 20px -16px;overflow:hidden}
-.bs-glyphicons{margin:0 -19px 20px -25px;overflow:hidden}
+// .bs-glyphicons{margin:0 -19px 20px -25px;overflow:hidden}
+.bs-glyphicons{margin:-2px;overflow:hidden}
 
 // .bs-glyphicons-list{margin:0 auto;padding-left:0;list-style:none}
 .bs-glyphicons-list{padding-left:0;list-style:none}
 
 // .bs-glyphicons li{maring-left:0 auto;margin-right:0 auto;width:25%;height:115px;padding:10px;font-size:10px;line-height:1.4;text-align:center;border:1px solid #fff;background-color:#f9f9f9}
 // .bs-glyphicons li{display:inline-block;width:25%;height:115px;padding:10px;font-size:10px;line-height:1.4;text-align:center;border:1px solid #fff;background-color:#f9f9f9}
-.bs-glyphicons li{float:left;width:25%;height:115px;padding:10px;font-size:10px;line-height:1.4;text-align:center;border:1px solid #fff;background-color:#f9f9f9}
+// .bs-glyphicons li{float:left;width:25%;height:115px;padding:10px;font-size:10px;line-height:1.4;text-align:center;border:1px solid #fff;background-color:#f9f9f9}
 
-.bs-glyphicons .glyphicon{margin-top:5px;margin-bottom:10px;font-size:32px}
-.bs-glyphicons .glyphicon-class{display:block;text-align:center;word-wrap:break-word}
+.bs-glyphicons li{float:right;width:60px;height:60px;padding:10px;font-size:6px;line-height:1.4;text-align:center;border:1px solid #fff;background-color:#f9f9f9}
+
+.bs-glyphicons .glyphicon{margin-top:-2px;margin-bottom:1px;font-size:24px}
+// .bs-glyphicons .glyphicon-class{display:block;text-align:center;word-wrap:break-word}
+.bs-glyphicons .glyphicon-class{display:block;text-align:center;word-wrap:normal}
 
 // .bs-glyphicons li:hover{color:#fff;background-color:#563d7c}@media (min-width:768px){
 .bs-glyphicons li:hover{color:#fff;background-color:#428bca}@media (min-width:768px){
 .bs-glyphicons{margin-left:0;margin-right:0}
-.bs-glyphicons li{width:12.5%;font-size:12px}}
+// .bs-glyphicons li{width:12.5%;font-size:12px}}
+.bs-glyphicons li{width:60px;font-size:12px}}
 
 //--------------------------------------------------
 
@@ -215,7 +219,7 @@ textarea {
 .thumbnail-user:hover {
   // background-color:#d9edf7;
   background-color:#EFF7FB;
-  // cursor:pointer;
+  cursor:pointer;
   -webkit-box-shadow: 0 8px 6px -6px black;
   -moz-box-shadow: 0 8px 6px -6px black;
   box-shadow: 0 8px 6px -6px black;

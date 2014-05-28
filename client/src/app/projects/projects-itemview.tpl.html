@@ -6,6 +6,19 @@
 	<div class="panel panel-primary">
 		<div class="panel-heading">
 			<strong>Project</strong>
+				<!-- <div class="bs-glyphicons"> -->
+				<!-- 	<ul class="bs-glyphicons-list"> -->
+				<!-- 		<li ng-repeat="attribute in project.attributeValuesToDisplay | orderBy:'ordering'"> -->
+				<!-- 			<\!-- <span class="glyphicon-class">{{ attribute.name }}</span> -\-> -->
+				<!-- 			<\!-- if glyphicon is defined -\-> -->
+				<!-- 			<span ng-show="!!attribute.glyphiconclass" ng-class="[attribute.glyphiconclass]"></span> -->
+				<!-- 			<span ng-show="!!attribute.glyphiconclass" class="glyphicon-class">{{ attribute.value }}</span> -->
+				<!-- 			<\!-- else -\-> -->
+				<!-- 			<span ng-show="!attribute.glyphiconclass" class="glyphicon">{{ attribute.value }}</span> -->
+				<!-- 			<\!-- endif -\-> -->
+				<!-- 		</li> -->
+				<!-- 	</ul> -->
+				<!-- </div> -->
 		</div>
 	</div>
 
@@ -13,39 +26,167 @@
 	<!-- Project Title, Description -->
 	<!-- -------------------------------------------------- -->
 	<div class="panel panel-default">
+		<div class="panel-heading">
+			<!-- <span class="pull-left"><h4 class="media-heading">{{project.name}}</h4></span> -->
+			<!-- <div class="badge" ng-cloak><strong>{{project.$id()}}</strong></div> -->
+			<!-- <span class="pull-right"> -->
+			<!-- 	<div class="bs-glyphicons"> -->
+			<!-- 		<ul class="bs-glyphicons-list"> -->
+			<!-- 			<li ng-repeat="attribute in project.attributeValuesToDisplay | orderBy:'ordering'"> -->
+			<!-- 				<\!-- <span class="glyphicon-class">{{ attribute.name }}</span> -\-> -->
+			<!-- 				<\!-- if glyphicon is defined -\-> -->
+			<!-- 				<span ng-show="!!attribute.glyphiconclass" ng-class="[attribute.glyphiconclass]"></span> -->
+			<!-- 				<span ng-show="!!attribute.glyphiconclass" class="glyphicon-class">{{ attribute.value }}</span> -->
+			<!-- 				<\!-- else -\-> -->
+			<!-- 				<span ng-show="!attribute.glyphiconclass" class="glyphicon">{{ attribute.value }}</span> -->
+			<!-- 				<\!-- endif -\-> -->
+			<!-- 			</li> -->
+			<!-- 		</ul> -->
+			<!-- 	</div> -->
+
+			<!-- </span> -->
+
+			<div class="media">
+				<property-bar properties="project.attributeValuesToDisplay" root-div-class="media-object pull-right"></property-bar>
+				<!-- <div class="bs-glyphicons media-object pull-right"> -->
+				<!-- 	<ul class="bs-glyphicons-list"> -->
+				<!-- 		<li ng-repeat="attribute in project.attributeValuesToDisplay | orderBy:'ordering'"> -->
+				<!-- 			<\!-- <span class="glyphicon-class">{{ attribute.name }}</span> -\-> -->
+				<!-- 			<\!-- if glyphicon is defined -\-> -->
+				<!-- 			<icon ng-show="!!attribute.glyphiconclass" id="{{attribute.icon}}"></icon> -->
+				<!-- 			<\!-- <span ng-show="!!attribute.glyphiconclass" ng-class="[attribute.glyphiconclass]"></span> -\-> -->
+				<!-- 			<span ng-show="!!attribute.glyphiconclass" class="glyphicon-class">{{ attribute.value }}</span> -->
+				<!-- 			<\!-- else -\-> -->
+				<!-- 			<span ng-show="!attribute.glyphiconclass" class="glyphicon">{{ attribute.value }}</span> -->
+				<!-- 			<\!-- endif -\-> -->
+				<!-- 		</li> -->
+				<!-- 	</ul> -->
+				<!-- </div> -->
+				<div class="media-body">
+					<!-- <label class="media-heading">{{project.name}}</label> -->
+					<h5 class="media-heading strong">{{project.name}}</h5>
+					<div class="badge" ng-cloak><strong>{{project.$id()}}</strong></div>
+				</div>
+			</div>
+
+			<!-- <span class="pull-left"><h4 class="media-heading">{{project.name}}</h4></span> -->
+
+
+			<!-- <ul class="bs-glyphicons-list"> -->
+			<!-- 	<li ng-repeat="attribute in project.attributeValuesToDisplay | orderBy:'ordering'"> -->
+			<!-- 		<\!-- <span class="glyphicon-class">{{ attribute.name }}</span> -\-> -->
+			<!-- 		<\!-- if glyphicon is defined -\-> -->
+			<!-- 		<span ng-show="!!attribute.glyphiconclass" ng-class="[attribute.glyphiconclass]"></span> -->
+			<!-- 		<span ng-show="!!attribute.glyphiconclass" class="glyphicon-class">{{ attribute.value }}</span> -->
+			<!-- 		<\!-- else -\-> -->
+			<!-- 		<span ng-show="!attribute.glyphiconclass" class="glyphicon">{{ attribute.value }}</span> -->
+			<!-- 		<\!-- endif -\-> -->
+			<!-- 	</li> -->
+			<!-- </ul> -->
+
+		</div>
 		<div class="panel-body">
 			<div class="media">
-				<a class="btn btn-primary media-object pull-right" role="button" ng-click="projectsCrudHelpers.edit(project.$id())" ng-cloak>Edit Project</a>
+				<!-- <a class="btn btn-primary media-object pull-right" role="button" ng-click="projectsCrudHelpers.edit(project.$id())" ng-cloak><icon id="edit"></icon> Edit Project</a> -->
 				<!-- <span class="badge media-object pull-left" ng-cloak><strong>{{project.$id()}}</strong></span> -->
-				<div class="badge" ng-cloak><strong>{{project.$id()}}</strong></div>
+				<!-- <div class="badge" ng-cloak><strong>{{project.$id()}}</strong></div> -->
+
+				<!-- <div class="bs-glyphicons"> -->
+				<!-- 	<ul class="bs-glyphicons-list"> -->
+				<!-- 		<li ng-repeat="attribute in project.attributeValuesToDisplay | orderBy:'ordering'"> -->
+				<!-- 			<\!-- <span class="glyphicon-class">{{ attribute.name }}</span> -\-> -->
+				<!-- 			<\!-- if glyphicon is defined -\-> -->
+				<!-- 			<span ng-show="!!attribute.glyphiconclass" ng-class="[attribute.glyphiconclass]"></span> -->
+				<!-- 			<span ng-show="!!attribute.glyphiconclass" class="glyphicon-class">{{ attribute.value }}</span> -->
+				<!-- 			<\!-- else -\-> -->
+				<!-- 			<span ng-show="!attribute.glyphiconclass" class="glyphicon">{{ attribute.value }}</span> -->
+				<!-- 			<\!-- endif -\-> -->
+				<!-- 		</li> -->
+				<!-- 	</ul> -->
+				<!-- </div> -->
+
 				<div class="media-body">
-					<h4 class="media-heading">{{project.name}}</h4>
+					<!-- <h4 class="media-heading">{{project.name}}</h4> -->
+
+					<!-- <div class="bs-glyphicons"> -->
+					<!-- 	<ul class="bs-glyphicons-list"> -->
+					<!-- 		<li ng-repeat="attribute in project.attributeValuesToDisplay | orderBy:'ordering'"> -->
+					<!-- 			<\!-- <span class="glyphicon-class">{{ attribute.name }}</span> -\-> -->
+					<!-- 			<\!-- if glyphicon is defined -\-> -->
+					<!-- 			<span ng-show="!!attribute.glyphiconclass" ng-class="[attribute.glyphiconclass]"></span> -->
+					<!-- 			<span ng-show="!!attribute.glyphiconclass" class="glyphicon-class">{{ attribute.value }}</span> -->
+					<!-- 			<\!-- else -\-> -->
+					<!-- 			<span ng-show="!attribute.glyphiconclass" class="glyphicon">{{ attribute.value }}</span> -->
+					<!-- 			<\!-- endif -\-> -->
+					<!-- 		</li> -->
+					<!-- 	</ul> -->
+					<!-- </div> -->
+
 					<p>{{project.description}}</p>
+					<a class="btn btn-primary media-object pull-right" role="button" ng-click="projectsCrudHelpers.edit(project.$id())" ng-cloak><icon id="edit"></icon> Edit Project</a>
 				</div>
 			</div>
 		</div>
+
+		<!-- <div class="panel-footer"> -->
+		<!-- 	<div class="bs-glyphicons"> -->
+		<!-- 		<ul class="bs-glyphicons-list"> -->
+		<!-- 			<li ng-repeat="attribute in project.attributeValuesToDisplay | orderBy:'ordering'"> -->
+		<!-- 				<\!-- <span class="glyphicon-class">{{ attribute.name }}</span> -\-> -->
+		<!-- 				<\!-- if glyphicon is defined -\-> -->
+		<!-- 				<span ng-show="!!attribute.glyphiconclass" ng-class="[attribute.glyphiconclass]"></span> -->
+		<!-- 				<span ng-show="!!attribute.glyphiconclass" class="glyphicon-class">{{ attribute.value }}</span> -->
+		<!-- 				<\!-- else -\-> -->
+		<!-- 				<span ng-show="!attribute.glyphiconclass" class="glyphicon">{{ attribute.value }}</span> -->
+		<!-- 				<\!-- endif -\-> -->
+		<!-- 			</li> -->
+		<!-- 		</ul> -->
+		<!-- 	</div> -->
+		<!-- </div> -->
+
 	</div>
+
+	<!-- <\!-- -------------------------------------------------- -\-> -->
+	<!-- <\!-- Project attributes -\-> -->
+	<!-- <\!-- -------------------------------------------------- -\-> -->
+	<!-- <div class="panel panel-default"> -->
+	<!-- 	<div class="panel-body"> -->
+	<!-- 		<div class="bs-glyphicons"> -->
+	<!-- 			<ul class="bs-glyphicons-list"> -->
+	<!-- 				<li ng-repeat="attribute in project.attributeValuesToDisplay | orderBy:'ordering'"> -->
+	<!-- 					<span class="glyphicon-class">{{ attribute.name }}</span> -->
+	<!-- 					<\!-- if glyphicon is defined -\-> -->
+	<!-- 					<span ng-show="!!attribute.glyphiconclass" ng-class="[attribute.glyphiconclass]"></span> -->
+	<!-- 					<span ng-show="!!attribute.glyphiconclass" class="glyphicon-class">{{ attribute.value }}</span> -->
+	<!-- 					<\!-- else -\-> -->
+	<!-- 					<span ng-show="!attribute.glyphiconclass" class="glyphicon">{{ attribute.value }}</span> -->
+	<!-- 					<\!-- endif -\-> -->
+	<!-- 				</li> -->
+	<!-- 			</ul> -->
+	<!-- 		</div> -->
+	<!-- 	</div> -->
+	<!-- </div> -->
 
 	<!-- -------------------------------------------------- -->
 	<!-- Project attributes -->
 	<!-- -------------------------------------------------- -->
-	<div class="panel panel-default">
-		<div class="panel-body">
-			<div class="bs-glyphicons">
-				<ul class="bs-glyphicons-list">
-					<li ng-repeat="attribute in project.attributeValuesToDisplay | orderBy:'ordering'">
-						<span class="glyphicon-class">{{ attribute.name }}</span>
-						<!-- if glyphicon is defined -->
-						<span ng-show="!!attribute.glyphiconclass" ng-class="[attribute.glyphiconclass]"></span>
-						<span ng-show="!!attribute.glyphiconclass" class="glyphicon-class">{{ attribute.value }}</span>
-						<!-- else -->
-						<span ng-show="!attribute.glyphiconclass" class="glyphicon">{{ attribute.value }}</span>
-						<!-- endif -->
-					</li>
-				</ul>
-			</div>
-		</div>
-	</div>
+	<!-- <div class="panel panel-default"> -->
+	<!-- 	<div class="panel-body"> -->
+	<!-- 		<div class="bs-glyphicons"> -->
+	<!-- 			<ul class="bs-glyphicons-list"> -->
+	<!-- 				<li ng-repeat="attribute in project.attributeValuesToDisplay | orderBy:'ordering'"> -->
+	<!-- 					<\!-- <span class="glyphicon-class">{{ attribute.name }}</span> -\-> -->
+	<!-- 					<\!-- if glyphicon is defined -\-> -->
+	<!-- 					<span ng-show="!!attribute.glyphiconclass" ng-class="[attribute.glyphiconclass]"></span> -->
+	<!-- 					<span ng-show="!!attribute.glyphiconclass" class="glyphicon-class">{{ attribute.value }}</span> -->
+	<!-- 					<\!-- else -\-> -->
+	<!-- 					<span ng-show="!attribute.glyphiconclass" class="glyphicon">{{ attribute.value }}</span> -->
+	<!-- 					<\!-- endif -\-> -->
+	<!-- 				</li> -->
+	<!-- 			</ul> -->
+	<!-- 		</div> -->
+	<!-- 	</div> -->
+	<!-- </div> -->
 	
 	<!-- -------------------------------------------------- -->
 	<!-- Other Entities -->

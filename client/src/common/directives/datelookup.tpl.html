@@ -4,7 +4,7 @@
 		<div class="input-group">
 			<input type="text" name="dateField" id="dateField" class="form-control" datepicker-popup="{{format}}" ng-model="date" is-open="opened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="required" close-text="Close" />
 			<span class="input-group-btn">
-				<button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+				<button type="button" class="btn btn-default" ng-click="open($event)"><icon id="calendar"></icon></button>
 			</span>
 		</div>
 		<span class="help-block" ng-show="showError('date')" >{{label}} is invalid. Please enter a valid date.</span>
