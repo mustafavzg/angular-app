@@ -1,11 +1,5 @@
 <div id="container-productbacklog-itemview">
 
-	<!-- <div class="row-fluid"> -->
-	<!-- 	<div class="span12 entityheader"> -->
-	<!-- 		<h5>Product Backlog Item</h5>			 -->
-	<!-- 	</div> -->
-	<!-- </div> -->
-
 	<!-- -------------------------------------------------- -->
 	<!-- Product Backlog Item Header -->
 	<!-- -------------------------------------------------- -->
@@ -14,9 +8,6 @@
 			<strong>Product Backlog Item</strong>
 		</div>
 	</div>
-
-
-	<hr />
 
 	<!-- -------------------------------------------------- -->
 	<!-- Product Backlog Item Title, Description, Properties -->
@@ -44,29 +35,6 @@
 		</div>
 	</div>
 
-
-	<!-- <div class="entityinfo"> -->
-	<!-- 	<\!-- -------------------------------------------------- -\-> -->
-	<!-- 	<\!-- Product Backlog Item Title, Description -\-> -->
-	<!-- 	<\!-- -------------------------------------------------- -\-> -->
-	<!-- 	<div class="row-fluid"> -->
-	<!-- 		<span class="pull-left" ng-cloak><strong>{{backlogItem.$id()}}</strong></span> -->
-	<!-- 	</div> -->
-	<!-- 	<div class="row-fluid"> -->
-	<!-- 		<div class="span12"> -->
-	<!-- 			<\!-- <span class="pull-left"><strong>{{backlogItem.name}}</strong></span> -\-> -->
-	<!-- 			<span class="pull-left"><h4>{{backlogItem.name}}</h4></span> -->
-	<!-- 			<span class="pull-right hover-pointer" ng-click="backlogItemscrudhelpers.edit(backlogItem.$id())" ng-cloak><a><strong>Edit Backlog Item</strong></a></span> -->
-	<!-- 		</div> -->
-	<!-- 	</div> -->
-	<!-- 	<div class="row-fluid"> -->
-	<!-- 		<div class="span12 bordered"> -->
-	<!-- 			<span class="pull-left">{{backlogItem.desc}}</span> -->
-	<!-- 		</div> -->
-	<!-- 	</div> -->
-	<!-- </div> -->
-
-
 	<!-- -------------------------------------------------- -->
 	<!-- Other Entities -->
 	<!-- TODO: Implement this with ng-repeat or in separate template files -->
@@ -80,73 +48,4 @@
 	</div>
 	<!-- Other Entities End -->
 
-
-	<!-- <div class="bordered"> -->
-	<!-- 	<\!-- -------------------------------------------------- -\-> -->
-	<!-- 	<\!-- Product Backlog Item attributes -\-> -->
-	<!-- 	<\!-- -------------------------------------------------- -\-> -->
-	<!-- 	<div class="bordered"> -->
-	<!-- 		<div class="row-fluid" ng-repeat="attribute in backlogItem.attributesToDisplay"> -->
-	<!-- 			<div class="span12 attribute attribute-hover"> -->
-	<!-- 				<span class="pull-left"><strong>{{ attribute.name }}</strong></span> -->
-	<!-- 				<span class="pull-right"><strong>{{ attribute.value }}</strong></span> -->
-	<!-- 			</div> -->
-	<!-- 		</div> -->
-	<!-- 	</div> -->
-
-	<!-- 	<\!-- -------------------------------------------------- -\-> -->
-	<!-- 	<\!-- Task list -\-> -->
-	<!-- 	<\!-- -------------------------------------------------- -\-> -->
-	<!-- 	<div class="row-fluid"> -->
-	<!-- 		<div class="span12 bordered"> -->
-				
-	<!-- 			<\!-- Header with title and search bar -\-> -->
-	<!-- 			<div class="row-fluid"> -->
-	<!-- 				<div class="span12" > -->
-	<!-- 					<\!-- <span class="pull-left hover-pointer" ng-click="manageTasksForBacklogItem(backlogItem)"> -\-> -->
-	<!-- 					<span class="pull-left hover-pointer" ng-click="manageTasks(project)"> -->
-	<!-- 						<strong><a>Tasks</a></strong> -->
-	<!-- 					</span> -->
-	<!-- 					<span class="pull-right"> -->
-	<!-- 						<input type="text" id="taskquery" ng-model="taskquery" ng-disabled="!tasks.length"  placeholder="Search Tasks ... "/> -->
-	<!-- 					</span> -->
-	<!-- 				</div> -->
-	<!-- 			</div> -->
-
-	<!-- 			<\!-- Task list -\-> -->
-	<!-- 			<div class="row-fluid"> -->
-	<!-- 				<table class="table table-bordered-outer table-condensed table-striped-color table-hover-color"> -->
-	<!-- 					<thead> -->
-	<!-- 						<tr> -->
-	<!-- 							<th>Name</th> -->
-	<!-- 							<th>Description</th> -->
-	<!-- 							<th>Estimation</th> -->
-	<!-- 							<th>Remaining</th> -->
-	<!-- 						</tr> -->
-	<!-- 					</thead> -->
-	<!-- 					<tbody> -->
-	<!-- 						<tr ng-repeat="task in tasks | filter:{name:taskquery}" ng-click="taskscrudhelpers.view(task.$id())"> -->
-	<!-- 							<td>{{task.name}}</td> -->
-	<!-- 							<td>{{task.desc}}</td> -->
-	<!-- 							<td>{{task.estimation}}</td> -->
-	<!-- 							<td>{{task.remaining}}</td> -->
-	<!-- 						</tr> -->
-	<!-- 						<tr ng-show="fetchingtasks"> -->
-	<!-- 							<td colspan="4">Fetching Tasks ... -->
-	<!-- 								<span><a href="#"><img src="/static/img/spinner.gif"></a></span> -->
-	<!-- 							</td> -->
-	<!-- 						</tr> -->
-	<!-- 						<tr ng-show="!tasks.length && !fetchingtasks"> -->
-	<!-- 							<td colspan="4">No tasks in the backlog</td> -->
-	<!-- 						</tr> -->
-	<!-- 					</tbody> -->
-	<!-- 				</table> -->
-	<!-- 			</div> -->
-
-	<!-- 		</div> -->
-	<!-- 	</div> -->
-	<!-- 	<\!-- Task list -\-> -->
-
-	<!-- </div> -->
-	
 </div>

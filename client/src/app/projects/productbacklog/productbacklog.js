@@ -159,7 +159,6 @@ angular.module('productbacklog', [
 	'crudListMethods',
 	'project',
 	'backlogItem',
-	// 'tasks',
 	'Tasks',
 	'$q',
 	function(
@@ -168,18 +167,15 @@ angular.module('productbacklog', [
 		crudListMethods,
 		project,
 		backlogItem,
-		// tasks,
 		Tasks,
 		$q
 	){
 
 		$scope.backlogItem = backlogItem;
-		// $scope.tasks = tasks;
 		$scope.project = project;
 
 		$scope.backlogItemsCrudHelpers = {};
 		angular.extend($scope.backlogItemsCrudHelpers, crudListMethods('/projects/'+project.$id()+'/productbacklog'));
-
 
 		$scope.backlogItem.attributesToDisplay = {
 			priority : {
@@ -192,8 +188,8 @@ angular.module('productbacklog', [
 			estimation : {
 				name : 'Estimation',
 				value : backlogItem.estimation,
-				glyphiconclass : 'glyphicon glyphicon-tint',
-				icon : 'tint',
+				glyphiconclass : 'glyphicon glyphicon-time',
+				icon : 'time',
 				ordering : 2
 			}
 		};
@@ -272,31 +268,6 @@ angular.module('productbacklog', [
 				}
 			]
 		};
-
-
-		// /**************************************************
-		//  * Fetch task and crud helpers
-		//  **************************************************/
-		// $scope.fetchingtasks = true;
-		// $scope.tasks = [];
-		// $q.when(Tasks.forProductBacklogItemId(backlogItem.$id())).then(
-		// 	function (tasks) {
-		// 		$scope.tasks = tasks;
-		// 		$scope.fetchingtasks = false;
-		// 	}
-		// );
-		// $scope.taskscrudhelpers = {};
-		// angular.extend($scope.taskscrudhelpers, crudListMethods('/projects/'+project.$id()+'/tasks'));
-		// console.log(project);
-		// console.log($scope.taskscrudhelpers);
-
-		// $scope.manageTasks = function (project) {
-		// 	$location.path('/projects/'+project.$id()+'/tasks');
-		// };
-
-		// $scope.manageTasksForBacklogItem = function (backlogItem) {
-		// 	$location.path('/projects/'+project.$id()+'/productbacklog/'+backlogItem.$id());
-		// };
 
 	}
 ]);
