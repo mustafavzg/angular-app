@@ -5,6 +5,7 @@ angular.module('productbacklog', [
 	'directives.tableactive',
 	'directives.icon',
 	'directives.propertybar',
+	'directives.actionicon',
 	'services.crud',
 	'services.i18nNotifications'
 ])
@@ -86,7 +87,14 @@ angular.module('productbacklog', [
 
 		// How to handle the "edit a product backlog item" route
 		.whenEdit({
-			projectId: projectId,
+			project:[
+				'$route',
+				'Projects',
+				function ($route, Projects) {
+					return Projects.getById($route.current.params.projectId);
+				}
+			],
+			// projectId: projectId,
 			backlogItem : [
 				'$route',
 				'ProductBacklog',
@@ -105,27 +113,29 @@ angular.module('productbacklog', [
 .controller('ProductBacklogEditCtrl', [
 	'$scope',
 	'$location',
-	'projectId',
+	// 'projectId',
+	'project',
 	'backlogItem',
 	'crudListMethods',
 	'i18nNotifications',
 	function(
 		$scope,
 		$location,
-		projectId,
+		// projectId,
+		project,
 		backlogItem,
 		crudListMethods,
 		i18nNotifications
 	){
 
 		$scope.backlogItem = backlogItem;
-		$scope.backlogItemscrudhelpers = {};
-		angular.extend($scope.backlogItemscrudhelpers, crudListMethods('/projects/'+projectId+'/productbacklog'));
 
+		$scope.backlogItemsCrudHelpers = {};
+		angular.extend($scope.backlogItemsCrudHelpers, crudListMethods('/projects/'+project.$id()+'/productbacklog'));
 
 		$scope.onSave = function () {
 			i18nNotifications.pushForNextRoute('crud.backlog.save.success', 'success', {id : backlogItem.$id()});
-			$location.path('/projects/'+projectId+'/productbacklog');
+			$location.path('/projects/' + project.$id() + '/productbacklog/' + backlogItem.$id());
 		};
 
 		$scope.onError = function () {

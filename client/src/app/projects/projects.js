@@ -14,6 +14,7 @@ angular.module('projects', [
 	'directives.users',
 	'directives.userscombosearchadd',
 	'directives.icon',
+	'directives.actionicon',
 	'directives.test',
 	'services.crud',
 	'security.authorization',

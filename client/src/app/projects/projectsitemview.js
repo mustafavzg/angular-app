@@ -281,7 +281,7 @@ angular.module('projectsitemview', [
 					widthClass : 'col-md-2'
 				},
 				{
-					key : 'desc',
+					key : 'description',
 					prettyName : 'Description',
 					widthClass : 'col-md-4'
 				},
