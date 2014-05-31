@@ -3,7 +3,8 @@ angular.module('sprints', [
 	'resources.sprints',
 	'resources.tasks',
 	'services.crud',
-	'tasks'
+	'tasks',
+	'underscore'
 ])
 
 .config([
@@ -14,6 +15,14 @@ angular.module('sprints', [
 			'$route',
 			function($route) {
 				return $route.current.params.projectId;
+			}
+		];
+
+		var project = [
+			'$route',
+			'Projects',
+			function ($route, Projects) {
+				return Projects.getById($route.current.params.projectId);
 			}
 		];
 
@@ -38,6 +47,7 @@ angular.module('sprints', [
 		})
 
 		.whenNew({
+			project: project,
 			projectId: projectId,
 			sprint: [
 				'$route',
@@ -50,13 +60,14 @@ angular.module('sprints', [
 		})
 
 		.whenView({
-			project:[
-				'$route',
-				'Projects',
-				function ($route, Projects) {
-					return Projects.getById($route.current.params.projectId);
-				}
-			],
+			// project:[
+			// 	'$route',
+			// 	'Projects',
+			// 	function ($route, Projects) {
+			// 		return Projects.getById($route.current.params.projectId);
+			// 	}
+			// ],
+			project: project,
 			projectId: projectId,
 			sprint: [
 				'$route',
@@ -71,6 +82,14 @@ angular.module('sprints', [
 		})
 
 		.whenEdit({
+			// project:[
+			// 	'$route',
+			// 	'Projects',
+			// 	function ($route, Projects) {
+			// 		return Projects.getById($route.current.params.projectId);
+			// 	}
+			// ],
+			project: project,
 			projectId: projectId,
 			sprint: [
 				'$route',
@@ -109,6 +128,8 @@ angular.module('sprints', [
 	'sprint',
 	'Tasks',
 	'$q',
+	'dateFilter',
+	'_',
 	function(
 		$scope,
 		$location,
@@ -116,51 +137,158 @@ angular.module('sprints', [
 		project,
 		sprint,
 		Tasks,
-		$q
+		$q,
+		dateFilter,
+		_
 	){
 
 		$scope.sprint = sprint;
 		$scope.project = project;
 
-		$scope.sprintscrudhelpers = {};
-		angular.extend($scope.sprintscrudhelpers, crudListMethods('/projects/'+project.$id()+'/sprints'));
+		$scope.sprintsCrudHelpers = {};
+		angular.extend($scope.sprintsCrudHelpers, crudListMethods('/projects/'+project.$id()+'/sprints'));
 
-		$scope.sprint.attributesToDisplay = [
-			{
-				name : 'Project Name',
-				value : project.name
-			},
-			{
-				name : 'Start Date',
-				value : sprint.start
-			},
-			{
-				name : 'End Date',
-				value : sprint.end
-			},
-			{
+		// $scope.sprintscrudhelpers = {};
+		// angular.extend($scope.sprintscrudhelpers, crudListMethods('/projects/'+project.$id()+'/sprints'));
+
+		$scope.sprint.attributesToDisplay = {
+			status : {
 				name : 'Status',
-				value : 'ACTIVEDUMMY'
+				// value : sprint.status,
+				value : 'Active',
+				glyphiconclass : 'glyphicon glyphicon-sound-stereo',
+				icon : 'sound-stereo',
+				ordering : 1
+			},
+			capacity : {
+				name : 'Capacity',
+				value : sprint.capacity,
+				glyphiconclass : 'glyphicon glyphicon-user',
+				icon : 'user',
+				ordering : 2
+			},
+			startdate : {
+				name : 'Start Date',
+				value : dateFilter(sprint.startdate, 'shortDate'),
+				glyphiconclass : 'glyphicon glyphicon-chevron-right',
+				icon : 'chevron-right',
+				ordering : 3
+			},
+			enddate : {
+				name : 'End Date',
+				value : dateFilter(sprint.enddate, 'shortDate'),
+				glyphiconclass : 'glyphicon glyphicon-chevron-left',
+				icon : 'chevron-left',
+				ordering : 4
 			}
-		];
+		};
+
+		$scope.sprint.attributeValuesToDisplay = _.values($scope.sprint.attributesToDisplay);
+
+		// $scope.sprint.attributesToDisplay = [
+		// 	// {
+		// 	// 	name : 'Project Name',
+		// 	// 	value : project.name
+		// 	// },
+		// 	{
+		// 		name : 'Start Date',
+		// 		value : sprint.start
+		// 	},
+		// 	{
+		// 		name : 'End Date',
+		// 		value : sprint.end
+		// 	},
+		// 	{
+		// 		name : 'Status',
+		// 		value : 'ACTIVEDUMMY'
+		// 	}
+		// ];
 
 		/**************************************************
 		 * Fetch task and crud helpers
 		 **************************************************/
-		$scope.fetchingtasks = true;
+		$scope.fetchingTasks = true;
 		$scope.tasks = [];
-		$q.when(Tasks.forSprint(sprint.$id())).then(
-			function (tasks) {
-				$scope.tasks = tasks;
-				$scope.fetchingtasks = false;
-			}
-		);
-		$scope.taskscrudhelpers = {};
-		angular.extend($scope.taskscrudhelpers, crudListMethods('/projects/'+project.$id()+'/tasks'));
 
-		$scope.manageTasks = function (project) {
+		$scope.tasksCrudHelpers = {};
+		angular.extend($scope.tasksCrudHelpers, crudListMethods('/projects/'+project.$id()+'/tasks'));
+
+		$scope.manageTasks = function () {
 			$location.path('/projects/'+project.$id()+'/tasks');
 		};
+
+		Tasks.forSprint(
+			sprint.$id(),
+			function (tasks, responsestatus, responseheaders, responseconfig) {
+				$scope.tasks = tasks;
+				$scope.fetchingTasks = false;
+				console.log("Succeeded to fetch tasks");
+			},
+			function (response, responsestatus, responseheaders, responseconfig) {
+				$scope.fetchingTasks = false;
+				console.log("Failed to fetch tasks");
+				console.log(response);
+			}
+		);
+
+		$scope.tasksConf = {
+			resource : {
+				key : 'tasks',
+				prettyName : 'Tasks',
+				altPrettyName : 'Tasks',
+				link : $scope.manageTasks,
+				rootDivClass : 'panel-body',
+				itemsCrudHelpers : $scope.tasksCrudHelpers
+			},
+			pagination : {
+				currentPage : 1,
+				itemsPerPage : 20
+			},
+			sortinit : {
+				fieldKey : 'name',
+				reverse : false
+			},
+			tableColumns : [
+				{
+					key : 'name',
+					prettyName : 'Name',
+					widthClass : 'col-md-2'
+				},
+				{
+					key : 'desc',
+					prettyName : 'Description',
+					widthClass : 'col-md-4'
+				},
+				{
+					key : 'priority',
+					prettyName : 'Priority',
+					widthClass : 'col-md-1'
+				},
+				{
+					key : 'estimation',
+					prettyName : 'Estimation',
+					widthClass : 'col-md-1'
+				},
+				{
+					key : 'status',
+					prettyName : 'Status',
+					widthClass : 'col-md-1'
+				}
+			]
+		};
+
+		// $q.when(Tasks.forSprint(sprint.$id())).then(
+		// 	function (tasks) {
+		// 		$scope.tasks = tasks;
+		// 		$scope.fetchingtasks = false;
+		// 	}
+		// );
+		// $scope.taskscrudhelpers = {};
+		// angular.extend($scope.taskscrudhelpers, crudListMethods('/projects/'+project.$id()+'/tasks'));
+
+		// $scope.manageTasks = function (project) {
+		// 	$location.path('/projects/'+project.$id()+'/tasks');
+		// };
 
 		// $scope.manageTasksForSprint = function (sprint) {
 		// 	$location.path('/projects/'+project.$id()+'/sprints/'+sprint.$id());
@@ -171,20 +299,24 @@ angular.module('sprints', [
 .controller('SprintsEditCtrl', [
 	'$scope',
 	'$location',
-	'projectId',
+	'project',
 	'sprint',
 	'productBacklog',
 	'crudListMethods',
-	function($scope, $location, projectId, sprint, productBacklog, crudListMethods){
+	function($scope, $location, project, sprint, productBacklog, crudListMethods){
 
+		// $scope.project = project;
 		$scope.productBacklog = productBacklog;
 		$scope.sprint = sprint;
 
-		$scope.sprintscrudhelpers = {};
-		angular.extend($scope.sprintscrudhelpers, crudListMethods('/projects/'+projectId+'/sprints'));
+		$scope.sprintsCrudHelpers = {};
+		angular.extend($scope.sprintsCrudHelpers, crudListMethods('/projects/'+project.$id()+'/sprints'));
+
+		// $scope.sprintscrudhelpers = {};
+		// angular.extend($scope.sprintscrudhelpers, crudListMethods('/projects/'+project.$id()+'/sprints'));
 
 		$scope.onSave = function () {
-			$location.path('/projects/'+projectId+'/sprints');
+			$location.path('/projects/'+project.$id()+'/sprints');
 		};
 		$scope.onError = function () {
 			$scope.updateError = true;
@@ -198,7 +330,7 @@ angular.module('sprints', [
 		});
 
 		$scope.viewProductBacklogItem = function (productBacklogItemId) {
-			$location.path('/projects/'+projectId+'/productbacklog/'+productBacklogItemId);
+			$location.path('/projects/'+project.$id()+'/productbacklog/'+productBacklogItemId);
 		};
 
 		$scope.addBacklogItem = function (backlogItem) {
