@@ -60,13 +60,6 @@ angular.module('sprints', [
 		})
 
 		.whenView({
-			// project:[
-			// 	'$route',
-			// 	'Projects',
-			// 	function ($route, Projects) {
-			// 		return Projects.getById($route.current.params.projectId);
-			// 	}
-			// ],
 			project: project,
 			projectId: projectId,
 			sprint: [
@@ -82,13 +75,6 @@ angular.module('sprints', [
 		})
 
 		.whenEdit({
-			// project:[
-			// 	'$route',
-			// 	'Projects',
-			// 	function ($route, Projects) {
-			// 		return Projects.getById($route.current.params.projectId);
-			// 	}
-			// ],
 			project: project,
 			projectId: projectId,
 			sprint: [
@@ -148,9 +134,6 @@ angular.module('sprints', [
 		$scope.sprintsCrudHelpers = {};
 		angular.extend($scope.sprintsCrudHelpers, crudListMethods('/projects/'+project.$id()+'/sprints'));
 
-		// $scope.sprintscrudhelpers = {};
-		// angular.extend($scope.sprintscrudhelpers, crudListMethods('/projects/'+project.$id()+'/sprints'));
-
 		$scope.sprint.attributesToDisplay = {
 			status : {
 				name : 'Status',
@@ -184,25 +167,6 @@ angular.module('sprints', [
 		};
 
 		$scope.sprint.attributeValuesToDisplay = _.values($scope.sprint.attributesToDisplay);
-
-		// $scope.sprint.attributesToDisplay = [
-		// 	// {
-		// 	// 	name : 'Project Name',
-		// 	// 	value : project.name
-		// 	// },
-		// 	{
-		// 		name : 'Start Date',
-		// 		value : sprint.start
-		// 	},
-		// 	{
-		// 		name : 'End Date',
-		// 		value : sprint.end
-		// 	},
-		// 	{
-		// 		name : 'Status',
-		// 		value : 'ACTIVEDUMMY'
-		// 	}
-		// ];
 
 		/**************************************************
 		 * Fetch task and crud helpers
@@ -277,22 +241,6 @@ angular.module('sprints', [
 			]
 		};
 
-		// $q.when(Tasks.forSprint(sprint.$id())).then(
-		// 	function (tasks) {
-		// 		$scope.tasks = tasks;
-		// 		$scope.fetchingtasks = false;
-		// 	}
-		// );
-		// $scope.taskscrudhelpers = {};
-		// angular.extend($scope.taskscrudhelpers, crudListMethods('/projects/'+project.$id()+'/tasks'));
-
-		// $scope.manageTasks = function (project) {
-		// 	$location.path('/projects/'+project.$id()+'/tasks');
-		// };
-
-		// $scope.manageTasksForSprint = function (sprint) {
-		// 	$location.path('/projects/'+project.$id()+'/sprints/'+sprint.$id());
-		// };
 	}
 ])
 

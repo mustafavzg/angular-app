@@ -9,13 +9,6 @@
 		</div>
 	</div>
 
-	<!-- <div class="row-fluid"> -->
-	<!-- 	<div class="span12 entityheader"> -->
-	<!-- 		<h5>Sprint</h5>			 -->
-	<!-- 	</div> -->
-	<!-- </div> -->
-	<!-- <hr /> -->
-
 	<!-- -------------------------------------------------- -->
 	<!-- Sprint Title, Description, Properties -->
 	<!-- -------------------------------------------------- -->
@@ -42,28 +35,6 @@
 		</div>
 	</div>
 
-	<!-- <div class="entityinfo"> -->
-	<!-- 	<\!-- -------------------------------------------------- -\-> -->
-	<!-- 	<\!-- Sprint Title, Description -\-> -->
-	<!-- 	<\!-- -------------------------------------------------- -\-> -->
-	<!-- 	<div class="row-fluid"> -->
-	<!-- 		<span class="pull-left" ng-cloak><strong>{{sprint.$id()}}</strong></span> -->
-	<!-- 	</div> -->
-	<!-- 	<div class="row-fluid"> -->
-	<!-- 		<div class="span12"> -->
-	<!-- 			<\!-- <span class="pull-left"><strong>{{sprint.name}}</strong></span> -\-> -->
-	<!-- 			<span class="pull-left"><h4>{{sprint.name}}</h4></span> -->
-	<!-- 			<span class="pull-right hover-pointer" ng-click="sprintscrudhelpers.edit(sprint.$id())" ng-cloak><a><strong>Edit Sprint</strong></a></span> -->
-	<!-- 		</div> -->
-	<!-- 	</div> -->
-	<!-- 	<div class="row-fluid"> -->
-	<!-- 		<div class="span12 bordered"> -->
-	<!-- 			<span class="pull-left">{{sprint.desc}}</span> -->
-	<!-- 		</div> -->
-	<!-- 	</div> -->
-	<!-- </div> -->
-
-
 	<!-- -------------------------------------------------- -->
 	<!-- Other Entities -->
 	<!-- TODO: Implement this with ng-repeat or in separate template files -->
@@ -76,73 +47,5 @@
 		</tabset>
 	</div>
 	<!-- Other Entities End -->
-
-	<!-- <div class="bordered"> -->
-	<!-- 	<\!-- -------------------------------------------------- -\-> -->
-	<!-- 	<\!-- Sprint attributes -\-> -->
-	<!-- 	<\!-- -------------------------------------------------- -\-> -->
-	<!-- 	<div class="bordered"> -->
-	<!-- 		<div class="row-fluid" ng-repeat="attribute in sprint.attributesToDisplay"> -->
-	<!-- 			<div class="span12 attribute attribute-hover"> -->
-	<!-- 				<span class="pull-left"><strong>{{ attribute.name }}</strong></span> -->
-	<!-- 				<span class="pull-right"><strong>{{ attribute.value }}</strong></span> -->
-	<!-- 			</div> -->
-	<!-- 		</div> -->
-	<!-- 	</div> -->
-
-	<!-- 	<\!-- -------------------------------------------------- -\-> -->
-	<!-- 	<\!-- Task list -\-> -->
-	<!-- 	<\!-- -------------------------------------------------- -\-> -->
-	<!-- 	<div class="row-fluid"> -->
-	<!-- 		<div class="span12 bordered"> -->
-				
-	<!-- 			<\!-- Header with title and search bar -\-> -->
-	<!-- 			<div class="row-fluid"> -->
-	<!-- 				<div class="span12" > -->
-	<!-- 					<\!-- <span class="pull-left hover-pointer" ng-click="manageTasksForSprint(sprint)"> -\-> -->
-	<!-- 					<span class="pull-left hover-pointer" ng-click="manageTasks(project)"> -->
-	<!-- 						<strong><a>Tasks</a></strong> -->
-	<!-- 					</span> -->
-	<!-- 					<span class="pull-right"> -->
-	<!-- 						<input type="text" id="taskquery" ng-model="taskquery" ng-disabled="!tasks.length"  placeholder="Search Tasks ... "/> -->
-	<!-- 					</span> -->
-	<!-- 				</div> -->
-	<!-- 			</div> -->
-
-	<!-- 			<\!-- Task list -\-> -->
-	<!-- 			<div class="row-fluid"> -->
-	<!-- 				<table class="table table-bordered-outer table-condensed table-striped-color table-hover-color"> -->
-	<!-- 					<thead> -->
-	<!-- 						<tr> -->
-	<!-- 							<th>Name</th> -->
-	<!-- 							<th>Description</th> -->
-	<!-- 							<th>Estimation</th> -->
-	<!-- 							<th>Remaining</th> -->
-	<!-- 						</tr> -->
-	<!-- 					</thead> -->
-	<!-- 					<tbody> -->
-	<!-- 						<tr ng-repeat="task in tasks | filter:{name:taskquery}" ng-click="taskscrudhelpers.view(task.$id())"> -->
-	<!-- 							<td>{{task.name}}</td> -->
-	<!-- 							<td>{{task.desc}}</td> -->
-	<!-- 							<td>{{task.estimation}}</td> -->
-	<!-- 							<td>{{task.remaining}}</td> -->
-	<!-- 						</tr> -->
-	<!-- 						<tr ng-show="fetchingtasks"> -->
-	<!-- 							<td colspan="4">Fetching Tasks ... -->
-	<!-- 								<span><a href="#"><img src="/static/img/spinner.gif"></a></span> -->
-	<!-- 							</td> -->
-	<!-- 						</tr> -->
-	<!-- 						<tr ng-show="!tasks.length && !fetchingtasks"> -->
-	<!-- 							<td colspan="4">No tasks in the sprint</td> -->
-	<!-- 						</tr> -->
-	<!-- 					</tbody> -->
-	<!-- 				</table> -->
-	<!-- 			</div> -->
-	<!-- 			<\!-- Task list -\-> -->
-
-	<!-- 		</div> -->
-	<!-- 	</div> -->
-
-	<!-- </div> -->
 
 </div>
