@@ -11,7 +11,8 @@ angular.module('directives.icon', [
 			replace: true,
 			transclude: true,
 			scope: {
-				id: '@'
+				id: '@',
+				flip: '@?'
 			}
 		};
 	}

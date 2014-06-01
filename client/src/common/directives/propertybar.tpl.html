@@ -3,7 +3,7 @@
 	<ul class="bs-glyphicons-list">
 		<li ng-repeat="attribute in properties | orderBy:'ordering':reverse" tooltip="{{attribute.name}}" >
 			<!-- if glyphicon is defined -->
-			<icon ng-show="!!attribute.icon" id="{{attribute.icon}}"></icon>
+			<icon ng-show="!!attribute.icon" id="{{attribute.icon}}" flip="{{attribute.flip}}" ></icon>
 			<span ng-show="!!attribute.icon" class="glyphicon-class">{{ attribute.value }}</span>
 			<!-- else -->
 			<span ng-show="!attribute.icon" class="glyphicon">{{ attribute.value }}</span>

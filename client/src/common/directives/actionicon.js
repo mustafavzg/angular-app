@@ -14,6 +14,7 @@ angular.module('directives.actionicon', [
 			scope: {
 				tip: '@',
 				icon: '@?',
+				flip: '@?',
 				action: '&?'
 			},
 			controller: [
@@ -28,13 +29,18 @@ angular.module('directives.actionicon', [
 						attrs: $attrs,
 						interpolationKeys: [
 							'tip',
-							'icon'
+							'icon',
+							'flip'
 						],
 						expressionKeys: [
 							'action'
 						],
 						attrDefaults: {
 							icon: "info-sign"
+							// fix the bug here, false is flipping
+							// the icons, possibly taken as string
+							// even directive attribute is not working
+							// flip: false
 						}
 					};
 

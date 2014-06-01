@@ -1,45 +1,92 @@
 <div id="container-task-itemview">
-	<div class="row-fluid">
-		<div class="span12 entityheader">
-			<h5>Task</h5>			
+
+	<!-- -------------------------------------------------- -->
+	<!-- Task Header -->
+	<!-- -------------------------------------------------- -->
+ 	<div class="panel panel-primary">
+		<div class="panel-heading">
+			<strong>Task</strong>
 		</div>
 	</div>
 
-	<hr />
+	<!-- <div class="row-fluid"> -->
+	<!-- 	<div class="span12 entityheader"> -->
+	<!-- 		<h5>Task</h5>			 -->
+	<!-- 	</div> -->
+	<!-- </div> -->
+	<!-- <hr /> -->
 
-	<div class="entityinfo">
-		<!-- -------------------------------------------------- -->
-		<!-- Task Title, Description -->
-		<!-- -------------------------------------------------- -->
-		<div class="row-fluid">
-			<span class="pull-left" ng-cloak><strong>{{task.$id()}}</strong></span>
-		</div>
-		<div class="row-fluid">
-			<div class="span12">
-				<!-- <span class="pull-left"><strong>{{task.name}}</strong></span> -->
-				<span class="pull-left"><h4>{{task.name}}</h4></span>
-				<span class="pull-right hover-pointer" ng-click="taskscrudhelpers.edit(task.$id())" ng-cloak><a><strong>Edit Task</strong></a></span>
+	<!-- -------------------------------------------------- -->
+	<!-- Task Title, Description, Properties -->
+	<!-- -------------------------------------------------- -->
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<div class="media">
+				<property-bar properties="task.attributeValuesToDisplay" root-div-class="media-object pull-right" reverse="true" ></property-bar>
+				<div class="media-body">
+					<label class="media-heading">{{task.name}}</label>
+					<br /><div class="badge" ng-cloak><strong>{{task.$id()}}</strong></div>
+				</div>
 			</div>
-		</div>
-		<div class="row-fluid">
-			<div class="span12 bordered">
-				<span class="pull-left">{{task.desc}}</span>
-			</div>
-		</div>
-	</div>
 
-	<div class="bordered">
-		<!-- -------------------------------------------------- -->
-		<!-- Task attributes -->
-		<!-- -------------------------------------------------- -->
-		<div class="bordered">
-			<div class="row-fluid" ng-repeat="attribute in task.attributesToDisplay">
-				<div class="span12 attribute attribute-hover">
-					<span class="pull-left"><strong>{{ attribute.name }}</strong></span>
-					<span class="pull-right"><strong>{{ attribute.value }}</strong></span>
+		</div>
+		<div class="panel-body">
+			<div class="media">
+				<div class="media-body">
+					<p>{{task.description}}</p>
+					<a class="btn btn-primary media-object pull-right" role="button" ng-click="tasksCrudHelpers.edit(task.$id())" ng-cloak><icon id="edit"></icon> Edit Task</a>
 				</div>
 			</div>
 		</div>
 	</div>
+	
+	<!-- <div class="entityinfo"> -->
+	<!-- 	<\!-- -------------------------------------------------- -\-> -->
+	<!-- 	<\!-- Task Title, Description -\-> -->
+	<!-- 	<\!-- -------------------------------------------------- -\-> -->
+	<!-- 	<div class="row-fluid"> -->
+	<!-- 		<span class="pull-left" ng-cloak><strong>{{task.$id()}}</strong></span> -->
+	<!-- 	</div> -->
+	<!-- 	<div class="row-fluid"> -->
+	<!-- 		<div class="span12"> -->
+	<!-- 			<\!-- <span class="pull-left"><strong>{{task.name}}</strong></span> -\-> -->
+	<!-- 			<span class="pull-left"><h4>{{task.name}}</h4></span> -->
+	<!-- 			<span class="pull-right hover-pointer" ng-click="taskscrudhelpers.edit(task.$id())" ng-cloak><a><strong>Edit Task</strong></a></span> -->
+	<!-- 		</div> -->
+	<!-- 	</div> -->
+	<!-- 	<div class="row-fluid"> -->
+	<!-- 		<div class="span12 bordered"> -->
+	<!-- 			<span class="pull-left">{{task.desc}}</span> -->
+	<!-- 		</div> -->
+	<!-- 	</div> -->
+	<!-- </div> -->
+
+	<!-- <div class="bordered"> -->
+	<!-- 	<\!-- -------------------------------------------------- -\-> -->
+	<!-- 	<\!-- Task attributes -\-> -->
+	<!-- 	<\!-- -------------------------------------------------- -\-> -->
+	<!-- 	<div class="bordered"> -->
+	<!-- 		<div class="row-fluid" ng-repeat="attribute in task.attributesToDisplay"> -->
+	<!-- 			<div class="span12 attribute attribute-hover"> -->
+	<!-- 				<span class="pull-left"><strong>{{ attribute.name }}</strong></span> -->
+	<!-- 				<span class="pull-right"><strong>{{ attribute.value }}</strong></span> -->
+	<!-- 			</div> -->
+	<!-- 		</div> -->
+	<!-- 	</div> -->
+	<!-- </div> -->
+
+
+	<!-- -------------------------------------------------- -->
+	<!-- Other Entities -->
+	<!-- TODO: Implement this with ng-repeat or in separate template files -->
+	<!-- -------------------------------------------------- -->
+	<div class="panel panel-default">
+		<tabset justified="true" type="pills">
+			<tab heading="Comments">
+				<tableactive items="task.comments" fetchingitems="fetchingComments" resourceconf="commentsConf" ></tableactive>
+			</tab>
+		</tabset>
+	</div>
+	<!-- Other Entities End -->
 
 </div>

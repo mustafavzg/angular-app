@@ -17,7 +17,7 @@
 		<div class="col-md-12">
 			<span class="pull-left" ng-click="manageResources()">
 				<label>
-					{{resourcePrettyName}} <action-icon tip="Manage {{resourcePrettyNameAlt || resourcePrettyName}}" icon="edit" action="manageResources()"></action-icon>
+					{{resourcePrettyName}} <action-icon ng-show="!!manageResources" tip="Manage {{resourcePrettyNameAlt || resourcePrettyName}}" icon="edit" action="manageResources()"></action-icon>
 				</label>
 			</span>
 
