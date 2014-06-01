@@ -39,83 +39,8 @@
 				</div>
 			</div>	
 
-			<!-- <\!-- -------------------------------------------------- -\-> -->
-			<!-- <\!-- Sprint Backlog -\-> -->
-			<!-- <\!-- -------------------------------------------------- -\-> -->
-			<!-- <div class="panel panel-default"> -->
-			<!-- 	<div class="panel-heading"> -->
-			<!-- 		<label>Sprint Backlog</label> -->
-			<!-- 	</div> -->
-			<!-- 	<div class="panel-body"> -->
-			<!-- 		<div class="row"> -->
-
-			<!-- 			<div class="col-md-6"> -->
-			<!-- 				<label>Sprint backlog</label> -->
-			<!-- 				<table class="table table-bordered table-condensed table-striped-color table-hover"> -->
-			<!-- 					<thead> -->
-			<!-- 						<tr> -->
-			<!-- 							<th class="span8">Name</th> -->
-			<!-- 							<th class="span2">Estimation</th> -->
-			<!-- 							<th class="span2">Tools</th> -->
-			<!-- 						</tr> -->
-			<!-- 					</thead> -->
-			<!-- 					<tbody> -->
-			<!-- 						<tr ng-repeat="sprintBacklogItem in sprint.sprintBacklog"> -->
-			<!-- 							<td><a ng-click="viewProductBacklogItem(sprintBacklogItem)">{{productBacklogLookup[sprintBacklogItem].name}}</a> -->
-			<!-- 							</td> -->
-			<!-- 							<td>{{productBacklogLookup[sprintBacklogItem].estimation}}</td> -->
-			<!-- 							<td> -->
-			<!-- 								<button class="btn btn-mini btn-danger" ng-click="removeBacklogItem(sprintBacklogItem)"> -->
-			<!-- 									Remove -->
-			<!-- 								</button> -->
-			<!-- 							</td> -->
-			<!-- 						</tr> -->
-			<!-- 					</tbody> -->
-			<!-- 					<tfoot> -->
-			<!-- 						<tr> -->
-			<!-- 							<td>Estimation in total</td> -->
-			<!-- 							<td>{{estimationInTotal()}}</td> -->
-			<!-- 							<td>-</td> -->
-			<!-- 						</tr> -->
-			<!-- 					</tfoot> -->
-			<!-- 				</table> -->
-			<!-- 			</div> -->
-
-			<!-- 			<div class="col-md-6"> -->
-			<!-- 				<label>Product backlog</label> -->
-			<!-- 				<table class="table table-bordered table-condensed table-striped table-hover"> -->
-			<!-- 					<thead> -->
-			<!-- 						<tr> -->
-			<!-- 							<th class="span8">Name</th> -->
-			<!-- 							<th class="span2">Estimation</th> -->
-			<!-- 							<th class="span2">Tools</th> -->
-			<!-- 						</tr> -->
-			<!-- 					</thead> -->
-			<!-- 					<tbody> -->
-			<!-- 						<tr ng-repeat="productBacklogItem in productBacklog | filter:notSelected"> -->
-			<!-- 							<td> -->
-			<!-- 								<a ng-click="viewProductBacklogItem(productBacklogItem.$id())">{{productBacklogItem.name}}</a> -->
-			<!-- 							</td> -->
-			<!-- 							<td>{{productBacklogItem.estimation}}</td> -->
-			<!-- 							<td> -->
-			<!-- 								<button class="btn btn-mini" ng-click="addBacklogItem(productBacklogItem)">Add to sprint -->
-			<!-- 								</button> -->
-			<!-- 							</td> -->
-			<!-- 						</tr> -->
-			<!-- 					</tbody> -->
-			<!-- 				</table> -->
-			<!-- 			</div> -->
-			<!-- 		</div> -->
-			<!-- 		<\!-- div row -\-> -->
-
-			<!-- 	</div> -->
-			<!-- 	<\!-- div panel body -\-> -->
-			<!-- </div> -->
-			<!-- <\!-- div panel -\-> -->
-
-
 			<!-- -------------------------------------------------- -->
-			<!-- Sprint Backlog New -->
+			<!-- Sprint Backlog -->
 			<!-- -------------------------------------------------- -->
 			<div class="panel panel-default">
 				<div class="panel-heading">
@@ -126,8 +51,6 @@
 
 						<div class="col-md-6">
 							<label>Sprint backlog</label>
-							<!-- <label class="pull-right" >Remaining: {{remainingEstimation(estimationInTotal())}} </label> -->
-							<!-- <label class="pull-right" >Total Estimation: {{estimationInTotal()}} &nbsp;</label> -->
 							<label class="pull-right" >Remaining: {{remainingEstimate}} </label>
 							<label class="pull-right" >Total Estimation: {{totalEstimate}} &nbsp;</label>
 
@@ -159,36 +82,8 @@
 							</div>
 							<!-- div panel -->
 
-							<!-- <table class="table table-bordered table-condensed table-striped-color table-hover"> -->
-							<!-- 	<thead> -->
-							<!-- 		<tr> -->
-							<!-- 			<th class="span8">Name</th> -->
-							<!-- 			<th class="span2">Estimation</th> -->
-							<!-- 			<th class="span2">Tools</th> -->
-							<!-- 		</tr> -->
-							<!-- 	</thead> -->
-							<!-- 	<tbody> -->
-							<!-- 		<tr ng-repeat="sprintBacklogItem in sprint.sprintBacklog"> -->
-							<!-- 			<td><a ng-click="viewProductBacklogItem(sprintBacklogItem)">{{productBacklogLookup[sprintBacklogItem].name}}</a> -->
-							<!-- 			</td> -->
-							<!-- 			<td>{{productBacklogLookup[sprintBacklogItem].estimation}}</td> -->
-							<!-- 			<td> -->
-							<!-- 				<button class="btn btn-mini btn-danger" ng-click="removeBacklogItem(sprintBacklogItem)"> -->
-							<!-- 					Remove -->
-							<!-- 				</button> -->
-							<!-- 			</td> -->
-							<!-- 		</tr> -->
-							<!-- 	</tbody> -->
-							<!-- 	<tfoot> -->
-							<!-- 		<tr> -->
-							<!-- 			<td>Estimation in total</td> -->
-							<!-- 			<td>{{estimationInTotal()}}</td> -->
-							<!-- 			<td>-</td> -->
-							<!-- 		</tr> -->
-							<!-- 	</tfoot> -->
-							<!-- </table> -->
-
 						</div>
+						<!-- div col -->
 
 						<div class="col-md-6">
 							<label>Product backlog</label>
@@ -213,46 +108,25 @@
 												</a>
 											</div>
 											<p>{{productBacklogItem.description}}</p>
+
 											<div class="form-group" ng-class="{'has-error': !canAddBacklogItem(productBacklogItem)}">
 												<button class="btn btn-sm btn-success pull-left" ng-click="addBacklogItem(productBacklogItem)" ng-disabled="!canAddBacklogItem(productBacklogItem)" ng-hide="false">
 													<icon id="plus-sign"></icon> Add
 												</button>
-												<!-- <div class="help-block pull-left" ng-show="!canAddBacklogItem(productBacklogItem)">Cannot add this backlog item (estimate: {{productBacklogItem.estimation}}) to the sprint backlog (remaining estimate: {{remainingEstimation(estimationInTotal())}})</div> -->
 												<div class="help-block pull-left" ng-show="!canAddBacklogItem(productBacklogItem)">Cannot add this backlog item (estimate: {{productBacklogItem.estimation}}) to the sprint backlog (remaining estimate: {{remainingEstimate}})</div>
 											</div>
+
 										</div>
-										<!-- <hr /> -->
+										<!-- div media body -->
 									</div>
 									<!-- div media -->
 								</div>
 								<!-- div panel body -->
-
 							</div>
 							<!-- div panel -->
 
-							<!-- <table class="table table-bordered table-condensed table-striped table-hover"> -->
-							<!-- 	<thead> -->
-							<!-- 		<tr> -->
-							<!-- 			<th class="span8">Name</th> -->
-							<!-- 			<th class="span2">Estimation</th> -->
-							<!-- 			<th class="span2">Tools</th> -->
-							<!-- 		</tr> -->
-							<!-- 	</thead> -->
-							<!-- 	<tbody> -->
-							<!-- 		<tr ng-repeat="productBacklogItem in productBacklog | filter:notSelected"> -->
-							<!-- 			<td> -->
-							<!-- 				<a ng-click="viewProductBacklogItem(productBacklogItem.$id())">{{productBacklogItem.name}}</a> -->
-							<!-- 			</td> -->
-							<!-- 			<td>{{productBacklogItem.estimation}}</td> -->
-							<!-- 			<td> -->
-							<!-- 				<button class="btn btn-mini" ng-click="addBacklogItem(productBacklogItem)">Add to sprint -->
-							<!-- 				</button> -->
-							<!-- 			</td> -->
-							<!-- 		</tr> -->
-							<!-- 	</tbody> -->
-							<!-- </table> -->
-
 						</div>
+						<!-- div col -->
 					</div>
 					<!-- div row -->
 

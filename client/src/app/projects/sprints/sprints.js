@@ -281,11 +281,8 @@ angular.module('sprints', [
 		$scope.sprintsCrudHelpers = {};
 		angular.extend($scope.sprintsCrudHelpers, crudListMethods('/projects/'+project.$id()+'/sprints'));
 
-		// $scope.sprintscrudhelpers = {};
-		// angular.extend($scope.sprintscrudhelpers, crudListMethods('/projects/'+project.$id()+'/sprints'));
-
 		$scope.onSave = function () {
-			$location.path('/projects/'+project.$id()+'/sprints');
+			$location.path('/projects/'+project.$id()+'/sprints/'+$scope.sprint.$id());
 		};
 		$scope.onError = function () {
 			$scope.updateError = true;
@@ -302,26 +299,7 @@ angular.module('sprints', [
 			$location.path('/projects/'+project.$id()+'/productbacklog/'+productBacklogItemId);
 		};
 
-		// $scope.toolTipAdd = function (backlogItem) {
-		// 	var itemEstimate = backlogItem.estimation;
-		// 	var remainingEstimate = $scope.remainingEstimation($scope.estimationInTotal());
-		// 	var msg = ($scope.canAddBacklogItem(backlogItem))? "Add this item to the sprint backlog" : "Cannot add this backlog item (estimate: " + itemEstimate + ") to the sprint backlog (remaining estimate: " + remainingEstimate + ")";
-
-		// 	return msg;
-		// };
-
 		$scope.canAddBacklogItem = function (backlogItem) {
-			// var totalEstimation = $scope.estimationInTotal();
-			// var remainingEstimation = $scope.remainingEstimation(totalEstimation);
-			// if (backlogItem.estimation > remainingEstimation) {
-			// 	$scope.toolTipAdd = "Cannot add this backlog item (estimate: " + backlogItem.estimation + ") to the sprint backlog (remaining estimate: " + remainingEstimation + ")";
-			// 	return false;
-			// }
-			// else {
-			// 	$scope.toolTipAdd = "Add this item to the sprint backlog";
-			// 	return true;
-			// }
-			// return (backlogItem.estimation > remainingEstimation)? false : true;
 			return (backlogItem.estimation > $scope.remainingEstimate)? false : true;
 		};
 
@@ -348,7 +326,7 @@ angular.module('sprints', [
 			var endMoment = moment($scope.sprint.enddate);
 			// var days = endMoment.diff(startMoment, 'days');
 			var days = endMoment.businessDiff(startMoment);
-			var workHoursPerDay = 1;
+			var workHoursPerDay = 8;
 			var estimationLimit = $scope.sprint.capacity * days * workHoursPerDay;
 			var remainingEstimation = estimationLimit - totalEstimation;
 			return remainingEstimation;
