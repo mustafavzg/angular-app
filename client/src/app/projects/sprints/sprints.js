@@ -2,9 +2,14 @@ angular.module('sprints', [
 	'ngRoute',
 	'resources.sprints',
 	'resources.tasks',
+	'directives.datecombofromto',
+	'directives.propertybar',
+	'directives.icon',
+	'ui.bootstrap',
 	'services.crud',
 	'tasks',
-	'underscore'
+	'underscore',
+	'moment'
 ])
 
 .config([
@@ -251,11 +256,27 @@ angular.module('sprints', [
 	'sprint',
 	'productBacklog',
 	'crudListMethods',
-	function($scope, $location, project, sprint, productBacklog, crudListMethods){
+	'_',
+	'moment',
+	function($scope, $location, project, sprint, productBacklog, crudListMethods, _, moment){
 
 		// $scope.project = project;
 		$scope.productBacklog = productBacklog;
 		$scope.sprint = sprint;
+
+		angular.forEach($scope.productBacklog, function (productBacklogItem) {
+			productBacklogItem.propertiesToDisplay = [
+				{
+					name : 'Estimation',
+					value : productBacklogItem.estimation,
+					glyphiconclass : 'glyphicon glyphicon-time',
+					icon : 'time',
+					ordering : 2
+				}
+			];
+		});
+
+		$scope.sprint.attributeValuesToDisplay = _.values($scope.sprint.attributesToDisplay);
 
 		$scope.sprintsCrudHelpers = {};
 		angular.extend($scope.sprintsCrudHelpers, crudListMethods('/projects/'+project.$id()+'/sprints'));
@@ -281,12 +302,37 @@ angular.module('sprints', [
 			$location.path('/projects/'+project.$id()+'/productbacklog/'+productBacklogItemId);
 		};
 
+		// $scope.toolTipAdd = function (backlogItem) {
+		// 	var itemEstimate = backlogItem.estimation;
+		// 	var remainingEstimate = $scope.remainingEstimation($scope.estimationInTotal());
+		// 	var msg = ($scope.canAddBacklogItem(backlogItem))? "Add this item to the sprint backlog" : "Cannot add this backlog item (estimate: " + itemEstimate + ") to the sprint backlog (remaining estimate: " + remainingEstimate + ")";
+
+		// 	return msg;
+		// };
+
+		$scope.canAddBacklogItem = function (backlogItem) {
+			// var totalEstimation = $scope.estimationInTotal();
+			// var remainingEstimation = $scope.remainingEstimation(totalEstimation);
+			// if (backlogItem.estimation > remainingEstimation) {
+			// 	$scope.toolTipAdd = "Cannot add this backlog item (estimate: " + backlogItem.estimation + ") to the sprint backlog (remaining estimate: " + remainingEstimation + ")";
+			// 	return false;
+			// }
+			// else {
+			// 	$scope.toolTipAdd = "Add this item to the sprint backlog";
+			// 	return true;
+			// }
+			// return (backlogItem.estimation > remainingEstimation)? false : true;
+			return (backlogItem.estimation > $scope.remainingEstimate)? false : true;
+		};
+
 		$scope.addBacklogItem = function (backlogItem) {
 			$scope.sprint.sprintBacklog.push(backlogItem.$id());
+			$scope.calculateEstimates();
 		};
 
 		$scope.removeBacklogItem = function (backlogItemId) {
 			$scope.sprint.sprintBacklog.splice($scope.sprint.sprintBacklog.indexOf(backlogItemId),1);
+			$scope.calculateEstimates();
 		};
 
 		$scope.estimationInTotal = function () {
@@ -297,8 +343,39 @@ angular.module('sprints', [
 			return totalEstimation;
 		};
 
+		$scope.remainingEstimation = function (totalEstimation) {
+			var startMoment = moment($scope.sprint.startdate);
+			var endMoment = moment($scope.sprint.enddate);
+			// var days = endMoment.diff(startMoment, 'days');
+			var days = endMoment.businessDiff(startMoment);
+			var workHoursPerDay = 1;
+			var estimationLimit = $scope.sprint.capacity * days * workHoursPerDay;
+			var remainingEstimation = estimationLimit - totalEstimation;
+			return remainingEstimation;
+		};
+
 		$scope.notSelected = function (productBacklogItem) {
 			return $scope.sprint.sprintBacklog.indexOf(productBacklogItem.$id())===-1;
 		};
+
+		$scope.calculateEstimates = function () {
+			$scope.totalEstimate = $scope.estimationInTotal();
+			$scope.remainingEstimate = $scope.remainingEstimation($scope.totalEstimate);
+		}
+
+		$scope.calculateEstimates();
+
+		$scope.$watch('sprint.capacity', function (newVal, oldVal) {
+			if( newVal !== oldVal ){
+				$scope.calculateEstimates();
+			}
+		});
+
+		$scope.$watchGroup(['sprint.startdate', 'sprint.enddate'], function (newGroup, oldGroup, scope) {
+			if( !angular.equals(newGroup, oldGroup) ){
+				$scope.calculateEstimates();
+			}
+		});
+
 	}
 ]);

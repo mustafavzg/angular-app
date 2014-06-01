@@ -68,7 +68,7 @@ angular.module('projects', [
 					return Projects.getById($route.current.params.itemId);
 				}
 			],
-			users: getAllUsers,
+			// users: getAllUsers,
 			adminUser: securityAuthorizationProvider.requireAdminUser
 		});
 	}
@@ -161,14 +161,15 @@ angular.module('projects', [
 	'$scope',
 	'$location',
 	'i18nNotifications',
-	'users',
+	// 'users',
 	'project',
 	'crudListMethods',
 	'_',
-	function($scope, $location, i18nNotifications, users, project, crudListMethods, _) {
+	function($scope, $location, i18nNotifications, project, crudListMethods, _) {
+	// function($scope, $location, i18nNotifications, users, project, crudListMethods, _) {
 
 		$scope.project = project;
-		$scope.users = users;
+		// $scope.users = users;
 		if( !angular.isDefined($scope.project.projectProfile) ){
 			$scope.project.projectProfile = {
 				ID : 1
