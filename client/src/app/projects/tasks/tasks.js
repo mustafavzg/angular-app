@@ -161,9 +161,6 @@ angular.module('tasksnew', [
 		// $scope.sprintBacklogItems = sprintBacklogItems;
 		// $scope.teamMembers = teamMembers;
 
-		// $scope.taskscrudhelpers = {};
-		// angular.extend($scope.taskscrudhelpers, crudListMethods('/projects/'+project.$id()+'/tasks'));
-
 		$scope.tasksCrudHelpers = {};
 		angular.extend($scope.tasksCrudHelpers, crudListMethods('/projects/'+project.$id()+'/tasks'));
 
@@ -189,26 +186,6 @@ angular.module('tasksnew', [
 			}
 		};
 		$scope.task.attributeValuesToDisplay = _.values($scope.task.attributesToDisplay);
-
-		// $scope.task.attributesToDisplay = [
-		// 	{
-		// 		name : 'Project Name',
-		// 		value : project.name
-		// 	},
-		// 	{
-		// 		name : 'Estmation',
-		// 		value : task.estimation
-		// 	},
-		// 	{
-		// 		name : 'Remaining',
-		// 		value : task.remaining
-		// 	},
-		// 	{
-		// 		name : 'State',
-		// 		value : task.state
-		// 	}
-		// ];
-
 
 		/**************************************************
 		 * Task comments
@@ -244,21 +221,6 @@ angular.module('tasksnew', [
 					prettyName : 'Description',
 					widthClass : 'col-md-4'
 				}
-				// {
-				// 	key : 'priority',
-				// 	prettyName : 'Priority',
-				// 	widthClass : 'col-md-1'
-				// },
-				// {
-				// 	key : 'estimation',
-				// 	prettyName : 'Estimation',
-				// 	widthClass : 'col-md-1'
-				// },
-				// {
-				// 	key : 'status',
-				// 	prettyName : 'Status',
-				// 	widthClass : 'col-md-1'
-				// }
 			]
 		};
 
