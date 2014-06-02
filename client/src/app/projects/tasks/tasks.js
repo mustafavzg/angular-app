@@ -253,7 +253,6 @@ angular.module('tasksnew', [
 		$scope.task = task;
 		$scope.project = project;
 
-		// console.log(task);
 		$scope.statusEnum = Tasks.statusEnum;
 		$scope.statusDef = Tasks.statusDef;
 		$scope.productBacklogItems = productBacklogItems;
@@ -292,13 +291,11 @@ angular.module('tasksnew', [
 		 **************************************************/
 		angular.forEach($scope.productBacklogItems, function (productBacklogItem) {
 			var productBacklogItemId = productBacklogItem.$id();
-			// total task estimate not yet calculated
+			// init total task estimate
 			productBacklogItem.totalTaskEstimate = -1000;
 			Tasks.forProductBacklogItemId(
 				productBacklogItemId,
 				function (tasks) {
-					// console.log("Fetched tasks for productbacklog item: " + productBacklogItemId);
-					// console.log(tasks);
 					var productBacklogItem = $scope.productBacklogLookup[productBacklogItemId];
 					productBacklogItem.tasks = tasks
 					var totalTaskEstimate = 0;
@@ -306,12 +303,12 @@ angular.module('tasksnew', [
 						totalTaskEstimate = totalTaskEstimate + task.estimation;
 					});
 					productBacklogItem.totalTaskEstimate = totalTaskEstimate;
-					// console.log(productBacklogItem);
 				},
 				function (response) {
 					console.log("Failed to fetch tasks for productbacklog item: " + productBacklogItemId);
 				}
 			);
+			// properties to display for the backlog widget
 			productBacklogItem.propertiesToDisplay = [
 				{
 					name : 'Estimation',

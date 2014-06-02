@@ -39,11 +39,6 @@
 						<input type="number" name="remaining" ng-model="task.remaining" class="form-control" required>
 					</div>
 
-					<!-- <div class="form-group"> -->
-					<!-- 	<label>Status</label> -->
-					<!-- 	<select name="status" ng-model="task.status" class="form-control" required ng-options="status for status in statusEnum"></select> -->
-					<!-- </div> -->
-
 				</div>
 				<!-- div col -->
 			</div>
@@ -74,14 +69,8 @@
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					<label>Assign to Product Backlog</label>
-					<!-- <button class="btn btn-sm btn-warning pull-right" ng-click="logform(form)" ng-disabled="false" ng-hide="false"> -->
-					<!-- 	logform -->
-					<!-- </button> -->
-
 				</div>
 				<!-- div panel heading -->
-					<!-- <label>Product Backlog item</label> -->
-					<!-- <select name="productBacklog" class="form-control" ng-model="task.productBacklogItemId" ng-options="backlogItem.$id() as backlogItem.name for backlogItem in sprintBacklogItems" required></select> -->
 				<div class="panel-body">
 
 					<!-- <div class="row"> -->
@@ -185,22 +174,6 @@
 				 remove-action-name="Unassign"
 				 in-list-action-filter="isAssignedUserFilter(user)">
 			</users-combo-search-add>
-
-			<!-- <div class="panel panel-default"> -->
-			<!-- 	<div class="panel-heading"> -->
-			<!-- 		<label>Assign to User OLD</label> -->
-			<!-- 	</div> -->
-			<!-- 	<\!-- div panel heading -\-> -->
-				
-			<!-- 	<div class="panel-body"> -->
-			<!-- 		<div class="form-group"> -->
-			<!-- 			<label>Assigned to</label> -->
-			<!-- 			<select name="state" ng-model="task.assignedUserId" class="form-control" ng-options="teamMember.$id() as teamMember.getFullName() for teamMember in teamMembers"></select> -->
-			<!-- 		</div> -->
-			<!-- 	</div> -->
-			<!-- 	<\!-- div panel body -\-> -->
-			<!-- </div> -->
-			<!-- <\!-- div panel -\-> -->
 
 		</div>
 		<!-- div panel body -->
