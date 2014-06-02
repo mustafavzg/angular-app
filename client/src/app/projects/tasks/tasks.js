@@ -5,6 +5,7 @@ angular.module('tasksnew', [
 	'resources.users',
 	'resources.tasks',
 	'resources.projects',
+	'directives.userscombosearchadd',
 	'services.crud'
 ])
 
@@ -67,11 +68,11 @@ angular.module('tasksnew', [
 					return new Tasks({
 						projectId:$route.current.params.projectId,
 						// sprintId:$route.current.params.sprintId,
-						state:Tasks.statesEnum[0]
+						state:Tasks.statusEnum[0]
 					});
 				}
 			],
-			// sprintBacklogItems:sprintBacklogItems,
+			productBacklogItems:productBacklog,
 			teamMembers:teamMembers
 		})
 
@@ -109,7 +110,7 @@ angular.module('tasksnew', [
 					return Tasks.getById($route.current.params.itemId);
 				}
 			],
-			// sprintBacklogItems:sprintBacklogItems,
+			productBacklogItems:productBacklog,
 			teamMembers:teamMembers
 		});
 	}
@@ -157,7 +158,7 @@ angular.module('tasksnew', [
 
 		$scope.project = project;
 		$scope.task = task;
-		$scope.statesEnum = Tasks.statesEnum;
+		$scope.statusEnum = Tasks.statusEnum;
 		// $scope.sprintBacklogItems = sprintBacklogItems;
 		// $scope.teamMembers = teamMembers;
 
@@ -233,7 +234,7 @@ angular.module('tasksnew', [
 	'$location',
 	'$route',
 	'Tasks',
-	// 'sprintBacklogItems',
+	'productBacklogItems',
 	'teamMembers',
 	'task',
 	'project',
@@ -243,26 +244,141 @@ angular.module('tasksnew', [
 		$location,
 		$route,
 		Tasks,
-		// sprintBacklogItems,
+		productBacklogItems,
 		teamMembers,
 		task,
 		project,
 		crudListMethods
 	) {
 		$scope.task = task;
-		console.log(task);
-		$scope.statesEnum = Tasks.statesEnum;
-		// $scope.sprintBacklogItems = sprintBacklogItems;
+		$scope.project = project;
+
+		// console.log(task);
+		$scope.statusEnum = Tasks.statusEnum;
+		$scope.statusDef = Tasks.statusDef;
+		$scope.productBacklogItems = productBacklogItems;
 		$scope.teamMembers = teamMembers;
 
-		$scope.taskscrudhelpers = {};
-		angular.extend($scope.taskscrudhelpers, crudListMethods('/projects/'+project.$id()+'/tasks'));
+		$scope.tasksCrudHelpers = {};
+		angular.extend($scope.tasksCrudHelpers, crudListMethods('/projects/'+project.$id()+'/tasks'));
+
+		$scope.productBacklogLookup = {};
+		angular.forEach($scope.productBacklogItems, function (productBacklogItem) {
+			$scope.productBacklogLookup[productBacklogItem.$id()] = productBacklogItem;
+		});
+
+		/**************************************************
+		 * Status Widget
+		 **************************************************/
+		$scope.setTaskStatus = function (status) {
+			$scope.task.status = status.key;
+		}
+
+		$scope.isTaskStatus = function (status) {
+			return ($scope.task.status === status.key)? true : false;
+		}
+
+		$scope.setBtnClasses = function (status) {
+			if( $scope.isTaskStatus(status) ){
+				return status.btnclass.active
+			}
+			else {
+				return status.btnclass.inactive
+			}
+		}
+
+		/**************************************************
+		 * Setup 'Assign Product Backlog' widget
+		 **************************************************/
+		angular.forEach($scope.productBacklogItems, function (productBacklogItem) {
+			var productBacklogItemId = productBacklogItem.$id();
+			// total task estimate not yet calculated
+			productBacklogItem.totalTaskEstimate = -1000;
+			Tasks.forProductBacklogItemId(
+				productBacklogItemId,
+				function (tasks) {
+					// console.log("Fetched tasks for productbacklog item: " + productBacklogItemId);
+					// console.log(tasks);
+					var productBacklogItem = $scope.productBacklogLookup[productBacklogItemId];
+					productBacklogItem.tasks = tasks
+					var totalTaskEstimate = 0;
+					angular.forEach(tasks, function(task) {
+						totalTaskEstimate = totalTaskEstimate + task.estimation;
+					});
+					productBacklogItem.totalTaskEstimate = totalTaskEstimate;
+					// console.log(productBacklogItem);
+				},
+				function (response) {
+					console.log("Failed to fetch tasks for productbacklog item: " + productBacklogItemId);
+				}
+			);
+			productBacklogItem.propertiesToDisplay = [
+				{
+					name : 'Estimation',
+					value : productBacklogItem.estimation,
+					icon : 'time',
+					ordering : 1
+				}
+			];
+		});
+
+		$scope.viewProductBacklogItem = function (productBacklogItemId) {
+			$location.path('/projects/'+project.$id()+'/productbacklog/'+productBacklogItemId);
+		};
+
+		$scope.canAssignBacklogItem = function (backlogItem) {
+			if( backlogItem.totalTaskEstimate >= 0
+			 && (backlogItem.estimation - backlogItem.totalTaskEstimate) >= $scope.task.estimation ) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		};
+
+		$scope.notAssigned = function (backlogItem) {
+			return (backlogItem.$id() === $scope.task.productBacklogItemId )? false : true;
+		};
+
+		$scope.assignBacklogItem = function (backlogItem) {
+			$scope.task.productBacklogItemId = backlogItem.$id();
+		};
+
+		$scope.unassignBacklogItem = function () {
+			$scope.task.productBacklogItemId = undefined;
+		};
 
 
+		/**************************************************
+		 * Setup 'Assign User' widget
+		 **************************************************/
+		$scope.assignedUser = (angular.isDefined(task.assignedUserId)) ? [task.assignedUserId] : [];
+
+		$scope.isUnassignedUserFilter = function(user) {
+			return $scope.project.isDevTeamMember(user.$id()) && !$scope.isAssignedUserFilter(user);
+		};
+
+		$scope.isAssignedUserFilter = function(user) {
+			return ($scope.task.assignedUserId === user.$id())? true : false;
+		};
+
+		$scope.logform = function(form) {
+			console.log(form);
+		};
+
+		$scope.$watchCollection('assignedUser', function (newAssignedUser, oldAssignedUser) {
+			if( !angular.equals(newAssignedUser, oldAssignedUser) ){
+				$scope.task.assignedUserId = newAssignedUser[0];
+			}
+		});
+
+		/**************************************************
+		 * On save callbacks
+		 **************************************************/
 		$scope.onSave = function () {
 			var projectId = $route.current.params.projectId;
 			// var sprintId = $route.current.params.sprintId;
-			$location.path('/projects/' + projectId + '/tasks');
+			$location.path('/projects/' + projectId + '/tasks/' + task.$id());
 
 			// $location.path('/admin/users');
 		};

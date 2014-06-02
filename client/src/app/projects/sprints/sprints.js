@@ -271,12 +271,12 @@ angular.module('sprints', [
 					value : productBacklogItem.estimation,
 					glyphiconclass : 'glyphicon glyphicon-time',
 					icon : 'time',
-					ordering : 2
+					ordering : 1
 				}
 			];
 		});
 
-		$scope.sprint.attributeValuesToDisplay = _.values($scope.sprint.attributesToDisplay);
+		// $scope.sprint.attributeValuesToDisplay = _.values($scope.sprint.attributesToDisplay);
 
 		$scope.sprintsCrudHelpers = {};
 		angular.extend($scope.sprintsCrudHelpers, crudListMethods('/projects/'+project.$id()+'/sprints'));

@@ -1,3 +1,4 @@
+
 angular.module('projects', [
 	'resources.projects',
 	'resources.users',

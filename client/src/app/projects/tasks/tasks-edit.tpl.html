@@ -1,41 +1,212 @@
-<div class="bordered">
-	<legend>
-		Task
-		<span class="pull-right hover-pointer" ng-click="taskscrudhelpers.view(task.$id())" ng-cloak><i class="icon-circle-arrow-left"></i><a>Back</a></span>
-	</legend>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<strong>
+			Task
+		</strong>
+		<span class="pull-right hover-pointer" ng-click="tasksCrudHelpers.view(task.$id())" ng-cloak><action-icon icon="hand-left"></action-icon><a> Back</a></span>
+	</div>
 
-    <div class="row-fluid">
-        <form name="form" crud-edit="task">
-            <div class="span6">
-                <label>Name</label>
-                <input type="text" name="name" ng-model="task.name" class="span10" required autofocus>
+    <form name="form" crud-edit="task">
 
-                <!-- <label>Product Backlog item</label> -->
-                <!-- <select name="productBacklog" class="span10" ng-model="task.productBacklogItemId" ng-options="backlogItem.$id() as backlogItem.name for backlogItem in sprintBacklogItems" required></select> -->
+		<div class="panel-body">
 
-                <label>Description</label>
-                <textarea rows="8" cols="10" ng-model="task.desc" class="span10" required>
-                </textarea>
-            </div>
+			<div class="row">
+				<div class="col-md-6">
 
-            <div class="span6">
-                <label>Estimation</label>
-                <input type="number" name="estimation" ng-model="task.estimation" class="span5" required>
+					<div class="form-group">
+						<label>Name</label>
+						<input type="text" name="name" ng-model="task.name" class="form-control" required autofocus>
+					</div>
 
-                <label>Remaining</label>
-                <input type="number" name="remaining" ng-model="task.remaining" class="span5" required>
+					<div class="form-group">
+						<label>Description</label>
+						<textarea rows="8" cols="10" ng-model="task.description" class="form-control" required></textarea>
+					</div>
 
-                <label>State</label>
-                <select name="state" ng-model="task.state" class="span5" required ng-options="state for state in statesEnum"></select>
 
-                <label>Assigned to</label>
-                <select name="state" ng-model="task.assignedUserId" class="span10" ng-options="teamMember.$id() as teamMember.getFullName() for teamMember in teamMembers"></select>
+				</div>
+				<!-- div col -->
+				
+				<div class="col-md-6">
 
-            </div>
-			<hr>
-			<div>
-				<crud-buttons></crud-buttons>
+					<div class="form-group">
+						<label>Estimation</label>
+						<input type="number" name="estimation" ng-model="task.estimation" class="form-control" required>
+					</div>
+
+					<div class="form-group">
+ 						<label>Remaining</label>
+						<input type="number" name="remaining" ng-model="task.remaining" class="form-control" required>
+					</div>
+
+					<!-- <div class="form-group"> -->
+					<!-- 	<label>Status</label> -->
+					<!-- 	<select name="status" ng-model="task.status" class="form-control" required ng-options="status for status in statusEnum"></select> -->
+					<!-- </div> -->
+
+				</div>
+				<!-- div col -->
 			</div>
-        </form>
-    </div>
+			<!-- div row -->
+
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<label>Set Status</label>
+				</div>
+				<!-- div panel heading -->
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-md-2" ng-repeat="status in statusDef | orderBy:'ordering'">
+							<!-- <button class="btn btn-block" ng-click="setTaskStatus(status)" ng-class="{'btn-primary': isTaskStatus(status)}"> -->
+							<button class="btn btn-block" ng-click="setTaskStatus(status)" ng-class="setBtnClasses(status)">
+								{{status.name}} 
+							</button>
+						</div>
+						<!-- div col -->
+					</div>
+					<!-- div row -->
+				</div>
+				<!-- div panel body -->
+			</div>
+			<!-- div panel -->
+
+
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<label>Assign to Product Backlog</label>
+					<!-- <button class="btn btn-sm btn-warning pull-right" ng-click="logform(form)" ng-disabled="false" ng-hide="false"> -->
+					<!-- 	logform -->
+					<!-- </button> -->
+
+				</div>
+				<!-- div panel heading -->
+					<!-- <label>Product Backlog item</label> -->
+					<!-- <select name="productBacklog" class="form-control" ng-model="task.productBacklogItemId" ng-options="backlogItem.$id() as backlogItem.name for backlogItem in sprintBacklogItems" required></select> -->
+				<div class="panel-body">
+
+					<!-- <div class="row"> -->
+						<div class="col-md-6">
+							<label>Assigned To</label>
+							<div class="panel panel-default">
+								<div class="panel-body">
+									<div class="help-block" ng-show="!task.productBacklogItemId">
+										Task not assigned to any backlog item
+									</div>
+
+									<div class="media" ng-show="!!task.productBacklogItemId">
+										<property-bar properties="productBacklogLookup[task.productBacklogItemId].propertiesToDisplay" root-div-class="media-object pull-left" reverse="false" ></property-bar>
+										<div class="media-body">
+											<div class="badge pull-left" ng-cloak><strong>{{productBacklogLookup[task.productBacklogItemId].$id()}}</strong></div><br />
+											<div class="media-heading">
+												<a href="#" ng-click="viewProductBacklogItem(productBacklogItem)">
+													{{productBacklogLookup[task.productBacklogItemId].name}}
+												</a>
+											</div>
+											<p>{{productBacklogLookup[task.productBacklogItemId].description}}</p>
+											<button class="btn btn-sm btn-warning pull-left" ng-click="unassignBacklogItem()">
+												<icon id="remove-sign"></icon> Unassign
+											</button>
+										</div>
+									</div>
+									<!-- div media -->
+
+								</div>
+								<!-- div panel body -->
+
+							</div>
+							<!-- div panel -->
+							
+						</div>
+						<!-- div col -->
+
+						<div class="col-md-6">
+							<label>Product backlog</label>
+							<div class="panel panel-default">
+								<div class="panel-body">
+									<!-- Search field -->
+									<div class="form-group">
+										<input type="text" class="form-control" id="query" ng-model="query" ng-disabled="!filteredProductBacklog.length" placeholder="Search backlog items ... "/>
+										<div class="help-block" ng-show="!filteredProductBacklog.length">
+											No backlog items to assign
+										</div>
+									</div>
+
+									<!-- <hr /> -->
+									<div class="media" ng-repeat="productBacklogItem in searchFilteredProductBacklog = ((filteredProductBacklog = (productBacklogItems | filter:notAssigned)) | filter:query)">
+										<property-bar properties="productBacklogItem.propertiesToDisplay" root-div-class="media-object pull-left" reverse="false" ></property-bar>
+										<div class="media-body">
+											<div class="badge pull-left" ng-cloak><strong>{{productBacklogItem.$id()}}</strong></div><br />
+											<div class="media-heading">
+												<a href="#" ng-click="viewProductBacklogItem(productBacklogItem.$id())">
+													{{productBacklogItem.name}}
+												</a>
+											</div>
+											<p>{{productBacklogItem.description}}</p>
+
+											<div class="form-group" ng-class="{'has-error': !canAssignBacklogItem(productBacklogItem)}">
+												<button class="btn btn-sm btn-success pull-left" ng-click="assignBacklogItem(productBacklogItem)" ng-disabled="!canAssignBacklogItem(productBacklogItem)" ng-hide="false">
+													<icon id="plus-sign"></icon> Assign
+												</button>
+												<div class="help-block pull-left" ng-show="!canAssignBacklogItem(productBacklogItem)">Cannot assign the task (estimate: {{task.estimation}}) to this backlog item (estimate: {{productBacklogItem.estimation}} total: {{productBacklogItem.totalTaskEstimate}})</div>
+											</div>
+
+										</div>
+										<!-- div media body -->
+									</div>
+									<!-- div media -->
+								</div>
+								<!-- div panel body -->
+							</div>
+							<!-- div panel -->
+						</div>
+						<!-- div col -->
+
+					<!-- </div> -->
+					<!-- div row -->
+
+				</div>
+				<!-- div panel body -->
+			</div>
+			<!-- div panel -->
+
+			<users-combo-search-add
+				 single-member-list="true"
+				 combo-label="Assign User"
+				 label="Assigned to"
+				 collection-name="assignedTo"
+				 item-name="Assigned"
+				 helptip="Assign user from the 'Find User' widget to the right"
+				 user-ids="assignedUser"
+				 search-label="Find User"
+				 search-helptip="Search for the user and assign the task"
+				 search-placeholder="Search for the user to assign the task ..."
+				 add-action-name="Assign"
+				 add-action-filter="isUnassignedUserFilter(user)"
+				 remove-action-name="Unassign"
+				 in-list-action-filter="isAssignedUserFilter(user)">
+			</users-combo-search-add>
+
+			<!-- <div class="panel panel-default"> -->
+			<!-- 	<div class="panel-heading"> -->
+			<!-- 		<label>Assign to User OLD</label> -->
+			<!-- 	</div> -->
+			<!-- 	<\!-- div panel heading -\-> -->
+				
+			<!-- 	<div class="panel-body"> -->
+			<!-- 		<div class="form-group"> -->
+			<!-- 			<label>Assigned to</label> -->
+			<!-- 			<select name="state" ng-model="task.assignedUserId" class="form-control" ng-options="teamMember.$id() as teamMember.getFullName() for teamMember in teamMembers"></select> -->
+			<!-- 		</div> -->
+			<!-- 	</div> -->
+			<!-- 	<\!-- div panel body -\-> -->
+			<!-- </div> -->
+			<!-- <\!-- div panel -\-> -->
+
+		</div>
+		<!-- div panel body -->
+
+		<div class="panel-footer">
+			<crud-buttons></crud-buttons>
+		</div>
+    </form>
 </div>

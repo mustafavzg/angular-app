@@ -24,6 +24,14 @@ angular.module('productbacklog', [
 			}
 		];
 
+		var project = [
+			'$route',
+			'Projects',
+			function ($route, Projects) {
+				return Projects.getById($route.current.params.projectId);
+			}
+		];
+
 		// Create the CRUD routes for editing the product backlog
 		crudRouteProvider.routesFor('ProductBacklog', 'projects', 'projects/:projectId')
 		// How to handle the "list product backlog items" route
@@ -43,7 +51,7 @@ angular.module('productbacklog', [
 
 		// How to handle the "create a new product backlog item" route
 		.whenNew({
-			projectId: projectId,
+			project: project,
 			backlogItem : [
 				'$route',
 				'ProductBacklog',
@@ -58,13 +66,7 @@ angular.module('productbacklog', [
 
 		// How to handle the "view a product backlog item" route
 		.whenView({
-			project:[
-				'$route',
-				'Projects',
-				function ($route, Projects) {
-					return Projects.getById($route.current.params.projectId);
-				}
-			],
+			project: project,
 			backlogItem : [
 				'$route',
 				'ProductBacklog',
@@ -87,13 +89,7 @@ angular.module('productbacklog', [
 
 		// How to handle the "edit a product backlog item" route
 		.whenEdit({
-			project:[
-				'$route',
-				'Projects',
-				function ($route, Projects) {
-					return Projects.getById($route.current.params.projectId);
-				}
-			],
+			project: project,
 			// projectId: projectId,
 			backlogItem : [
 				'$route',

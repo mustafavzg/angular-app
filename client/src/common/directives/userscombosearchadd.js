@@ -4,6 +4,7 @@ angular.module('directives.userscombosearchadd', [
 	'directives.userthumb',
 	'directives.helptip',
 	'services.dictionary',
+	'services.directiveInitializer',
 	'resources.users',
 	'ui.bootstrap',
 	'underscore'
@@ -28,7 +29,9 @@ angular.module('directives.userscombosearchadd', [
 				searchHelptip: '@',
 				searchPlaceholder: '@',
  				singleMemberList: '@',
+				removeActionName: '@?',
 				removeAction: '&',
+				addActionName: '@?',
 				addAction: '&',
 				addActionFilter: '&',
 				inListActionFilter: '&',
@@ -52,8 +55,27 @@ angular.module('directives.userscombosearchadd', [
 				'$attrs',
 				'Users',
 				'dictionary',
+				'directiveInitializer',
 				'_',
-				function ($scope, $element, $attrs, Users, dictionary, _) {
+				function ($scope, $element, $attrs, Users, dictionary, directiveInitializer, _) {
+
+					// Initializer currently used only for a couple of
+					// optional attributes
+					// TODO: include other attributes
+ 					$scope.self = {};
+					var attrsData = {
+						attrs: $attrs,
+						interpolationKeys: [
+							'addActionName',
+							'removeActionName'
+						],
+						attrDefaults: {
+							addActionName: "Add",
+							removeActionName: "Remove"
+						}
+					};
+					directiveInitializer.init($scope, $scope.self, attrsData);
+
 					$scope.filteredUsers = [];
 
 					// keep a users dictionary for look up of

@@ -82,7 +82,7 @@ angular.module('services.crud').factory('crudListMethods', [
 					$location.path(pathPrefix+'/'+itemId+'/view');
 				}
 				else {
-					console.log('CALLING VIEW  '+pathPrefix+'/'+itemId+'/view');
+					console.log('CALLING VIEW  '+pathPrefix);
 					$location.path(pathPrefix);
 				}
 			};

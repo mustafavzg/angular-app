@@ -15,7 +15,7 @@
 					 user-ids="userIds"
 					 users-look-up="lookUpUsers(userids)"
 					 action="removeMember(user, userIds)"
-					 action-name="Remove" 
+					 action-name="{{self.removeActionName}}" 
 					 action-icon="remove-sign" 
 					 action-button-class="btn-warning">
 				</users>
@@ -37,7 +37,7 @@
 					 label="{{searchLabel}}"
 					 helptip="{{searchHelptip}}"
 					 placeholder="{{searchPlaceholder}}"
-					 add-action-name="Add"
+					 add-action-name="{{self.addActionName}}"
 					 add-action="addMember(user, userIds)"
 					 add-action-filter="addActionFilter({user: user})"
 					 in-list-action-name="{{itemName}}"

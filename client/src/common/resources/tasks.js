@@ -6,7 +6,58 @@ angular.module('resources.tasks')
 
 		var Tasks = mongolabResource('tasks');
 
-		Tasks.statesEnum = ['TODO', 'IN_DEV', 'BLOCKED', 'IN_TEST', 'DONE'];
+		Tasks.statusEnum = ['TODO', 'IN_DEV', 'BLOCKED', 'IN_TEST', 'DONE'];
+
+		Tasks.statusDef = [
+			{
+				key: 'TODO',
+				name: 'To Do',
+				ordering: 1,
+				btnclass : {
+					inactive: 'btn-default',
+					active: 'btn-primary'
+				}
+			},
+			{
+				key: 'DEV',
+				name: 'Development',
+				ordering: 2,
+				btnclass : {
+					inactive: 'btn-default',
+					active: 'btn-primary'
+				}
+
+			},
+			{
+				key: 'BLOCKED',
+				name: 'Blocked',
+				ordering: 3,
+				btnclass : {
+					inactive: 'btn-default',
+					active: 'btn-primary'
+				}
+
+			},
+			{
+				key: 'TEST',
+				name: 'Test',
+				ordering: 4,
+				btnclass : {
+					inactive: 'btn-default',
+					active: 'btn-primary'
+				}
+
+			},
+			{
+				key: 'DONE',
+				name: 'Done',
+				ordering: 5,
+				btnclass : {
+					inactive: 'btn-warning',
+					active: 'btn-success'
+				}
+			}
+		];
 
 		Tasks.forProductBacklogItem = function (productBacklogItem, successcb, errorcb) {
 			return Tasks.query({productBacklogItem:productBacklogItem}, successcb, errorcb);
