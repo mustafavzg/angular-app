@@ -1,0 +1,9 @@
+<ul>
+<div class = "row">
+<input type="text" placeholder="Add your comments here" ng-model="newcomment"/> <button ng-click="addComment()">Add</button>{{newcomment}}
+</div>
+	<li ng-repeat="comment in resource.comments">
+		Comment: {{comment.Comment}}
+		User: {{comment.User}}
+	</li>
+</ul>

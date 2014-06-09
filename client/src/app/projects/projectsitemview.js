@@ -14,6 +14,7 @@ angular.module('projectsitemview', [
 	'directives.propertybar',
 	'directives.test',
 	'directives.users',
+	'directives.comment',
 	'underscore'
 ])
 

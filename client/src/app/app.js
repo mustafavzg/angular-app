@@ -19,7 +19,7 @@ angular.module('app', [
 
 angular.module('app').constant('MONGOLAB_CONFIG', {
 	baseUrl: '/databases/',
-	dbName: 'ngpmtool'
+	dbName: 'ngdb'
 });
 
 angular.module('app').constant('ATHENAWEBAPP_CONFIG', {
