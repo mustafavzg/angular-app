@@ -1,8 +1,11 @@
-<div class="row">
-	<div class="col-md-12">
-		<div ng-class="['alert', 'alert-'+notification.type]" ng-repeat="notification in notifications.getCurrent()">
-			<button class="close" ng-click="removeNotification(notification)">x</button>
-			{{notification.message}}
-		</div>
+<div ng-class="['panel', 'panel-'+notification.ngclass]" ng-repeat="notification in notifications.getCurrent()">
+	<div class="panel-heading">
+		<button class="close" ng-click="removeNotification(notification)">x</button>
+		{{notification.message}}
 	</div>
 </div>
+<!-- <div class="row"> -->
+<!-- 	<div class="col-md-12"> -->
+<!-- 		<\!-- <div ng-class="['alert', 'alert-'+notification.type]" ng-repeat="notification in notifications.getCurrent()"> -\-> -->
+<!-- 	</div> -->
+<!-- </div> -->

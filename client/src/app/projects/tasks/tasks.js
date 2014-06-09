@@ -61,6 +61,13 @@ angular.module('tasksnew', [
 		})
 
 		.whenNew({
+			project:[
+				'$route',
+				'Projects',
+				function ($route, Projects) {
+					return Projects.getById($route.current.params.projectId);
+				}
+			],
 			task:[
 				'Tasks',
 				'$route',
@@ -375,10 +382,21 @@ angular.module('tasksnew', [
 		$scope.onSave = function () {
 			var projectId = $route.current.params.projectId;
 			// var sprintId = $route.current.params.sprintId;
-			$location.path('/projects/' + projectId + '/tasks/' + task.$id());
-
+			var taskid = task.$id();
+			if( angular.isDefined(taskid) ){
+				$location.path('/projects/' + projectId + '/tasks/' + taskid);
+			}
+			else {
+				$location.path('/projects/' + projectId + '/tasks');
+			}
 			// $location.path('/admin/users');
 		};
+		$scope.onRemove = function () {
+			var projectId = $route.current.params.projectId;
+			var taskid = task.$id();
+			$location.path('/projects/' + projectId + '/tasks');
+		};
+
 		$scope.onError = function() {
 			$scope.updateError = true;
 		};

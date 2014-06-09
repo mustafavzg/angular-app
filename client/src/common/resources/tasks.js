@@ -67,6 +67,10 @@ angular.module('resources.tasks')
 			return Tasks.query({productBacklogItemId:productBacklogItemId}, successcb, errorcb);
 		};
 
+		Tasks.forProductBacklogItemIdList = function (productBacklogItemIdList, successcb, errorcb) {
+			return Tasks.query({productBacklogItemId:{$in:productBacklogItemIdList}}, successcb, errorcb);
+		};
+
 		Tasks.forSprint = function (sprintId, successcb, errorcb) {
 			return Tasks.query({sprintId:sprintId}, successcb, errorcb);
 		};

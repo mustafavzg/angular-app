@@ -317,6 +317,10 @@ angular.module('projectsitemview', [
 			function (sprints, responsestatus, responseheaders, responseconfig) {
 				$scope.sprints = sprints;
 				$scope.fetchingSprints = false;
+				// pre process status
+				angular.forEach($scope.sprints, function(sprint) {
+					sprint.status = sprint.getStatusPretty();
+				});
 				console.log("Succeeded to fetch sprints");
 			},
 			function (response, responsestatus, responseheaders, responseconfig) {
@@ -417,7 +421,7 @@ angular.module('projectsitemview', [
 					widthClass : 'col-md-2'
 				},
 				{
-					key : 'desc',
+					key : 'description',
 					prettyName : 'Description',
 					widthClass : 'col-md-4'
 				},

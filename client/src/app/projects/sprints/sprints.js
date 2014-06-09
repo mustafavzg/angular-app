@@ -5,8 +5,11 @@ angular.module('sprints', [
 	'directives.datecombofromto',
 	'directives.propertybar',
 	'directives.icon',
+	'directives.actionicon',
 	'ui.bootstrap',
 	'services.crud',
+	'services.i18nNotifications',
+	'services.dictionary',
 	'tasks',
 	'underscore',
 	'moment'
@@ -85,8 +88,24 @@ angular.module('sprints', [
 			sprint: [
 				'$route',
 				'Sprints',
-				function($route, Sprints){
-					return Sprints.getById($route.current.params.itemId);
+				'i18nNotifications',
+				'$location',
+				'$q',
+				function($route, Sprints, i18nNotifications, $location, $q){
+					return Sprints.getById($route.current.params.itemId).then(
+						function (sprint) {
+							if( sprint.isExpired() ){
+								var projectId = $route.current.params.projectId;
+								i18nNotifications.pushForNextRoute('crud.sprint.expired.error', 'error', {});
+								$location.path('/projects/' + projectId + '/sprints/' + sprint.$id());
+								// return $q.reject("Cannot Edit Sprint");
+								return null;
+							}
+							else {
+								return sprint;
+							}
+						}
+					);
 				}
 			],
 			productBacklog : productBacklog
@@ -139,11 +158,15 @@ angular.module('sprints', [
 		$scope.sprintsCrudHelpers = {};
 		angular.extend($scope.sprintsCrudHelpers, crudListMethods('/projects/'+project.$id()+'/sprints'));
 
+		$scope.editToolTip = function () {
+			return ($scope.sprint.isExpired()) ? "Cannot edit an expired sprint" : "Edit Sprint";
+		}
+
 		$scope.sprint.attributesToDisplay = {
 			status : {
 				name : 'Status',
 				// value : sprint.status,
-				value : 'Active',
+				value : sprint.getStatusPretty(),
 				glyphiconclass : 'glyphicon glyphicon-sound-stereo',
 				icon : 'sound-stereo',
 				ordering : 1
@@ -255,10 +278,12 @@ angular.module('sprints', [
 	'project',
 	'sprint',
 	'productBacklog',
+	'Tasks',
 	'crudListMethods',
+	'dictionary',
 	'_',
 	'moment',
-	function($scope, $location, project, sprint, productBacklog, crudListMethods, _, moment){
+	function($scope, $location, project, sprint, productBacklog, Tasks, crudListMethods, dictionary, _, moment){
 
 		// $scope.project = project;
 		$scope.productBacklog = productBacklog;
@@ -281,12 +306,9 @@ angular.module('sprints', [
 		$scope.sprintsCrudHelpers = {};
 		angular.extend($scope.sprintsCrudHelpers, crudListMethods('/projects/'+project.$id()+'/sprints'));
 
-		$scope.onSave = function () {
-			$location.path('/projects/'+project.$id()+'/sprints/'+$scope.sprint.$id());
-		};
-		$scope.onError = function () {
-			$scope.updateError = true;
-		};
+		/**************************************************
+		 * Sprint backlog widget
+		 **************************************************/
 
 		$scope.sprint.sprintBacklog = $scope.sprint.sprintBacklog || [];
 
@@ -299,24 +321,157 @@ angular.module('sprints', [
 			$location.path('/projects/'+project.$id()+'/productbacklog/'+productBacklogItemId);
 		};
 
-		$scope.canAddBacklogItem = function (backlogItem) {
-			return (backlogItem.estimation > $scope.remainingEstimate)? false : true;
-		};
+		// $scope.canAddBacklogItem = function (backlogItem) {
+		// 	return (backlogItem.estimation > $scope.remainingEstimate)? false : true;
+		// };
 
 		$scope.addBacklogItem = function (backlogItem) {
 			$scope.sprint.sprintBacklog.push(backlogItem.$id());
-			$scope.calculateEstimates();
+			// $scope.calculateEstimates();
+		};
+
+		$scope.canRemoveBacklogItem = function (backlogItem) {
+			return ($scope.sprint.sprintTasks[backlogItem.$id()].length > 0)? false : true;
 		};
 
 		$scope.removeBacklogItem = function (backlogItemId) {
 			$scope.sprint.sprintBacklog.splice($scope.sprint.sprintBacklog.indexOf(backlogItemId),1);
+			// $scope.calculateEstimates();
+		};
+
+		$scope.backlogItemNotSelected = function (productBacklogItem) {
+			return $scope.sprint.sprintBacklog.indexOf(productBacklogItem.$id())===-1;
+		};
+
+		// $scope.estimationInTotal = function () {
+		// 	var totalEstimation = 0;
+		// 	angular.forEach(sprint.sprintBacklog, function (backlogItemId) {
+		// 		totalEstimation += $scope.productBacklogLookup[backlogItemId].estimation;
+		// 	});
+		// 	return totalEstimation;
+		// };
+
+		// $scope.remainingEstimation = function (totalEstimation) {
+		// 	var startMoment = moment($scope.sprint.startdate);
+		// 	var endMoment = moment($scope.sprint.enddate);
+		// 	// var days = endMoment.diff(startMoment, 'days');
+		// 	var days = endMoment.businessDiff(startMoment);
+		// 	var workHoursPerDay = 8;
+		// 	var estimationLimit = $scope.sprint.capacity * days * workHoursPerDay;
+		// 	var remainingEstimation = estimationLimit - totalEstimation;
+		// 	return remainingEstimation;
+		// };
+
+		// $scope.notSelected = function (productBacklogItem) {
+		// 	return $scope.sprint.sprintBacklog.indexOf(productBacklogItem.$id())===-1;
+		// };
+
+		// $scope.calculateEstimates = function () {
+		// 	$scope.totalEstimate = $scope.estimationInTotal();
+		// 	$scope.remainingEstimate = $scope.remainingEstimation($scope.totalEstimate);
+		// 	$scope.sprintLimit = $scope.totalEstimate + $scope.remainingEstimate;
+		// }
+
+		// $scope.sprintLimitExceeded = function () {
+		// 	return ($scope.remainingEstimate < 0)? true : false;
+		// }
+
+		// $scope.calculateEstimates();
+
+		// $scope.$watch('sprint.capacity', function (newVal, oldVal) {
+		// 	if( newVal !== oldVal ){
+		// 		$scope.calculateEstimates();
+		// 	}
+		// });
+
+		// $scope.$watchGroup(['sprint.startdate', 'sprint.enddate'], function (newGroup, oldGroup, scope) {
+		// 	if( !angular.equals(newGroup, oldGroup) ){
+		// 		$scope.calculateEstimates();
+		// 	}
+		// });
+
+
+		/**************************************************
+		 * Sprint backlog widget
+		 **************************************************/
+
+		$scope.sprint.sprintTasks = $scope.sprint.sprintTasks || {};
+		// $scope.sprint.sprintTasks = {};
+
+		$scope.taskDictionary = dictionary;
+		$scope.backlogTaskMap = {};
+		angular.forEach($scope.sprint.sprintBacklog, function(backlogItemId) {
+			$scope.backlogTaskMap[backlogItemId] = [];
+		});
+
+		Tasks.forProductBacklogItemIdList(
+			$scope.sprint.sprintBacklog,
+			function (tasks) {
+				$scope.taskDictionary.build(tasks);
+				angular.forEach(tasks, function(task) {
+					$scope.backlogTaskMap[task.productBacklogItemId].push(task.$id());
+					task.propertiesToDisplay = [
+						{
+							name : 'Estimation',
+							value : task.estimation,
+							// glyphiconclass : 'glyphicon glyphicon-time',
+							icon : 'time',
+							ordering : 1
+						},
+						{
+							name : 'Status',
+							value : task.status,
+							// glyphiconclass : 'glyphicon glyphicon-time',
+							icon : 'sound-stereo',
+							ordering : 2
+						}
+					];
+				});
+			}
+		)
+
+		// angular.forEach($scope.task, function (task) {
+		// 	$scope.taskDictionary[task.$id()] = task;
+		// });
+
+		$scope.viewTask = function (task) {
+			$location.path('/projects/'+project.$id()+'/tasks/'+task.$id());
+		};
+
+		$scope.canAddTask = function (task) {
+			return (task.estimation > $scope.remainingEstimate)? false : true;
+		};
+
+		$scope.addTask = function (task) {
+			// $scope.sprint.sprintTasks.push(task.$id());
+			var tasks = $scope.sprint.sprintTasks[task.productBacklogItemId] || [];
+			tasks.push(task.$id());
+			$scope.sprint.sprintTasks[task.productBacklogItemId] = tasks;
 			$scope.calculateEstimates();
 		};
 
+		$scope.removeTask = function (task) {
+			// $scope.sprint.sprintTasks.splice($scope.sprint.sprintTasks.indexOf(task.$id()),1);
+			var tasks = $scope.sprint.sprintTasks[task.productBacklogItemId] || [];
+			tasks.splice(tasks.indexOf(task.$id()),1);
+			// if( angular.isArray(tasks) && tasks.length > 0 ){
+			// 	tasks.splice(tasks.indexOf(task.$id()),1);
+			// }
+
+			$scope.calculateEstimates();
+		};
+
+		$scope.getTaskIds = function (backlogTaskMap) {
+			return _.chain(backlogTaskMap).values().flatten().uniq().value();
+			// return _.union(_.values(backlogTaskMap));
+		}
+
 		$scope.estimationInTotal = function () {
 			var totalEstimation = 0;
-			angular.forEach(sprint.sprintBacklog, function (backlogItemId) {
-				totalEstimation += $scope.productBacklogLookup[backlogItemId].estimation;
+			var taskIds = $scope.getTaskIds(sprint.sprintTasks);
+			var tasks = $scope.taskDictionary.lookUp(taskIds);
+			angular.forEach(tasks, function (task) {
+				totalEstimation += task.estimation;
 			});
 			return totalEstimation;
 		};
@@ -332,13 +487,20 @@ angular.module('sprints', [
 			return remainingEstimation;
 		};
 
-		$scope.notSelected = function (productBacklogItem) {
-			return $scope.sprint.sprintBacklog.indexOf(productBacklogItem.$id())===-1;
+		$scope.notSelected = function (task) {
+			var tasks = $scope.sprint.sprintTasks[task.productBacklogItemId] || [];
+			return tasks.indexOf(task.$id())===-1;
+			// return $scope.sprint.sprintTasks.indexOf(task.$id())===-1;
 		};
 
 		$scope.calculateEstimates = function () {
 			$scope.totalEstimate = $scope.estimationInTotal();
 			$scope.remainingEstimate = $scope.remainingEstimation($scope.totalEstimate);
+			$scope.sprintLimit = $scope.totalEstimate + $scope.remainingEstimate;
+		}
+
+		$scope.sprintLimitExceeded = function () {
+			return ($scope.remainingEstimate < 0)? true : false;
 		}
 
 		$scope.calculateEstimates();
@@ -354,6 +516,18 @@ angular.module('sprints', [
 				$scope.calculateEstimates();
 			}
 		});
+
+		/**************************************************
+		 * On save call backs
+		 **************************************************/
+
+		$scope.onSave = function () {
+			$location.path('/projects/'+project.$id()+'/sprints/'+$scope.sprint.$id());
+		};
+		$scope.onError = function () {
+			$scope.updateError = true;
+		};
+
 
 	}
 ]);

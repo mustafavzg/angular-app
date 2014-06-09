@@ -14,7 +14,8 @@ angular.module('directives.propertybar', [
 			scope: {
 				properties: '=',
 				rootDivClass: '@?',
-				reverse: '@?'
+				reverse: '@?',
+				vertical: '@?'
 			}
 			// link: function(scope, element, attrs) {
 			// }

@@ -3,10 +3,12 @@ angular.module('services.i18nNotifications', ['services.notifications', 'service
 angular.module('services.i18nNotifications').factory('i18nNotifications', ['localizedMessages', 'notifications', function (localizedMessages, notifications) {
 
   var prepareNotification = function(msgKey, type, interpolateParams, otherProperties) {
-     return angular.extend({
-       message: localizedMessages.get(msgKey, interpolateParams),
-       type: type
-     }, otherProperties);
+      var notification = angular.extend({
+		  message: localizedMessages.get(msgKey, interpolateParams),
+		  type: type
+      }, otherProperties);
+	  notifications.setClass(notification);
+	  return notification;
   };
 
   var I18nNotifications = {

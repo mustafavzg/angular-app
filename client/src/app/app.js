@@ -30,7 +30,7 @@ angular.module('app').constant('ATHENAWEBAPP_CONFIG', {
 
 //TODO: move those messages to a separate module
 angular.module('app').constant('I18N.MESSAGES', {
-	'errors.route.changeError':'Route change error',
+	'errors.route.changeError':"Route change error: {{reason}}",
 
 	'crud.user.save.success':"User was saved successfully. (id :'{{id}}')",
 	'crud.user.save.error':"An error occurred while saving the user ...",
@@ -62,6 +62,7 @@ angular.module('app').constant('I18N.MESSAGES', {
 	// --------------------------------------------------
 	'crud.sprint.save.success':"Sprint was saved successfully. (id :'{{id}}')",
 	'crud.sprint.save.error':"An error occurred while saving the sprint ...",
+	'crud.sprint.expired.error':"Cannot edit an expired sprint ...",
 
 	'crud.sprint.remove.success':"Sprint was removed successfully. (id :'{{id}}')",
 	'crud.sprint.remove.error':"An error occurred while removing the sprint : id '{{id}}'.",
@@ -107,7 +108,7 @@ angular.module('app').controller('AppCtrl', [
 		};
 
 		$scope.$on('$routeChangeError', function(event, current, previous, rejection){
-			i18nNotifications.pushForCurrentRoute('errors.route.changeError', 'error', {}, {rejection: rejection});
+			i18nNotifications.pushForCurrentRoute('errors.route.changeError', 'error', {reason: rejection}, {rejection: rejection});
 			// console.log({rejection: rejection});
 		});
 	}

@@ -12,7 +12,7 @@
 	<!-- -------------------------------------------------- -->
 	<!-- Sprint Title, Description, Properties -->
 	<!-- -------------------------------------------------- -->
-	<div class="panel panel-default">
+	<div class="panel panel-info">
 		<div class="panel-heading">
 			<div class="media">
 				<property-bar properties="sprint.attributeValuesToDisplay" root-div-class="media-object pull-right" reverse="true" ></property-bar>
@@ -29,12 +29,22 @@
 			<div class="media">
 				<div class="media-body">
 					<p>{{sprint.description}}</p>
-					<a class="btn btn-primary media-object pull-right" role="button" ng-click="sprintsCrudHelpers.edit(sprint.$id())" ng-cloak><icon id="edit"></icon> Edit Sprint</a>
-				</div>
+					<!-- <a class="btn btn-primary media-object pull-right" role="button" ng-click="sprintsCrudHelpers.edit(sprint.$id())" ng-cloak><icon id="edit"></icon> Edit Sprint</a> -->
+					<!-- <span class="form-group pull-right"> -->
+					<!-- 	<a class="btn btn-primary media-object" role="button" ng-click="sprintsCrudHelpers.edit(sprint.$id())" ng-disabled="sprint.isExpired()" ng-cloak><icon id="edit"></icon> Edit Sprint</a> -->
+					<!-- 	<p class="help-block" ng-show="sprint.isExpired()">Cannot edit an expired sprint</p> -->
+					<!-- </span> -->
+					<!-- <button class="btn btn-primary media-object pull-right" role="button" ng-click="sprintsCrudHelpers.edit(sprint.$id())" ng-disabled="sprint.isExpired()" tooltip="editToolTip()" ng-cloak><icon id="edit"></icon> <icon id="warning-sign"></icon> Edit Sprint</button> -->
+					
+					<span class="media-object pull-right">
+						<action-icon icon="warning-sign" tip="Cannot edit an expired sprint" ng-show="sprint.isExpired()"></action-icon>
+ 						<button class="btn btn-primary" role="button" ng-click="sprintsCrudHelpers.edit(sprint.$id())" ng-hide="sprint.isExpired()" ng-cloak><icon id="edit"></icon> Edit Sprint</button>
+					</span>
+
+				</div>					
 			</div>
 		</div>
 	</div>
-
 	<!-- -------------------------------------------------- -->
 	<!-- Other Entities -->
 	<!-- TODO: Implement this with ng-repeat or in separate template files -->

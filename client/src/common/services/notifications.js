@@ -22,6 +22,14 @@ angular.module('services.notifications', []).factory('notifications', ['$rootSco
     notifications.ROUTE_NEXT.length = 0;
   });
 
+  notificationsService.setClass = function(notification){
+	  var typeClassMap = {
+		  success: 'success',
+		  error: 'warning'
+	  }
+	  notification.ngclass = typeClassMap[notification.type];
+  };
+
   notificationsService.getCurrent = function(){
     return [].concat(notifications.STICKY, notifications.ROUTE_CURRENT);
   };
