@@ -15,6 +15,7 @@ angular.module('projectsitemview', [
 	'directives.test',
 	'directives.users',
 	'directives.comment',
+	'directives.scrum',
 	'underscore'
 ])
 
