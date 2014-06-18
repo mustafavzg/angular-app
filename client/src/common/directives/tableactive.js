@@ -25,7 +25,8 @@ angular.module('directives.tableactive', [
 				'$scope',
 				'$element',
 				'$attrs',
-				function ($scope, $element, $attrs) {
+				'dateFilter',
+				function ($scope, $element, $attrs, dateFilter) {
 
 					console.log("LINKING THE TABLEACTIVE!!!!");
 					var conf = $scope.resourceconf;

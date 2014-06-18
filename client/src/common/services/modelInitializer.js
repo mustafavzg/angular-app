@@ -1,6 +1,6 @@
-angular.module('services.directiveInitializer', []);
+angular.module('services.directiveInitializerOld', []);
 
-angular.module('services.directiveInitializer').factory('directiveInitializer', [
+angular.module('services.directiveInitializerOld').factory('directiveInitializerOld', [
 	'$parse',
 	function ($parse) {
 		var directiveInitializer = {

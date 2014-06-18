@@ -1,9 +1,8 @@
-<div class="bordered bordered-hover">
-	<button class="btn-block" ng-click="new()"><h4>New Backlog</h4></button>
-</div>
+<button type="button" class="btn btn-primary btn-block" ng-click="new()">New Backlog Item</button>
+
 <hr />
 
-<table class="table table-bordered-outer table-condensed table-striped-color table-hover">
+<table class="table table-condensed table-striped table-hover">
     <thead>
     <tr>
         <th>Name</th>
@@ -15,15 +14,12 @@
     <tbody>
     <tr ng-repeat="backlogItem in backlog" ng-click="view(backlogItem.$id())">
         <td>{{backlogItem.name}}</td>
-        <td>{{backlogItem.desc}}</td>
+        <td>{{backlogItem.description}}</td>
         <td>{{backlogItem.priority}}</td>
         <td>{{backlogItem.estimation}}</td>
     </tr>
     <tr ng-show="!backlog.length">
-        <td colspan="4">No items in the backlog</td>
+        <td colspan="4">No backlog items</td>
     </tr>
     </tbody>
 </table>
-<!-- <div class="well"> -->
-<!--     <button class="btn" ng-click="new()">New backlog item</button> -->
-<!-- </div> -->

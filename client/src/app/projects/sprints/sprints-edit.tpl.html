@@ -3,8 +3,7 @@
 		<strong>
 			Sprint
 		</strong>
-		<span class="pull-right hover-pointer" ng-click="sprintsCrudHelpers.view(sprint.$id())" ng-cloak><action-icon icon="hand-left"></action-icon><a> Back</a></span>
-		
+		<!-- <span class="pull-right hover-pointer" ng-click="sprintsCrudHelpers.view(sprint.$id())" ng-cloak><action-icon icon="hand-left"></action-icon><a> Back</a></span> -->
 	</div>
     <form name="form" crud-edit="sprint">
 		<div class="panel-body">
@@ -55,8 +54,8 @@
 
 						<div class="col-md-6">
 							<label>Sprint backlog</label>
-							<label class="pull-right" >Remaining: {{remainingEstimate}} </label>
-							<label class="pull-right" >Total Estimation: {{totalEstimate}} &nbsp;</label>
+							<!-- <label class="pull-right" >Remaining: {{remainingEstimate}} </label> -->
+							<!-- <label class="pull-right" >Total Estimation: {{totalEstimate}} &nbsp;</label> -->
 
 							<div class="panel panel-default">
 								<div class="panel-body">
@@ -64,19 +63,44 @@
 										No backlog items in the sprint backlog
 									</div>
 
+									<!-- <div class="form-group has-error" ng-show="sprintLimitExceeded()"> -->
+									<!-- 	<span class="help-block"> -->
+									<!-- 		<icon id="warning-sign"></icon> -->
+									<!-- 		Total estimation for the backlog items exceeds the sprint limit of {{sprintLimit}} hours. -->
+									<!-- 		Please remove some backlog items for the total estimation to be within the sprint limit  -->
+									<!-- 	</span> -->
+									<!-- </div> -->
+
 									<div class="media" ng-repeat="sprintBacklogItem in sprint.sprintBacklog">
-										<property-bar properties="productBacklogLookup[sprintBacklogItem].propertiesToDisplay" root-div-class="media-object pull-left" reverse="false" ></property-bar>
+										<property-bar properties="productBacklogLookup[sprintBacklogItem].propertiesToDisplay" root-div-class="media-object pull-left" reverse="false"></property-bar>
 										<div class="media-body">
-											<div class="badge pull-left" ng-cloak><strong>{{productBacklogLookup[sprintBacklogItem].$id()}}</strong></div><br />
+											<p>
+												<span class="badge" ng-cloak><strong>{{productBacklogLookup[sprintBacklogItem].$id()}}</strong></span>
+											</p>
 											<div class="media-heading">
-												<a href="#" ng-click="viewProductBacklogItem(sprintBacklogItem)">
+												<a href="#" ng-click="viewProductBacklogItem(sprintBacklogItem)" >
 													{{productBacklogLookup[sprintBacklogItem].name}}
 												</a>
+												<action-icon icon="info-sign" tip="{{productBacklogLookup[sprintBacklogItem].description}}"></action-icon>
 											</div>
-											<p>{{productBacklogLookup[sprintBacklogItem].description}}</p>
-											<button class="btn btn-sm btn-warning pull-left" ng-click="removeBacklogItem(sprintBacklogItem)" ng-disabled="false" ng-hide="false">
-												<icon id="remove-sign"></icon> Remove
-											</button>
+											<!-- <p>{{productBacklogLookup[sprintBacklogItem].description}}</p> -->
+											<!-- {{sprint.sprintTasks[sprintBacklogItem]}} -->
+											<div class="form-group" ng-class="{'has-error': !canRemoveBacklogItem(sprintBacklogItem)}">
+												<button class="btn btn-sm btn-warning pull-left" ng-click="removeBacklogItem(sprintBacklogItem)" ng-disabled="!canRemoveBacklogItem(sprintBacklogItem)" ng-hide="false">
+													<icon id="remove-sign"></icon> Remove
+												</button>
+												<!-- <warning-block root-div-class="pull-left" ng-show="!canRemoveBacklogItem(sprintBacklogItem)"> -->
+
+												<warning-block root-div-class="pull-left" show="{{!canRemoveBacklogItem(sprintBacklogItem)}}">
+												<!-- <warning-block root-div-class="pull-left" > -->
+													Cannot remove the backlog item as it has {{sprint.sprintTasks[sprintBacklogItem].length}} associated tasks assigned to this Sprint. Please remove the corresponding tasks from the sprint and then remove the backlog item.
+												</warning-block>
+												<!-- <span class="help-block pull-left" ng-show="!canRemoveBacklogItem(sprintBacklogItem)"> -->
+												<!-- 	<icon id="warning-sign"></icon> -->
+												<!-- 	Cannot remove the backlog item as it has {{sprint.sprintTasks[sprintBacklogItem].length}} associated tasks assigned to this Sprint. Please remove the corresponding tasks from the sprint and then remove the backlog item. -->
+												<!-- </span> -->
+
+											</div>
 										</div>
 									</div>
 									<!-- div media -->
@@ -91,33 +115,59 @@
 
 						<div class="col-md-6">
 							<label>Product backlog</label>
-							<div class="panel panel-default">
+							<!-- Search field -->
+							<div class="form-group">
+								<input type="text" class="form-control" id="query" ng-model="query" ng-disabled="!filteredProductBacklog.length" placeholder="Search backlog items ... "/>
+								<div class="help-block" ng-show="!filteredProductBacklog.length">
+									No backlog items to add
+									<!-- <action-icon icon="new-window" tip="Add more backlog items to the product backlog" action="manageBacklog()"></action-icon> -->
+									<action-icon icon="new-window" tip="Add backlog item (Please save/revert any unsaved changes before going ahead)" action="newBacklogItem()"></action-icon>
+								</div>
+							</div>
+
+							<div class="panel panel-default panel-scroll">
 								<div class="panel-body">
-									<!-- Search field -->
-									<div class="form-group">
-										<input type="text" class="form-control" id="query" ng-model="query" ng-disabled="!filteredProductBacklog.length" placeholder="Search backlog items ... "/>
-										<div class="help-block" ng-show="!filteredProductBacklog.length">
-											No backlog items to add
-										</div>
-									</div>
+									<!-- <\!-- Search field -\-> -->
+									<!-- <div class="form-group"> -->
+									<!-- 	<input type="text" class="form-control" id="query" ng-model="query" ng-disabled="!filteredProductBacklog.length" placeholder="Search backlog items ... "/> -->
+									<!-- 	<div class="help-block" ng-show="!filteredProductBacklog.length"> -->
+									<!-- 		No backlog items to add -->
+									<!-- 		<\!-- <action-icon icon="new-window" tip="Add more backlog items to the product backlog" action="manageBacklog()"></action-icon> -\-> -->
+									<!-- 		<action-icon icon="new-window" tip="Add backlog item (Please save/revert any unsaved changes before going ahead)" action="newBacklogItem()"></action-icon> -->
+									<!-- 	</div> -->
+									<!-- </div> -->
 
 									<!-- <hr /> -->
-									<div class="media" ng-repeat="productBacklogItem in searchFilteredProductBacklog = ((filteredProductBacklog = (productBacklog | filter:notSelected)) | filter:query)">
+									<div class="media" ng-repeat="productBacklogItem in searchFilteredProductBacklog = ((filteredProductBacklog = (productBacklog | filter:backlogItemNotSelected)) | filter:query)">
 										<property-bar properties="productBacklogItem.propertiesToDisplay" root-div-class="media-object pull-left" reverse="false" ></property-bar>
 										<div class="media-body">
-											<div class="badge pull-left" ng-cloak><strong>{{productBacklogItem.$id()}}</strong></div><br />
+											<p>
+												<span class="badge" ng-cloak><strong>{{productBacklogItem.$id()}}</strong></span>
+											</p>
 											<div class="media-heading">
+												<!-- <a href="#" ng-click="viewProductBacklogItem(productBacklogItem.$id())" tooltip="{{productBacklogItem.description}}" > -->
 												<a href="#" ng-click="viewProductBacklogItem(productBacklogItem.$id())">
 													{{productBacklogItem.name}}
 												</a>
+												<action-icon icon="info-sign" tip="{{productBacklogItem.description}}"></action-icon>
 											</div>
-											<p>{{productBacklogItem.description}}</p>
+											<!-- <p>{{productBacklogItem.description}}</p> -->
 
-											<div class="form-group" ng-class="{'has-error': !canAddBacklogItem(productBacklogItem)}">
-												<button class="btn btn-sm btn-success pull-left" ng-click="addBacklogItem(productBacklogItem)" ng-disabled="!canAddBacklogItem(productBacklogItem)" ng-hide="false">
+											<!-- <div class="form-group" ng-class="{'has-error': !canAddBacklogItem(productBacklogItem)}"> -->
+											<div class="form-group">
+												<!-- <button class="btn btn-sm btn-success pull-left" ng-click="addBacklogItem(productBacklogItem)" ng-disabled="!canAddBacklogItem(productBacklogItem)" ng-hide="false"> -->
+												<button class="btn btn-sm btn-success pull-left" ng-click="addBacklogItem(productBacklogItem)">
 													<icon id="plus-sign"></icon> Add
 												</button>
-												<div class="help-block pull-left" ng-show="!canAddBacklogItem(productBacklogItem)">Cannot add this backlog item (estimate: {{productBacklogItem.estimation}}) to the sprint backlog (remaining estimate: {{remainingEstimate}})</div>
+
+												<!-- <button class="btn btn-sm btn-success media-object pull-right" ng-click="addBacklogItem(productBacklogItem)"> -->
+												<!-- 	<icon id="plus-sign"></icon> Add -->
+												<!-- </button> -->
+
+												<!-- <div class="help-block pull-left" ng-show="!canAddBacklogItem(productBacklogItem)"> -->
+												<!-- 	<icon id="warning-sign"></icon> -->
+												<!-- 	Cannot add this backlog item (estimate: {{productBacklogItem.estimation}}) to the sprint backlog (remaining estimate: {{remainingEstimate}}) -->
+												<!-- </div> -->
 											</div>
 
 										</div>
@@ -138,6 +188,222 @@
 				<!-- div panel body -->
 			</div>
 			<!-- div panel -->
+
+			<!-- -------------------------------------------------- -->
+			<!-- Sprint Tasks -->
+			<!-- -------------------------------------------------- -->
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<label>Add Tasks</label>					
+				</div>
+				<!-- div panel heading -->
+				
+				<div class="panel-body">
+					
+					<div class="row">
+						
+						<!-- {{sprint.sprintTasks}} -->
+						<div class="col-md-6">
+							<label>Sprint Tasks</label>
+							<label class="pull-right" >Remaining: {{remainingEstimate}} </label>
+							<label class="pull-right" >Total Estimation: {{totalEstimate}} &nbsp;</label>
+
+							<div class="panel panel-default" ng-show="!sprintHasTasks() || sprintLimitExceeded()">
+								<div class="panel-body">
+									<!-- <div class="help-block" ng-show="!sprint.sprintTasks.length"> -->
+									<div class="help-block" ng-show="!sprintHasTasks()">
+										No tasks in the sprint
+										<action-icon icon="question-sign" tip="Please add some tasks to the sprint from the sprint backlog items to the right"></action-icon>
+									</div>
+
+									<div class="form-group has-error" ng-show="sprintLimitExceeded()">
+										<span class="help-block">
+											<icon id="warning-sign"></icon>
+											Total estimation for the tasks exceeds the sprint limit of {{sprintLimit}} hours.
+											Please remove some tasks for the total estimation to be within the sprint limit 
+										</span>
+									</div>
+
+									<!-- <\!-- {{sprint.sprintTasks}} -\-> -->
+									<!-- <div class="media" ng-repeat="task in tasks = taskDictionary.lookUp(getTaskIds(sprint.sprintTasks))"> -->
+									<!-- 	<property-bar properties="task.propertiesToDisplay" root-div-class="media-object pull-left" reverse="false"></property-bar> -->
+									<!-- 	<div class="media-body"> -->
+									<!-- 		<p> -->
+									<!-- 			<span class="badge" ng-cloak><strong>{{task.$id()}}</strong></span> -->
+									<!-- 		</p> -->
+									<!-- 		<div class="media-heading"> -->
+									<!-- 			<a href="#" ng-click="viewTask(task)" tooltip="{{task.description}}"> -->
+									<!-- 				{{task.name}} -->
+									<!-- 			</a> -->
+									<!-- 		</div> -->
+									<!-- 		<\!-- <p>{{task.description}}</p> -\-> -->
+
+									<!-- 		<button class="btn btn-sm btn-warning pull-left" ng-click="removeTask(task)" ng-disabled="false" ng-hide="false"> -->
+									<!-- 			<icon id="remove-sign"></icon> Remove -->
+									<!-- 		</button> -->
+
+									<!-- 	</div> -->
+									<!-- </div> -->
+									<!-- <\!-- div media -\-> -->
+
+								</div>
+								<!-- div panel body -->
+							</div>
+							<!-- div panel -->
+
+							<accordion close-others="false">
+								<accordion-group is-open="isOpen" panel-class="info" ng-repeat="sprintBacklogItem in sprint.sprintBacklog | filter:backlogItemNoTasks" ng-init="isOpen = true">
+									<accordion-heading>
+										<div class="media">
+											<property-bar properties="productBacklogLookup[sprintBacklogItem].propertiesToDisplay" root-div-class="media-object pull-left" reverse="false"></property-bar>
+											<div class="media-body">
+												<p>
+													<span class="badge" ng-cloak><strong>{{productBacklogLookup[sprintBacklogItem].$id()}}</strong></span>
+												</p>
+												<div class="media-heading">
+  													<a href="#" ng-click="viewProductBacklogItem(sprintBacklogItem)" tooltip="{{productBacklogLookup[sprintBacklogItem].description}}" >
+														{{productBacklogLookup[sprintBacklogItem].name}}
+													</a>
+												</div>
+												<!-- div media-heading -->
+											</div>
+											<!-- div media-body -->
+										</div>
+										<!-- div media -->
+	 								</accordion-heading>
+
+									<div class="row">
+										<div class="col-md-offset-1">
+											<div class="media" ng-repeat="task in taskDictionary.lookUp(sprint.sprintTasks[sprintBacklogItem])">
+												<property-bar properties="task.propertiesToDisplay" root-div-class="media-object pull-left" reverse="false"></property-bar>
+												<div class="media-body">
+													<p>
+														<span class="badge" ng-cloak><strong>{{task.$id()}}</strong></span>
+													</p>
+													<div class="media-heading">
+														<a href="#" ng-click="viewTask(task)" tooltip="{{task.description}}">
+															{{task.name}}
+														</a>
+													</div>
+													<!-- <p>{{task.description}}</p> -->
+
+													<div class="form-group" ng-class="{'has-error': !canRemoveTask(task)}">
+														<button class="btn btn-sm btn-warning pull-left" ng-click="removeTask(task)" ng-disabled="!canRemoveTask(task)" ng-hide="false">
+															<icon id="remove-sign"></icon> Remove
+														</button>
+														<!-- <div class="help-block pull-left" ng-show="!canRemoveTask(task)"> -->
+														<!-- 	<icon id="warning-sign"></icon> -->
+														<!-- 	Cannot remove this task (estimate: {{task.estimation}}) to the sprint (remaining estimate: {{remainingEstimate}}) -->
+														<!-- </div> -->
+													</div>
+												</div>
+											</div>
+											<!-- div media -->
+										</div>
+										<!-- div col -->
+									</div>
+									<!-- div row -->
+
+								</accordion-group>
+							</accordion>
+
+
+							
+						</div>
+						<!-- div col -->
+
+						<div class="col-md-6">
+							<label>Tasks in Sprint Backlog</label>						
+							<div class="panel panel-default" ng-show="!sprint.sprintBacklog.length">
+								<div class="panel-body">
+									<div class="help-block">
+										No backlog items in the sprint backlog
+										<action-icon icon="question-sign" tip="Please add some backlog items to the sprint backlog in the 'Edit Sprint Backlog' section"></action-icon>
+									</div>
+								</div>
+								<!-- div panel body -->
+							</div>
+							<!-- div panel -->
+							<accordion close-others="false" >
+								<accordion-group is-open="isOpen" panel-class="warning" ng-repeat="sprintBacklogItem in sprint.sprintBacklog" ng-init="isOpen = false">
+									<accordion-heading>
+										<div class="media">
+											<property-bar properties="productBacklogLookup[sprintBacklogItem].propertiesToDisplay" root-div-class="media-object pull-left" reverse="false"></property-bar>
+ 											<!-- <icon id="chevron-down" class="media-object pull-right" ng-show="!isOpen"></icon> -->
+											<!-- <icon id="chevron-up" class="media-object pull-right" ng-show="isOpen"></icon> -->
+
+											<div class="media-body">
+												<!-- <div class="badge block pull-left" ng-cloak><strong>{{productBacklogLookup[sprintBacklogItem].$id()}}</strong></div> -->
+												<p>
+													<span class="badge" ng-cloak><strong>{{productBacklogLookup[sprintBacklogItem].$id()}}</strong></span>
+												</p>
+												<div class="media-heading">
+  													<a href="#" ng-click="viewProductBacklogItem(sprintBacklogItem)" tooltip="{{productBacklogLookup[sprintBacklogItem].description}}" >
+														{{productBacklogLookup[sprintBacklogItem].name}}
+													</a>
+												</div>
+												<!-- <p>{{productBacklogLookup[sprintBacklogItem].description}}</p> -->
+												<!-- <button class="btn btn-sm btn-warning pull-left" ng-click="removeBacklogItem(sprintBacklogItem)" ng-disabled="false" ng-hide="false"> -->
+												<!-- 	<icon id="remove-sign"></icon> Remove -->
+												<!-- </button> -->
+											</div>
+											<!-- div media-body -->
+										</div>
+										<!-- div media -->
+									</accordion-heading>
+									
+									<div class="row">
+										<div class="col-md-offset-1">
+											<div class="help-block" ng-show="!filteredTasks.length">
+												No tasks to add
+												<action-icon icon="new-window" tip="Add more tasks to the backlog item (Please save/revert any unsaved changes before going ahead)" action="newTask()"></action-icon>
+											</div>
+
+											<div class="media" ng-repeat="task in filteredTasks = (taskDictionary.lookUp(backlogTaskMap[sprintBacklogItem]) | filter:notSelected)">
+												<property-bar properties="task.propertiesToDisplay" root-div-class="media-object pull-left" reverse="false"></property-bar>
+												<div class="media-body">
+													<p>
+														<span class="badge" ng-cloak><strong>{{task.$id()}}</strong></span>
+													</p>
+													<div class="media-heading">
+														<a href="#" ng-click="viewTask(task)" tooltip="{{task.description}}">
+															{{task.name}}
+														</a>
+													</div>
+													<!-- <p>{{task.description}}</p> -->
+
+													<div class="form-group" ng-class="{'has-error': !canAddTask(task)}">
+														<button class="btn btn-sm btn-success pull-left" ng-click="addTask(task)" ng-disabled="!canAddTask(task)" ng-hide="false">
+															<icon id="plus-sign"></icon> Add
+														</button>
+														<div class="help-block pull-left" ng-show="!canAddTask(task)">
+															<icon id="warning-sign"></icon>
+															Cannot add this task (estimate: {{task.estimation}}) to the sprint (remaining estimate: {{remainingEstimate}})
+														</div>
+													</div>
+												</div>
+											</div>
+											<!-- div media -->
+										</div>
+										<!-- div col -->
+									</div>
+									<!-- div row -->
+
+								</accordion-group>
+							</accordion>
+
+						</div>
+						<!-- div col -->
+
+					</div>
+					<!-- div row -->
+				</div>
+				<!-- div panel body -->
+			</div>
+			<!-- div panel -->
+			<!-- -------------------------------------------------- -->
+			<!-- Sprint Tasks End -->
+			<!-- -------------------------------------------------- -->
 
 		</div>
 		<!-- div panel body -->

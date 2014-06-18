@@ -61,6 +61,13 @@ angular.module('tasksnew', [
 		})
 
 		.whenNew({
+			project:[
+				'$route',
+				'Projects',
+				function ($route, Projects) {
+					return Projects.getById($route.current.params.projectId);
+				}
+			],
 			task:[
 				'Tasks',
 				'$route',
@@ -239,6 +246,7 @@ angular.module('tasksnew', [
 	'task',
 	'project',
 	'crudListMethods',
+	'crudEditHandlers',
 	function (
 		$scope,
 		$location,
@@ -248,7 +256,8 @@ angular.module('tasksnew', [
 		teamMembers,
 		task,
 		project,
-		crudListMethods
+		crudListMethods,
+		crudEditHandlers
 	) {
 		$scope.task = task;
 		$scope.project = project;
@@ -260,6 +269,7 @@ angular.module('tasksnew', [
 
 		$scope.tasksCrudHelpers = {};
 		angular.extend($scope.tasksCrudHelpers, crudListMethods('/projects/'+project.$id()+'/tasks'));
+		angular.extend($scope, crudEditHandlers('task'));
 
 		$scope.productBacklogLookup = {};
 		angular.forEach($scope.productBacklogItems, function (productBacklogItem) {
@@ -369,18 +379,42 @@ angular.module('tasksnew', [
 			}
 		});
 
-		/**************************************************
-		 * On save callbacks
-		 **************************************************/
-		$scope.onSave = function () {
-			var projectId = $route.current.params.projectId;
-			// var sprintId = $route.current.params.sprintId;
-			$location.path('/projects/' + projectId + '/tasks/' + task.$id());
+		// /**************************************************
+		//  * On Save/Remove callbacks
+		//  **************************************************/
+		// $scope.onSave = function (savedTask) {
+		// 	return {
+		// 		key: 'crud.task.save.success',
+		// 		type: 'success',
+		// 		context: {id : savedTask.$id()}
+		// 	};
+		// 	// var projectId = $route.current.params.projectId;
+		// 	// // var sprintId = $route.current.params.sprintId;
+		// 	// var taskid = task.$id();
+		// 	// if( angular.isDefined(taskid) ){
+		// 	// 	$location.path('/projects/' + projectId + '/tasks/' + taskid);
+		// 	// }
+		// 	// else {
+		// 	// 	$location.path('/projects/' + projectId + '/tasks');
+		// 	// }
+		// 	// $location.path('/admin/users');
+		// };
+		// $scope.onSaveError = function(error) {
+		// 	return {
+		// 		key: 'crud.task.save.error',
+		// 		type: 'error',
+		// 		context: {
+		// 			error: error
+		// 		}
+		// 	};
+		// 	// $scope.updateError = true;
+		// };
 
-			// $location.path('/admin/users');
-		};
-		$scope.onError = function() {
-			$scope.updateError = true;
-		};
+		// $scope.onRemove = function () {
+		// 	var projectId = $route.current.params.projectId;
+		// 	var taskid = task.$id();
+		// 	$location.path('/projects/' + projectId + '/tasks');
+		// };
+
 	}
 ]);

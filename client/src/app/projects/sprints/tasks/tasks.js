@@ -115,14 +115,14 @@ angular.module('tasks', [
 		$scope.sprintBacklogItems = sprintBacklogItems;
 		$scope.teamMembers = teamMembers;
 
-		$scope.onSave = function () {
-			var projectId = $route.current.params.projectId;
-			var sprintId = $route.current.params.sprintId;
-			$location.path('/projects/' + projectId + '/sprints/' + sprintId + '/tasks');
-		};
-		$scope.onError = function() {
-			$scope.updateError = true;
-		};
+		// $scope.onSave = function () {
+		// 	var projectId = $route.current.params.projectId;
+		// 	var sprintId = $route.current.params.sprintId;
+		// 	$location.path('/projects/' + projectId + '/sprints/' + sprintId + '/tasks');
+		// };
+		// $scope.onError = function() {
+		// 	$scope.updateError = true;
+		// };
 	}
 ])
 
@@ -145,10 +145,9 @@ angular.module('tasks', [
 			var projectId = $route.current.params.projectId;
 			var sprintId = $route.current.params.sprintId;
 			$location.path('/projects/' + projectId + '/sprints/' + sprintId + '/tasks');
-
 			// $location.path('/admin/users');
 		};
-		$scope.onError = function() {
+		$scope.onSaveError = function() {
 			$scope.updateError = true;
 		};
 	}

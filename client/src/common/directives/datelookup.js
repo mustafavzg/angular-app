@@ -56,8 +56,8 @@ angular.module('directives.datelookup', [
 					};
 				}
 
-				console.log("PRINTING THE FORM OBJECT from the isolated scope");
-				console.log(ngform);
+ 				// console.log("PRINTING THE FORM OBJECT from the isolated scope");
+				// console.log(ngform);
 			}
 		};
 	}

@@ -1,9 +1,8 @@
-<div class="bordered bordered-hover">
-	<button class="btn-block" ng-click="new()"><h4>New Task</h4></button>
-</div>
+<button type="button" class="btn btn-primary btn-block" ng-click="new()">New Task</button>
+
 <hr />
 
-<table class="table table-bordered-outer table-condensed table-striped-color table-hover">
+<table class="table table-condensed table-striped table-hover">
     <thead>
     <tr>
         <th>Name</th>
@@ -16,15 +15,12 @@
     <tbody>
     <tr ng-repeat="task in tasks" ng-click="view(task.$id())">
         <td>{{task.name}}</td>
-        <td>{{task.desc}}</td>
+        <td>{{task.description}}</td>
         <td>{{task.estimation}}</td>
         <td>{{task.remaining}}</td>
     </tr>
     <tr ng-show="!tasks.length">
-        <td colspan="4">No tasks defined for this sprint</td>
+        <td colspan="4">No tasks defined</td>
     </tr>
     </tbody>
 </table>
-<!-- <div class="well"> -->
-<!--     <button class="btn" ng-click="new()">New task</button> -->
-<!-- </div> -->

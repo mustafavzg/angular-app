@@ -6,6 +6,7 @@ angular.module('productbacklog', [
 	'directives.icon',
 	'directives.propertybar',
 	'directives.actionicon',
+	'services.locationHistory',
 	'services.crud',
 	'services.i18nNotifications'
 ])
@@ -113,7 +114,9 @@ angular.module('productbacklog', [
 	'project',
 	'backlogItem',
 	'crudListMethods',
+	'crudEditHandlers',
 	'i18nNotifications',
+	'locationHistory',
 	function(
 		$scope,
 		$location,
@@ -121,23 +124,88 @@ angular.module('productbacklog', [
 		project,
 		backlogItem,
 		crudListMethods,
-		i18nNotifications
+		crudEditHandlers,
+		i18nNotifications,
+		locationHistory
 	){
 
 		$scope.backlogItem = backlogItem;
 
 		$scope.backlogItemsCrudHelpers = {};
 		angular.extend($scope.backlogItemsCrudHelpers, crudListMethods('/projects/'+project.$id()+'/productbacklog'));
+		angular.extend($scope, crudEditHandlers('backlog'));
 
-		$scope.onSave = function () {
-			i18nNotifications.pushForNextRoute('crud.backlog.save.success', 'success', {id : backlogItem.$id()});
-			$location.path('/projects/' + project.$id() + '/productbacklog/' + backlogItem.$id());
+		$scope.back = function () {
+			locationHistory.prev()
 		};
 
-		$scope.onError = function () {
-			i18nNotifications.pushForCurrentRoute('crud.backlog.save.error', 'error');
-			$scope.updateError = true;
-		};
+		// $scope.onSave = function (savedBacklogItem) {
+		// 	// return notification spec
+		// 	return {
+		// 		key: 'crud.backlog.save.success',
+		// 		type: 'success',
+		// 		context: {id : savedBacklogItem.$id()}
+		// 	};
+
+		// 	// i18nNotifications.pushForNextRoute('crud.backlog.save.success', 'success', {id : savedBacklogItem.$id()});
+		// 	console.log("item saved is");
+		// 	console.log(savedBacklogItem);
+		// 	// locationHistory.prev();
+
+		// 	// Holding the changes here for the save and (back, view, next) functionality
+		// 	// for now just returning back to the previous screen
+		// 	// var backlogItemId = backlogItem.$id();
+		// 	// if( angular.isDefined(backlogItemId) ){
+		// 	// 	$location.path('/projects/' + project.$id() + '/productbacklog/' + backlogItemId);
+		// 	// }
+		// 	// else {
+		// 	// 	locationHistory.prev();
+		// 	// 	// $location.path('/projects/' + project.$id() + '/productbacklog/');
+		// 	// }
+		// };
+
+		// // $scope.onSaveAndNext = function (savedBacklogItem) {
+		// // 	i18nNotifications.pushForCurrentRoute('crud.backlog.save.success', 'success', {id : savedBacklogItem.$id()});
+		// // 	console.log("item is saved and creating the next item");
+		// // 	console.log(savedBacklogItem);
+		// // };
+
+		// $scope.onSaveError = function (error) {
+		// 	return {
+		// 		key: 'crud.backlog.save.error',
+		// 		type: 'error',
+		// 		context: {
+		// 			error: error
+		// 		}
+		// 	};
+		// 	// i18nNotifications.pushForCurrentRoute('crud.backlog.save.error', 'error');
+		// 	// $scope.updateError = true;
+		// };
+
+		// $scope.onRemove = function (removedBacklogItem) {
+		// 	console.log("removing backlog");
+		// 	console.log(removedBacklogItem);
+		// 	return {
+		// 		key: 'crud.backlog.remove.success',
+		// 		type: 'success',
+		// 		context: {id : removedBacklogItem.$id()}
+		// 	};
+
+		// 	// var projectId = $route.current.params.projectId;
+		// 	// var taskid = task.$id();
+		// 	// $location.path('/projects/' + projectId + '/tasks');
+		// };
+
+		// $scope.onRemoveError = function (error) {
+		// 	return {
+		// 		key: 'crud.backlog.remove.error',
+		// 		type: 'error',
+		// 		context: {
+		// 			error: error
+		// 		}
+		// 	};
+		// };
+
 	}
 ])
 
@@ -253,7 +321,7 @@ angular.module('productbacklog', [
 					widthClass : 'col-md-2'
 				},
 				{
-					key : 'desc',
+					key : 'description',
 					prettyName : 'Description',
 					widthClass : 'col-md-4'
 				},

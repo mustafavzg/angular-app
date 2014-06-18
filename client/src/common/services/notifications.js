@@ -15,12 +15,25 @@ angular.module('services.notifications', []).factory('notifications', ['$rootSco
     return notificationObj;
   };
 
-  $rootScope.$on('$routeChangeSuccess', function () {
-    notifications.ROUTE_CURRENT.length = 0;
-
-    notifications.ROUTE_CURRENT = angular.copy(notifications.ROUTE_NEXT);
-    notifications.ROUTE_NEXT.length = 0;
+  $rootScope.$on('$routeChangeSuccess', function (event, current, previous, other) {
+	  // console.log("notifications before route change");
+	  // console.log(JSON.stringify(notifications));
+	  if( !angular.isDefined(current.$$route.redirectTo) ){
+		  notifications.ROUTE_CURRENT.length = 0;
+		  notifications.ROUTE_CURRENT = angular.copy(notifications.ROUTE_NEXT);
+		  notifications.ROUTE_NEXT.length = 0;
+	  }
+	  // console.log("notifications after route change");
+	  // console.log(JSON.stringify(notifications));
   });
+
+  notificationsService.setClass = function(notification){
+	  var typeClassMap = {
+		  success: 'success',
+		  error: 'warning'
+	  }
+	  notification.ngclass = typeClassMap[notification.type];
+  };
 
   notificationsService.getCurrent = function(){
     return [].concat(notifications.STICKY, notifications.ROUTE_CURRENT);

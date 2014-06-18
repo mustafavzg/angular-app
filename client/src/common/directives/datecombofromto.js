@@ -61,8 +61,8 @@ angular.module('directives.datecombofromto', [
 					};
 				}
 
-				console.log("PRINTING THE FORM OBJECT from the date combo isolated scope");
-				console.log(ngform);
+				// console.log("PRINTING THE FORM OBJECT from the date combo isolated scope");
+				// console.log(ngform);
 			}
 		};
 	}
