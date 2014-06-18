@@ -1,9 +1,15 @@
-<div ng-class="['panel', 'panel-'+notification.ngclass]" ng-repeat="notification in notifications.getCurrent()">
-	<div class="panel-heading">
-		<button class="close" ng-click="removeNotification(notification)">x</button>
-		{{notification.message}}
+<div class="navbar navbar-default navbar-fixed-bottom" role="navigation">
+	<button type="button" class="btn btn-warning navbar-btn navbar-left" tooltip="Clear all" tooltip-placement="right" ng-click="removeAllNotifications()"><icon id="remove-sign"></icon></button>
+	<div class="container">
+ 		<div ng-class="['panel', 'panel-'+notification.ngclass]" ng-repeat="notification in notifications.getCurrent()">
+			<div class="panel-heading">
+				<button class="close" ng-click="removeNotification(notification)">x</button>
+				{{notification.message}}
+			</div>
+		</div>
 	</div>
 </div>
+
 <!-- <div class="row"> -->
 <!-- 	<div class="col-md-12"> -->
 <!-- 		<\!-- <div ng-class="['alert', 'alert-'+notification.type]" ng-repeat="notification in notifications.getCurrent()"> -\-> -->

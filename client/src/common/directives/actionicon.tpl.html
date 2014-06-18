@@ -1,7 +1,9 @@
-<a href="#" ng-click="self.action()">
+<span ng-click="self.action()">
 	<!-- For now tooltip on separate tag to avoid -->
 	<!-- Multiple directives asking for isolated scopes error -->
 	<span tooltip="{{self.tip}}">
-		<icon id="{{self.icon}}" flip="{{self.flip}}" ></icon>
+		<a href="#">
+			<icon id="{{self.icon}}" flip="{{self.flip}}" invert="{{self.invert}}"></icon>
+		</a>
 	</span>
-</a>
+</span>

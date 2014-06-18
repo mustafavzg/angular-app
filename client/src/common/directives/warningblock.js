@@ -1,20 +1,22 @@
-angular.module('directives.icon', [
-	'ui.bootstrap',
-	'services.directiveInitializer'
+angular.module('directives.warningblock', [
+	'services.directiveInitializer',
+	'directives.icon',
+	'ui.bootstrap'
 ])
 
-// A directive for icon (any icon should used be done via this directive)
-.directive('icon', [
+// A help block with a warning sign
+// Mostly used to display some warning
+.directive('warningBlock', [
 	function() {
 		return {
 			restrict: 'E',
-			templateUrl: 'directives/icon.tpl.html',
+			templateUrl: 'directives/warningblock.tpl.html',
 			replace: true,
 			transclude: true,
+			// priority: -1000,
 			scope: {
-				id: '@',
-				flip: '@?',
-				invert: '@?'
+				rootDivClass: '@?',
+				show: '@?'
 			},
 			controller: [
 				'$scope',
@@ -27,26 +29,20 @@ angular.module('directives.icon', [
 					var attrsData = {
 						attrs: $attrs,
 						interpolationKeys: [
-							'id',
-							'flip',
-							'invert'
-						],
-						booleanKeys: [
-							'flip',
-							'invert'
+							'rootDivClass',
+							'show'
 						],
 						attrDefaults: {
-							// flip: false
+							show: false
 						}
 					};
 
 					// setup the directive model based on interpolation and expression attributes
-					directiveInitializer.init($scope, $scope.self, attrsData);
-					// console.log("icon scope.self");
+					directiveInitializer.init($scope, $scope.self, attrsData, true);
+					// console.log("warning block scope.self");
 					// console.log($scope.self);
-
 				}
 			]
 		};
 	}
-])
+]);

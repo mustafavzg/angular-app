@@ -165,8 +165,9 @@ angular.module('projects', [
 	// 'users',
 	'project',
 	'crudListMethods',
+	'crudEditHandlers',
 	'_',
-	function($scope, $location, i18nNotifications, project, crudListMethods, _) {
+	function($scope, $location, i18nNotifications, project, crudListMethods, crudEditHandlers, _) {
 	// function($scope, $location, i18nNotifications, users, project, crudListMethods, _) {
 
 		$scope.project = project;
@@ -180,15 +181,35 @@ angular.module('projects', [
 
 		$scope.projectscrudhelpers = {};
 		angular.extend($scope.projectscrudhelpers, crudListMethods('/projects'));
+		angular.extend($scope, crudEditHandlers('project'));
 
-		$scope.onSave = function(project) {
-			i18nNotifications.pushForNextRoute('crud.project.save.success', 'success', {id : project.$id()});
-			$location.path('/projects/' + project.$id());
-		};
+		// $scope.onSave = function(savedProject) {
+		// 	return {
+		// 		key: 'crud.project.save.success',
+		// 		type: 'success',
+		// 		context: {id : savedProject.$id()}
+		// 	};
 
-		$scope.onError = function() {
-			i18nNotifications.pushForCurrentRoute('crud.project.save.error', 'error');
-		};
+		// 	// i18nNotifications.pushForNextRoute('crud.project.save.success', 'success', {id : project.$id()});
+		// 	// $location.path('/projects/' + project.$id());
+		// 	// var projectId = project.$id();
+		// 	// if( angular.isDefined(projectId) ){
+		// 	// 	$location.path('/projects/' + projectId);
+		// 	// }
+		// 	// else {
+		// 	// 	$location.path('/projects/');
+		// 	// }
+		// };
+
+		// $scope.onSaveError = function(error) {
+		// 	return {
+		// 		key: 'crud.project.save.error',
+		// 		type: 'error',
+		// 		context: {
+		// 			error: error
+		// 		}
+		// 	};
+		// };
 
 	}
 ])

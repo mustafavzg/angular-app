@@ -14,8 +14,8 @@
     <tbody>
     <tr ng-repeat="sprint in sprints">
         <td ng-click="view(sprint.$id())">{{sprint.name}}</td>
-        <td ng-click="view(sprint.$id())">{{sprint.start}}</td>
-        <td ng-click="view(sprint.$id())">{{sprint.end}}</td>
+        <td ng-click="view(sprint.$id())">{{sprint.startdate | date:'mediumDate'}}</td>
+        <td ng-click="view(sprint.$id())">{{sprint.enddate | date:'mediumDate'}}</td>
         <td ng-click="view(sprint.$id())">{{sprint.getStatusPretty()}}</td>
         <!-- <td> -->
         <!--     <button type="button" class="btn btn-mini" ng-click="tasks(sprint, $event)">Tasks</button> -->

@@ -154,12 +154,13 @@ textarea {
 // .bs-glyphicons .glyphicon-class{display:block;text-align:center;word-wrap:break-word}
 .bs-glyphicons .glyphicon-class{display:block;text-align:center;word-wrap:normal}
 
-
 // .bs-glyphicons li:hover{color:#fff;background-color:#563d7c}@media (min-width:768px){
-.bs-glyphicons li:hover{color:#fff;background-color:#428bca}@media (min-width:768px){
-.bs-glyphicons{margin-left:0;margin-right:0}
-// .bs-glyphicons li{width:12.5%;font-size:12px}}
-.bs-glyphicons li{width:60px;font-size:12px}}
+.bs-glyphicons li:hover{color:#fff;background-color:#428bca}
+@media (min-width:768px){
+	   .bs-glyphicons{margin-left:0;margin-right:0}
+	   // .bs-glyphicons li{width:12.5%;font-size:12px}}
+	   .bs-glyphicons li{width:60px;font-size:12px}
+}
 
 // --------------------------------------------------
 // bs-glyphicons-block
@@ -308,10 +309,29 @@ textarea {
 // .bs-glyphicons{margin-left:0;margin-right:0}
 // .bs-glyphicons li{width:12.5%;font-size:12px}}
 
-
 .glyphicon-flipped {
 transform: scaleX(-1);
 -moz-transform: scaleX(-1);
 -webkit-transform: scaleX(-1);
 -ms-transform: scaleX(-1);
+}
+
+.icon-inverse {
+  color: #fff;
+}
+
+body {
+    padding-top: 65px; 
+    padding-bottom: 65px; 
+}
+
+.navbar .panel {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  // line-height: 20px;
+}
+
+.panel-scroll {
+    max-height: 500px;
+    overflow-y:scroll; 
 }

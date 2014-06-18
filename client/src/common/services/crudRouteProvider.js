@@ -82,10 +82,17 @@
 						controller: controllerName('ItemView'),
 						resolve: resolveFns
 					});
+					// routeBuilder.when(baseRoute+'/:itemId', {
+					// 	templateUrl: templateUrl('ItemView'),
+					// 	controller: controllerName('ItemView'),
+					// 	resolve: resolveFns
+					// });
 					routeBuilder.when(baseRoute+'/:itemId', {
-						templateUrl: templateUrl('ItemView'),
-						controller: controllerName('ItemView'),
-						resolve: resolveFns
+						redirectTo: function (routeParams, currentPath) {
+							console.log("redirecting to view");
+							console.log(routeParams);
+							return currentPath + "/view";
+						}
 					});
 					return routeBuilder;
 				},

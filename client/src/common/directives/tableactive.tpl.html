@@ -50,7 +50,10 @@
 		<tbody>
 			<tr ng-repeat="item in pageitems = ((filtereditems = (items | filter:{name:query} | orderBy:itemsSort.sortField:itemsSort.reverse)) | pagination:currentPage:itemsPerPage)" ng-click="itemsCrudHelpers.view(item.$id())">
 				<td ng-repeat="column in tableColumns">
-					{{item[column.key]}}
+					<span ng-switch="column.type">
+						<span ng-switch-when="date">{{item[column.key] | date:'mediumDate'}}</span>
+						<span ng-switch-default>{{item[column.key]}}</span>
+					</span>
 				</td>
 			</tr>
 			<tr ng-show="fetchingitems">

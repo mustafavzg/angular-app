@@ -6,6 +6,7 @@
  	<div class="panel panel-primary">
 		<div class="panel-heading">
 			<strong>Task</strong>
+			<action-icon class="pull-right" icon="edit" action="tasksCrudHelpers.edit(task.$id())" tip="Edit Task" invert="true"></action-icon>
 		</div>
 	</div>
 
@@ -27,7 +28,7 @@
 			<div class="media">
 				<div class="media-body">
 					<p>{{task.description}}</p>
-					<a class="btn btn-primary media-object pull-right" role="button" ng-click="tasksCrudHelpers.edit(task.$id())" ng-cloak><icon id="edit"></icon> Edit Task</a>
+					<!-- <a class="btn btn-primary media-object pull-right" role="button" ng-click="tasksCrudHelpers.edit(task.$id())" ng-cloak><icon id="edit"></icon> Edit Task</a> -->
 				</div>
 			</div>
 		</div>

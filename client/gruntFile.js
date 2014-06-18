@@ -74,7 +74,8 @@ module.exports = function (grunt) {
 			// less: ['src/less/*.less', 'vendor/bootstrapcss/*.css'], // recess:build doesn't accept ** in its file patterns
 			// less: ['vendor/bootstrapcss/*.css'], // recess:build doesn't accept ** in its file patterns
 			lessWatch: ['src/less/**/*.less', 'vendor/bootstrap/**/*.less', 'src/less/**/*.css', 'vendor/bootstrap/**/*.css'],
-			dbresource: ['vendor/mongolab/*.js']
+			dbresource: ['vendor/mongolab/*.js'],
+			angularui: ['vendor/angular-ui/bootstrap/*.js']
 		},
 		clean: ['<%= distdir %>/*'],
 		copy: {
@@ -316,11 +317,11 @@ module.exports = function (grunt) {
 			//   }
 			// },
 			all: {
-				files:['<%= src.js %>', '<%= src.specs %>', '<%= src.lessWatch %>', '<%= src.tpl.app %>', '<%= src.tpl.common %>', '<%= src.html %>', '<%= src.dbresource %>'],
+				files:['<%= src.js %>', '<%= src.specs %>', '<%= src.lessWatch %>', '<%= src.tpl.app %>', '<%= src.tpl.common %>', '<%= src.html %>', '<%= src.dbresource %>', '<%= src.angularui %>'],
 				tasks:['default','timestamp']
 			},
 			build: {
-				files:['<%= src.js %>', '<%= src.specs %>', '<%= src.lessWatch %>', '<%= src.tpl.app %>', '<%= src.tpl.common %>', '<%= src.html %>', '<%= src.dbresource %>'],
+				files:['<%= src.js %>', '<%= src.specs %>', '<%= src.lessWatch %>', '<%= src.tpl.app %>', '<%= src.tpl.common %>', '<%= src.html %>', '<%= src.dbresource %>', '<%= src.angularui %>'],
 				tasks:['build','timestamp']
 			}
 		},

@@ -6,6 +6,11 @@
 	<div class="panel panel-primary">
 		<div class="panel-heading">
 			<strong>Sprint</strong>
+			<span class="pull-right">
+				<action-icon icon="warning-sign" tip="Cannot edit an expired sprint" ng-show="sprint.isExpired()" invert="true"></action-icon>
+				<action-icon icon="edit" action="sprintsCrudHelpers.edit(sprint.$id())" tip="Edit Sprint" invert="true" ng-hide="sprint.isExpired()"></action-icon>
+ 				<!-- <button class="btn btn-primary" role="button" ng-click="sprintsCrudHelpers.edit(sprint.$id())" ng-hide="sprint.isExpired()" ng-cloak><icon id="edit"></icon> Edit Sprint</button> -->
+			</span>
 		</div>
 	</div>
 
@@ -18,7 +23,7 @@
 				<property-bar properties="sprint.attributeValuesToDisplay" root-div-class="media-object pull-right" reverse="true" ></property-bar>
 				<div class="media-body">
 					<label class="media-heading">{{sprint.name}}</label>
-					<br /><div class="badge" ng-cloak><strong>{{sprint.$id()}}</strong></div>
+					<p><span class="badge" ng-cloak><strong>{{sprint.$id()}}</strong></span></p>
 				</div>
 			</div>
 
@@ -36,11 +41,10 @@
 					<!-- </span> -->
 					<!-- <button class="btn btn-primary media-object pull-right" role="button" ng-click="sprintsCrudHelpers.edit(sprint.$id())" ng-disabled="sprint.isExpired()" tooltip="editToolTip()" ng-cloak><icon id="edit"></icon> <icon id="warning-sign"></icon> Edit Sprint</button> -->
 					
-					<span class="media-object pull-right">
-						<action-icon icon="warning-sign" tip="Cannot edit an expired sprint" ng-show="sprint.isExpired()"></action-icon>
- 						<button class="btn btn-primary" role="button" ng-click="sprintsCrudHelpers.edit(sprint.$id())" ng-hide="sprint.isExpired()" ng-cloak><icon id="edit"></icon> Edit Sprint</button>
-					</span>
-
+					<!-- <span class="media-object pull-right"> -->
+					<!-- 	<action-icon icon="warning-sign" tip="Cannot edit an expired sprint" ng-show="sprint.isExpired()"></action-icon> -->
+ 					<!-- 	<button class="btn btn-primary" role="button" ng-click="sprintsCrudHelpers.edit(sprint.$id())" ng-hide="sprint.isExpired()" ng-cloak><icon id="edit"></icon> Edit Sprint</button> -->
+					<!-- </span> -->
 				</div>					
 			</div>
 		</div>

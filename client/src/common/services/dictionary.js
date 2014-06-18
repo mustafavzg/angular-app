@@ -17,23 +17,23 @@ angular.module('services.dictionary').factory('dictionary', [
 				return value.$id();
 			},
 			build: function (items) {
-				console.log("building dictionary");
+				// console.log("building dictionary");
 
 				var that = this;
 				angular.forEach(items, function(value, key) {
 					var itemId = that.getId(value)
-					console.log("itemid is : " + itemId);
+					// console.log("itemid is : " + itemId);
 
 					if( !angular.isDefined(dictionary[itemId]) ){
 						dictionary[itemId] = value;
 					}
 				});
-				console.log("items in dictionary after build");
-				console.log(dictionary);
+				// console.log("items in dictionary after build");
+				// console.log(dictionary);
 			},
 			lookUp: function (itemsIdList) {
-				console.log("items in dictionary");
-				console.log(dictionary);
+				// console.log("items in dictionary");
+				// console.log(dictionary);
 				var items = [];
 				items = _.map(itemsIdList, function (itemId) {
 							return dictionary[itemId];

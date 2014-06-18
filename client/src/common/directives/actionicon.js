@@ -15,7 +15,9 @@ angular.module('directives.actionicon', [
 				tip: '@',
 				icon: '@?',
 				flip: '@?',
-				action: '&?'
+				invert: '@?',
+				action: '&?',
+				actionDisabled: '@?'
 			},
 			controller: [
 				'$scope',
@@ -30,7 +32,9 @@ angular.module('directives.actionicon', [
 						interpolationKeys: [
 							'tip',
 							'icon',
-							'flip'
+							'flip',
+							'invert',
+							'actionDisabled'
 						],
 						expressionKeys: [
 							'action'
@@ -46,8 +50,8 @@ angular.module('directives.actionicon', [
 
 					// setup the directive model based on interpolation and expression attributes
 					directiveInitializer.init($scope, $scope.self, attrsData, true);
-					console.log("action icon scope.self");
-					console.log($scope.self);
+					// console.log("action icon scope.self");
+					// console.log($scope.self);
 
 				}
 			]

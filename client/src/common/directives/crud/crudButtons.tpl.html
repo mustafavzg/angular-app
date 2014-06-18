@@ -1,0 +1,24 @@
+<div>
+	<!-- save -->
+	<div class="btn-group" dropdown is-open="isOpen" >
+		<button type="button" class="btn btn-primary save" ng-disabled="!canSave()" ng-click="save()">
+			<icon id="save"></icon> Save
+		</button>
+		<button type="button" class="btn btn-primary save dropdown-toggle" ng-disabled="!canSave()">
+			<span class="caret"></span>
+		</button>
+		<ul class="dropdown-menu" role="menu" ng-click="isOpen = false">
+			<li ng-click="saveAndBack()"><a href="#"><icon id="hand-left"></icon> Save and Back</a></li>
+			<li ng-click="saveAndNext()"><a href="#"><icon id="hand-right"></icon> Save and Next</a></li>
+			<li class="divider"></li>
+			<li ng-click="saveAndStay()"><a href="#"><icon id="hand-down"></icon> Save and Stay</a></li>
+		</ul>
+    </div>
+	<!-- <button type="button" class="btn btn-primary save" ng-disabled="!canSave()" ng-click="save()"><icon id="save"></icon> Save</button> -->
+
+	<!-- revert -->
+	<button type="button" class="btn btn-warning revert" ng-click="revertChanges()" ng-disabled="!canRevert()"><icon id="repeat"></icon> Revert changes</button>
+
+	<!-- remove -->
+	<button type="button" class="btn btn-danger remove" ng-click="remove()" ng-show="canRemove()"><icon id="trash"></icon> Remove</button>
+</div>

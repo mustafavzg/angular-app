@@ -83,7 +83,7 @@ angular.module('projectsitemview', [
 			}
 		});
 
-		$routeProvider.when('/projects/:projectId', {
+		$routeProvider.when('/projects/:projectId/view', {
 			templateUrl:'projects/projects-itemview.tpl.html',
 			controller:'ProjectsItemViewCtrl',
 			resolve:{
@@ -98,19 +98,22 @@ angular.module('projectsitemview', [
 			}
 		});
 
-		$routeProvider.when('/projects/:projectId/view', {
-			templateUrl:'projects/projects-itemview.tpl.html',
-			controller:'ProjectsItemViewCtrl',
-			resolve:{
-				project:[
-					'$route',
-					'Projects',
-					function ($route, Projects) {
-						return Projects.getById($route.current.params.projectId);
-					}
-				]
-				// authenticatedUser: securityAuthorizationProvider.requireAuthenticatedUser
+		$routeProvider.when('/projects/:projectId', {
+			redirectTo: function (routeParams, currentPath) {
+				return currentPath + "/view";
 			}
+			// templateUrl:'projects/projects-itemview.tpl.html',
+			// controller:'ProjectsItemViewCtrl',
+			// resolve:{
+			// 	project:[
+			// 		'$route',
+			// 		'Projects',
+			// 		function ($route, Projects) {
+			// 			return Projects.getById($route.current.params.projectId);
+			// 		}
+			// 	]
+			// 	// authenticatedUser: securityAuthorizationProvider.requireAuthenticatedUser
+			// }
 		});
 
 	}
@@ -353,12 +356,14 @@ angular.module('projectsitemview', [
 					widthClass : 'col-md-2'
 				},
 				{
-					key : 'start',
+					key : 'startdate',
+					type: 'date',
 					prettyName : 'Start Date',
 					widthClass : 'col-md-2'
 				},
 				{
-					key : 'end',
+					key : 'enddate',
+					type: 'date',
 					prettyName : 'End Date',
 					widthClass : 'col-md-2'
 				},

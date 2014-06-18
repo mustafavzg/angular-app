@@ -1,6 +1,8 @@
 <div ng-controller="HeaderCtrl" >
-	<div class="navbar navbar-inverse" role="navigation">
-		<div class="container-fluid">
+	<!-- <div class="navbar navbar-inverse" role="navigation"> -->
+	<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+		<div class="container">
+		<!-- <div class="col-md-10 col-md-offset-1"> -->
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
 					<span class="sr-only">Toggle navigation</span>
@@ -8,7 +10,7 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#">Projectile</a>
+				<a class="navbar-brand" href="#">Prime</a>
 			</div>
 			
 			<!-- <div class="collapse navbar-collapse" id="navbar-collapse"> -->
@@ -21,6 +23,7 @@
 				<li><a href="#"><img src="/static/img/spinner.gif"></a></li>
 			</ul>
 			<!-- </div> -->
+
 		</div>
 		<!-- container fluid -->
 
@@ -73,13 +76,18 @@
 		<div class="col-md-12" >
 			<ol class="breadcrumb">
 				<li ng-repeat="breadcrumb in breadcrumbs.getAll()">
-					<!-- <span class="divider">/</span> -->
 					<ng-switch on="$last">
 						<span ng-switch-when="true">{{breadcrumb.name}}</span>
-						<a ng-switch-default href="{{breadcrumb.path}}">{{breadcrumb.name}}</a>
+						<span ng-switch-default>
+							<a href="{{breadcrumb.path}}">{{breadcrumb.name}}</a>
+							<!-- <span class="divider">&nbsp;&gt;&gt;&nbsp;</span> -->
+							<!-- <span class="divider">&nbsp;<icon id="chevron-right"></icon></span> -->
+						</span>						
 					</ng-switch>
 				</li>
+				<span class="pull-right hover-pointer" ng-click="back()" ng-show="showBackLink()" ng-cloak><action-icon icon="hand-left"></action-icon><a> Back</a></span>
 			</ol>
+
 		</div>
 	</div>
 

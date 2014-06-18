@@ -6,6 +6,7 @@
 	<div class="panel panel-primary">
 		<div class="panel-heading">
 			<strong>Product Backlog Item</strong>
+			<action-icon class="pull-right" icon="edit" action="backlogItemsCrudHelpers.edit(backlogItem.$id())" tip="Edit Backlog Item" invert="true"></action-icon>
 		</div>
 	</div>
 
@@ -18,7 +19,13 @@
 				<property-bar properties="backlogItem.attributeValuesToDisplay" root-div-class="media-object pull-right" reverse="true" ></property-bar>
 				<div class="media-body">
 					<label class="media-heading">{{backlogItem.name}}</label>
-					<br /><div class="badge" ng-cloak><strong>{{backlogItem.$id()}}</strong></div>
+					<p>
+						<span class="badge" ng-cloak><strong>{{backlogItem.$id()}}</strong></span>
+						<!-- <span>&nbsp;</span> -->
+						<!-- <action-icon icon="edit" action="backlogItemsCrudHelpers.edit(backlogItem.$id())" tip="Edit Backlog Item"></action-icon> -->
+					</p>
+					<!-- <p><label class="media-heading">{{backlogItem.name}}</label></p> -->
+					<!-- <br /><div class="badge" ng-cloak><strong>{{backlogItem.$id()}}</strong></div> -->
 				</div>
 			</div>
 
@@ -28,8 +35,10 @@
 		<div class="panel-body">
 			<div class="media">
 				<div class="media-body">
+					<!-- <action-icon class="pull-right media-object" icon="edit" action="backlogItemsCrudHelpers.edit(backlogItem.$id())" tip="Edit Backlog Item"></action-icon> -->
 					<p>{{backlogItem.description}}</p>
-					<a class="btn btn-primary media-object pull-right" role="button" ng-click="backlogItemsCrudHelpers.edit(backlogItem.$id())" ng-cloak><icon id="edit"></icon> Edit Backlog Item</a>
+					<!-- <action-icon class="pull-right media-object" icon="edit" action="backlogItemsCrudHelpers.edit(backlogItem.$id())" tip="Edit Backlog Item"></action-icon> -->
+					<!-- <a class="btn btn-primary media-object pull-right" role="button" ng-click="backlogItemsCrudHelpers.edit(backlogItem.$id())" ng-cloak><icon id="edit"></icon> Edit Backlog Item</a> -->
 				</div>
 			</div>
 		</div>
