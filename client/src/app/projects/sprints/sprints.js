@@ -311,7 +311,7 @@ angular.module('sprints', [
 
 		$scope.sprintsCrudHelpers = {};
 		angular.extend($scope.sprintsCrudHelpers, crudListMethods('/projects/'+project.$id()+'/sprints'));
-		angular.extend($scope, crudEditHandlers('sprint'));
+		// angular.extend($scope, crudEditHandlers('sprint'));
 
 		$scope.manageBacklog = function () {
 			$location.path('/projects/'+project.$id()+'/productbacklog');
@@ -437,6 +437,9 @@ angular.module('sprints', [
 				console.log(tasks);
 				setupTasks(tasks);
 				$scope.calculateEstimates();
+			},
+			function (response) {
+				console.log("failed to fetch sprint tasks");
 			}
 		);
 
@@ -630,9 +633,42 @@ angular.module('sprints', [
 			}
 		});
 
-		// /**************************************************
-		//  * On save call backs
-		//  **************************************************/
+		/**************************************************
+		 * On save call backs
+		 * This code is a temporary solution
+		 *
+		 * The dependencies updated here will be updated
+		 * via the server side logic ()
+		 *
+		 * Once the dependencies are implemented on the
+		 * server side, this code should be deprecated
+		 **************************************************/
+		$scope.notificationHelpers = {};
+		angular.extend($scope.notificationHelpers, crudEditHandlers('sprint'));
+		$scope.onSave = function (savedSprint) {
+			var sprintId = savedSprint.$id();
+			var taskIds = $scope.getTaskIds(savedSprint.sprintTasks);
+			var tasks = $scope.taskDictionary.lookUp(taskIds);
+			console.log("saving sprints ids");
+			// angular.forEach(tasks, function(task) {
+			// 	task.sprintId = sprintId;
+			// });
+			console.log("tasks before saving");
+			console.log(tasks);
+			Tasks.updateMultipleItems(
+				tasks,
+				{$set: {sprintId: sprintId}},
+				function (tasks) {
+					console.log("tasks after saving");
+					console.log(tasks);
+				},
+				function (response) {
+					console.log("tasks not saved");
+					console.log(response);
+				}
+			);
+			return $scope.notificationHelpers.onSave(savedSprint);
+		}
 
 		// console.log("the location object");
 		// console.log($location);

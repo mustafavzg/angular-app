@@ -69,7 +69,7 @@ angular.module('security.service', [
 				email = 'admin@gmail.com';
 				password = 'admin';
 				// var request = $http.post('/login', {email: email, password: password});
-				var request = $http.post('/login', {email: email, password: password});
+				var request = $http.post('/login', {email: email, password: password}, {withCredentials: true});
 				return request.then(
 					function(response) {
 						service.currentUser = response.data.user;

@@ -299,6 +299,7 @@ angular.module('tasksnew', [
 		/**************************************************
 		 * Setup 'Assign Product Backlog' widget
 		 **************************************************/
+
 		angular.forEach($scope.productBacklogItems, function (productBacklogItem) {
 			var productBacklogItemId = productBacklogItem.$id();
 			// init total task estimate
