@@ -60,14 +60,15 @@ module.exports = function (grunt) {
 			' * Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %>\n */\n',
 		src: {
 			// js: ['src/**/*.js', 'vendor/**/*.js'],
-			js: ['src/**/*.js'],
+			js: ['src/**/*.js', 'vendor/directives/**/*.js'],
 			jsTpl: ['<%= distdir %>/templates/**/*.js'],
 			specs: ['test/**/*.spec.js'],
 			scenarios: ['test/**/*.scenario.js'],
 			html: ['src/index.html'],
 			tpl: {
 				app: ['src/app/**/*.tpl.html'],
-				common: ['src/common/**/*.tpl.html']
+				common: ['src/common/**/*.tpl.html'],
+				vendor: ['vendor/directives/**/*.tpl.html', 'vendor/directives/**/*.tmpl.html']
 			},
 			less: ['src/less/main.less'], // recess:build doesn't accept ** in its file patterns
 			// less: ['src/less/stylesheet.less'], // recess:build doesn't accept ** in its file patterns
@@ -113,6 +114,14 @@ module.exports = function (grunt) {
 				src: ['<%= src.tpl.common %>'],
 				dest: '<%= distdir %>/templates/common.js',
 				module: 'templates.common'
+			},
+			vendor: {
+				options: {
+					base: 'vendor'
+				},
+				src: ['<%= src.tpl.vendor %>'],
+				dest: '<%= distdir %>/templates/vendor.js',
+				module: 'templates.vendor'
 			}
 		},
 		concat:{
