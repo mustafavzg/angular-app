@@ -418,7 +418,7 @@ angular.module('sprints', [
 		// });
 
 		/**************************************************
-		 * Sprint backlog widget
+		 * Sprint backlog tasks widget
 		 **************************************************/
 
 		$scope.sprint.sprintTasks = $scope.sprint.sprintTasks || {};
@@ -428,6 +428,38 @@ angular.module('sprints', [
 			return _.chain(backlogTaskMap).values().flatten().uniq().value();
 			// return _.union(_.values(backlogTaskMap));
 		}
+
+		$scope.prevSprintTasks = $scope.getTaskIds($scope.sprint.sprintTasks) || [];
+
+		Tasks.forSprint(
+			$scope.sprint.$id(),
+			function (tasks, responsestatus, responseheaders, responseconfig) {
+				setupTasks(tasks);
+				$scope.tasksForSprints = _.map(tasks, function (task) {
+											 return task.$id();
+										 });
+				console.log("previous sprint tasks");
+				console.log($scope.prevSprintTasks);
+				console.log("tasks for sprint");
+				console.log($scope.tasksForSprints);
+				console.log('sprintTasks');
+				console.log($scope.sprint.sprintTasks);
+
+				$scope.prevSprintTasks = _.chain($scope.prevSprintTasks).union($scope.tasksForSprints).value();
+				// $scope.sprint.sprintTasks = {};
+				// console.log($scope.sprint.sprintTasks);
+				console.log("previous sprint tasks after union");
+				console.log($scope.prevSprintTasks);
+
+				$scope.fetchingTasks = false;
+				console.log("Succeeded to fetch tasks for sprint");
+			},
+			function (response, responsestatus, responseheaders, responseconfig) {
+				$scope.fetchingTasks = false;
+				console.log("Failed to fetch tasks for sprint");
+				console.log(response);
+			}
+		);
 
 		// build the sprint Tasks initially
 		Tasks.getByIds(
@@ -565,10 +597,28 @@ angular.module('sprints', [
 			$scope.calculateEstimates();
 		};
 
+		// $scope.deleteTasks = function (tasksOrIds) {
+		// 	Tasks.removeMultipleItems(
+		// 		tasksOrIds,
+		// 		function (responsedata) {
+		// 			console.log("Tasks succesfully removed");
+		// 			console.log(responsedata);
+		// 		},
+		// 		function (response) {
+		// 			console.log("Tasks removal failed");
+		// 			console.log(response);
+		// 		}
+		// 	);
+		// };
+
 		$scope.sprintHasTasks = function () {
 			var tasks = $scope.getTaskIds($scope.sprint.sprintTasks);
 			return (tasks.length)? true : false;
 		}
+
+		$scope.clearSprintTasks = function () {
+			$scope.sprint.sprintTasks = {};
+		};
 
 		$scope.estimationInTotal = function () {
 			var totalEstimation = 0;
@@ -637,36 +687,101 @@ angular.module('sprints', [
 		 * On save call backs
 		 * This code is a temporary solution
 		 *
-		 * The dependencies updated here will be updated
-		 * via the server side logic ()
+		 * The dependencies implemented here will probably
+		 * be moved to the server side
 		 *
 		 * Once the dependencies are implemented on the
-		 * server side, this code should be deprecated
+		 * server side, this code can be deprecated
 		 **************************************************/
 		$scope.notificationHelpers = {};
 		angular.extend($scope.notificationHelpers, crudEditHandlers('sprint'));
 		$scope.onSave = function (savedSprint) {
 			var sprintId = savedSprint.$id();
 			var taskIds = $scope.getTaskIds(savedSprint.sprintTasks);
-			var tasks = $scope.taskDictionary.lookUp(taskIds);
-			console.log("saving sprints ids");
+			// var tasks = $scope.taskDictionary.lookUp(taskIds);
+			var taskIdsRemoved = _.difference($scope.prevSprintTasks, taskIds);
+			var taskIdsAdded = _.difference(taskIds, $scope.prevSprintTasks);
+
+			console.log("tasks removed");
+			console.log(taskIdsRemoved);
+
+			console.log("tasks added");
+			console.log(taskIdsAdded);
+
+			// console.log("saving sprints ids");
 			// angular.forEach(tasks, function(task) {
 			// 	task.sprintId = sprintId;
 			// });
-			console.log("tasks before saving");
-			console.log(tasks);
-			Tasks.updateMultipleItems(
-				tasks,
-				{$set: {sprintId: sprintId}},
+			// console.log("tasks before saving");
+			// console.log(tasks);
+
+			// unset sprints for tasks removed
+			// Tasks.updateMultipleItems(
+			// 	taskIdsRemoved,
+			// 	{$unset: {sprintId: ""}},
+			// 	function (tasks) {
+			// 		console.log("sprintId cleared for tasks");
+			// 		console.log(tasks);
+			// 	},
+			// 	function (response) {
+			// 		console.log("failed to clear sprintId");
+			// 		console.log(response);
+			// 	}
+			// );
+
+			// unset sprints for tasks removed
+			Tasks.clearSprint(
+				taskIdsRemoved,
 				function (tasks) {
-					console.log("tasks after saving");
+					console.log("sprintId cleared for tasks");
 					console.log(tasks);
 				},
 				function (response) {
-					console.log("tasks not saved");
+					console.log("failed to clear sprintId");
 					console.log(response);
 				}
 			);
+
+			// Tasks.removeMultiple(
+			// 	{sprintId: sprintId},
+			// 	function (tasks) {
+			// 		console.log("removed : tasks for sprintId");
+			// 		console.log(tasks);
+			// 	},
+			// 	function (response) {
+			// 		console.log("failed to remove tasks for sprintid");
+			// 		console.log(response);
+			// 	}
+			// );
+
+			// // set sprintid for tasksadded
+			// Tasks.updateMultipleItems(
+			// 	taskIdsAdded,
+			// 	{$set: {sprintId: sprintId}},
+			// 	function (tasks) {
+			// 		console.log("tasks added");
+			// 		console.log(tasks);
+			// 	},
+			// 	function (response) {
+			// 		console.log("tasks not added");
+			// 		console.log(response);
+			// 	}
+			// );
+
+			// set sprintid for tasksadded
+			Tasks.setSprint(
+				taskIdsAdded,
+				sprintId,
+				function (tasks) {
+					console.log("tasks added");
+					console.log(tasks);
+				},
+				function (response) {
+					console.log("tasks not added");
+					console.log(response);
+				}
+			);
+
 			return $scope.notificationHelpers.onSave(savedSprint);
 		}
 
