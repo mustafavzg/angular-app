@@ -4,7 +4,8 @@
 	</div>
 	<div class="panel-body">
 		<div class="row">
-			<input class="input-large" type="text" placeholder="Add your comments here" ng-model="newcomment"/> 
+			<textarea class="form-control" ng-model="newcomment" placeholder="Add your comments here" cols="10" rows="5">
+			</textarea>
 			<button ng-click="addComment()" class="btn btn-primary">
 				Add
 			</button>

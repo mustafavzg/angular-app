@@ -1,96 +1,97 @@
 <div id="container-user-face-view row-fluid">
-	<div class="row-fluid">
-		<div class="span12 entityheader">
-			<h5>User</h5>
+
+	<!-- -------------------------------------------------- -->
+	<!-- User Header -->
+	<!-- -------------------------------------------------- -->
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			<strong>User</strong>
 		</div>
 	</div>
 
-	<hr />
 
-	<div class="entityinfo">
-		<!-- -------------------------------------------------- -->
-		<!-- User Title, Description -->
-		<!-- -------------------------------------------------- -->
-		<div class="row-fluid">
-			<span class="pull-left" ng-cloak><strong>{{user.$id()}}</strong></span>
-		</div>
-		<div class="row-fluid">
-			<div class="span12">
-				<!-- <span class="pull-left"><strong>{{user.name}}</strong></span> -->
-				<span class="pull-left" ng-cloak><h4>{{user.getFullName()}}</h4></span>
-				<span class="pull-right hover-pointer" ng-click="userscrudhelpers.edit(user.$id())" ng-cloak><a><strong>Edit User</strong></a></span>
-			</div>
-		</div>
-		<!-- <div class="row-fluid"> -->
-		<!-- 	<div class="span12 bordered"> -->
-		<!-- 		<span class="pull-left" ng-cloak>{{user.desc}}</span> -->
-		<!-- 	</div> -->
-		<!-- </div> -->
-	</div>
-
-	<div class="bordered">
-		<!-- -------------------------------------------------- -->
-		<!-- User attributes -->
-		<!-- -------------------------------------------------- -->
-		<div class="bordered">
-			<div class="row-fluid" ng-repeat="(key, attribute) in user.attributesToDisplay">
-				<div class="span12 attribute attribute-hover">
-					<span class="pull-left"><strong>{{ attribute.name }}</strong></span>
-					<span class="pull-right"><strong>{{ attribute.value }}</strong></span>
+	<!-- -------------------------------------------------- -->
+	<!-- User scrum update, Dev estimate -->
+	<!-- -------------------------------------------------- -->
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<img class="media-object photo-small pull-left" src="/static/img/foouser.jpg">
+				<div class="media-body"> 
+					<div class="media-heading">
+						userFullName (user name)
+					</div>
+					<p></p>
 				</div>
-			</div>
 		</div>
 	</div>
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<tabset justified="true" type="pills">
+				<tab heading="Dashboard">
+					<div class="col-md-6">		  
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<strong>Scrum Updates</strong>
+							</div>
+							<div class="panel panel-default">
+								<div class="panel-body">
+									<div class="panel">
+										<div class="panel-body">
+											<datecombofromto
+												 name="dateCombo"
+												 from-date="sprint.startdate"
+												 to-date="sprint.enddate"
+												 from-date-label="Start Date"
+												 to-date-label="End Date"
+												 from-date-required="true"
+												 to-date-required="true">
+											</datecombofromto>
+										</div>
+									</div>
+									<div class="media" ng-repeat="update in scrumupdates">
+										<div class="media-heading">
+											Date: {{update.date}}
+										</div>
+										<div class="media-body"> 
+											{{update.text}}
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
 
-	<div class="row-fluid">
-		<div class="span12 bordered">
-
-			<!-- Header with title and search bar -->
-			<div class="row-fluid">
-				<div class="span12" >
-					<!-- <span class="pull-left hover-pointer" ng-click="manageTasksForUser(user)"> -->
-					<span class="pull-left hover-pointer" ng-click="manageTasks(user)">
-						<strong><a>Tasks</a></strong>
-					</span>
-					<span class="pull-right">
-						<input type="text" id="taskquery" ng-model="taskquery" ng-disabled="!tasks.length"  placeholder="Search Tasks ... "/>
-					</span>
-				</div>
-			</div>
-			
-				<!-- Task list -->
-				<div class="row-fluid">
-					<table class="table table-bordered-outer table-condensed table-striped-color table-hover-color">
-						<thead>
-							<tr>
-								<th>Name</th>
-								<th>Description</th>
-								<th>Estimation</th>
-								<th>Remaining</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr ng-repeat="task in tasks | filter:{name:taskquery}" ng-click="taskscrudhelpers.view(task.$id())">
-								<td>{{task.name}}</td>
-								<td>{{task.desc}}</td>
-								<td>{{task.estimation}}</td>
-								<td>{{task.remaining}}</td>
-							</tr>
-							<tr ng-show="fetchingtasks">
-								<td colspan="4">Fetching Tasks ...
-									<span><a href="#"><img src="/static/img/spinner.gif"></a></span>
-								</td>
-							</tr>
-							<tr ng-show="!tasks.length && !fetchingtasks">
-								<td colspan="4">No tasks assigned to the user</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-				<!-- Task list -->
-
+					<div class="col-md-6">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<strong>Add Scrum Update</strong>
+							</div>
+							<div class="panel-body">
+								<div class="media" ng-repeat="task in tasks">
+									<property-bar properties="task.propertiesToDisplay" root-div-class="media-object pull-left" reverse="false" ></property-bar>
+									<button ng-click="addScrumUpdate(task)" class="btn btn-success media-object pull-right" ng-show="task.showAddButton" tooltip="Add a scrum update for this task">
+										<icon id="comment"></icon>
+									</button>
+									<button ng-click="saveScrumUpdate(task)" class="btn btn-warning media-object pull-right" ng-show="!task.showAddButton" tooltip="Done">
+										<icon id="thumbs-up"></icon>
+									</button>
+									<div class="media-body">
+										<div class="media-heading">
+											<a href="#" tooltip="{{task.Description}}">
+												{{task.Name}}
+											</a>
+										</div>
+										<textarea class="form-control media-object" ng-model="newcomment" placeholder="Add your update here" cols="10" rows="5" ng-show="!task.showAddButton">
+										</textarea>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</tab>
+				<tab heading="Scrum Updates">
+				</tab>
+			</tabset>
 		</div>
 	</div>
-	
 </div>
-
