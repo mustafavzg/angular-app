@@ -1,35 +1,22 @@
-<div class="bordered bordered-hover">
-	<button class="btn-block" ng-click="new()"><h4>New User</h4></button>	
-</div>
+<button type="button" class="btn btn-primary btn-block" ng-click="new()">New User</button>
 
 <hr />
 
-<table class="table table-bordered-outer table-condensed table-striped-color table-hover">
+<table class="table table-condensed table-striped table-hover">
     <thead>
-    <tr>
-        <th>&nbsp;</th>
-        <th>Username</th>
-        <th>Last name</th>
-        <th>First name</th>
-        <!-- <th></th> -->
-    </tr>
-    </thead>
+        <tr>
+            <th class="col-md-3">&nbsp;</th>
+            <th class="col-md-3">Username</th>
+            <th class="col-md-3">Last Name</th>
+            <th class="col-md-3">First Name</th>
+        </tr>
     <tbody>
-    <!-- <tr ng-repeat="user in users" ng-click="edit(user.$id())"> -->
-    <!--     <td><gravatar email="user.email" size="50" default-image="'monsterid'"></gravatar></td> -->
-    <!--     <td>{{user.email}}</td> -->
-    <!--     <td>{{user.lastName}}</td> -->
-    <!--     <td>{{user.firstName}}</td> -->
-    <!--     <td><button class="btn btn-danger remove" ng-click="remove(user, $index, $event)">Remove</button></td> -->
-
-    <!-- </tr> -->
-    <tr ng-repeat="user in users" ng-click="view(user.$id())">
-        <td><gravatar email="user.email" size="50" default-image="'monsterid'"></gravatar></td>
-        <td>{{user.username}}</td>
-        <td>{{user.lastName}}</td>
-        <td>{{user.firstName}}</td>
-        <!-- <td><button class="btn btn-danger remove" ng-click="remove(user, $index, $event)">Remove</button></td> -->
-    </tr>
+        <tr ng-repeat="user in users" ng-click="view(user.$id())">
+            <td><gravatar email="user.email" size="50" default-image="'monsterid'"></gravatar></td>
+            <td>{{user.username}}</td>
+            <td>{{user.lastName}}</td>
+            <td>{{user.firstName}}</td>
+        </tr>
     </tbody>
 </table>
 
