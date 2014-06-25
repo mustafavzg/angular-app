@@ -422,7 +422,8 @@ angular.module('sprints', [
 		 **************************************************/
 
 		$scope.sprint.sprintTasks = $scope.sprint.sprintTasks || {};
-		$scope.taskDictionary = dictionary;
+		// $scope.taskDictionary = dictionary;
+		$scope.taskDictionary = dictionary('tasks');
 
 		$scope.getTaskIds = function (backlogTaskMap) {
 			return _.chain(backlogTaskMap).values().flatten().uniq().value();
@@ -623,7 +624,7 @@ angular.module('sprints', [
 		$scope.estimationInTotal = function () {
 			var totalEstimation = 0;
 			var taskIds = $scope.getTaskIds($scope.sprint.sprintTasks);
-			var tasks = $scope.taskDictionary.lookUp(taskIds);
+			var tasks = $scope.taskDictionary.lookUpList(taskIds);
 			console.log("tasks in sprint");
 			console.log(tasks);
 			console.log(taskIds);
@@ -698,7 +699,7 @@ angular.module('sprints', [
 		$scope.onSave = function (savedSprint) {
 			var sprintId = savedSprint.$id();
 			var taskIds = $scope.getTaskIds(savedSprint.sprintTasks);
-			// var tasks = $scope.taskDictionary.lookUp(taskIds);
+			// var tasks = $scope.taskDictionary.lookUpList(taskIds);
 			var taskIdsRemoved = _.difference($scope.prevSprintTasks, taskIds);
 			var taskIdsAdded = _.difference(taskIds, $scope.prevSprintTasks);
 

@@ -80,10 +80,11 @@ angular.module('directives.userscombosearchadd', [
 
 					// keep a users dictionary for look up of
 					// searched results by the 'users' widget
-					$scope.usersDictionary = dictionary;
+					// $scope.usersDictionary = dictionary;
+					$scope.usersDictionary = dictionary('users');
 
 					$scope.lookUpUsers = function (usersIdList) {
-						return $scope.usersDictionary.lookUp(usersIdList)
+						return $scope.usersDictionary.lookUpList(usersIdList)
 					};
 
 					$scope.addMember = function(user, list) {
@@ -117,7 +118,6 @@ angular.module('directives.userscombosearchadd', [
 							}
 						}
 					};
-
 
 					$scope.$watchCollection('filteredUsers', function (newUsers, oldUsers) {
 						if( !angular.equals(newUsers, oldUsers) ){

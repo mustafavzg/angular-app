@@ -113,8 +113,8 @@ angular.module('directives.users', [
 						return (angular.isDefined(user)) ? 1 : 0;
 					}
 
-					$scope.usersDictionary = dictionary;
-					// build a local dictionary
+					// $scope.usersDictionary = dictionary;
+					$scope.usersDictionary = dictionary('users');
 
 					$scope.lookUpUsersInParent = function (usersIdList) {
 						if( angular.isDefined($scope.usersLookUp) ){
@@ -190,7 +190,7 @@ angular.module('directives.users', [
 					$scope.lookUpUsers = function (usersIdList) {
 						// first check in the local lookup
 						var users = [];
-						var usersInLocal = $scope.usersDictionary.lookUp(usersIdList) || [];
+						var usersInLocal = $scope.usersDictionary.lookUpList(usersIdList) || [];
 
 						console.log("users in local");
 						console.log(usersInLocal);
