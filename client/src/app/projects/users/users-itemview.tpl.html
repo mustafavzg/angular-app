@@ -39,14 +39,15 @@
 										<div class="panel-body">
 											<datecombofromto
 												 name="dateCombo"
-												 from-date="sprint.startdate"
-												 to-date="sprint.enddate"
+												 from-date="startdate"
+												 to-date="enddate"
 												 from-date-label="Start Date"
 												 to-date-label="End Date"
 												 from-date-required="true"
 												 to-date-required="true">
 											</datecombofromto>
 										</div>
+								        <button type="button" class="btn btn-primary btn-block" ng-click="filter(startdate, enddate)">Filter</button>
 									</div>
 									<div class="media" ng-repeat="update in scrumupdates">
 										<div class="media-heading">

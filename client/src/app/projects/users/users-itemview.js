@@ -137,6 +137,7 @@ angular.module('users-itemview',[
 				text : 'Update for the day!!!'
 			}
 		];
+		var scrumUpdates = $scope.scrumupdates;
 		$scope.taskscrudhelpers = {};
 		angular.extend($scope.taskscrudhelpers, crudListMethods('/projects/'+project.$id()+'/tasks'));
 		$scope.showAddButton = true;
@@ -148,19 +149,29 @@ angular.module('users-itemview',[
 			console.log("Adding Scrum Update!!!");
 			task.showAddButton = false;
 		}
-		$scope.startdate = "06/19/2014";
-		$scope.enddate = "06/21/2014";
 		$scope.dateRangeFilter = function(scrumUpdate){
-			console.log("Hi here (inside dateRangeFilter)!!!");
 			var scrumDate = new Date(scrumUpdate.date);
 			if($scope.startdate && $scope.enddate){
-				console.log("Hi here!!!");
 				var startDate = new Date($scope.startdate);
 				var endDate = new Date($scope.enddate);
 				return ((startDate <= scrumDate) && (endDate >= scrumDate));
 			}
 			return 1;
-		}
+		};
+		$scope.filter = function(startdate, enddate){
+			var filteredUpdates = [];
+			var scrumdate;
+			for(update in scrumUpdates){
+				scrumdate = new Date(scrumUpdates[update].date);
+				startdate = new Date(startdate);
+				enddate = new Date(enddate);
+				if(scrumdate >= startdate && scrumdate <= enddate){
+					filteredUpdates.push(scrumUpdates[update]);
+				}
+			}
+			$scope.scrumupdates = filteredUpdates;
+		};
+
 		// $q.when(Tasks.forUser(user.$id())).then(
 		// 	function (tasks) {
 		// 		$scope.tasks = tasks;
