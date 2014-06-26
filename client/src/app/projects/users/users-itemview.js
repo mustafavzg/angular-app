@@ -4,7 +4,8 @@ angular.module('users-itemview',[
 	'users-edit-uniqueEmail',
 	'users-edit-validateEquals',
 	'resources.users',
-	'resources.tasks'
+	'resources.tasks',
+	'directives.datecombofromto'
 ])
 
 .controller('UsersItemViewCtrl', [
@@ -58,6 +59,7 @@ angular.module('users-itemview',[
 							ordering : 1
 						}
 					];
+					$scope.tasks[i].showAddButton = true;
 				}
 				$scope.fetchingtasks = false;
 			},
@@ -137,26 +139,39 @@ angular.module('users-itemview',[
 				text : 'Update for the day!!!'
 			}
 		];
+		
 		var scrumUpdates = $scope.scrumupdates;
 		$scope.taskscrudhelpers = {};
 		angular.extend($scope.taskscrudhelpers, crudListMethods('/projects/'+project.$id()+'/tasks'));
 		$scope.showAddButton = true;
+		$scope.scrumDates = {};
+		$scope.scrumDates.startdate = new Date('06/20/2014');
+		$scope.scrumDates.enddate = new Date('06/23/2014');
 		$scope.saveScrumUpdate = function(task){
 			console.log("Scrum Update saved!!!");
 			task.showAddButton = true;
 		}
 		$scope.addScrumUpdate = function(task){
 			console.log("Adding Scrum Update!!!");
+			task.date = new Date(); 
 			task.showAddButton = false;
+			var successcb = function(){
+				console.log("task saved successfully!!!");
+			};
+			var failurecb = function(){
+				console.log("task cannot be saved!!!");
+			};
+			//task.$save(successcb, failurecb);
 		}
+
 		$scope.dateRangeFilter = function(scrumUpdate){
 			var scrumDate = new Date(scrumUpdate.date);
-			if($scope.startdate && $scope.enddate){
-				var startDate = new Date($scope.startdate);
-				var endDate = new Date($scope.enddate);
+			if($scope.scrumDates.startdate && $scope.scrumDates.enddate){
+				var startDate = new Date($scope.scrumDates.startdate);
+				var endDate = new Date($scope.scrumDates.enddate);
 				return ((startDate <= scrumDate) && (endDate >= scrumDate));
 			}
-			return 1;
+			return true;
 		};
 		$scope.filter = function(startdate, enddate){
 			var filteredUpdates = [];
