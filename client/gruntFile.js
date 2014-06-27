@@ -245,7 +245,6 @@ module.exports = function (grunt) {
 			}
 
 		},
-
 		recess: {
 		  build: {
 		    files: {

@@ -225,7 +225,7 @@
 									</div>
 
 									<!-- <\!-- {{sprint.sprintTasks}} -\-> -->
-									<!-- <div class="media" ng-repeat="task in tasks = taskDictionary.lookUpList(getTaskIds(sprint.sprintTasks))"> -->
+									<!-- <div class="media" ng-repeat="task in tasks = taskDictionary.lookUpItems(getTaskIds(sprint.sprintTasks))"> -->
 									<!-- 	<property-bar properties="task.propertiesToDisplay" root-div-class="media-object pull-left" reverse="false"></property-bar> -->
 									<!-- 	<div class="media-body"> -->
 									<!-- 		<p> -->
@@ -277,7 +277,7 @@
 
 									<div class="row">
 										<div class="col-md-offset-1">
-											<div class="media" ng-repeat="task in taskDictionary.lookUpList(sprint.sprintTasks[sprintBacklogItem])">
+											<div class="media" ng-repeat="task in taskDictionary.lookUpItems(sprint.sprintTasks[sprintBacklogItem])">
 												<property-bar properties="task.propertiesToDisplay" root-div-class="media-object pull-left" reverse="false"></property-bar>
 												<div class="media-body">
 													<p>
@@ -362,7 +362,7 @@
 												<action-icon icon="new-window" tip="Add more tasks to the backlog item (Please save/revert any unsaved changes before going ahead)" action="newTask()"></action-icon>
 											</div>
 
-											<div class="media" ng-repeat="task in filteredTasks = (taskDictionary.lookUpList(backlogTaskMap[sprintBacklogItem]) | filter:notSelected)">
+											<div class="media" ng-repeat="task in filteredTasks = (taskDictionary.lookUpItems(backlogTaskMap[sprintBacklogItem]) | filter:notSelected)">
 												<property-bar properties="task.propertiesToDisplay" root-div-class="media-object pull-left" reverse="false"></property-bar>
 												<div class="media-body">
 													<p>
