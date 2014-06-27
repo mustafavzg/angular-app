@@ -4,50 +4,6 @@ angular.module('services.dictionary').factory('dictionary', [
 	'_',
 	function ( _ ) {
 
-		// var dictionary = {};
-
-		// return {
-		// 	init: function (idFunction) {
-		// 		if( angular.isDefined(idFunction)
-		// 		 && angular.isFunction(idFunction) ){
-		// 			this.getId = idFunction;
-		// 		}
-		// 	},
-		// 	getId: function (value) {
-		// 		return value.$id();
-		// 	},
-		// 	build: function (items) {
-		// 		// console.log("building dictionary");
-
-		// 		var that = this;
-		// 		angular.forEach(items, function(value, key) {
-		// 			var itemId = that.getId(value)
-		// 			// console.log("itemid is : " + itemId);
-
-		// 			if( !angular.isDefined(dictionary[itemId]) ){
-		// 				dictionary[itemId] = value;
-		// 			}
-		// 		});
-		// 		// console.log("items in dictionary after build");
-		// 		// console.log(dictionary);
-		// 	},
-		// 	lookUp: function (itemId) {
-		// 		return dictionary[itemId];
-		// 	},
-		// 	lookUpList: function (itemsIdList) {
-		// 		// console.log("items in dictionary");
-		// 		// console.log(dictionary);
-		// 		var items = [];
-		// 		items = _.map(itemsIdList, function (itemId) {
-		// 					return dictionary[itemId];
-		// 				});
-		// 		items = _.filter(items, function (item) {
-		// 					return angular.isDefined(item);
-		// 				});
-		// 		return items;
-		// 	}
-		// };
-
 		// var dictionaryFactory = function (label, idFunction) {
 		var dictionaryFactory = function (label) {
 			var dictionary = {};
@@ -64,42 +20,9 @@ angular.module('services.dictionary').factory('dictionary', [
 						this.label = label;
 					}
 				},
-				// initIdFunction: function (idFunction) {
-				// 	if( angular.isDefined(idFunction)
-				// 	 && angular.isFunction(idFunction) ){
-				// 		this.getId = idFunction;
-				// 	}
-				// },
-				// getId: function (value) {
-				// 	return value.$id();
-				// },
 				set: function (key, value) {
 					dictionary[key] = value;
-					// dictionary.setEntry(key, value);
-					// dictionary[key] = value;
 				},
-				// setEntry: function (key, value) {
-				// 	dictionary[key] = value;
-				// },
-				// setEntryItem: function (item) {
-				// 	var key = this.getId(item);
-				// 	// this.setEntry(key, item);
-				// 	this.set(key, item)
-				// },
-				// build: function (items, force) {
-				// 	// console.log("building dictionary");
-				// 	var that = this;
-				// 	angular.forEach(items, function(value, key) {
-				// 		var itemId = that.getId(value)
-				// 		// console.log("itemid is : " + itemId);
-
-				// 		if( !angular.isDefined(dictionary[itemId]) || force ){
-				// 			dictionary[itemId] = value;
-				// 		}
-				// 	});
-				// 	console.log("items in dictionary after build");
-				// 	console.log(dictionary);
-				// },
 				setList: function (keyValueMap, force) {
 					var that = this;
 					var filteredKeyValueMap = {};
@@ -116,18 +39,6 @@ angular.module('services.dictionary').factory('dictionary', [
 						});
 					}
 					angular.extend(dictionary, filteredKeyValueMap);
-
-					// // console.log("building dictionary");
-					// var that = this;
-					// angular.forEach(items, function(value, key) {
-					// 	var itemId = that.getId(value)
-					// 	// console.log("itemid is : " + itemId);
-
-					// 	if( !angular.isDefined(dictionary[itemId]) || force ){
-					// 		dictionary[itemId] = value;
-					// 	}
-					// });
-
 					console.log("items in dictionary after setList");
 					console.log(dictionary);
 				},
@@ -146,18 +57,6 @@ angular.module('services.dictionary').factory('dictionary', [
 							});
 					return values;
 				}
-				// lookUpList: function (itemsIdList) {
-				// 	// console.log("items in dictionary");
-				// 	// console.log(dictionary);
-				// 	var items = [];
-				// 	items = _.map(itemsIdList, function (itemId) {
-				// 				return dictionary[itemId];
-				// 			});
-				// 	items = _.filter(items, function (item) {
-				// 				return angular.isDefined(item);
-				// 			});
-				// 	return items;
-				// }
 			};
 
 			dictionaryService.init(label);

@@ -24,18 +24,12 @@ angular.module('services.resourceDictionary').factory('resourceDictionary', [
 			// console.log(dictionaryService.toString());
 			// console.log(dictionaryService);
 
-			// var dictionary = dictionaryService(label, idFunction);
 			var dictionary = dictionaryService(label);
 
 			var resourceDictionaryService = {
 				init: function (idFunction) {
 					this.initIdFunction(idFunction);
 				},
-				// initLabel: function (label) {
-				// 	if( angular.isDefined(label) ){
-				// 		this.label = label;
-				// 	}
-				// },
 				initIdFunction: function (idFunction) {
 					if( angular.isDefined(idFunction)
 					 && angular.isFunction(idFunction) ){
@@ -45,20 +39,11 @@ angular.module('services.resourceDictionary').factory('resourceDictionary', [
 				getId: function (value) {
 					return value.$id();
 				},
-				// set: function (key, value) {
-				// 	dictionary.setEntry(key, value);
-				// 	// dictionary[key] = value;
-				// },
 				setItem: function (item) {
 					var key = this.getId(item);
-					// this.setEntry(key, item);
 					dictionary.set(key, item)
-					// dictionary.setEntryItem(item);
-					// var key = this.getId(item);
-					// this.setEntry(key, item)
 				},
 				setItems: function (items, force) {
-					// dictionary.build(items, force);
 					var that = this;
 					var keyValueMap = {};
 					angular.forEach(items, function(item) {
@@ -66,38 +51,12 @@ angular.module('services.resourceDictionary').factory('resourceDictionary', [
 						keyValueMap[key] = item;
 					});
 					dictionary.setList(keyValueMap, force);
-					// console.log("building dictionary");
-					// var that = this;
-					// angular.forEach(items, function(value, key) {
-					// 	var itemId = that.getId(value)
-					// 	// console.log("itemid is : " + itemId);
-					// 	if( !angular.isDefined(dictionary[itemId]) || force ){
-					// 		dictionary[itemId] = value;
-					// 	}
-					// });
-					// console.log("items in dictionary after build");
-					// console.log(dictionary);
 				},
-				// lookUp: function (key) {
-				// 	return dictionary.lookUp(key);
-				// 	// return dictionary[key];
-				// },
 				lookUpItem: function (itemId) {
 					return dictionary.lookUp(itemId);
-					// return dictionary[key];
 				},
 				lookUpItems: function (itemsIdList) {
 					return dictionary.lookUpList(itemsIdList);
-					// // console.log("items in dictionary");
-					// // console.log(dictionary);
-					// var items = [];
-					// items = _.map(itemsIdList, function (itemId) {
-					// 			return dictionary[itemId];
-					// 		});
-					// items = _.filter(items, function (item) {
-					// 			return angular.isDefined(item);
-					// 		});
-					// return items;
 				}
 			};
 
