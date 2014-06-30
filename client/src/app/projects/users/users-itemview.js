@@ -5,6 +5,7 @@ angular.module('users-itemview',[
 	'users-edit-validateEquals',
 	'resources.users',
 	'resources.tasks',
+	'resources.scrumUpdates',
 	'directives.datecombofromto'
 ])
 
@@ -14,6 +15,7 @@ angular.module('users-itemview',[
 	'user',
 	'project',
 	'Tasks',
+	'ScrumUpdates',
 	'crudListMethods',
 	'i18nNotifications',
 	'$q',
@@ -23,13 +25,13 @@ angular.module('users-itemview',[
 		user,
 		project,
 		Tasks,
+		ScrumUpdates,
 		crudListMethods,
 		i18nNotifications,
 		$q
 	) {
 
 		$scope.user = user;
-
 		$scope.userscrudhelpers = {};
 		angular.extend($scope.userscrudhelpers, crudListMethods('/projects/'+project.$id()+'/users'));
 
@@ -37,7 +39,7 @@ angular.module('users-itemview',[
 		$scope.user.attributesToDisplay = {};
 		$scope.user.attributesToDisplay.username = {
 			name : 'Username',
-			value : user.username
+			value : user.email
 		};
 
 		/**************************************************
@@ -57,6 +59,13 @@ angular.module('users-itemview',[
 							glyphiconclass : 'glyphicon glyphicon-time',
 							icon : 'time',
 							ordering : 1
+						},
+						{
+							name : 'Priority',
+							value : $scope.tasks[i].priority,
+							glyphiconclass : 'glyphicon glyphicon-star',
+							icon : 'star',
+							ordering : 1
 						}
 					];
 					$scope.tasks[i].showAddButton = true;
@@ -64,9 +73,23 @@ angular.module('users-itemview',[
 				$scope.fetchingtasks = false;
 			},
 			function (response) {
-				// $scope.tasks = tasks;
-				// failed to fetch tasks
 				$scope.fetchingtasks = false;
+			}
+		);*/
+
+		/**************************************************
+		 * Fetch scrum updates and crud helpers
+		 **************************************************/
+		$scope.fetchingscrumupdates = true;
+		$scope.scrumupdates = [];
+		/*ScrumUpdates.forUser(
+			user.$id(),
+			function (scrumupdates) {
+				$scope.scrumupdates = scrumupdates;
+				$scope.fetchingscrumupdates = false;
+			},
+			function (response) {
+				$scope.fetchingscrumupdates = false;
 			}
 		);*/
 		$scope.tasks = [
@@ -150,19 +173,31 @@ angular.module('users-itemview',[
 		$scope.saveScrumUpdate = function(task){
 			console.log("Scrum Update saved!!!");
 			task.showAddButton = true;
-		}
-		$scope.addScrumUpdate = function(task){
-			console.log("Adding Scrum Update!!!");
-			task.date = new Date(); 
-			task.showAddButton = false;
 			var successcb = function(){
 				console.log("task saved successfully!!!");
 			};
 			var failurecb = function(){
 				console.log("task cannot be saved!!!");
 			};
-			//task.$save(successcb, failurecb);
-		}
+			scrum = {};
+			scrum.date = new Date();
+			scrum.text = task.scrumText;
+			scrumUpdates.push(scrum);
+			task.$save(successcb, failurecb);			
+		};
+		$scope.addScrumUpdate = function(task){
+			task.showAddButton = false;
+		};
+
+		$scope.closeScrumUpdate = function(task){
+			task.scrumText = "";
+			task.showAddButton = false;
+		};
+
+		$scope.clearScrumUpdate = function(task){
+			task.scrumText = "";
+			task.showAddButton = true;
+		};
 
 		$scope.dateRangeFilter = function(scrumUpdate){
 			var scrumDate = new Date(scrumUpdate.date);
@@ -172,19 +207,6 @@ angular.module('users-itemview',[
 				return ((startDate <= scrumDate) && (endDate >= scrumDate));
 			}
 			return true;
-		};
-		$scope.filter = function(startdate, enddate){
-			var filteredUpdates = [];
-			var scrumdate;
-			for(update in scrumUpdates){
-				scrumdate = new Date(scrumUpdates[update].date);
-				startdate = new Date(startdate);
-				enddate = new Date(enddate);
-				if(scrumdate >= startdate && scrumdate <= enddate){
-					filteredUpdates.push(scrumUpdates[update]);
-				}
-			}
-			$scope.scrumupdates = filteredUpdates;
 		};
 
 		// $q.when(Tasks.forUser(user.$id())).then(
