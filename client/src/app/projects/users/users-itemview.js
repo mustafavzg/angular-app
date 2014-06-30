@@ -191,12 +191,12 @@ angular.module('users-itemview',[
 
 		$scope.closeScrumUpdate = function(task){
 			task.scrumText = "";
-			task.showAddButton = false;
+			task.showAddButton = true;
 		};
 
 		$scope.clearScrumUpdate = function(task){
 			task.scrumText = "";
-			task.showAddButton = true;
+			task.showAddButton = false;
 		};
 
 		$scope.dateRangeFilter = function(scrumUpdate){
