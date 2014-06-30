@@ -27,7 +27,25 @@ angular.module('services.dictionary').factory('dictionary', [
 					var that = this;
 					var filteredKeyValueMap = {};
 					if( force ){
-						filteredKeyValueMap = keyValueMap;
+						angular.forEach(keyValueMap, function(value, key) {
+							var dest = that.lookUp(key);
+							if( angular.isDefined(dest) ){
+								// if both are objects merge them
+								if( (angular.isObject(dest) && !angular.isArray(dest))
+									&& (angular.isObject(value) && !angular.isArray(value))
+								  ){
+									angular.extend(dest, value);
+								}
+								// else overwrite the old value
+								else {
+									filteredKeyValueMap[key] = value;
+								}
+							}
+							else {
+								filteredKeyValueMap[key] = value;
+							}
+						});
+						// filteredKeyValueMap = keyValueMap;
 					}
 					else {
 						// exclude any pre-defined items in the

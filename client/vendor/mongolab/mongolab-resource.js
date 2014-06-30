@@ -1,4 +1,5 @@
 angular.module('mongolabResource', [
+	'services.dictionary',
 	'resourceCache',
 	'underscore'
 ])
@@ -8,8 +9,9 @@ angular.module('mongolabResource', [
 	'$q',
 	'$timeout',
 	'resourceCacheFactory',
+	'dictionary',
 	'_',
-	function (MONGOLAB_CONFIG, $http, $q, $timeout, resourceCacheFactory, _) {
+	function (MONGOLAB_CONFIG, $http, $q, $timeout, resourceCacheFactory, dictionary, _) {
 
 		function MongolabResourceFactory(collectionName) {
 
@@ -94,17 +96,44 @@ angular.module('mongolabResource', [
 
 			// Maps collection names to the names used as forein keys
 			// in the objects
-			var resourceForeignKeyMap = {
-				tasks: 'taskId',
-				projects: 'projectId',
-				sprints: 'sprintId',
-				productbacklog: 'productBacklogItemId',
-				users: 'userId',
-				scrumupdates: 'scrumUpdateId'
-			};
+			// These relations will be moved to the backend
+			// persistence later
+			var resourceForeignKeyMap = dictionary('resourceForeignKeyMap');
+			resourceForeignKeyMap.setList({
+				tasks: {
+					default : 'taskId'
+				},
+				projects: {
+					default: 'projectId'
+				},
+				sprints: {
+					default: 'sprintId'
+				},
+				productbacklog: {
+					default: 'productBacklogItemId'
+				},
+				users: {
+					default: 'userId'
+				},
+				scrumupdates: {
+					default: 'scrumUpdateId'
+				}
+			});
 
-			Resource.getResourceKey = function (collectionName) {
-				return resourceForeignKeyMap[collectionName];
+			// Specific resource implementations can override the
+			// configuration here for the foreignKeyMap
+			Resource.foreignKeyMap = resourceForeignKeyMap;
+
+			Resource.getResourceKey = function (collectionName, relationKey) {
+				// return resourceForeignKeyMap[collectionName];
+				if( !angular.isDefined(relationKey) ){
+					relationKey = 'default';
+				}
+				var relationMap = resourceForeignKeyMap.lookUp(collectionName);
+				if( angular.isDefined(relationMap) ){
+					return relationMap[relationKey];
+				}
+				return '';
 			};
 
 			Resource.getSimpleIds = function (itemsOrIds) {

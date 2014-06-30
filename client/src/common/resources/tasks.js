@@ -8,6 +8,10 @@ angular.module('resources.tasks')
 
 		Tasks.statusEnum = ['TODO', 'IN_DEV', 'BLOCKED', 'IN_TEST', 'DONE'];
 
+		/**************************************************
+		 * Status Defintions
+		 * Will be moved to back end persistence
+		 **************************************************/
 		Tasks.statusDef = [
 			{
 				key: 'TODO',
@@ -59,16 +63,30 @@ angular.module('resources.tasks')
 			}
 		];
 
+		/**************************************************
+		 * Foreign key map definitions
+		 * Will be moved to persistence later
+		 *
+		 * Only overriding foreign key map for users
+		 **************************************************/
+		Tasks.foreignKeyMap.setList({
+			users: {
+				default: 'assignedUserId'
+			}
+		}, true);
 
 		/**************************************************
 		 * Tasks vs Backlog Items
 		 **************************************************/
 		Tasks.forProductBacklogItem = function (productBacklogItem, successcb, errorcb) {
+			// return Tasks.forResource('productbacklog', productBacklogItem.$id(), successcb, errorcb);
+
 			return Tasks.query({productBacklogItem:productBacklogItem}, successcb, errorcb);
 		};
 
 		Tasks.forProductBacklogItemId = function (productBacklogItemId, successcb, errorcb) {
-			return Tasks.query({productBacklogItemId:productBacklogItemId}, successcb, errorcb);
+			return Tasks.forResource('productbacklog', productBacklogItemId, successcb, errorcb);
+			// return Tasks.query({productBacklogItemId:productBacklogItemId}, successcb, errorcb);
 		};
 
 		// Tasks.forProductBacklogItemIdList = function (productBacklogItemIdList, successcb, errorcb) {
@@ -109,20 +127,20 @@ angular.module('resources.tasks')
 			);
 		};
 
-
 		/**************************************************
 		 * Tasks vs User
 		 **************************************************/
 		Tasks.forUser = function (userId, successcb, errorcb) {
-			return Tasks.query({assignedUserId:userId}, successcb, errorcb);
+			return Tasks.forResource('users', userId, successcb, errorcb);
+			// return Tasks.query({assignedUserId:userId}, successcb, errorcb);
 		};
-
 
 		/**************************************************
 		 * Tasks vs Project
 		 **************************************************/
 		Tasks.forProject = function (projectId, successcb, errorcb) {
-			return Tasks.query({projectId:projectId}, successcb, errorcb);
+			return Tasks.forResource('projects', projectId, successcb, errorcb);
+			// return Tasks.query({projectId:projectId}, successcb, errorcb);
 		};
 
 		return Tasks;
