@@ -6,7 +6,9 @@ angular.module('tasksnew', [
 	'resources.tasks',
 	'resources.projects',
 	'directives.userscombosearchadd',
-	'services.crud'
+	'services.crud',
+	'services.resourceDictionary',
+	'underscore'
 ])
 
 .config([
@@ -151,6 +153,7 @@ angular.module('tasksnew', [
 	// 'teamMembers',
 	'project',
 	'task',
+	'_',
 	function (
 		$scope,
 		$location,
@@ -160,7 +163,8 @@ angular.module('tasksnew', [
 		// sprintBacklogItems,
 		// teamMembers,
 		project,
-		task
+		task,
+		_
 	) {
 
 		$scope.project = project;
@@ -247,6 +251,8 @@ angular.module('tasksnew', [
 	'project',
 	'crudListMethods',
 	'crudEditHandlers',
+	'resourceDictionary',
+	'_',
 	function (
 		$scope,
 		$location,
@@ -257,7 +263,9 @@ angular.module('tasksnew', [
 		task,
 		project,
 		crudListMethods,
-		crudEditHandlers
+		crudEditHandlers,
+		resourceDictionary,
+		_
 	) {
 		$scope.task = task;
 		$scope.project = project;
@@ -271,21 +279,24 @@ angular.module('tasksnew', [
 		angular.extend($scope.tasksCrudHelpers, crudListMethods('/projects/'+project.$id()+'/tasks'));
 		angular.extend($scope, crudEditHandlers('task'));
 
-		$scope.productBacklogLookup = {};
-		angular.forEach($scope.productBacklogItems, function (productBacklogItem) {
-			$scope.productBacklogLookup[productBacklogItem.$id()] = productBacklogItem;
-		});
+		// $scope.productBacklogLookup = {};
+		// angular.forEach($scope.productBacklogItems, function (productBacklogItem) {
+		// 	$scope.productBacklogLookup[productBacklogItem.$id()] = productBacklogItem;
+		// });
+
+		$scope.productBacklogDictionary = resourceDictionary('productbacklog');
+		$scope.productBacklogDictionary.setItems($scope.productBacklogItems);
 
 		/**************************************************
 		 * Status Widget
 		 **************************************************/
 		$scope.setTaskStatus = function (status) {
 			$scope.task.status = status.key;
-		}
+		};
 
 		$scope.isTaskStatus = function (status) {
 			return ($scope.task.status === status.key)? true : false;
-		}
+		};
 
 		$scope.setBtnClasses = function (status) {
 			if( $scope.isTaskStatus(status) ){
@@ -294,41 +305,115 @@ angular.module('tasksnew', [
 			else {
 				return status.btnclass.inactive
 			}
-		}
+		};
 
 		/**************************************************
 		 * Setup 'Assign Product Backlog' widget
 		 **************************************************/
 
-		angular.forEach($scope.productBacklogItems, function (productBacklogItem) {
-			var productBacklogItemId = productBacklogItem.$id();
-			// init total task estimate
-			productBacklogItem.totalTaskEstimate = -1000;
-			Tasks.forProductBacklogItemId(
-				productBacklogItemId,
-				function (tasks) {
-					var productBacklogItem = $scope.productBacklogLookup[productBacklogItemId];
-					productBacklogItem.tasks = tasks
-					var totalTaskEstimate = 0;
-					angular.forEach(tasks, function(task) {
-						totalTaskEstimate = totalTaskEstimate + task.estimation;
-					});
-					productBacklogItem.totalTaskEstimate = totalTaskEstimate;
-				},
-				function (response) {
-					console.log("Failed to fetch tasks for productbacklog item: " + productBacklogItemId);
-				}
-			);
-			// properties to display for the backlog widget
-			productBacklogItem.propertiesToDisplay = [
-				{
-					name : 'Estimation',
-					value : productBacklogItem.estimation,
-					icon : 'time',
-					ordering : 1
-				}
-			];
+		$scope.taskDictionary = resourceDictionary('tasks');
+
+		$scope.backlogTaskMap = {};
+		angular.forEach($scope.productBacklogItems, function(backlogItemId) {
+			$scope.backlogTaskMap[backlogItemId] = [];
 		});
+
+		var getTotalTaskEstimate = function (tasks) {
+			var totalTaskEstimate = 0;
+			angular.forEach(tasks, function(task) {
+				totalTaskEstimate = totalTaskEstimate + task.estimation;
+			});
+			return totalTaskEstimate;
+		};
+
+		var calculateBacklogTaskEstimates = function () {
+			angular.forEach($scope.productBacklogItems, function (productBacklogItem) {
+				var tasks = $scope.backlogTaskMap[productBacklogItem.$id()];
+				productBacklogItem.tasks = tasks
+				productBacklogItem.totalTaskEstimate = getTotalTaskEstimate(tasks);
+				productBacklogItem.propertiesToDisplay = [
+					{
+						name : 'Estimation',
+						value : productBacklogItem.estimation,
+						icon : 'time',
+						ordering : 1
+					}
+				];
+			});
+		};
+
+		var setupTasks = function (tasks) {
+			console.log("succeeded to fetch tasks for sprint backlog");
+			console.log(tasks);
+			$scope.taskDictionary.setItems(tasks);
+			angular.forEach(tasks, function(task) {
+				var backlogTasks = $scope.backlogTaskMap[task.productBacklogItemId];
+				if( angular.isDefined(backlogTasks) ){
+					if( backlogTasks.indexOf(task.$id()) === -1){
+						backlogTasks.push(task.$id());
+					}
+				}
+				// // $scope.backlogTaskMap[task.productBacklogItemId].push(task.$id());
+				// task.propertiesToDisplay = [
+				// 	{
+				// 		name : 'Estimation',
+				// 		value : task.estimation,
+				// 		// glyphiconclass : 'glyphicon glyphicon-time',
+				// 		icon : 'time',
+				// 		ordering : 1
+				// 	},
+				// 	{
+				// 		name : 'Status',
+				// 		value : task.status,
+				// 		// glyphiconclass : 'glyphicon glyphicon-time',
+				// 		icon : 'sound-stereo',
+				// 		ordering : 2
+				// 	}
+				// ];
+			});
+		};
+
+		Tasks.forProductBacklogItemIdList(
+			$scope.productBacklogItems,
+			function (tasks) {
+				console.log("product backlog items are");
+				console.log($scope.productBacklogItems);
+				setupTasks(tasks);
+				calculateBacklogTaskEstimates();
+			}
+		);
+
+		// angular.forEach($scope.productBacklogItems, function (productBacklogItem) {
+		// 	var productBacklogItemId = productBacklogItem.$id();
+		// 	// init total task estimate
+		// 	productBacklogItem.totalTaskEstimate = -1000;
+		// 	Tasks.forProductBacklogItemId(
+		// 		productBacklogItemId,
+		// 		function (tasks) {
+		// 			// var productBacklogItem = $scope.productBacklogLookup[productBacklogItemId];
+		// 			var productBacklogItem = $scope.productBacklogDictionary.lookUpItem(productBacklogItemId);
+		// 			productBacklogItem.tasks = tasks
+		// 			// var totalTaskEstimate = 0;
+		// 			// angular.forEach(tasks, function(task) {
+		// 			// 	totalTaskEstimate = totalTaskEstimate + task.estimation;
+		// 			// });
+		// 			// productBacklogItem.totalTaskEstimate = totalTaskEstimate;
+		// 			productBacklogItem.totalTaskEstimate = getTotalTaskEstimate(tasks);
+		// 		},
+		// 		function (response) {
+		// 			console.log("Failed to fetch tasks for productbacklog item: " + productBacklogItemId);
+		// 		}
+		// 	);
+		// 	// properties to display for the backlog widget
+		// 	productBacklogItem.propertiesToDisplay = [
+		// 		{
+		// 			name : 'Estimation',
+		// 			value : productBacklogItem.estimation,
+		// 			icon : 'time',
+		// 			ordering : 1
+		// 		}
+		// 	];
+		// });
 
 		$scope.viewProductBacklogItem = function (productBacklogItemId) {
 			$location.path('/projects/'+project.$id()+'/productbacklog/'+productBacklogItemId);
