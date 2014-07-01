@@ -279,11 +279,6 @@ angular.module('tasksnew', [
 		angular.extend($scope.tasksCrudHelpers, crudListMethods('/projects/'+project.$id()+'/tasks'));
 		angular.extend($scope, crudEditHandlers('task'));
 
-		// $scope.productBacklogLookup = {};
-		// angular.forEach($scope.productBacklogItems, function (productBacklogItem) {
-		// 	$scope.productBacklogLookup[productBacklogItem.$id()] = productBacklogItem;
-		// });
-
 		$scope.productBacklogDictionary = resourceDictionary('productbacklog');
 		$scope.productBacklogDictionary.setItems($scope.productBacklogItems);
 
@@ -346,31 +341,20 @@ angular.module('tasksnew', [
 			console.log("succeeded to fetch tasks for sprint backlog");
 			console.log(tasks);
 			$scope.taskDictionary.setItems(tasks);
-			angular.forEach(tasks, function(task) {
-				var backlogTasks = $scope.backlogTaskMap[task.productBacklogItemId];
-				if( angular.isDefined(backlogTasks) ){
-					if( backlogTasks.indexOf(task.$id()) === -1){
-						backlogTasks.push(task.$id());
-					}
+			$scope.backlogTaskMap = _.groupBy(
+				tasks,
+				function (task) {
+					return task.productBacklogItemId
 				}
-				// // $scope.backlogTaskMap[task.productBacklogItemId].push(task.$id());
-				// task.propertiesToDisplay = [
-				// 	{
-				// 		name : 'Estimation',
-				// 		value : task.estimation,
-				// 		// glyphiconclass : 'glyphicon glyphicon-time',
-				// 		icon : 'time',
-				// 		ordering : 1
-				// 	},
-				// 	{
-				// 		name : 'Status',
-				// 		value : task.status,
-				// 		// glyphiconclass : 'glyphicon glyphicon-time',
-				// 		icon : 'sound-stereo',
-				// 		ordering : 2
-				// 	}
-				// ];
-			});
+			);
+			// angular.forEach(tasks, function(task) {
+			// 	var backlogTasks = $scope.backlogTaskMap[task.productBacklogItemId];
+			// 	if( angular.isDefined(backlogTasks) ){
+			// 		if( backlogTasks.indexOf(task.$id()) === -1){
+			// 			backlogTasks.push(task.$id());
+			// 		}
+			// 	}
+			// });
 		};
 
 		Tasks.forProductBacklogItemIdList(
@@ -382,38 +366,6 @@ angular.module('tasksnew', [
 				calculateBacklogTaskEstimates();
 			}
 		);
-
-		// angular.forEach($scope.productBacklogItems, function (productBacklogItem) {
-		// 	var productBacklogItemId = productBacklogItem.$id();
-		// 	// init total task estimate
-		// 	productBacklogItem.totalTaskEstimate = -1000;
-		// 	Tasks.forProductBacklogItemId(
-		// 		productBacklogItemId,
-		// 		function (tasks) {
-		// 			// var productBacklogItem = $scope.productBacklogLookup[productBacklogItemId];
-		// 			var productBacklogItem = $scope.productBacklogDictionary.lookUpItem(productBacklogItemId);
-		// 			productBacklogItem.tasks = tasks
-		// 			// var totalTaskEstimate = 0;
-		// 			// angular.forEach(tasks, function(task) {
-		// 			// 	totalTaskEstimate = totalTaskEstimate + task.estimation;
-		// 			// });
-		// 			// productBacklogItem.totalTaskEstimate = totalTaskEstimate;
-		// 			productBacklogItem.totalTaskEstimate = getTotalTaskEstimate(tasks);
-		// 		},
-		// 		function (response) {
-		// 			console.log("Failed to fetch tasks for productbacklog item: " + productBacklogItemId);
-		// 		}
-		// 	);
-		// 	// properties to display for the backlog widget
-		// 	productBacklogItem.propertiesToDisplay = [
-		// 		{
-		// 			name : 'Estimation',
-		// 			value : productBacklogItem.estimation,
-		// 			icon : 'time',
-		// 			ordering : 1
-		// 		}
-		// 	];
-		// });
 
 		$scope.viewProductBacklogItem = function (productBacklogItemId) {
 			$location.path('/projects/'+project.$id()+'/productbacklog/'+productBacklogItemId);
