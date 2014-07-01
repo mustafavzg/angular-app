@@ -6,7 +6,8 @@ angular.module('users-itemview',[
 	'resources.users',
 	'resources.tasks',
 	'resources.scrumUpdates',
-	'directives.datecombofromto'
+	'directives.datecombofromto',
+	'underscore'
 ])
 
 .controller('UsersItemViewCtrl', [
@@ -19,6 +20,7 @@ angular.module('users-itemview',[
 	'crudListMethods',
 	'i18nNotifications',
 	'$q',
+	'_',
 	function (
 		$scope,
 		$location,
@@ -28,7 +30,8 @@ angular.module('users-itemview',[
 		ScrumUpdates,
 		crudListMethods,
 		i18nNotifications,
-		$q
+		$q,
+		_
 	) {
 
 		$scope.user = user;
@@ -142,27 +145,32 @@ angular.module('users-itemview',[
 		];
 		$scope.scrumupdates = [
 			{
-				date : '06/17/2014',
-				text : 'Update for the day!!!'
+				date : new Date('06/17/2014'),
+				text : 'Update for the day!!!',
+				task : 'Task 1'
 			},
 			{
-				date : '06/18/2014',
-				text : 'Update for the day!!!'
+				date : new Date('06/18/2014'),
+				text : 'Update for the day!!!',
+				task : 'Task 1'
 			},
 			{
-				date : '06/19/2014',
-				text : 'Update for the day!!!'
+				date : new Date('06/19/2014'),
+				text : 'Update for the day!!!',
+				task : 'Task 2'
 			},
 			{
-				date : '06/20/2014',
-				text : 'Update for the day!!!'
+				date : new Date('06/20/2014'),
+				text : 'Update for the day!!!',
+				task : 'Task 3'
 			},
 			{
-				date : '06/21/2014',
-				text : 'Update for the day!!!'
+				date : new Date('06/21/2014'),
+				text : 'Update for the day!!!',
+				task : 'Task 4'
 			}
 		];
-		
+		$scope.tasklevelscrumupdates = _.groupBy($scope.scrumupdates, "task");
 		var scrumUpdates = $scope.scrumupdates;
 		$scope.taskscrudhelpers = {};
 		angular.extend($scope.taskscrudhelpers, crudListMethods('/projects/'+project.$id()+'/tasks'));
