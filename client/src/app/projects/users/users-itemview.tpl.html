@@ -85,12 +85,20 @@
 											<a href="#" tooltip="{{task.Description}}">
 												{{task.Name}}
 											</a>
-											<button type="button" class="btn btn-default btn-warning" ng-click="saveScrumUpdate(task)" ng-show="!task.showAddButton" tooltip="Save scrum update"><icon id="plus-sign"></icon></button>
-											<button type="button" class="btn btn-default btn-warning" ng-click="clearScrumUpdate(task)" ng-show="!task.showAddButton" tooltip="Clear the text area"><icon id="unchecked"></button>
-											<button type="button" class="btn btn-default btn-warning" ng-click="closeScrumUpdate(task)" ng-show="!task.showAddButton" tooltip="Discard the scrum update"><icon id="trash"></icon></button>
+					
 										</div>
-										<textarea class="form-control media-object" ng-model="task.scrumText" placeholder="Add your update here" cols="10" rows="5" ng-show="!task.showAddButton">
+
+										<div class='btn-group pull-right'>
+												<button type="button" class="btn btn-default" ng-click="saveScrumUpdate(task)" ng-show="!task.showAddButton" tooltip="Save scrum update" tooltip-placement='bottom'><icon id="plus-sign"></icon></button>
+												<button type="button" class="btn btn-default" ng-click="clearScrumUpdate(task)" ng-show="!task.showAddButton" tooltip="Clear the text area" tooltip-placement='bottom'><icon id="unchecked"></button>
+												<button type="button" class="btn btn-default" ng-click="closeScrumUpdate(task)" ng-show="!task.showAddButton" tooltip="Discard the scrum update" tooltip-placement='bottom'><icon id="trash"></icon></button>
+										</div>
+										<p><div class='form-group block'>
+											
+										<textarea class="form-control" ng-model="task.scrumText" placeholder="Add your update here" cols="10" rows="5" ng-show="!task.showAddButton">
 										</textarea>
+										</div></p>
+										
 									</div>
 								</div>
 							</div>
