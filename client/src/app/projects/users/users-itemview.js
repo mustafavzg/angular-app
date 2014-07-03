@@ -39,11 +39,14 @@ angular.module('users-itemview',[
 		$scope.userscrudhelpers = {};
 		angular.extend($scope.userscrudhelpers, crudListMethods('/projects/'+project.$id()+'/users'));
 
-
 		$scope.user.attributesToDisplay = {};
 		$scope.user.attributesToDisplay.username = {
 			name : 'Username',
 			value : user.username
+		};
+
+		$scope.viewTask = function (task) {
+			$location.path('/projects/'+project.$id()+'/tasks/'+task.$id());
 		};
 
 		/**************************************************
@@ -55,7 +58,6 @@ angular.module('users-itemview',[
 			user.$id(),
 			function (tasks) {
 				$scope.tasks = tasks;
-				console.log(tasks);
 				for(var i=0;i<tasks.length;i++){
 					$scope.tasks[i].propertiesToDisplay = [
 						{
