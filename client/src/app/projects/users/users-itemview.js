@@ -35,6 +35,7 @@ angular.module('users-itemview',[
 	) {
 
 		$scope.user = user;
+		console.log("user ID="+user.$id());
 		$scope.userscrudhelpers = {};
 		angular.extend($scope.userscrudhelpers, crudListMethods('/projects/'+project.$id()+'/users'));
 
@@ -42,7 +43,7 @@ angular.module('users-itemview',[
 		$scope.user.attributesToDisplay = {};
 		$scope.user.attributesToDisplay.username = {
 			name : 'Username',
-			value : user.email
+			value : user.username
 		};
 
 		/**************************************************
@@ -50,10 +51,11 @@ angular.module('users-itemview',[
 		 **************************************************/
 		$scope.fetchingtasks = true;
 		$scope.tasks = [];
-		/*Tasks.forUser(
+		Tasks.forUser(
 			user.$id(),
 			function (tasks) {
 				$scope.tasks = tasks;
+				console.log(tasks);
 				for(var i=0;i<tasks.length;i++){
 					$scope.tasks[i].propertiesToDisplay = [
 						{
@@ -78,7 +80,7 @@ angular.module('users-itemview',[
 			function (response) {
 				$scope.fetchingtasks = false;
 			}
-		);*/
+		);
 
 		/**************************************************
 		 * Fetch scrum updates and crud helpers
@@ -94,7 +96,7 @@ angular.module('users-itemview',[
 			function (response) {
 				$scope.fetchingscrumupdates = false;
 			}
-		);*/
+		);
 		$scope.tasks = [
 			{
 				Name : 'Sample Task 1',
@@ -142,7 +144,7 @@ angular.module('users-itemview',[
 				],
 				showAddButton : true
 			}
-		];
+		];*/
 		$scope.scrumupdates = [
 			{
 				date : new Date('06/17/2014'),
@@ -191,6 +193,7 @@ angular.module('users-itemview',[
 			scrum.date = new Date();
 			scrum.text = task.scrumText;
 			scrumUpdates.push(scrum);
+			task.scrum = scrum;
 			task.$save(successcb, failurecb);			
 		};
 		$scope.addScrumUpdate = function(task){
