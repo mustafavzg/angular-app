@@ -36,6 +36,7 @@ angular.module('users-itemview',[
 
 		$scope.user = user;
 		console.log("user ID="+user.$id());
+
 		$scope.userscrudhelpers = {};
 		angular.extend($scope.userscrudhelpers, crudListMethods('/projects/'+project.$id()+'/users'));
 
@@ -48,7 +49,18 @@ angular.module('users-itemview',[
 		$scope.viewTask = function (task) {
 			$location.path('/projects/'+project.$id()+'/tasks/'+task.$id());
 		};
+		//var scrumUpdate = new ScrumUpdates();
 
+		/*ScrumUpdates.forUser(
+			user.$id(),
+			function (scrumupdates) {
+				$scope.scrumupdates = scrumupdates;
+				$scope.fetchingscrumupdates = false;
+			},
+			function (response) {
+				$scope.fetchingscrumupdates = false;
+			}
+		);*/
 		/**************************************************
 		 * Fetch task and crud helpers
 		 **************************************************/
@@ -89,6 +101,7 @@ angular.module('users-itemview',[
 		 **************************************************/
 		$scope.fetchingscrumupdates = true;
 		$scope.scrumupdates = [];
+
 		/*ScrumUpdates.forUser(
 			user.$id(),
 			function (scrumupdates) {
@@ -174,6 +187,20 @@ angular.module('users-itemview',[
 				task : 'Task 4'
 			}
 		];
+		/*var indexedScrumUpdates = [];
+		$scope.updatesToFilter = function() {
+			indexedScrumUpdates = [];
+			return $scope.scrumupdates;
+		};
+
+		$scope.filterUpdates = function(update) {
+			var updateIsNew = indexedScrumUpdates.indexOf(update.task) == -1;
+			if (updateIsNew) {
+				indexedScrumUpdates.push(update.task);
+			}
+			return updateIsNew;
+		}*/
+
 		$scope.tasklevelscrumupdates = _.groupBy($scope.scrumupdates, "task");
 		var scrumUpdates = $scope.scrumupdates;
 		$scope.taskscrudhelpers = {};
@@ -194,8 +221,16 @@ angular.module('users-itemview',[
 			scrum = {};
 			scrum.date = new Date();
 			scrum.text = task.scrumText;
-			scrumUpdates.push(scrum);
+			scrum.task = task.name;
+			//scrumUpdates.push(scrum);
 			task.scrum = scrum;
+			$scope.scrumupdates.push(scrum);
+			console.log($scope.scrumupdates);
+			/*scrumUpdate.user = user;
+			scrumUpdate.date = scrum.date;
+			scrumUpdate.task = task;
+			scrumUpdate.text = task.scrumText;
+			scrumUpdate.$save(successcb, failurecb);*/
 			task.$save(successcb, failurecb);			
 		};
 		$scope.addScrumUpdate = function(task){
@@ -222,6 +257,17 @@ angular.module('users-itemview',[
 			return true;
 		};
 
+		$scope.$watchCollection('scrumupdates', function(){
+			console.log("inside watch expr");
+			$scope.tasklevelscrumupdates = _.groupBy($scope.scrumupdates, "task");
+			console.log($scope.tasklevelscrumupdates);
+			console.log($scope.scrumupdates);
+		});
+
+		$scope.$watchCollection('scrumDates', function(){
+			console.log("Date Changed!!!");
+		});
+		console.log($scope.tasklevelscrumupdates);
 		// $q.when(Tasks.forUser(user.$id())).then(
 		// 	function (tasks) {
 		// 		$scope.tasks = tasks;
@@ -232,6 +278,7 @@ angular.module('users-itemview',[
 		// $scope.manageTasks = function (project) {
 		// 	$location.path('/projects/'+project.$id()+'/tasks');
 		// };
+
 
 	}
 ]);

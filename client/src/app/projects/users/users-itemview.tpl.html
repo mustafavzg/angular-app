@@ -49,16 +49,17 @@
 									</div>
 							        <!--<button type="button" class="btn btn-primary btn-block" ng-click="filter(startdate, enddate)">Filter</button>-->
 								</div>
-								<div class="media" ng-repeat="tasks in tasklevelscrumupdates">
+
+								<div class="media" ng-repeat="(taskname, updates) in tasklevelscrumupdates">
 									<div class="media-heading">
 										<a href="#">
-											{{tasks[0].task}}
+											{{taskname}}
 										</a>
 									</div>
 									<div class="media-body">
-										<li ng-repeat="task in tasks">
-											<span class="text-muted time-stamp">{{task.date | date:'MM/dd/yyyy @ h:mma'}} </span><br>
-											{{task.text}}
+										<li ng-repeat="update in updates">
+											<span class="text-muted time-stamp">{{update.date | date:'MM/dd/yyyy @ h:mma'}} </span><br>
+											{{update.text}}
 										</li>
 									</div>
 								</div>
