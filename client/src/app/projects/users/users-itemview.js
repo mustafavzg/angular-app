@@ -188,6 +188,16 @@ angular.module('users-itemview',[
 			}
 		];
 		var allScrumUpdates = $scope.scrumupdates;
+		for(var index in allScrumUpdates){
+			var currentUpdate = allScrumUpdates[index];
+			currentDate = currentUpdate.date;
+			var dateString = (currentDate.getMonth() + 1) + "/" + currentDate.getDate() + "/" + currentDate.getFullYear();
+			currentUpdate.dateString = dateString;
+			var timeString = currentDate.getHours() + "::" + currentDate.getMinutes() + "::" + currentDate.getSeconds();
+			currentUpdate.timeString = timeString;
+			allScrumUpdates[index] = currentUpdate; 
+		}
+		$scope.scrumupdates = allScrumUpdates;
 		/*var indexedScrumUpdates = [];
 		$scope.updatesToFilter = function() {
 			indexedScrumUpdates = [];
@@ -202,7 +212,7 @@ angular.module('users-itemview',[
 			return updateIsNew;
 		}*/
 
-		$scope.tasklevelscrumupdates = _.groupBy($scope.scrumupdates, "task");
+		$scope.tasklevelscrumupdates = _.groupBy($scope.scrumupdates, "dateString");
 		var scrumUpdates = $scope.scrumupdates;
 		$scope.taskscrudhelpers = {};
 		angular.extend($scope.taskscrudhelpers, crudListMethods('/projects/'+project.$id()+'/tasks'));
@@ -223,10 +233,14 @@ angular.module('users-itemview',[
 			scrum.date = new Date();
 			scrum.text = task.scrumText;
 			scrum.task = task.name;
+			var currentDate = scrum.date;
+			scrum.dateString = (currentDate.getMonth() + 1) + "/" + currentDate.getDate() + "/" + currentDate.getFullYear();
+			scrum.timeString = currentDate.getHours() + "::" + currentDate.getMinutes() + "::" + currentDate.getSeconds();
 			//scrumUpdates.push(scrum);
 			task.scrum = scrum;
 			$scope.scrumupdates.push(scrum);
 			console.log($scope.scrumupdates);
+			//$scope.tasklevelscrumupdates = _.groupBy($scope.scrumupdates, "dateString");
 			/*scrumUpdate.user = user;
 			scrumUpdate.date = scrum.date;
 			scrumUpdate.task = task;
@@ -276,10 +290,17 @@ angular.module('users-itemview',[
 				var endDate = new Date($scope.scrumDates.enddate);
 				// check whether the update date is between startdate and enddate
 				if(currentDate >= startDate && currentDate <= endDate){
+					var dateString = (currentDate.getMonth() + 1) + "/" + currentDate.getDate() + "/" + currentDate.getFullYear();
+					currentUpdate.dateString = dateString;
+					var timeString = currentDate.getHours() + "::" + currentDate.getMinutes() + "::" + currentDate.getSeconds();
+					currentUpdate.timeString = timeString;
 					filteredUpdates.push(currentUpdate);
 				}
 			}
-			$scope.tasklevelscrumupdates = _.groupBy(filteredUpdates, "task");
+			console.log("filteredUpdates=\n");
+			console.log(filteredUpdates);
+
+			$scope.tasklevelscrumupdates = _.groupBy(filteredUpdates, "dateString");
 		});
 		console.log($scope.tasklevelscrumupdates);
 		// $q.when(Tasks.forUser(user.$id())).then(
