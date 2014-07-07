@@ -162,31 +162,32 @@ angular.module('users-itemview',[
 		];*/
 		$scope.scrumupdates = [
 			{
-				date : new Date('06/17/2014'),
+				date : new Date('06/30/2014'),
 				text : 'Update for the day!!!',
 				task : 'Task 1'
 			},
 			{
-				date : new Date('06/18/2014'),
+				date : new Date('07/01/2014'),
 				text : 'Update for the day!!!',
 				task : 'Task 1'
 			},
 			{
-				date : new Date('06/19/2014'),
+				date : new Date('07/02/2014'),
 				text : 'Update for the day!!!',
 				task : 'Task 2'
 			},
 			{
-				date : new Date('06/20/2014'),
+				date : new Date('07/03/2014'),
 				text : 'Update for the day!!!',
 				task : 'Task 3'
 			},
 			{
-				date : new Date('06/21/2014'),
+				date : new Date('07/04/2014'),
 				text : 'Update for the day!!!',
 				task : 'Task 4'
 			}
 		];
+		var allScrumUpdates = $scope.scrumupdates;
 		/*var indexedScrumUpdates = [];
 		$scope.updatesToFilter = function() {
 			indexedScrumUpdates = [];
@@ -265,7 +266,20 @@ angular.module('users-itemview',[
 		});
 
 		$scope.$watchCollection('scrumDates', function(){
-			console.log("Date Changed!!!");
+			var filteredUpdates = [];
+			// Iterate through the scrum updates and filter only those updates which
+			// are in the current date range.
+			for(var taskIndex in allScrumUpdates){
+				var currentUpdate = allScrumUpdates[taskIndex];
+				var currentDate = new Date(currentUpdate.date);
+				var startDate = new Date($scope.scrumDates.startdate);
+				var endDate = new Date($scope.scrumDates.enddate);
+				// check whether the update date is between startdate and enddate
+				if(currentDate >= startDate && currentDate <= endDate){
+					filteredUpdates.push(currentUpdate);
+				}
+			}
+			$scope.tasklevelscrumupdates = _.groupBy(filteredUpdates, "task");
 		});
 		console.log($scope.tasklevelscrumupdates);
 		// $q.when(Tasks.forUser(user.$id())).then(
