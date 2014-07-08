@@ -260,45 +260,51 @@ angular.module('users-itemview',[
 			scrum.dateString = (currentDate.getMonth() + 1) + "/" + currentDate.getDate() + "/" + currentDate.getFullYear();
 			scrum.timeString = currentDate.getHours() + ":" + currentDate.getMinutes() + ":" + currentDate.getSeconds();
 			scrum.userId = user.$id();
+			scrum.taskId = task.$id();
 			task.scrum = scrum;
 			$scope.scrumupdates.push(scrum);
 			var scrumupdateobj = new ScrumUpdates(scrum);
 			scrumupdateobj.$save(successcb, failurecb);
 			console.log($scope.scrumupdates);
+			task.hasHistory = false;
 			successcb = function(){
 				console.log("task saved successfully!!!");
 			};
 			failurecb = function(){
 				console.log("task cannot be saved!!!");
 			};
-			//$scope.tasklevelscrumupdates = _.groupBy($scope.scrumupdates, "dateString");
-			/*scrumUpdate.user = user;
-			scrumUpdate.date = scrum.date;
-			scrumUpdate.task = task;
-			scrumUpdate.text = task.scrumText;
-			scrumUpdate.$save(successcb, failurecb);*/
-			//task.$save(successcb, failurecb);			
 		};
 		$scope.addScrumUpdate = function(task){
 			task.showAddButton = false;
+			ScrumUpdates.forTask(
+				task.$id(),
+				function (scrumupdates) {
+					task.hasHistory = scrumupdates.length > 0;
+					task.taskUpdates = scrumupdates;
+			 	},
+				function (response) {
+					$scope.fetchingscrumupdates = false;
+				}
+			);
+			
 		};
 
 		$scope.closeScrumUpdate = function(task){
 			task.scrumText = "";
 			task.showAddButton = true;
+			task.hasHistory = false;
 		};
 
 		$scope.clearScrumUpdate = function(task){
 			task.scrumText = "";
 			task.showAddButton = false;
+			task.hasHistory = true;
 		};
 
 		$scope.$watchCollection('scrumupdates', function(){
 			$scope.scrumDates.startdate = new Date($scope.scrumDates.startdate);
 			$scope.scrumDates.enddate = new Date($scope.scrumDates.enddate);
 			$scope.tasklevelscrumupdates = _.groupBy($scope.scrumupdates, "dateString");
-			console.log("Inside tasklevelscrumupdates:\n");
-			console.log($scope.tasklevelscrumupdates);
 		});
 
 		$scope.$watchCollection('scrumDates', function(newObj, oldObj){
@@ -308,7 +314,6 @@ angular.module('users-itemview',[
 				var filteredUpdates = [];
 				// Iterate through the scrum updates and filter only those updates which
 				// are in the current date range.
-				console.log("Inside Scrum dates:");
 				for(var taskIndex in allScrumUpdates){
 					var currentUpdate = allScrumUpdates[taskIndex];
 					var currentDate = new Date(currentUpdate.date);

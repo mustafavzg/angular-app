@@ -91,10 +91,18 @@
 												<button type="button" class="btn btn-default" ng-click="clearScrumUpdate(task)" ng-show="!task.showAddButton" tooltip="Clear the text area" tooltip-placement='bottom'><icon id="unchecked"></button>
 												<button type="button" class="btn btn-default" ng-click="closeScrumUpdate(task)" ng-show="!task.showAddButton" tooltip="Discard the scrum update" tooltip-placement='bottom'><icon id="trash"></icon></button>
 										</div>
-										<p><div class='form-group block'>
-											<textarea class="form-control" ng-model="task.scrumText" placeholder="Add your update here" cols="10" rows="5" ng-show="!task.showAddButton">
-											</textarea>
-										</div></p>
+										<p>
+											<div class='form-group block'>
+												<textarea class="form-control" ng-model="task.scrumText" placeholder="Add your update here" cols="10" rows="5" ng-show="!task.showAddButton">
+												</textarea>
+											</div>
+											<div ng-show="task.hasHistory">
+												<li ng-repeat="update in task.taskUpdates">
+													<span class="text-muted time-stamp">{{update.timeString}} </span><br>
+													{{update.text}}
+												</li>
+											</div>
+										</p>
 									</div>
 								</div>
 							</div>
