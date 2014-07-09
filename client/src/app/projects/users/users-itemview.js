@@ -7,7 +7,8 @@ angular.module('users-itemview',[
 	'resources.tasks',
 	'resources.scrumUpdates',
 	'directives.datecombofromto',
-	'underscore'
+	'underscore',
+	'filters.groupBy'
 ])
 
 .controller('UsersItemViewCtrl', [
@@ -91,31 +92,15 @@ angular.module('users-itemview',[
 		 **************************************************/
 		$scope.fetchingscrumupdates = true;
 		$scope.scrumupdates = [];
-		$scope.tasklevelscrumupdates = [];
+		//$scope.tasklevelscrumupdates = [];
 		var allScrumUpdates = [];
 		ScrumUpdates.forUser(
 			user.$id(),
 			function (scrumupdates) {
-				console.log("Scrum Updates is:\n");
-				console.log(scrumupdates);
 				$scope.scrumupdates = scrumupdates;
 				$scope.fetchingscrumupdates = false;
-				var allScrumUpdates = $scope.scrumupdates;
-				/*for(var index in allScrumUpdates){
-					var currentUpdate = allScrumUpdates[index];
-					var currentDate = new Date(currentUpdate.date);
-					var dateString = (currentDate.getMonth() + 1) + "/" + currentDate.getDate() + "/" + currentDate.getFullYear();
-					currentUpdate.dateString = dateString;
-					var timeString = currentDate.getHours() + ":" + currentDate.getMinutes() + ":" + currentDate.getSeconds();
-					currentUpdate.timeString = timeString;
-					allScrumUpdates[index] = currentUpdate; 
-				}*/
-				console.log("All Scrum Updates=\n");
-				console.log(allScrumUpdates);
+				allScrumUpdates = $scope.scrumupdates;
 				$scope.scrumupdates = allScrumUpdates;
-				$scope.tasklevelscrumupdates = _.groupBy($scope.scrumupdates, "dateString");
-				console.log("Task level scrum :\n");
-				console.log($scope.tasklevelscrumupdates);
 			},
 			function (response) {
 				$scope.fetchingscrumupdates = false;
@@ -206,9 +191,9 @@ angular.module('users-itemview',[
 				text : 'Update for the day!!!',
 				task : 'Task 4'
 			}
-		];*/
+		];
 
-		/*var allScrumUpdates = $scope.scrumupdates;
+		var allScrumUpdates = $scope.scrumupdates;
 		for(var index in allScrumUpdates){
 			var currentUpdate = allScrumUpdates[index];
 			currentDate = currentUpdate.date;
@@ -257,8 +242,8 @@ angular.module('users-itemview',[
 			scrum.text = task.scrumText;
 			scrum.task = task.name;
 			var currentDate = scrum.date;
-			scrum.dateString = (currentDate.getMonth() + 1) + "/" + currentDate.getDate() + "/" + currentDate.getFullYear();
-			scrum.timeString = currentDate.getHours() + ":" + currentDate.getMinutes() + ":" + currentDate.getSeconds();
+			scrum.dateString = currentDate.toLocaleDateString();
+			scrum.timeString = currentDate.toTimeString();
 			scrum.userId = user.$id();
 			scrum.taskId = task.$id();
 			task.scrum = scrum;
@@ -281,6 +266,7 @@ angular.module('users-itemview',[
 				function (scrumupdates) {
 					task.hasHistory = scrumupdates.length > 0;
 					task.taskUpdates = scrumupdates;
+					console.log(task.taskUpdates);
 			 	},
 				function (response) {
 					$scope.fetchingscrumupdates = false;
@@ -304,7 +290,6 @@ angular.module('users-itemview',[
 		$scope.$watchCollection('scrumupdates', function(){
 			$scope.scrumDates.startdate = new Date($scope.scrumDates.startdate);
 			$scope.scrumDates.enddate = new Date($scope.scrumDates.enddate);
-			$scope.tasklevelscrumupdates = _.groupBy($scope.scrumupdates, "dateString");
 		});
 
 		$scope.$watchCollection('scrumDates', function(newObj, oldObj){
@@ -321,14 +306,14 @@ angular.module('users-itemview',[
 					var endDate = new Date($scope.scrumDates.enddate);
 					// check whether the update date is between startdate and enddate
 					if(currentDate >= startDate && currentDate <= endDate){
-						var dateString = (currentDate.getMonth() + 1) + "/" + currentDate.getDate() + "/" + currentDate.getFullYear();
+						var dateString = currentDate.toLocaleDateString();
 						currentUpdate.dateString = dateString;
-						var timeString = currentDate.getHours() + ":" + currentDate.getMinutes() + ":" + currentDate.getSeconds();
+						var timeString = currentDate.toTimeString();
 						currentUpdate.timeString = timeString;
 						filteredUpdates.push(currentUpdate);
 					}
 				}
-				$scope.tasklevelscrumupdates = _.groupBy(filteredUpdates, "dateString");
+				$scope.scrumupdates = filteredUpdates;
 			}
 		});
 		// $q.when(Tasks.forUser(user.$id())).then(
@@ -341,7 +326,5 @@ angular.module('users-itemview',[
 		// $scope.manageTasks = function (project) {
 		// 	$location.path('/projects/'+project.$id()+'/tasks');
 		// };
-
-
 	}
 ]);
