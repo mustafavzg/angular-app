@@ -47,19 +47,22 @@
 											 to-date-required="true">
 										</datecombofromto>
 									</div>
-							        <!--<button type="button" class="btn btn-primary btn-block" ng-click="filter(startdate, enddate)">Filter</button>-->
 								</div>
-								<div class="media" ng-repeat="(dateString, updates) in scrumupdates | groupBy:'dateString'">
+								<div class="media" ng-repeat="dateGroup in groupedScrumUpdates">
 									<div class="media-heading">
 										<span>
-											{{dateString}}
+											{{dateGroup.key}}
 										</span>
 									</div>
 									<div class="media-body">
-										<li ng-repeat="update in updates">
-											<span class="text-muted time-stamp">{{update.timeString}} </span><br>
-											<span class="text-primary">{{update.task}} </span><br>
-											{{update.text}}
+										<li ng-repeat="taskGroup in dateGroup.values">
+											{{taskGroup.key}}
+											<ul>
+												<li ng-repeat="update in taskGroup.values">
+												<span class="text-muted time-stamp">{{update.timeString}} </span><br>
+												{{update.text}}
+												</li>	
+											</ul>
 										</li>
 									</div>
 								</div>
@@ -84,12 +87,15 @@
 											<a ng-click="viewTask(task)" href="#" tooltip="{{task.description}}">
 												{{task.name}}
 											</a>
-										</div>
-
-										<div class='btn-group pull-right'>
-												<button type="button" class="btn btn-default" ng-click="saveScrumUpdate(task)" ng-show="!task.showAddButton" tooltip="Save scrum update" tooltip-placement='bottom'><icon id="plus-sign"></icon></button>
-												<button type="button" class="btn btn-default" ng-click="clearScrumUpdate(task)" ng-show="!task.showAddButton" tooltip="Clear the text area" tooltip-placement='bottom'><icon id="unchecked"></button>
-												<button type="button" class="btn btn-default" ng-click="closeScrumUpdate(task)" ng-show="!task.showAddButton" tooltip="Discard the scrum update" tooltip-placement='bottom'><icon id="trash"></icon></button>
+											<div class="row">
+												<div class="col-md-12">
+													<div class='btn-group pull-right'>
+														<button type="button" class="btn btn-default" ng-click="saveScrumUpdate(task)" ng-show="!task.showAddButton" tooltip="Save scrum update" tooltip-placement='bottom'><icon id="plus-sign"></icon></button>
+														<button type="button" class="btn btn-default" ng-click="clearScrumUpdate(task)" ng-show="!task.showAddButton" tooltip="Clear the text area" tooltip-placement='bottom'><icon id="unchecked"></button>
+														<button type="button" class="btn btn-default" ng-click="closeScrumUpdate(task)" ng-show="!task.showAddButton" tooltip="Discard the scrum update" tooltip-placement='bottom'><icon id="trash"></icon></button>
+													</div>
+												</div>
+											</div>
 										</div>
 										<p>
 											<div class='form-group block'>

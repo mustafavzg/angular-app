@@ -22,6 +22,7 @@ angular.module('users-itemview',[
 	'i18nNotifications',
 	'$q',
 	'_',
+	'groupByFilter',
 	function (
 		$scope,
 		$location,
@@ -32,11 +33,11 @@ angular.module('users-itemview',[
 		crudListMethods,
 		i18nNotifications,
 		$q,
-		_
+		_,
+		groupByFilter
 	) {
 
 		$scope.user = user;
-		console.log("user ID="+user.$id());
 
 		$scope.userscrudhelpers = {};
 		angular.extend($scope.userscrudhelpers, crudListMethods('/projects/'+project.$id()+'/users'));
@@ -193,6 +194,7 @@ angular.module('users-itemview',[
 			}
 		];
 
+		
 		var allScrumUpdates = $scope.scrumupdates;
 		for(var index in allScrumUpdates){
 			var currentUpdate = allScrumUpdates[index];
@@ -250,7 +252,6 @@ angular.module('users-itemview',[
 			$scope.scrumupdates.push(scrum);
 			var scrumupdateobj = new ScrumUpdates(scrum);
 			scrumupdateobj.$save(successcb, failurecb);
-			console.log($scope.scrumupdates);
 			task.hasHistory = false;
 			successcb = function(){
 				console.log("task saved successfully!!!");
@@ -266,7 +267,6 @@ angular.module('users-itemview',[
 				function (scrumupdates) {
 					task.hasHistory = scrumupdates.length > 0;
 					task.taskUpdates = scrumupdates;
-					console.log(task.taskUpdates);
 			 	},
 				function (response) {
 					$scope.fetchingscrumupdates = false;
@@ -274,7 +274,6 @@ angular.module('users-itemview',[
 			);
 			
 		};
-
 		$scope.closeScrumUpdate = function(task){
 			task.scrumText = "";
 			task.showAddButton = true;
@@ -286,6 +285,7 @@ angular.module('users-itemview',[
 			task.showAddButton = false;
 			task.hasHistory = true;
 		};
+
 
 		$scope.$watchCollection('scrumupdates', function(){
 			$scope.scrumDates.startdate = new Date($scope.scrumDates.startdate);
@@ -316,6 +316,13 @@ angular.module('users-itemview',[
 				$scope.scrumupdates = filteredUpdates;
 			}
 		});
+
+		$scope.$watchCollection('scrumupdates', function (newUpdates, oldUpdates) {
+			if (!angular.equals(newUpdates, oldUpdates)) {
+				$scope.groupedScrumUpdates = groupByFilter($scope.scrumupdates, "dateString", "task");
+			};
+		});
+
 		// $q.when(Tasks.forUser(user.$id())).then(
 		// 	function (tasks) {
 		// 		$scope.tasks = tasks;
