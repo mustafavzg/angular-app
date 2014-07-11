@@ -197,8 +197,6 @@ angular.module('users-itemview',[
 					var currentDate = new Date(currentUpdate.date);
 					var startDate = new Date($scope.scrumDates.startdate);
 					var endDate = new Date($scope.scrumDates.enddate);
-					//console.log("Date Moments ago="+momentsAgoFilter(new Date()));
-					// check whether the update date is between startdate and enddate
 					if(currentDate >= startDate && currentDate <= endDate){
 						var dateString = currentDate.toLocaleDateString();
 						currentUpdate.dateString = dateString;
@@ -211,8 +209,15 @@ angular.module('users-itemview',[
 			}
 		});
 
+		function dateCompReverse(obj1, obj2){
+			var date1 = new Date(obj1.date);
+			var date2 = new Date(obj2.date);
+			return date2.getTime() - date1.getTime();
+		}
+
 		$scope.$watchCollection('scrumupdates', function (newUpdates, oldUpdates) {
 			if (!angular.equals(newUpdates, oldUpdates)) {
+				$scope.scrumupdates.sort(dateCompReverse)
 				$scope.groupedScrumUpdates = groupByFilter($scope.scrumupdates, "dateString", "task");
 			};
 		});
