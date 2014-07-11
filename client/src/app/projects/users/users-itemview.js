@@ -8,7 +8,8 @@ angular.module('users-itemview',[
 	'resources.scrumUpdates',
 	'directives.datecombofromto',
 	'underscore',
-	'filters.groupBy'
+	'filters.groupBy',
+	'filters.momentsAgo'
 ])
 
 .controller('UsersItemViewCtrl', [
@@ -23,6 +24,7 @@ angular.module('users-itemview',[
 	'$q',
 	'_',
 	'groupByFilter',
+	'momentsAgoFilter',
 	function (
 		$scope,
 		$location,
@@ -34,7 +36,8 @@ angular.module('users-itemview',[
 		i18nNotifications,
 		$q,
 		_,
-		groupByFilter
+		groupByFilter,
+		momentsAgoFilter
 	) {
 
 		$scope.user = user;
@@ -155,8 +158,6 @@ angular.module('users-itemview',[
 			ScrumUpdates.forTask(
 				task.$id(),
 				function (scrumupdates) {
-					console.log("Scrum Updates = \n");
-					console.log(scrumupdates);
 					task.hasHistory = scrumupdates.length > 0;
 					task.taskUpdates = scrumupdates;
 			 	},
@@ -196,6 +197,7 @@ angular.module('users-itemview',[
 					var currentDate = new Date(currentUpdate.date);
 					var startDate = new Date($scope.scrumDates.startdate);
 					var endDate = new Date($scope.scrumDates.enddate);
+					//console.log("Date Moments ago="+momentsAgoFilter(new Date()));
 					// check whether the update date is between startdate and enddate
 					if(currentDate >= startDate && currentDate <= endDate){
 						var dateString = currentDate.toLocaleDateString();
