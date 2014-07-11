@@ -66,14 +66,14 @@ angular.module('users-itemview',[
 						{
 							name : 'Estimation',
 							value : $scope.tasks[i].estimation,
-							glyphiconclass : 'glyphicon glyphicon-time',
+							//glyphiconclass : 'glyphicon glyphicon-time',
 							icon : 'time',
 							ordering : 1
 						},
 						{
 							name : 'Priority',
 							value : $scope.tasks[i].priority,
-							glyphiconclass : 'glyphicon glyphicon-star',
+							//glyphiconclass : 'glyphicon glyphicon-star',
 							icon : 'star',
 							ordering : 1
 						}
@@ -93,7 +93,7 @@ angular.module('users-itemview',[
 		 **************************************************/
 		$scope.fetchingscrumupdates = true;
 		$scope.scrumupdates = [];
-		//$scope.tasklevelscrumupdates = [];
+
 		var allScrumUpdates = [];
 		ScrumUpdates.forUser(
 			user.$id(),
@@ -117,154 +117,46 @@ angular.module('users-itemview',[
 		$scope.scrumDates.startdate.setDate(todaysDate.getDate() - 7);
 		todaysDate = new Date();
 		$scope.scrumDates.enddate = todaysDate;
-		/*
-		$scope.tasks = [
-			{
-				Name : 'Sample Task 1',
-				Description : 'This is a sample task 1',
-				Priority : 1,
-				Estimation : 100,
-				propertiesToDisplay : [
-					{
-						name : 'Estimation',
-						value : 50,
-						glyphiconclass : 'glyphicon glyphicon-time',
-						icon : 'time',
-						ordering : 1
-					},
-					{
-						name : 'Priority',
-						value : 1,
-						glyphiconclass : 'glyphicon glyphicon-star',
-						icon : 'star',
-						ordering : 1
-					}
-				],
-				showAddButton : true
-			},
-			{
-				Name : 'Sample Task 2',
-				Description : 'This is a sample task 2',
-				Priority : 2,
-				Estimation : 100,
-				propertiesToDisplay : [
-					{
-						name : 'Estimation',
-						value : 100,
-						glyphiconclass : 'glyphicon glyphicon-time',
-						icon : 'time',
-						ordering : 1
-					},
-					{
-						name : 'Priority',
-						value : 1,
-						glyphiconclass : 'glyphicon glyphicon-star',
-						icon : 'star',
-						ordering : 1
-					}
-				],
-				showAddButton : true
-			}
-		];
-		$scope.scrumupdates = [
-			{
-				date : new Date('06/30/2014'),
-				text : 'Update for the day!!!',
-				task : 'Task 1'
-			},
-			{
-				date : new Date('07/01/2014'),
-				text : 'Update for the day!!!',
-				task : 'Task 1'
-			},
-			{
-				date : new Date('07/02/2014'),
-				text : 'Update for the day!!!',
-				task : 'Task 2'
-			},
-			{
-				date : new Date('07/03/2014'),
-				text : 'Update for the day!!!',
-				task : 'Task 3'
-			},
-			{
-				date : new Date('07/04/2014'),
-				text : 'Update for the day!!!',
-				task : 'Task 4'
-			}
-		];
 
-		
-		var allScrumUpdates = $scope.scrumupdates;
-		for(var index in allScrumUpdates){
-			var currentUpdate = allScrumUpdates[index];
-			currentDate = currentUpdate.date;
-			var dateString = (currentDate.getMonth() + 1) + "/" + currentDate.getDate() + "/" + currentDate.getFullYear();
-			currentUpdate.dateString = dateString;
-			var timeString = currentDate.getHours() + ":" + currentDate.getMinutes() + ":" + currentDate.getSeconds();
-			currentUpdate.timeString = timeString;
-			allScrumUpdates[index] = currentUpdate; 
-		}
-		$scope.scrumupdates = allScrumUpdates;
-		var indexedScrumUpdates = [];
-		$scope.updatesToFilter = function() {
-			indexedScrumUpdates = [];
-			return $scope.scrumupdates;
-		};
-
-		$scope.filterUpdates = function(update) {
-			var updateIsNew = indexedScrumUpdates.indexOf(update.task) == -1;
-			if (updateIsNew) {
-				indexedScrumUpdates.push(update.task);
-			}
-			return updateIsNew;
-		}
-
-		$scope.tasklevelscrumupdates = _.groupBy($scope.scrumupdates, "dateString");
-		var scrumUpdates = $scope.scrumupdates;
-		$scope.taskscrudhelpers = {};
-		angular.extend($scope.taskscrudhelpers, crudListMethods('/projects/'+project.$id()+'/tasks'));
-		$scope.showAddButton = true;
-		$scope.scrumDates = {};
-		var todaysDate = new Date();
-		$scope.scrumDates.startdate = todaysDate;
-		$scope.scrumDates.startdate.setDate(todaysDate.getDate() - 7);
-		todaysDate = new Date();
-		$scope.scrumDates.enddate = todaysDate;*/
 		$scope.saveScrumUpdate = function(task){
 			task.showAddButton = true;
-			var successcb = function(){
-				console.log("scrum saved successfully!!!");
-			};
-			var failurecb = function(){
-				console.log("scrum cannot be saved!!!");
-			};
-			scrum = {};
-			scrum.date = new Date();
-			scrum.text = task.scrumText;
-			scrum.task = task.name;
-			var currentDate = scrum.date;
-			scrum.dateString = currentDate.toLocaleDateString();
-			scrum.timeString = currentDate.toTimeString();
-			scrum.userId = user.$id();
-			scrum.taskId = task.$id();
-			task.scrum = scrum;
-			$scope.scrumupdates.push(scrum);
-			var scrumupdateobj = new ScrumUpdates(scrum);
-			scrumupdateobj.$save(successcb, failurecb);
-			task.hasHistory = false;
-			successcb = function(){
-				console.log("task saved successfully!!!");
-			};
-			failurecb = function(){
-				console.log("task cannot be saved!!!");
-			};
+			console.log(task.scrumText);
+			if (task.scrumText) {
+				var successcb = function(){
+					console.log("scrum saved successfully!!!");
+				};
+				var failurecb = function(){
+					console.log("scrum cannot be saved!!!");
+				};
+				scrum = {};
+				scrum.date = new Date();
+				scrum.text = task.scrumText;
+				scrum.task = task.name;
+				var currentDate = scrum.date;
+				scrum.dateString = currentDate.toLocaleDateString();
+				scrum.timeString = currentDate.getHours()+":"+currentDate.getMinutes()+":"+currentDate.getSeconds();
+				scrum.userId = user.$id();
+				scrum.taskId = task.$id();
+				task.scrum = scrum;
+				$scope.scrumupdates.push(scrum);
+				var scrumupdateobj = new ScrumUpdates(scrum);
+				scrumupdateobj.$save(successcb, failurecb);
+				task.hasHistory = false;
+				successcb = function(){
+					console.log("task saved successfully!!!");
+				};
+				failurecb = function(){
+					console.log("task cannot be saved!!!");
+				};
+			}
 		};
 		$scope.addScrumUpdate = function(task){
 			task.showAddButton = false;
 			ScrumUpdates.forTask(
 				task.$id(),
 				function (scrumupdates) {
+					console.log("Scrum Updates = \n");
+					console.log(scrumupdates);
 					task.hasHistory = scrumupdates.length > 0;
 					task.taskUpdates = scrumupdates;
 			 	},
@@ -308,7 +200,7 @@ angular.module('users-itemview',[
 					if(currentDate >= startDate && currentDate <= endDate){
 						var dateString = currentDate.toLocaleDateString();
 						currentUpdate.dateString = dateString;
-						var timeString = currentDate.toTimeString();
+						var timeString = currentDate.getHours()+":"+currentDate.getMinutes()+":"+currentDate.getSeconds();
 						currentUpdate.timeString = timeString;
 						filteredUpdates.push(currentUpdate);
 					}

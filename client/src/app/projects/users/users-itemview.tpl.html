@@ -103,7 +103,7 @@
 												</textarea>
 											</div>
 											<div ng-show="task.hasHistory">
-												<li ng-repeat="update in task.taskUpdates | orderBy : update.date : reverse">
+												<li ng-repeat="update in Updates = ( task.taskUpdates | orderBy:'date':true)">
 													<span class="text-muted time-stamp">{{update.dateString}} @ {{update.timeString}} </span><br>
 													{{update.text}}
 												</li>
