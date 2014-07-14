@@ -15,6 +15,8 @@ angular.module('projectsitemview', [
 	'directives.propertybar',
 	'directives.test',
 	'directives.users',
+	'directives.comment',
+	'directives.scrum',
 	'directives.ganttChart',
 	'underscore',
 	'gantt'

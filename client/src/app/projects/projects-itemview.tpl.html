@@ -120,7 +120,6 @@
 
 	<div class="panel panel-default">
 		<tabset justified="true" type="pills">
-
 			<tab heading="Dashboard">
 				<div class="panel-body">
 					<div class="panel panel-default">
@@ -160,6 +159,17 @@
 				<!-- div panel body -->
 			</tab>
 
+			<tab heading="Scrum Updates">
+				<div class="panel-body row">
+				  <div class="col-md-6">
+					<comment resource="project"></comment>
+				  </div>
+				  <div class="col-md-6">
+					<scrum resource="project"></scrum>
+					<!-- To Do: add Scrum Updates Here. -->
+				  </div>
+				</div>
+			</tab>
 			<tab heading="Product Backlog">
 				<tableactive items="backlogItems" fetchingitems="fetchingBacklogItems" resourceconf="backlogItemsConf" ></tableactive>
 			</tab>

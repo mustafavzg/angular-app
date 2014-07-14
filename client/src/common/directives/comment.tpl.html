@@ -1,0 +1,23 @@
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<strong>Comments</strong>
+	</div>
+	<div class="panel-body">
+		<div class="row">
+			<textarea class="form-control" ng-model="newcomment" placeholder="Add your comments here" cols="10" rows="5">
+			</textarea>
+			<button ng-click="addComment()" class="btn btn-primary">
+				Add
+			</button>
+		</div>
+		<div class="media" ng-repeat="comment in resource.comments">
+			<img class="media-object photo-small pull-left" src="/static/img/foouser.jpg">
+				<div class="media-body"> 
+					<div class="media-heading"> 
+						{{comment.User}} 
+					</div>
+					<p>{{comment.Comment}}</p>
+				</div>
+		</div>		
+	</div>
+</div>
