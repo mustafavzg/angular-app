@@ -63,6 +63,8 @@ angular.module('users-itemview',[
 		Tasks.forUser(
 			user.$id(),
 			function (tasks) {
+				console.log("Tasks=");
+				console.log(tasks);
 				$scope.tasks = tasks;
 				for(var i=0;i<tasks.length;i++){
 					$scope.tasks[i].propertiesToDisplay = [

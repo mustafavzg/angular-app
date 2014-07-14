@@ -130,8 +130,26 @@
 						</div>
 					</div>
 				</tab>
+				<tab heading="Inbox">
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<div class="media" ng-repeat="task in tasks">
+								<property-bar properties="task.propertiesToDisplay" root-div-class="media-object pull-left" reverse="false" ></property-bar>
+								<div class="media-body">
+									<div class="media-heading">
+										<a ng-click="viewTask(task)" href="#" tooltip="{{task.description}}">
+											{{task.name}}
+										</a>
+										<p class="text-info">
+											{{task.description}}
+										</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</tab>
 			</tabset>
 		</div>
 	</div>
 </div>
-
