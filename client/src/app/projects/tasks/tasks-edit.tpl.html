@@ -39,6 +39,16 @@
 						<input type="number" name="remaining" ng-model="task.remaining" class="form-control" required>
 					</div>
 
+					<datecombofromto
+						 name="dateCombo"
+						 from-date="task.estimatedStartDate"
+						 to-date="task.estimatedEndDate"
+						 from-date-label="Start Date (Estimated)"
+						 to-date-label="End Date (Estimated)"
+						 from-date-required="true"
+						 to-date-required="true">
+					</datecombofromto>
+
 				</div>
 				<!-- div col -->
 			</div>

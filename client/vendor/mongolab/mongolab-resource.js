@@ -323,6 +323,26 @@ angular.module('mongolabResource', [
 				return thenFactoryMethod(httpPromise, successcb, errorcb);
 			};
 
+			Resource.prototype.$updateFields = function (updateFields, successcb, errorcb) {
+				var objectIds = Resource.getObjectIds([this.$id()]);
+				// var params = {q:JSON.stringify({_id:{$in:objectIds}})};
+				var params = {q:JSON.stringify({_id:objectIds[0]})};
+				var updateJson = JSON.stringify({$set: updateFields});
+
+				// setCacheEntry(itemUrl, this);
+				// var httpPromise = $http.put(itemUrl, angular.extend({}, this, {_id:undefined}), {cache:resourceCache, params:defaultParams});
+
+				// NOTE: the following does not work as angular strips out any
+				// starting with $, for $set is stripped out and the request payload
+				// is empty (leaving this comment here as a warning for future reference)
+				// var httpPromise = $http.put(itemUrl, angular.extend({}, {$set: updateFields}), {params:defaultParams});
+				var httpPromise = $http.put(url, updateJson, {params:angular.extend({}, defaultParams, params)});
+
+				// cacheService.setDirty(itemUrl);
+				cacheService.setDirty('GLOBAL'); // this is temporary until cache dependencies are implemented
+				return thenFactoryMethod(httpPromise, successcb, errorcb);
+			};
+
 			Resource.prototype.$remove = function (successcb, errorcb) {
 				// return thenFactoryMethod($q.reject("Failing remove"), successcb, errorcb);
 				var itemUrl = url + "/" + this.$id();

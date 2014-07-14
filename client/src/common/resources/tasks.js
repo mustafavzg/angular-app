@@ -1,8 +1,12 @@
-angular.module('resources.tasks', ['mongolabResource']);
+angular.module('resources.tasks', [
+	'mongolabResource',
+	'services.resourceDictionary'
+]);
 angular.module('resources.tasks')
 .factory('Tasks', [
 	'mongolabResource',
-	function (mongolabResource) {
+	'resourceDictionary',
+	function (mongolabResource, resourceDictionary) {
 
 		var Tasks = mongolabResource('tasks');
 
@@ -20,7 +24,8 @@ angular.module('resources.tasks')
 				btnclass : {
 					inactive: 'btn-default',
 					active: 'btn-primary'
-				}
+				},
+				color: '#62C0DC'
 			},
 			{
 				key: 'DEV',
@@ -29,8 +34,8 @@ angular.module('resources.tasks')
 				btnclass : {
 					inactive: 'btn-default',
 					active: 'btn-primary'
-				}
-
+				},
+				color: '#8DB173'
 			},
 			{
 				key: 'BLOCKED',
@@ -39,8 +44,8 @@ angular.module('resources.tasks')
 				btnclass : {
 					inactive: 'btn-default',
 					active: 'btn-primary'
-				}
-
+				},
+				color: '#AE4A32'
 			},
 			{
 				key: 'TEST',
@@ -49,8 +54,8 @@ angular.module('resources.tasks')
 				btnclass : {
 					inactive: 'btn-default',
 					active: 'btn-primary'
-				}
-
+				},
+				color: '#F38725'
 			},
 			{
 				key: 'DONE',
@@ -59,9 +64,23 @@ angular.module('resources.tasks')
 				btnclass : {
 					inactive: 'btn-warning',
 					active: 'btn-success'
-				}
+				},
+				color: '#D1C4B1'
 			}
 		];
+
+		var statusDictionary = resourceDictionary(
+			'status',
+			function (status) {
+				return status.key;
+			}
+		);
+		statusDictionary.setItems(Tasks.statusDef);
+
+		Tasks.prototype.getStatusDef = function (status) {
+			status = status || this.status;
+			return statusDictionary.lookUpItem(status);
+		};
 
 		/**************************************************
 		 * Foreign key map definitions

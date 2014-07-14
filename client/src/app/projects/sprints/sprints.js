@@ -52,7 +52,8 @@ angular.module('sprints', [
 				'$route',
 				'Sprints',
 				function($route, Sprints) {
-					return Sprints.forProject($route.current.params.projectId);
+					// return Sprints.forProject($route.current.params.projectId);
+					return Sprints.all();
 				}
 			]
 		})
@@ -125,6 +126,8 @@ angular.module('sprints', [
 	'sprints',
 	function($scope, $location, crudListMethods, projectId, sprints){
 		$scope.sprints = sprints;
+		console.log("all sprints are");
+		console.log(sprints);
 
 		angular.extend($scope, crudListMethods('/projects/'+projectId+'/sprints'));
 

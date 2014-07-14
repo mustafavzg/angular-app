@@ -179,7 +179,7 @@ module.exports = function (grunt) {
 			},
 
 			bootstrapcss: {
-				src:['vendor/bootstrap/dist/css/bootstrap.css', 'vendor/bootstrap/dist/css/bootstrap-theme.css', 'src/less/custom-utilities.less'],
+				src:['vendor/bootstrap/dist/css/bootstrap.css', 'vendor/bootstrap/dist/css/bootstrap-theme.css', 'src/less/custom-utilities.less', 'src/less/gantt.css'],
 				dest: '<%= distdir %>/<%= pkg.name %>.css'
 			},
 

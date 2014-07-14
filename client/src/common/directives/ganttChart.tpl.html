@@ -1,0 +1,192 @@
+<div class="panel-body">
+
+	<!-- <\!-- gantt demo -\-> -->
+	<!-- <div class="row"> -->
+	<!-- 	<form role="form" class="form-inline"> -->
+	<!-- 		<div class="form-group"> -->
+	<!-- 			<span class="help-block">Action</span> -->
+	<!-- 			<div class="btn-group"> -->
+	<!-- 				<button class="btn btn-default" ng-click="addSamples()">Load data</button> -->
+	<!-- 				<button class="btn btn-default" ng-click="removeSomeSamples()">Remove some</button> -->
+	<!-- 				<button class="btn btn-default" ng-click="removeSamples()">Remove all</button> -->
+	<!-- 			</div> -->
+	<!-- 		</div> -->
+	<!-- 		<div class="form-group"> -->
+	<!-- 			<span class="help-block">View scale</span> -->
+	<!-- 			<select class="form-control" style="width: 100px;" ng-model="scale" ng-options="s for s in ['hour', 'day', 'week', 'month']"></select> -->
+	<!-- 		</div> -->
+	<!-- 		<div class="form-group"> -->
+	<!-- 			<span class="help-block">Sort order</span> -->
+	<!-- 			<select class="form-control" style="width: 100px;" ng-model="mode" ng-options="m for m in ['name', 'date', 'custom']"></select> -->
+	<!-- 		</div> -->
+	<!-- 		<div class="form-group text-center"> -->
+	<!-- 			<span class="help-block">Max height</span> -->
+	<!-- 			<div ng-show="maxHeight > 0"> -->
+	<!-- 				<button class="btn btn-default" ng-click="maxHeight = 0">Deactivate</button> -->
+	<!-- 			</div> -->
+	<!-- 			<div ng-show="maxHeight === 0"> -->
+	<!-- 				<button class="btn btn-default" ng-click="maxHeight = 300">Activate</button> -->
+	<!-- 			</div> -->
+	<!-- 		</div> -->
+	<!-- 		<div class="form-group text-center"> -->
+	<!-- 			<span class="help-block">Additional options</span> -->
+	<!-- 			<div class="btn-group"> -->
+	<!-- 				<button ng-show="showWeekends" class="btn btn-default" ng-click="showWeekends = false">Hide weekends</button> -->
+	<!-- 				<button ng-show="showWeekends == false" class="btn btn-default" ng-click="showWeekends = true">Show weekends</button> -->
+	<!-- 				<button ng-show="showNonWorkHours == false" class="btn btn-default" ng-click="showNonWorkHours = true; subScale = 6">Show non working hours</button> -->
+	<!-- 				<button ng-show="showNonWorkHours" class="btn btn-default" ng-click="showNonWorkHours = false; subScale = 8">Hide non working hours</button> -->
+	<!-- 			</div> -->
+	<!-- 		</div> -->
+	<!-- 	</form> -->
+	<!-- </div> -->
+
+	<!-- div row -->
+
+	<div class="row">
+		<div class="col-md-12">
+			<form role="form" class="form-inline pull-left">
+				<div class="form-group">
+					<!-- <span class="help-block">Action</span> -->
+					<div class="btn-group">
+						<button class="btn btn-default" ng-click="reloadData()">Load data</button>
+						<button class="btn btn-default" ng-click="removeSomeSamples()">Remove some</button>
+						<button class="btn btn-default" ng-click="removeSamples()">Remove all</button>
+					</div>
+				</div>
+			</form>
+		
+			<form role="form" class="form-inline pull-right">
+				<!-- <div class="form-group"> -->
+				<!-- 	<\!-- <span class="help-block">View scale</span> -\-> -->
+				<!-- 	<select class="form-control" style="width: 100px;" ng-model="scale" ng-options="s for s in ['hour', 'day', 'week', 'month']"></select> -->
+				<!-- </div> -->
+
+				<div class="form-group">
+					<div class="btn-group" dropdown is-open="isOpen" >
+						<button type="button" class="btn btn-default dropdown-toggle" tooltip="View Scale" tooltip-placement="top">
+							{{scale}} <span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu" role="menu" ng-click="isOpen = false">
+							<li ng-repeat="s in ['hour', 'day', 'week', 'month']" ng-click="setScale(s)" ng-class="{'active': isActiveScale(s)}"><a href="#">{{s}}</a></li>
+						</ul>
+					</div>
+				</div>
+
+				<!-- <div class="form-group"> -->
+				<!-- 	<\!-- <span class="help-block">Sort order</span> -\-> -->
+				<!-- 	<select class="form-control" style="width: 100px;" ng-model="mode" ng-options="m for m in ['name', 'date', 'custom']"></select> -->
+				<!-- </div> -->
+				<div class="form-group">
+					<div class="btn-group" dropdown is-open="isOpenMode" >
+						<button type="button" class="btn btn-default dropdown-toggle" tooltip="Sort Order" tooltip-placement="top">
+							{{mode}} <span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu" role="menu" ng-click="isOpenMode = false">
+							<li ng-repeat="m in ['name', 'date', 'custom']" ng-click="setMode(m)" ng-class="{'active': isActiveMode(m)}"><a href="#">{{m}}</a></li>
+						</ul>
+					</div>
+				</div>
+				<!-- <div class="form-group text-center"> -->
+				<!-- 	<\!-- <span class="help-block">Max height</span> -\-> -->
+				<!-- 	<\!-- <div ng-show="maxHeight > 0"> -\-> -->
+				<!-- 	<\!-- 	<button class="btn btn-default" ng-click="maxHeight = 0">Deactivate</button> -\-> -->
+				<!-- 	<\!-- </div> -\-> -->
+				<!-- 	<\!-- <div ng-show="maxHeight === 0"> -\-> -->
+				<!-- 	<\!-- 	<button class="btn btn-default" ng-click="maxHeight = 300">Activate</button> -\-> -->
+				<!-- 	<\!-- </div> -\-> -->
+				<!-- </div> -->
+				<div class="form-group text-center">
+					<!-- <span class="help-block">Additional options</span> -->
+					<div class="btn-group">
+						<button class="btn btn-default" ng-click="toggleHeight()" tooltip="{{heightToggle.toolTip}}" tooltip-placement="top">
+							<span ng-show="!!heightToggle.maxHeight"><icon id="arrow-down"></icon></span>
+							<span ng-show="!heightToggle.maxHeight"><icon id="arrow-up"></icon></span>
+						</button>
+
+						<!-- <button ng-show="!!maxHeight" class="btn btn-default" ng-click="toggleHeight()" tooltip="Expand Height" tooltip-placement="top"> -->
+						<!-- 	<icon id="arrow-right"></icon> -->
+						<!-- </button> -->
+						<!-- <button ng-show="!maxHeight" class="btn btn-default" ng-click="toggleHeight()" tooltip="Fix Height" tooltip-placement="top"> -->
+						<!-- 	<icon id="arrow-left"></icon> -->
+						<!-- </button> -->
+
+ 						<button class="btn btn-default" ng-click="toggleWeekends()" tooltip="{{weekendsToggle.toolTip}}" tooltip-placement="top">
+							<icon id="arrow-right" flip="{{!weekendsToggle.showWeekends}}" watch-att="true"></icon>
+							<icon id="arrow-left" flip="{{!weekendsToggle.showWeekends}}" watch-att="true"></icon>
+						</button>
+
+						<!-- <button ng-show="showWeekends" class="btn btn-default" ng-click="toggleWeekends()" tooltip="Hide weekends" tooltip-placement="top"> -->
+						<!-- 	<icon id="arrow-right"></icon> -->
+						<!-- 	<icon id="arrow-left"></icon> -->
+						<!-- </button> -->
+						<!-- <button ng-show="!showWeekends" class="btn btn-default" ng-click="toggleWeekends()" tooltip="Show weekends" tooltip-placement="top"> -->
+						<!-- 	<icon id="arrow-left"></icon> -->
+						<!-- 	<icon id="arrow-right"></icon> -->
+						<!-- </button> -->
+
+						<button class="btn btn-default" ng-click="toggleWorkHours()" tooltip="{{workHoursToggle.toolTip}}" tooltip-placement="right">
+							<span ng-show="workHoursToggle.showNonWorkHours"><icon id="eye-open"></icon></span>
+							<span ng-show="!workHoursToggle.showNonWorkHours"><icon id="eye-close"></icon></span>
+						</button>
+
+						<!-- <button ng-show="showNonWorkHours" class="btn btn-default" ng-click="toggleWorkHours()" tooltip="Show only working hours" tooltip-placement="right"> -->
+						<!-- 	<icon id="eye-open"></icon> -->
+						<!-- </button> -->
+						<!-- <button ng-show="!showNonWorkHours" class="btn btn-default" ng-click="toggleWorkHours()" tooltip="Show non working hours" tooltip-placement="right"> -->
+						<!-- 	<icon id="eye-close"></icon> -->
+						<!-- </button> -->
+
+					</div>
+				</div>
+			</form>
+	
+		</div>
+		<!-- div col -->
+	</div>
+	<!-- div row -->
+
+	<hr>
+	<div class="row">
+		<span class="col-md-12" ng-show="fetchingitems">Fetching {{resourcePrettyNameAlt}} ... 
+			<a href="#"><img src="/static/img/spinner.gif"></a>
+		</span>		
+		<span class="col-md-12" ng-show="!items.length && !fetchingitems">
+			No {{resourcePrettyNameAlt}} found
+		</span>		
+	</div>
+	<!-- div row -->
+
+	<div class="row" ng-show="items.length">
+		<gantt first-day-of-week="1"
+			   load-data="loadData = fn"
+			   remove-data="removeData = fn"
+			   clear-data="clearData = fn"
+			   sort-mode="mode"
+			   view-scale="scale"
+			   column-width="scale === 'month' && 20 || (scale === 'week' && 10 || 4)"
+			   column-sub-scale="scale === 'week' && 7 || 6"
+			   work-hours="[8,9,10,11,12,13,14,15,16,17,18]"
+			   show-non-work-hours="workHoursToggle.showNonWorkHours"
+			   weekend-days="[0,6]"
+			   show-weekends="weekendsToggle.showWeekends"
+			   max-height="heightToggle.maxHeight"
+			   on-gantt-ready="initData()"
+			   on-row-added="rowEvent(event)"
+			   on-row-clicked="rowEvent(event)"
+			   on-row-updated="rowEvent(event)"
+			   on-scroll="scrollEvent(event)"
+			   on-task-clicked="taskEvent(event)"
+			   on-task-updated="taskEvent(event)"
+			   allow-task-moving="false"
+			   allow-task-resizing="false"
+			   allow-task-row-switching="false"
+			   allow-row-sorting="false"
+			   from-date="fromDate"
+			   to-date="toDate"
+			   >
+		</gantt>
+	</div>
+	<!-- div row -->
+	<!-- <hr>			 -->
+	<!-- gantt demo -->
+</div>

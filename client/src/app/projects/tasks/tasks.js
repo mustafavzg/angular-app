@@ -6,8 +6,11 @@ angular.module('tasksnew', [
 	'resources.tasks',
 	'resources.projects',
 	'directives.userscombosearchadd',
+	'directives.datecombofromto',
 	'services.crud',
 	'services.resourceDictionary',
+	'filters.stopWatch',
+	'services.i18nNotifications',
 	'underscore'
 ])
 
@@ -148,23 +151,31 @@ angular.module('tasksnew', [
 	'$location',
 	'$route',
 	'crudListMethods',
+	'crudEditHandlers',
 	'Tasks',
 	// 'sprintBacklogItems',
 	// 'teamMembers',
 	'project',
 	'task',
 	'_',
+	'$interval',
+	'stopWatchFilter',
+	'i18nNotifications',
 	function (
 		$scope,
 		$location,
 		$route,
 		crudListMethods,
+		crudEditHandlers,
 		Tasks,
 		// sprintBacklogItems,
 		// teamMembers,
 		project,
 		task,
-		_
+		_,
+		$interval,
+		stopWatchFilter,
+		i18nNotifications
 	) {
 
 		$scope.project = project;
@@ -175,6 +186,8 @@ angular.module('tasksnew', [
 
 		$scope.tasksCrudHelpers = {};
 		angular.extend($scope.tasksCrudHelpers, crudListMethods('/projects/'+project.$id()+'/tasks'));
+
+		$scope.taskCrudNotificationHelpers = angular.extend({}, crudEditHandlers('tasks'));;
 
 		$scope.task.attributesToDisplay = {
 			estimation : {
@@ -198,6 +211,177 @@ angular.module('tasksnew', [
 			}
 		};
 		$scope.task.attributeValuesToDisplay = _.values($scope.task.attributesToDisplay);
+
+		/**************************************************
+		 * Task Timer
+		 **************************************************/
+
+		$scope.clock = Date.now();
+		var clock = $interval(
+			function () {
+				$scope.clock = Date.now();
+			},
+			1000
+		);
+
+		$scope.timerStarted = function () {
+			return (!!startTime)? true : false;
+		};
+
+		var taskTimer;
+		var startTime;
+		var stopTime;
+		$scope.timerRunning = false;
+
+		var sumBursts = function (taskBursts) {
+			var burstTime = 0;
+			angular.forEach(taskBursts, function(burst) {
+				// console.log("calculating burst time");
+				// console.log(burst);
+				// console.log(burstTime);
+				// console.log(burst.stop - burst.start);
+  				// var stopTime = burst.stop || Date.now();
+				// burstTime += stopTime - burst.start;
+				// burst.data =  {
+				// 	status: $scope.task.status,
+				// 	userId: $scope.task.assignedUserId
+				// };
+
+				if( burst.stop ){
+					burstTime += burst.stop - burst.start;
+				}
+			});
+			return burstTime;
+		};
+
+		var taskBursts = $scope.task.bursts || [];
+		var lastBurst = taskBursts.slice(-1)[0];
+		var prevBurstTime = sumBursts(taskBursts);
+
+		console.log(taskBursts);
+
+		$scope.timer = prevBurstTime;
+		console.log("burst time total");
+		console.log($scope.timer);
+
+		if( lastBurst && !lastBurst.stop ){
+			$scope.timerRunning = true;
+			startTime = lastBurst.start;
+			taskTimer = $interval(
+				function () {
+					if( angular.isDefined(startTime) ){
+						$scope.timer = Date.now() - startTime + prevBurstTime;
+
+					}
+				},
+				100
+			);
+		}
+
+		$scope.startTimer = function () {
+			$scope.timerRunning = true;
+			startTime = Date.now();
+			taskBursts.push({
+				start: startTime,
+				data: {
+					status: task.status,
+					userId: task.assignedUserId
+				}
+			});
+			$scope.task.$updateFields(
+				{bursts: taskBursts},
+				function (response) {
+					console.log("updated the burst: startTime");
+					console.log($scope.task);
+					console.log(response);
+					taskTimer = $interval(
+						function () {
+							if( angular.isDefined(startTime) ){
+								$scope.timer = Date.now() - startTime + prevBurstTime;
+
+							}
+						},
+						100
+					);
+				},
+				function (error) {
+					var notification = $scope.taskCrudNotificationHelpers.onUpdateError(error);
+					i18nNotifications.pushForCurrentRoute(notification.key, notification.type, notification.context);
+					taskBursts.pop();
+					$scope.timerRunning = false;
+				}
+			);
+
+		};
+
+		// $scope.stopWatch = function (timeinmills) {
+		// 	var seconds = timeinmills / 1000;
+		// };
+
+		// $scope.stopWatchFilter = function (timeinmills) {
+		// 	var timeindeciseconds = Math.floor(timeinmills / 100);
+		// 	var deciseconds = timeindeciseconds % 10;
+
+		// 	var timeinseconds = Math.floor(timeindeciseconds / 10);
+		// 	var seconds = timeinseconds % 60;
+
+		// 	var timeinminutes = Math.floor(timeinseconds / 60);
+		// 	var minutes = timeinminutes % 60;
+
+		// 	var timeinhours = Math.floor(timeinminutes / 60);
+		// 	var hours = timeinhours % 24;
+
+		// 	var timeindays = Math.floor(timeinhours / 24);
+		// 	var days = timeindays;
+
+		// 	return days + " days, " + hours + " hours, " + minutes + " minutes, " + seconds + " seconds, " + deciseconds + " deciseconds, ";
+		// };
+
+		$scope.stopTimer = function () {
+			stopTime = Date.now();
+
+			var lastBurst =  taskBursts.pop();
+			lastBurst.stop = stopTime;
+			taskBursts.push(lastBurst);
+			$scope.task.$updateFields(
+				{bursts: taskBursts},
+				function (response) {
+					console.log("updated the burst: stopTime");
+					console.log($scope.task);
+					console.log(response);
+					$scope.timerRunning = false;
+					destroyTimer();
+					prevBurstTime = sumBursts(taskBursts);
+				},
+				function (error) {
+					var notification = $scope.taskCrudNotificationHelpers.onUpdateError(error);
+					i18nNotifications.pushForCurrentRoute(notification.key, notification.type, notification.context);
+					var lastBurst = taskBursts.pop();
+					delete lastBurst.stop;
+					taskBursts.push(lastBurst);
+				}
+			);
+		};
+
+		var destroyClock = function () {
+			if( angular.isDefined(clock) ){
+				$interval.cancel(clock);
+				clock = undefined;
+			}
+		};
+
+		var destroyTimer = function () {
+			if( angular.isDefined(taskTimer) ){
+				$interval.cancel(taskTimer);
+				taskTimer = undefined;
+			}
+		};
+
+		$scope.$on('$destroy', function () {
+			destroyClock();
+			destroyTimer();
+		});
+
 
 		/**************************************************
 		 * Task comments

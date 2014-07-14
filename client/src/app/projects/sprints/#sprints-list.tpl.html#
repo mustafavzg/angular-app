@@ -1,0 +1,28 @@
+<button type="button" class="btn btn-primary btn-block" ng-click="new()">New Sprint</button>
+<hr />
+
+<table class="table table-condensed table-striped table-hover">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Start date</th>
+        <th>End date</th>
+        <th>Status</th>
+        <!-- <th>Tools</th> -->
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="sprint in sprints">
+        <td ng-click="view(sprint.$id())">{{sprint.name}}</td>
+        <td ng-click="view(sprint.$id())">{{sprint.startdate | date:'mediumDate'}}</td>
+        <td ng-click="view(sprint.$id())">{{sprint.enddate | date:'mediumDate'}}</td>
+        <td ng-click="view(sprint.$id())">{{sprint.getStatusPretty()}}</td>
+        <!-- <td> -->
+        <!--     <button type="button" class="btn btn-mini" ng-click="tasks(sprint, $event)">Tasks</button> -->
+        <!-- </td> -->
+    </tr>
+    <tr ng-show="!sprints.length">
+        <td colspan="5">No sprints defined</td>
+    </tr>
+    </tbody>
+</table>
