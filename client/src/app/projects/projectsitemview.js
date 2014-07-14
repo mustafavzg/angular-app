@@ -759,7 +759,8 @@ angular.module('projectsitemview', [
 					}
 				],
 				colorMap: function (task) {
-					return task.getStatusDef().color;
+					var statusDef = task.getStatusDef() || {};
+					return statusDef.color;
 					// if( task.isExpired() ){
 					// 	// return "#FFCFC3";
 					// 	// return "#E8A729";
