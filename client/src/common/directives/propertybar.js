@@ -21,4 +21,4 @@ angular.module('directives.propertybar', [
 			// }
 		};
 	}
-])
+]);

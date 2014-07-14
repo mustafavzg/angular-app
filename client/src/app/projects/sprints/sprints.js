@@ -10,7 +10,8 @@ angular.module('sprints', [
 	'ui.bootstrap',
 	'services.crud',
 	'services.i18nNotifications',
-	'services.dictionary',
+	// 'services.dictionary',
+	'services.resourceDictionary',
 	'services.locationHistory',
 	'tasks',
 	'underscore',
@@ -51,7 +52,8 @@ angular.module('sprints', [
 				'$route',
 				'Sprints',
 				function($route, Sprints) {
-					return Sprints.forProject($route.current.params.projectId);
+					// return Sprints.forProject($route.current.params.projectId);
+					return Sprints.all();
 				}
 			]
 		})
@@ -124,6 +126,8 @@ angular.module('sprints', [
 	'sprints',
 	function($scope, $location, crudListMethods, projectId, sprints){
 		$scope.sprints = sprints;
+		console.log("all sprints are");
+		console.log(sprints);
 
 		angular.extend($scope, crudListMethods('/projects/'+projectId+'/sprints'));
 
@@ -285,11 +289,13 @@ angular.module('sprints', [
 	'Tasks',
 	'crudListMethods',
 	'crudEditHandlers',
-	'dictionary',
+	// 'dictionary',
+	'resourceDictionary',
 	'i18nNotifications',
 	'_',
 	'moment',
-	function($scope, $location, project, sprint, productBacklog, Tasks, crudListMethods, crudEditHandlers, dictionary, i18nNotifications, _, moment){
+	// function($scope, $location, project, sprint, productBacklog, Tasks, crudListMethods, crudEditHandlers, dictionary, resourceDictionary, i18nNotifications, _, moment){
+	function($scope, $location, project, sprint, productBacklog, Tasks, crudListMethods, crudEditHandlers, resourceDictionary, i18nNotifications, _, moment){
 
 		// $scope.project = project;
 		$scope.productBacklog = productBacklog;
@@ -422,7 +428,12 @@ angular.module('sprints', [
 		 **************************************************/
 
 		$scope.sprint.sprintTasks = $scope.sprint.sprintTasks || {};
-		$scope.taskDictionary = dictionary;
+		// $scope.taskDictionary = dictionary;
+		// $scope.taskDictionary = dictionary('tasks');
+		// console.log("resource dictionary is");
+		// console.log(resourceDictionary);
+		// console.log(resourceDictionary.toString());
+		$scope.taskDictionary = resourceDictionary('tasks');
 
 		$scope.getTaskIds = function (backlogTaskMap) {
 			return _.chain(backlogTaskMap).values().flatten().uniq().value();
@@ -501,7 +512,7 @@ angular.module('sprints', [
 		var setupTasks = function (tasks) {
 			console.log("succeeded to fetch tasks for sprint backlog");
 			console.log(tasks);
-			$scope.taskDictionary.build(tasks);
+			$scope.taskDictionary.setItems(tasks);
 			angular.forEach(tasks, function(task) {
 				var backlogTasks = $scope.backlogTaskMap[task.productBacklogItemId];
 				if( angular.isDefined(backlogTasks) ){
@@ -538,7 +549,7 @@ angular.module('sprints', [
 
 				// console.log("succeeded to fetch tasks for sprint backlog");
 				// console.log(tasks);
-				// $scope.taskDictionary.build(tasks);
+				// $scope.taskDictionary.setItems(tasks);
 				// angular.forEach(tasks, function(task) {
 				// 	$scope.backlogTaskMap[task.productBacklogItemId].push(task.$id());
 				// 	task.propertiesToDisplay = [
@@ -623,7 +634,7 @@ angular.module('sprints', [
 		$scope.estimationInTotal = function () {
 			var totalEstimation = 0;
 			var taskIds = $scope.getTaskIds($scope.sprint.sprintTasks);
-			var tasks = $scope.taskDictionary.lookUp(taskIds);
+			var tasks = $scope.taskDictionary.lookUpItems(taskIds);
 			console.log("tasks in sprint");
 			console.log(tasks);
 			console.log(taskIds);
@@ -698,7 +709,7 @@ angular.module('sprints', [
 		$scope.onSave = function (savedSprint) {
 			var sprintId = savedSprint.$id();
 			var taskIds = $scope.getTaskIds(savedSprint.sprintTasks);
-			// var tasks = $scope.taskDictionary.lookUp(taskIds);
+			// var tasks = $scope.taskDictionary.lookUpItems(taskIds);
 			var taskIdsRemoved = _.difference($scope.prevSprintTasks, taskIds);
 			var taskIdsAdded = _.difference(taskIds, $scope.prevSprintTasks);
 

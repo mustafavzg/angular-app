@@ -1,4 +1,5 @@
 angular.module('mongolabResource', [
+	'services.dictionary',
 	'resourceCache',
 	'underscore'
 ])
@@ -8,8 +9,9 @@ angular.module('mongolabResource', [
 	'$q',
 	'$timeout',
 	'resourceCacheFactory',
+	'dictionary',
 	'_',
-	function (MONGOLAB_CONFIG, $http, $q, $timeout, resourceCacheFactory, _) {
+	function (MONGOLAB_CONFIG, $http, $q, $timeout, resourceCacheFactory, dictionary, _) {
 
 		function MongolabResourceFactory(collectionName) {
 
@@ -94,17 +96,44 @@ angular.module('mongolabResource', [
 
 			// Maps collection names to the names used as forein keys
 			// in the objects
-			var resourceForeignKeyMap = {
-				tasks: 'taskId',
-				projects: 'projectId',
-				sprints: 'sprintId',
-				productbacklog: 'productBacklogItemId',
-				users: 'userId',
-				scrumupdates: 'scrumUpdateId'
-			};
+			// These relations will be moved to the backend
+			// persistence later
+			var resourceForeignKeyMap = dictionary('resourceForeignKeyMap');
+			resourceForeignKeyMap.setList({
+				tasks: {
+					default : 'taskId'
+				},
+				projects: {
+					default: 'projectId'
+				},
+				sprints: {
+					default: 'sprintId'
+				},
+				productbacklog: {
+					default: 'productBacklogItemId'
+				},
+				users: {
+					default: 'userId'
+				},
+				scrumupdates: {
+					default: 'scrumUpdateId'
+				}
+			});
 
-			Resource.getResourceKey = function (collectionName) {
-				return resourceForeignKeyMap[collectionName];
+			// Specific resource implementations can override the
+			// configuration here for the foreignKeyMap
+			Resource.foreignKeyMap = resourceForeignKeyMap;
+
+			Resource.getResourceKey = function (collectionName, relationKey) {
+				// return resourceForeignKeyMap[collectionName];
+				if( !angular.isDefined(relationKey) ){
+					relationKey = 'default';
+				}
+				var relationMap = resourceForeignKeyMap.lookUp(collectionName);
+				if( angular.isDefined(relationMap) ){
+					return relationMap[relationKey];
+				}
+				return '';
 			};
 
 			Resource.getSimpleIds = function (itemsOrIds) {
@@ -288,6 +317,26 @@ angular.module('mongolabResource', [
 				// var httpPromise = $http.put(itemUrl, angular.extend({}, this, {_id:undefined}), {cache:resourceCache, params:defaultParams});
 
 				var httpPromise = $http.put(itemUrl, angular.extend({}, this, {_id:undefined}), {params:defaultParams});
+
+				// cacheService.setDirty(itemUrl);
+				cacheService.setDirty('GLOBAL'); // this is temporary until cache dependencies are implemented
+				return thenFactoryMethod(httpPromise, successcb, errorcb);
+			};
+
+			Resource.prototype.$updateFields = function (updateFields, successcb, errorcb) {
+				var objectIds = Resource.getObjectIds([this.$id()]);
+				// var params = {q:JSON.stringify({_id:{$in:objectIds}})};
+				var params = {q:JSON.stringify({_id:objectIds[0]})};
+				var updateJson = JSON.stringify({$set: updateFields});
+
+				// setCacheEntry(itemUrl, this);
+				// var httpPromise = $http.put(itemUrl, angular.extend({}, this, {_id:undefined}), {cache:resourceCache, params:defaultParams});
+
+				// NOTE: the following does not work as angular strips out any
+				// starting with $, for $set is stripped out and the request payload
+				// is empty (leaving this comment here as a warning for future reference)
+				// var httpPromise = $http.put(itemUrl, angular.extend({}, {$set: updateFields}), {params:defaultParams});
+				var httpPromise = $http.put(url, updateJson, {params:angular.extend({}, defaultParams, params)});
 
 				// cacheService.setDirty(itemUrl);
 				cacheService.setDirty('GLOBAL'); // this is temporary until cache dependencies are implemented

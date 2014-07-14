@@ -14,7 +14,8 @@ angular.module('directives.icon', [
 			scope: {
 				id: '@',
 				flip: '@?',
-				invert: '@?'
+				invert: '@?',
+				watchAtt: '@?'
 			},
 			controller: [
 				'$scope',
@@ -41,7 +42,13 @@ angular.module('directives.icon', [
 					};
 
 					// setup the directive model based on interpolation and expression attributes
-					directiveInitializer.init($scope, $scope.self, attrsData);
+					// Result of attribute interpolation is always a string
+					var setupWatches = false;
+					if( angular.isDefined($scope.watchAtt) ){
+						setupWatches = ($scope.watchAtt === "true") ? true : false;
+					}
+
+					directiveInitializer.init($scope, $scope.self, attrsData, setupWatches);
 					// console.log("icon scope.self");
 					// console.log($scope.self);
 
@@ -49,4 +56,4 @@ angular.module('directives.icon', [
 			]
 		};
 	}
-])
+]);

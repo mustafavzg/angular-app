@@ -3,7 +3,7 @@ angular.module('directives.userscombosearchadd', [
 	'directives.findusers',
 	'directives.userthumb',
 	'directives.helptip',
-	'services.dictionary',
+	'services.resourceDictionary',
 	'services.directiveInitializer',
 	'resources.users',
 	'ui.bootstrap',
@@ -54,10 +54,10 @@ angular.module('directives.userscombosearchadd', [
 				'$element',
 				'$attrs',
 				'Users',
-				'dictionary',
+				'resourceDictionary',
 				'directiveInitializer',
 				'_',
-				function ($scope, $element, $attrs, Users, dictionary, directiveInitializer, _) {
+				function ($scope, $element, $attrs, Users, resourceDictionary, directiveInitializer, _) {
 
 					// Initializer currently used only for a couple of
 					// optional attributes
@@ -80,10 +80,11 @@ angular.module('directives.userscombosearchadd', [
 
 					// keep a users dictionary for look up of
 					// searched results by the 'users' widget
-					$scope.usersDictionary = dictionary;
+					// $scope.usersDictionary = dictionary;
+					$scope.usersDictionary = resourceDictionary('users');
 
 					$scope.lookUpUsers = function (usersIdList) {
-						return $scope.usersDictionary.lookUp(usersIdList)
+						return $scope.usersDictionary.lookUpItems(usersIdList)
 					};
 
 					$scope.addMember = function(user, list) {
@@ -118,10 +119,9 @@ angular.module('directives.userscombosearchadd', [
 						}
 					};
 
-
 					$scope.$watchCollection('filteredUsers', function (newUsers, oldUsers) {
 						if( !angular.equals(newUsers, oldUsers) ){
-							$scope.usersDictionary.build(newUsers)
+							$scope.usersDictionary.setItems(newUsers)
 						}
 					});
 

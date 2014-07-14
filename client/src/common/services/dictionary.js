@@ -4,45 +4,83 @@ angular.module('services.dictionary').factory('dictionary', [
 	'_',
 	function ( _ ) {
 
-		var dictionary = {};
+		// var dictionaryFactory = function (label, idFunction) {
+		var dictionaryFactory = function (label) {
+			var dictionary = {};
 
-		return {
-			init: function (idFunction) {
-				if( angular.isDefined(idFunction)
-				 && angular.isFunction(idFunction) ){
-					this.getId = idFunction;
-				}
-			},
-			getId: function (value) {
-				return value.$id();
-			},
-			build: function (items) {
-				// console.log("building dictionary");
-
-				var that = this;
-				angular.forEach(items, function(value, key) {
-					var itemId = that.getId(value)
-					// console.log("itemid is : " + itemId);
-
-					if( !angular.isDefined(dictionary[itemId]) ){
-						dictionary[itemId] = value;
+			var dictionaryService = {
+				label: "",
+				// init: function (label, idFunction) {
+				init: function (label) {
+					this.initLabel(label);
+					// this.initIdFunction(idFunction);
+				},
+				initLabel: function (label) {
+					if( angular.isDefined(label) ){
+						this.label = label;
 					}
-				});
-				// console.log("items in dictionary after build");
-				// console.log(dictionary);
-			},
-			lookUp: function (itemsIdList) {
-				// console.log("items in dictionary");
-				// console.log(dictionary);
-				var items = [];
-				items = _.map(itemsIdList, function (itemId) {
-							return dictionary[itemId];
+				},
+				set: function (key, value) {
+					dictionary[key] = value;
+				},
+				setList: function (keyValueMap, force) {
+					var that = this;
+					var filteredKeyValueMap = {};
+					if( force ){
+						angular.forEach(keyValueMap, function(value, key) {
+							var dest = that.lookUp(key);
+							if( angular.isDefined(dest) ){
+								// if both are objects merge them
+								if( (angular.isObject(dest) && !angular.isArray(dest))
+									&& (angular.isObject(value) && !angular.isArray(value))
+								  ){
+									angular.extend(dest, value);
+								}
+								// else overwrite the old value
+								else {
+									filteredKeyValueMap[key] = value;
+								}
+							}
+							else {
+								filteredKeyValueMap[key] = value;
+							}
 						});
-				items = _.filter(items, function (item) {
-							return angular.isDefined(item);
+						// filteredKeyValueMap = keyValueMap;
+					}
+					else {
+						// exclude any pre-defined items in the
+						// keyValueMap and then extend
+						angular.forEach(keyValueMap, function(value, key) {
+							if( !angular.isDefined(that.lookUp(key)) ){
+								filteredKeyValueMap[key] = value;
+							}
 						});
-				return items;
-			}
+					}
+					angular.extend(dictionary, filteredKeyValueMap);
+					console.log("items in dictionary after setList");
+					console.log(dictionary);
+				},
+				lookUp: function (key) {
+					return dictionary[key];
+				},
+				lookUpList: function (keys) {
+					// console.log("items in dictionary");
+					// console.log(dictionary);
+					var values = [];
+					values = _.map(keys, function (key) {
+								return dictionary[key];
+							});
+					values = _.filter(values, function (value) {
+								return angular.isDefined(value);
+							});
+					return values;
+				}
+			};
+
+			dictionaryService.init(label);
+
+			return dictionaryService;
 		};
+		return dictionaryFactory;
 	}
 ]);

@@ -97,6 +97,30 @@ angular.module('services.crud').factory('crudEditHandlers', function () {
 			// mixin.updateError = true;
 		};
 
+		mixin.onUpdate = function (item) {
+			return {
+				key: 'crud.' + notificationKey + '.update.success',
+				type: 'success',
+				context: {id : item.$id()}
+			};
+			// i18nNotifications.pushForNextRoute('crud.backlog.update.success', 'success', {id : item.$id()});
+			console.log("item updated is");
+			console.log(item);
+			// locationHistory.prev();
+		};
+
+		mixin.onUpdateError = function (error) {
+			return {
+				key: 'crud.' + notificationKey + '.update.error',
+				type: 'error',
+				context: {
+					error: error
+				}
+			};
+			// i18nNotifications.pushForCurrentRoute('crud.backlog.update.error', 'error');
+			// mixin.updateError = true;
+		};
+
 		mixin.onRemove = function (item) {
 			console.log("removing backlog");
 			console.log(item);

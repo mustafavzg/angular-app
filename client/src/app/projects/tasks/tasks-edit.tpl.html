@@ -39,6 +39,16 @@
 						<input type="number" name="remaining" ng-model="task.remaining" class="form-control" required>
 					</div>
 
+					<datecombofromto
+						 name="dateCombo"
+						 from-date="task.estimatedStartDate"
+						 to-date="task.estimatedEndDate"
+						 from-date-label="Start Date (Estimated)"
+						 to-date-label="End Date (Estimated)"
+						 from-date-required="true"
+						 to-date-required="true">
+					</datecombofromto>
+
 				</div>
 				<!-- div col -->
 			</div>
@@ -82,16 +92,16 @@
 										Task not assigned to any backlog item
 									</div>
 
-									<div class="media" ng-show="!!task.productBacklogItemId">
-										<property-bar properties="productBacklogLookup[task.productBacklogItemId].propertiesToDisplay" root-div-class="media-object pull-left" reverse="false" ></property-bar>
+									<div class="media" ng-show="!!task.productBacklogItemId" ng-repeat="backlogItem in productBacklogDictionary.lookUpItems([task.productBacklogItemId])">
+										<property-bar properties="backlogItem.propertiesToDisplay" root-div-class="media-object pull-left" reverse="false" ></property-bar>
 										<div class="media-body">
-											<div class="badge pull-left" ng-cloak><strong>{{productBacklogLookup[task.productBacklogItemId].$id()}}</strong></div><br />
+											<div class="badge pull-left" ng-cloak><strong>{{backlogItem.$id()}}</strong></div><br />
 											<div class="media-heading">
 												<a href="#" ng-click="viewProductBacklogItem(productBacklogItem)">
-													{{productBacklogLookup[task.productBacklogItemId].name}}
+													{{backlogItem.name}}
 												</a>
 											</div>
-											<p>{{productBacklogLookup[task.productBacklogItemId].description}}</p>
+											<p>{{backlogItem.description}}</p>
 											<button class="btn btn-sm btn-warning pull-left" ng-click="unassignBacklogItem()">
 												<icon id="remove-sign"></icon> Unassign
 											</button>
@@ -110,16 +120,15 @@
 
 						<div class="col-md-6">
 							<label>Product backlog</label>
-							<div class="panel panel-default">
+							<!-- Search field -->
+							<div class="form-group">
+								<input type="text" class="form-control" id="query" ng-model="query" ng-disabled="!filteredProductBacklog.length" placeholder="Search backlog items ... "/>
+								<div class="help-block" ng-show="!filteredProductBacklog.length">
+									No backlog items to assign
+								</div>
+							</div>
+							<div class="panel panel-default panel-scroll">
 								<div class="panel-body">
-									<!-- Search field -->
-									<div class="form-group">
-										<input type="text" class="form-control" id="query" ng-model="query" ng-disabled="!filteredProductBacklog.length" placeholder="Search backlog items ... "/>
-										<div class="help-block" ng-show="!filteredProductBacklog.length">
-											No backlog items to assign
-										</div>
-									</div>
-
 									<!-- <hr /> -->
 									<div class="media" ng-repeat="productBacklogItem in searchFilteredProductBacklog = ((filteredProductBacklog = (productBacklogItems | filter:notAssigned)) | filter:query)">
 										<property-bar properties="productBacklogItem.propertiesToDisplay" root-div-class="media-object pull-left" reverse="false" ></property-bar>
@@ -136,7 +145,7 @@
 												<button class="btn btn-sm btn-success pull-left" ng-click="assignBacklogItem(productBacklogItem)" ng-disabled="!canAssignBacklogItem(productBacklogItem)" ng-hide="false">
 													<icon id="plus-sign"></icon> Assign
 												</button>
-												<div class="help-block pull-left" ng-show="!canAssignBacklogItem(productBacklogItem)">Cannot assign the task (estimate: {{task.estimation}}) to this backlog item (estimate: {{productBacklogItem.estimation}} total: {{productBacklogItem.totalTaskEstimate}})</div>
+												<div class="help-block pull-left" ng-show="!canAssignBacklogItem(productBacklogItem)">Cannot assign the task (estimate: {{task.estimation}}) to this backlog item (estimate: {{productBacklogItem.estimation}} remaining: {{(productBacklogItem.estimation - productBacklogItem.totalTaskEstimate) || 0}})</div>
 											</div>
 
 										</div>

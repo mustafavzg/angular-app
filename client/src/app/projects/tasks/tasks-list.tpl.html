@@ -9,6 +9,8 @@
         <th>Description</th>
         <th>Estimation</th>
         <th>Remaining</th>
+        <th>Start Date (Estimated)</th>
+        <th>End Date (Estimated)</th>
         <!-- <th class="span2">Tools</th> -->
     </tr>
     </thead>
@@ -18,6 +20,8 @@
         <td>{{task.description}}</td>
         <td>{{task.estimation}}</td>
         <td>{{task.remaining}}</td>
+        <td>{{task.estimatedStartDate | date:'mediumDate'}}</td>
+        <td>{{task.estimatedEndDate | date:'mediumDate'}}</td>
     </tr>
     <tr ng-show="!tasks.length">
         <td colspan="4">No tasks defined</td>
