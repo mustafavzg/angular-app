@@ -30,13 +30,6 @@ angular.module('directives.datelookup', [
 					return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
 				};
 
-				scope.dateCustomClass = function(date, mode) {
-					console.log("calling houston");
-					return {
-						'btn-success': true
-					}
-				};
-
 				scope.open = function($event) {
 					$event.preventDefault();
 					$event.stopPropagation();
