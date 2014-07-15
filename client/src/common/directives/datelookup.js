@@ -16,7 +16,8 @@ angular.module('directives.datelookup', [
 				fieldName: '@name',
 				label: '@',
 				required: '@',
-				date: '='
+				date: '=',
+				foobar: '&?'
 			},
 			link: function(scope, element, attrs, ngform) {
 
@@ -27,6 +28,13 @@ angular.module('directives.datelookup', [
 				// Disable weekend selection
 				scope.disabled = function(date, mode) {
 					return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
+				};
+
+				scope.dateCustomClass = function(date, mode) {
+					console.log("calling houston");
+					return {
+						'btn-success': true
+					}
 				};
 
 				scope.open = function($event) {
