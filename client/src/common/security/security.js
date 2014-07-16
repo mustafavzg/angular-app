@@ -66,9 +66,9 @@ angular.module('security.service', [
 
 			// Attempt to authenticate a user by the given email and password
 			login: function(email, password) {
+				console.log("Inside Login:");
 				email = 'admin@gmail.com';
 				password = 'admin';
-				console.log("Inside Login:");
 				// var request = $http.post('/login', {email: email, password: password});
 				var request = $http.post('/login', {email: email, password: password}, {withCredentials: true});
 				return request.then(
