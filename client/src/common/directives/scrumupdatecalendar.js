@@ -13,18 +13,15 @@ angular.module('directives.scrumupdatecalendar', [
 			replace: true,
 			require: '^form',
 			scope: {
-				// name: '@',
-				// fieldName: '@name',
 				label: '@',
-				update: "="
+				update: '=',
+				datechosen: '='
 			},
 			link: function(scope, element, attrs, ngform) {
 				scope.ngform = ngform;
 				var currentDate = new Date();
-				var updateMap = {};
-				updateMap = scope.update;
 				scope.dateCustomClass = function(date, mode) {
-					if(date > currentDate){
+					if(date > currentDate || Object.getOwnPropertyNames(scope.update).length == 0 ){
 						return {
 							'btn-success': false,
 							'btn-danger' : false
@@ -33,17 +30,10 @@ angular.module('directives.scrumupdatecalendar', [
 					else{
 						return {
 							'btn-success': scope.update[date.toDateString()] || false,
-							'btn-danger' : scope.update[date.toDateString()] == false
+							'btn-warning' : (scope.update[date.toDateString()] == undefined) && (!(date.getDay() == 6 || date.getDay() ==0))
 						};
 					}
 				};
-
-				scope.showError = function (error) {
-					return scope.ngform.$error[error];
-				}
-
-				// console.log("PRINTING THE FORM OBJECT from the date combo isolated scope");
-				// console.log(ngform);
 			}
 		};
 	}

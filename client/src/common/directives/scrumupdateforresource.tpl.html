@@ -1,0 +1,29 @@
+<div class="media">
+ 	<div class="media-heading">
+
+		<button ng-click="addScrumUpdate(resource)" class="btn btn-success media-object pull-left" ng-show="resource.showAddButton" tooltip="Add a scrum update for this resource">
+			<icon id="comment"></icon>
+		</button>
+	</div>
+ 
+ 	<div class="media-body">
+		<div class="media-heading">
+			{{label}}
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<div class='btn-group pull-right'>
+					<button type="button" class="btn btn-default" ng-click="saveScrumUpdate(resource)" ng-show="!resource.showAddButton" tooltip="Save scrum update" tooltip-placement='bottom'><icon id="plus-sign"></icon></button>
+					<button type="button" class="btn btn-default" ng-click="clearScrumUpdate(resource)" ng-show="!resource.showAddButton" tooltip="Clear the text area" tooltip-placement='bottom'><icon id="unchecked"></icon></button>
+					<button type="button" class="btn btn-default" ng-click="closeScrumUpdate(resource)" ng-show="!resource.showAddButton" tooltip="Discard the scrum update" tooltip-placement='bottom'><icon id="trash"></icon></button>
+				</div>
+			</div>
+		</div>
+		<p>
+			<div class='form-group block'>
+				<textarea class="form-control" ng-model="resource.scrumText" placeholder="Add your update here" cols="10" rows="5" ng-show="!resource.showAddButton">
+				</textarea>
+			</div>
+		</p>
+	</div>
+</div>

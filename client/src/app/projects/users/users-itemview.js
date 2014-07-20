@@ -8,6 +8,7 @@ angular.module('users-itemview',[
 	'resources.scrumUpdates',
 	'directives.datecombofromto',
 	'directives.scrumupdatecalendar',
+	'directives.scrumupdateforresource',
 	'underscore',
 	'filters.groupBy',
 	'filters.momentsAgo'
@@ -120,10 +121,11 @@ angular.module('users-itemview',[
 		$scope.scrumDates = {};
 		var todaysDate = new Date();
 		$scope.scrumDates.startdate = todaysDate;
+		$scope.scrumDates.chosendate = todaysDate;
 		$scope.scrumDates.startdate.setDate(todaysDate.getDate() - 7);
 		todaysDate = new Date();
 		$scope.scrumDates.enddate = todaysDate;
-
+		$scope.currentDate = todaysDate.toDateString();
 		$scope.saveScrumUpdate = function(task){
 			task.showAddButton = true;
 			console.log(task.scrumText);
@@ -214,8 +216,6 @@ angular.module('users-itemview',[
 			console.log($scope.scrumDates.startdate.toLocaleDateString());
 			console.log($scope.scrumDates.enddate.toLocaleDateString());
 			for(update in $scope.scrumupdates){
-				console.log("Update=");
-				console.log($scope.scrumupdates[update]);
 				isUpdated[$scope.scrumupdates[update].dateString] = true;
 			}
 		});
@@ -239,8 +239,6 @@ angular.module('users-itemview',[
 						$scope.updateStatus[currentDate.toDateString()] = true;
 					}
 				}
-				console.log("Update Status=");
-				console.log($scope.updateStatus);
 			};
 		});
 

@@ -16,12 +16,12 @@
 	<div class="panel panel-default">
 		<div class="panel-body">
 			<img class="media-object photo-small pull-left" src="/static/img/foouser.jpg">
-				<div class="media-body"> 
-					<div class="media-heading">
-						{{user.lastName}} {{user.firstName}} ({{user.username}})
-					</div>
-					<p></p>
+			<div class="media-body"> 
+				<div class="media-heading">
+					{{user.lastName}} {{user.firstName}} ({{user.username}})
 				</div>
+				<p></p>
+			</div>
 		</div>
 	</div>
 
@@ -38,7 +38,8 @@
 											<tr>
 												<scrumupdatecalendar
 													label="Scrum Status"
-													update="updateStatus">
+													update="updateStatus"
+													datechosen="scrumDates.chosendate">
 												</scrumupdatecalendar>
 											</tr>
 										</table>
@@ -53,6 +54,12 @@
 											 from-date-required="true"
 											 to-date-required="true">
 										</datecombofromto>
+										<scrumupdateforresource
+											label="Scrum Update for {{scrumDates.chosendate | date : format}}"
+											resource="user"
+											date="scrumDates.chosendate"
+											scrumupdates="scrumupdates">
+										</scrumupdateforresource>
 									</div>
 								</div>
 								<div class="media" ng-repeat="dateGroup in groupedScrumUpdates">
@@ -64,7 +71,12 @@
 									<div class="media-body">
 										<div class="media" ng-repeat="taskGroup in dateGroup.values">
 											<div class="media-heading">
-												{{taskGroup.key}}
+												<span ng-if="taskGroup.key != 'undefined'">
+													{{taskGroup.key}}
+												</span>
+												<span ng-if="taskGroup.key == 'undefined'">
+													{{user.username}}
+												</span>
 											</div>
 											<div class="media-body">
 												<ul>
@@ -109,7 +121,7 @@
 											</a>
 											<div class="row">
 												<div class="col-md-12">
-													<div class='btn-group pull-right'>
+													<div class='btn-group pull-left'>
 														<button type="button" class="btn btn-default" ng-click="saveScrumUpdate(task)" ng-show="!task.showAddButton" tooltip="Save scrum update" tooltip-placement='bottom'><icon id="plus-sign"></icon></button>
 														<button type="button" class="btn btn-default" ng-click="clearScrumUpdate(task)" ng-show="!task.showAddButton" tooltip="Clear the text area" tooltip-placement='bottom'><icon id="unchecked"></button>
 														<button type="button" class="btn btn-default" ng-click="closeScrumUpdate(task)" ng-show="!task.showAddButton" tooltip="Discard the scrum update" tooltip-placement='bottom'><icon id="trash"></icon></button>
