@@ -2,7 +2,7 @@
 	<div class="form-group" ng-class="setValidationClasses()">
 		<label for="dateField">{{label}}</label>
 		<div class="input-group">
-			<input type="text" name="dateField" id="dateField" class="form-control" datepicker-popup="{{format}}" ng-model="date" is-open="opened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" date-custom-class="dateCustomClass(date, mode)" ng-required="required" close-text="Close" />
+			<input type="text" name="dateField" id="dateField" class="form-control" datepicker-popup="{{format}}" ng-model="date" is-open="opened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="required" close-text="Close" />
 			<span class="input-group-btn">
 				<button type="button" class="btn btn-default" ng-click="open($event)"><icon id="calendar"></icon></button>
 			</span>

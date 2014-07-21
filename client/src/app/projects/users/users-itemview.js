@@ -100,7 +100,7 @@ angular.module('users-itemview',[
 		 **************************************************/
 		$scope.fetchingscrumupdates = true;
 		$scope.scrumupdates = [];
-		var isUpdated = {}; // keeps track of the scrum dates which are updated.
+		$scope.updateStatus = {}; // keeps track of the scrum dates which are updated.
 		var allScrumUpdates = [];
 		ScrumUpdates.forUser(
 			user.$id(),
@@ -185,10 +185,6 @@ angular.module('users-itemview',[
 		};
 
 
-		$scope.$watchCollection('scrumupdates', function(){
-			$scope.scrumDates.startdate = new Date($scope.scrumDates.startdate);
-			$scope.scrumDates.enddate = new Date($scope.scrumDates.enddate);
-		});
 
 		$scope.$watchCollection('scrumDates', function(newObj, oldObj){
 			var startDate = new Date($scope.scrumDates.startdate);
@@ -212,12 +208,6 @@ angular.module('users-itemview',[
 				}
 				$scope.scrumupdates = filteredUpdates;
 			}
-			isUpdated = {};
-			console.log($scope.scrumDates.startdate.toLocaleDateString());
-			console.log($scope.scrumDates.enddate.toLocaleDateString());
-			for(update in $scope.scrumupdates){
-				isUpdated[$scope.scrumupdates[update].dateString] = true;
-			}
 		});
 
 		function dateCompReverse(obj1, obj2){
@@ -226,12 +216,10 @@ angular.module('users-itemview',[
 			return date2.getTime() - date1.getTime();
 		}
 
-		$scope.updateStatus = {};
 		$scope.$watchCollection('scrumupdates', function (newUpdates, oldUpdates) {
 			if (!angular.equals(newUpdates, oldUpdates)) {
 				$scope.scrumupdates.sort(dateCompReverse)
 				$scope.groupedScrumUpdates = groupByFilter($scope.scrumupdates, "dateString", "task");
-				$scope.updateStatus = {};
 				for(updateIndex in $scope.scrumupdates){
 					currentScrumUpdate = $scope.scrumupdates[updateIndex];
 					currentDate = new Date(currentScrumUpdate.date);
