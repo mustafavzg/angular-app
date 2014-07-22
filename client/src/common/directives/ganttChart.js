@@ -21,6 +21,7 @@ angular.module('directives.ganttChart', [
   				resourceconf: '=',
 				items: '=',
 				fetchingitems: '=',
+				title: '@?',
 				// itemToGanttData: '&?',
 				itemToRowId: '&?',
 				itemToRowDataSource: '&?',
@@ -51,7 +52,7 @@ angular.module('directives.ganttChart', [
 					moment,
 					$timeout
 				) {
-
+					console.log("title is "+$scope.title);
 					/**************************************************
 					 * Settings
 					 **************************************************/

@@ -41,7 +41,16 @@
 	<!-- </div> -->
 
 	<!-- div row -->
-
+	<div class="row">
+		<div class="col-md-6 col-md-offset-5 page-heading">
+			<h1 ng-if="title != undefined">
+				{{title}}
+			</h1>
+			<h1 ng-if="title == undefined">
+				Gantt Chart
+			</h1>
+		</div>
+	</div>
 	<div class="row">
 		<div class="col-md-12">
 			<form role="form" class="form-inline pull-left">
@@ -152,7 +161,7 @@
 		</span>		
 		<span class="col-md-12" ng-show="!items.length && !fetchingitems">
 			No {{resourcePrettyNameAlt}} found
-		</span>		
+		</span>
 	</div>
 	<!-- div row -->
 

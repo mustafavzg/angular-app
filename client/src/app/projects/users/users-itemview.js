@@ -11,7 +11,9 @@ angular.module('users-itemview',[
 	'directives.scrumupdateforresource',
 	'underscore',
 	'filters.groupBy',
-	'filters.momentsAgo'
+	'filters.momentsAgo',
+	'directives.ganttChart',
+	'gantt'
 ])
 
 .controller('UsersItemViewCtrl', [
@@ -41,6 +43,291 @@ angular.module('users-itemview',[
 		groupByFilter,
 		momentsAgoFilter
 	) {
+
+		// /**************************************************
+		//  * gantt experiment
+		//  **************************************************/
+		$scope.tasksConf = {
+			resource : {
+				key : 'tasks',
+				prettyName : 'Tasks',
+				altPrettyName : 'Tasks',
+				link : $scope.manageTasks,
+				rootDivClass : 'panel-body',
+				itemsCrudHelpers : $scope.tasksCrudHelpers
+			},
+			pagination : {
+				currentPage : 1,
+				itemsPerPage : 20
+			},
+			sortinit : {
+				fieldKey : 'name',
+				reverse : false
+			},
+			tableColumns : [
+				{
+					key : 'name',
+					prettyName : 'Name',
+					widthClass : 'col-md-4'
+				},
+				// {
+				// 	key : 'description',
+				// 	prettyName : 'Description',
+				// 	widthClass : 'col-md-4'
+				// },
+				{
+					key : 'estimatedStartDate',
+					type: 'date',
+					prettyName : 'Start Date (Estimated)',
+					widthClass : 'col-md-2'
+				},
+				{
+					key : 'estimatedEndDate',
+					type: 'date',
+					prettyName : 'End Date (Estimated)',
+					widthClass : 'col-md-2'
+				},
+				{
+					key : 'priority',
+					prettyName : 'Priority',
+					widthClass : 'col-md-1'
+				},
+				{
+					key : 'estimation',
+					prettyName : 'Estimation',
+					widthClass : 'col-md-1'
+				},
+				{
+					key : 'status',
+					prettyName : 'Status',
+					widthClass : 'col-md-1'
+				}
+			]
+		};
+
+		$scope.tasksGanttConf = {
+			resource : {
+				key : 'tasks',
+				prettyName : 'Tasks',
+				altPrettyName : 'Tasks',
+				link : $scope.manageTasks,
+				rootDivClass : 'panel-body',
+				itemsCrudHelpers : $scope.tasksCrudHelpers,
+				color: "#F1C232"
+			},
+			// pagination : {
+			// 	currentPage : 1,
+			// 	itemsPerPage : 10
+			// },
+			// sortinit : {
+			// 	fieldKey : 'name',
+			// 	reverse : false
+			// },
+			// ganttFieldMap : [
+			// 	{
+			// 		key : 'name',
+			// 		taskField: 'subject',
+			// 		rowField: 'description',
+			// 		prettyName : 'Name',
+			// 		widthClass : 'col-md-2'
+			// 	},
+			// 	{
+			// 		key : 'startdate',
+			// 		type: 'date',
+			// 		taskField : 'from',
+			// 		prettyName : 'Start Date',
+			// 		widthClass : 'col-md-2'
+			// 	},
+			// 	{
+			// 		key : 'enddate',
+			// 		type: 'date',
+			// 		taskField : 'to',
+			// 		prettyName : 'End Date',
+			// 		widthClass : 'col-md-2'
+			// 	},
+			// 	{
+			// 		key : 'status',
+			// 		prettyName : 'Status',
+			// 		widthClass : 'col-md-2'
+			// 	}
+			// ],
+			ganttFieldMap : {
+				row: [
+					{
+						key : 'name',
+						ganttKey: 'description'
+					}
+				],
+				task: [
+					{
+						key : 'name',
+						ganttKey: 'subject'
+					},
+					{
+						key : 'estimatedStartDate',
+						type: 'date',
+						ganttKey : 'from'
+					},
+					{
+						key : 'estimatedEndDate',
+						type: 'date',
+						ganttKey : 'to'
+					}
+				],
+				colorMap: function (task) {
+					var statusDef = task.getStatusDef() || {};
+					return statusDef.color;
+					// if( task.isExpired() ){
+					// 	// return "#FFCFC3";
+					// 	// return "#E8A729";
+					// 	// return "#F0F0F0";
+					// 	// return "#7F7F7F";
+					// 	// return "#ABABAB";
+					// 	return "#D1C4B1";
+					// }
+					// if( task.isActive() ){
+					// 	// return "#FFFE28";
+					// 	return "#FED559";
+					// 	// return "#93C47D";
+					// }
+					// if( task.isPlanned() ){
+					// 	// return "#10F0FF";
+					// 	// return "#62C0DC";
+					// 	return "#9FC5F8";
+					// }
+					// return "#FFFFFF";
+				}
+			}
+		};
+
+		$scope.tasksGanttConf2 = {
+			resource : {
+				key : 'tasks',
+				prettyName : 'Tasks',
+				altPrettyName : 'Tasks',
+				link : $scope.manageTasks,
+				rootDivClass : 'panel-body',
+				itemsCrudHelpers : $scope.tasksCrudHelpers,
+				color: "#F1C232"
+			},
+			// pagination : {
+			// 	currentPage : 1,
+			// 	itemsPerPage : 10
+			// },
+			// sortinit : {
+			// 	fieldKey : 'name',
+			// 	reverse : false
+			// },
+			// ganttFieldMap : [
+			// 	{
+			// 		key : 'name',
+			// 		taskField: 'subject',
+			// 		rowField: 'description',
+			// 		prettyName : 'Name',
+			// 		widthClass : 'col-md-2'
+			// 	},
+			// 	{
+			// 		key : 'startdate',
+			// 		type: 'date',
+			// 		taskField : 'from',
+			// 		prettyName : 'Start Date',
+			// 		widthClass : 'col-md-2'
+			// 	},
+			// 	{
+			// 		key : 'enddate',
+			// 		type: 'date',
+			// 		taskField : 'to',
+			// 		prettyName : 'End Date',
+			// 		widthClass : 'col-md-2'
+			// 	},
+			// 	{
+			// 		key : 'status',
+			// 		prettyName : 'Status',
+			// 		widthClass : 'col-md-2'
+			// 	}
+			// ],
+			ganttFieldMap : {
+				row: [
+					{
+						key : 'name',
+						ganttKey: 'description'
+					}
+				],
+				task: [
+					{
+						key : 'userStatus',
+						ganttKey: 'subject'
+					},
+					{
+						key : 'start',
+						type: 'date',
+						ganttKey : 'from'
+					},
+					{
+						key : 'stop',
+						type: 'date',
+						ganttKey : 'to'
+					}
+				],
+				colorMap: function (taskBurst) {
+					return taskBurst.color;
+					// if( task.isExpired() ){
+					// 	// return "#FFCFC3";
+					// 	// return "#E8A729";
+					// 	// return "#F0F0F0";
+					// 	// return "#7F7F7F";
+					// 	// return "#ABABAB";
+					// 	return "#D1C4B1";
+					// }
+					// if( task.isActive() ){
+					// 	// return "#FFFE28";
+					// 	return "#FED559";
+					// 	// return "#93C47D";
+					// }
+					// if( task.isPlanned() ){
+					// 	// return "#10F0FF";
+					// 	// return "#62C0DC";
+					// 	return "#9FC5F8";
+					// }
+					// return "#FFFFFF";
+				}
+			}
+		};
+
+		$scope.taskData = function (task) {
+			var data = [];
+			angular.forEach(task.bursts, function(burst) {
+				data.push({
+					userStatus: burst.data.status + ", " + burst.data.userId,
+					start: burst.start,
+					stop: burst.stop || Date.now(),
+					// stop: burst.stop,
+					color: task.getStatusDef(burst.data.status).color
+				});
+			});
+			return data;
+		};
+
+		$scope.tasksGanttUpdateValidator = function (item, update) {
+			var task = item;
+			// if( task.isExpired() ){
+			// 	return {
+			// 		onError: function () {
+			// 			i18nNotifications.pushForCurrentRoute('crud.tasks.expired.error', 'error', {});
+			// 		}
+			// 	};
+			// }
+			return 1;
+		};
+
+		$scope.taskToGanttData = function (task) {
+
+		};
+
+		// /**************************************************
+		//  * gantt experiment end
+		//  **************************************************/
+
 
 		$scope.user = user;
 
@@ -223,8 +510,11 @@ angular.module('users-itemview',[
 				for(updateIndex in $scope.scrumupdates){
 					currentScrumUpdate = $scope.scrumupdates[updateIndex];
 					currentDate = new Date(currentScrumUpdate.date);
-					if(!$scope.updateStatus[currentDate.toDateString()]){
+					if(!$scope.updateStatus[currentDate.toDateString()] && (currentDate.toDateString() == todaysDate.toDateString())){
 						$scope.updateStatus[currentDate.toDateString()] = true;
+					}
+					if(!$scope.updateStatus[currentDate.toDateString()]){
+						$scope.updateStatus[currentDate.toDateString()] = 'updated-later';
 					}
 				}
 			};

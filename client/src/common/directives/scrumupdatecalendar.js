@@ -30,6 +30,7 @@ angular.module('directives.scrumupdatecalendar', [
 					else{
 						return {
 							'btn-success': scope.update[date.toDateString()] || false,
+							'scrum-updated-later': scope.update[date.toDateString()] == 'updated-later' || false,
 							'btn-warning' : (scope.update[date.toDateString()] == undefined) && (!(date.getDay() == 6 || date.getDay() ==0))
 						};
 					}

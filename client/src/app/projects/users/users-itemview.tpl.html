@@ -25,87 +25,26 @@
 		</div>
 	</div>
 
-	<div class="panel panel-default">
-		<div class="panel-body">
-			<tabset justified="true" type="pills">
-				<tab heading="Scrum Updates">
-					<div class="col-md-12">
-						<div class="panel panel-default">
-							<div class="panel-body">
-								<div class="panel">
-									<div class="panel-heading">
-										<table>
-											<tr>
-												<scrumupdatecalendar
-													label="Scrum Status"
-													update="updateStatus"
-													datechosen="scrumDates.chosendate">
-												</scrumupdatecalendar>
-											</tr>
-										</table>
-									</div>
-									<div class="panel-body">
-										<datecombofromto
-											 name="dateCombo"
-											 from-date="scrumDates.startdate"
-											 to-date="scrumDates.enddate"
-											 from-date-label="Start Date"
-											 to-date-label="End Date"
-											 from-date-required="true"
-											 to-date-required="true">
-										</datecombofromto>
-										<scrumupdateforresource
-											label="Scrum Update for {{scrumDates.chosendate | date : format}}"
-											resource="user"
-											date="scrumDates.chosendate"
-											scrumupdates="scrumupdates">
-										</scrumupdateforresource>
-									</div>
-								</div>
-								<div class="media" ng-repeat="dateGroup in groupedScrumUpdates">
-									<div class="media-heading">
-										<span class = "text-primary">
-											{{dateGroup.key | momentsAgo}}
-										</span>
-									</div>
-									<div class="media-body">
-										<div class="media" ng-repeat="taskGroup in dateGroup.values">
-											<div class="media-heading">
-												<span ng-if="taskGroup.key != 'undefined'">
-													{{taskGroup.key}}
-												</span>
-												<span ng-if="taskGroup.key == 'undefined'">
-													{{user.username}}
-												</span>
-											</div>
-											<div class="media-body">
-												<ul>
-													<li ng-repeat="update in taskGroup.values">
-														<span class="text-muted">{{update.timeString}} </span><br>
-														{{update.text}}
-													</li>
-												</ul>				
-											</div>
-										</div>
-										<!--
-										<li ng-repeat="taskGroup in dateGroup.values">
-											{{taskGroup.key}}
-											<ul>
-												<li ng-repeat="update in taskGroup.values">
-												<span class="text-muted time-stamp">{{update.timeString}} </span><br>
-												{{update.text}}
-												</li>	
-											</ul>
-										</li>
-										-->
-									</div>
-								</div>
-							</div>
-						</div>
+	<div class="panel panel-default">	
+		<tabset justified="true" type="pills">
+			<tab heading="Dashboard">
+				<div class="panel-body">
+					<div class="panel panel-default">
+						<gantt-chart
+							 items="tasks"
+							 resourceconf="tasksGanttConf2"
+							 item-to-task-data-source="taskData(item)"
+							 fetchingitems="fetchingTasks"
+							 update-validator="tasksGanttUpdateValidator(item, update)"
+							 title="{{user.username}}'s Tasks"
+							 >
+						</gantt-chart>
 					</div>
-				</tab>
-				<tab heading="Inbox">
-					<div class="col-md-12">
+				</div>					
+			</tab>
+			<tab heading="Inbox">
+				<div class="col-md-12">
+					<div class="panel-body">
 						<div class="panel panel-default">
 							<div class="panel-body">
 								<div class="media" ng-repeat="task in tasks">
@@ -141,6 +80,85 @@
 												</li>
 											</div>
 										</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</tab>
+				<tab heading="Scrum Updates">
+					<div class="col-md-12">
+						<div class="panel-body">
+							<div class="panel panel-default">
+								<div class="panel-body">
+									<div class="panel">
+										<div class="panel-heading">
+											<table>
+												<tr>
+													<scrumupdatecalendar
+														label="Scrum Status"
+														update="updateStatus"
+														datechosen="scrumDates.chosendate">
+													</scrumupdatecalendar>
+												</tr>
+											</table>
+										</div>
+										<div class="panel-body">
+											<datecombofromto
+												 name="dateCombo"
+												 from-date="scrumDates.startdate"
+												 to-date="scrumDates.enddate"
+												 from-date-label="Start Date"
+												 to-date-label="End Date"
+												 from-date-required="true"
+												 to-date-required="true">
+											</datecombofromto>
+											<scrumupdateforresource
+												label="Scrum Update for {{scrumDates.chosendate | date : format}}"
+												resource="user"
+												date="scrumDates.chosendate"
+												scrumupdates="scrumupdates">
+											</scrumupdateforresource>
+										</div>
+									</div>
+									<div class="media" ng-repeat="dateGroup in groupedScrumUpdates">
+										<div class="media-heading">
+											<span class = "text-primary">
+												{{dateGroup.key | momentsAgo}}
+											</span>
+										</div>
+										<div class="media-body">
+											<div class="media" ng-repeat="taskGroup in dateGroup.values">
+												<div class="media-heading">
+													<span ng-if="taskGroup.key != 'undefined'">
+														{{taskGroup.key}}
+													</span>
+													<span ng-if="taskGroup.key == 'undefined'">
+														{{user.username}}
+													</span>
+												</div>
+												<div class="media-body">
+													<ul>
+														<li ng-repeat="update in taskGroup.values">
+															<span class="text-muted">{{update.timeString}} </span><br>
+															{{update.text}}
+														</li>
+													</ul>				
+												</div>
+											</div>
+											<!--
+											<li ng-repeat="taskGroup in dateGroup.values">
+												{{taskGroup.key}}
+												<ul>
+													<li ng-repeat="update in taskGroup.values">
+													<span class="text-muted time-stamp">{{update.timeString}} </span><br>
+													{{update.text}}
+													</li>	
+												</ul>
+											</li>
+											-->
+										</div>
 									</div>
 								</div>
 							</div>
