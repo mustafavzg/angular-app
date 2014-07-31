@@ -249,15 +249,15 @@ angular.module('sprints', [
 		console.log(sprint2ndHalf);
 		$scope.sprints = [sprint];
 		var currentDate = new Date();
-		if(new Date(sprint.enddate) > currentDate){
-			sprint1stHalf.enddate = currentDate;
-			sprint1stHalf.numHalf = 1;
-			sprint2ndHalf.startdate = currentDate;
-			sprint2ndHalf.numHalf = 2;
-			$scope.sprints = [sprint1stHalf, sprint2ndHalf];
-			console.log("sprints=");
-			console.log($scope.sprints);
-		}
+		// if(new Date(sprint.enddate) > currentDate){
+		// 	sprint1stHalf.enddate = currentDate;
+		// 	sprint1stHalf.numHalf = 1;
+		// 	sprint2ndHalf.startdate = currentDate;
+		// 	sprint2ndHalf.numHalf = 2;
+		// 	$scope.sprints = [sprint1stHalf , sprint2ndHalf];
+		// 	console.log("sprints=");
+		// 	console.log($scope.sprints);
+		// }
 		$scope.sprintsCrudHelpers = {};
 		angular.extend($scope.sprintsCrudHelpers, crudListMethods('/projects/'+project.$id()+'/sprints'));
 
@@ -312,6 +312,10 @@ angular.module('sprints', [
 					if(sprint.numHalf == 1){
 						console.log("numhalf is 1");
 						return "#FF0000";
+					}
+					if(sprint.numHalf == 2){
+						console.log("numhalf is 2");
+						return "#FFC703";
 					}
 					return "#FFFFFF";
 				}
