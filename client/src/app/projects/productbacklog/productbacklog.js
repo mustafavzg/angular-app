@@ -63,7 +63,7 @@ angular.module('productbacklog', [
 					return new ProductBacklog({projectId:$route.current.params.projectId});
 				}
 			]
-		})
+		}) 
 
 		// How to handle the "view a product backlog item" route
 		.whenView({
@@ -245,7 +245,134 @@ angular.module('productbacklog', [
 		$q
 	){
 
+
+		// /**************************************************
+		//  * gantt experiment
+		//  **************************************************/
+		$scope.tasksConf = {
+			resource : {
+				key : 'tasks',
+				prettyName : 'Tasks',
+				altPrettyName : 'Tasks',
+				link : $scope.manageTasks,
+				rootDivClass : 'panel-body',
+				itemsCrudHelpers : $scope.tasksCrudHelpers
+			},
+			pagination : {
+				currentPage : 1,
+				itemsPerPage : 20
+			},
+			sortinit : {
+				fieldKey : 'name',
+				reverse : false
+			},
+			tableColumns : [
+				{
+					key : 'name',
+					prettyName : 'Name',
+					widthClass : 'col-md-4'
+				},
+				{
+					key : 'estimatedStartDate',
+					type: 'date',
+					prettyName : 'Start Date (Estimated)',
+					widthClass : 'col-md-2'
+				},
+				{
+					key : 'estimatedEndDate',
+					type: 'date',
+					prettyName : 'End Date (Estimated)',
+					widthClass : 'col-md-2'
+				},
+				{
+					key : 'priority',
+					prettyName : 'Priority',
+					widthClass : 'col-md-1'
+				},
+				{
+					key : 'estimation',
+					prettyName : 'Estimation',
+					widthClass : 'col-md-1'
+				},
+				{
+					key : 'status',
+					prettyName : 'Status',
+					widthClass : 'col-md-1'
+				}
+			]
+		};
+
+		$scope.tasksGanttConf = {
+			resource : {
+				key : 'tasks',
+				prettyName : 'Tasks',
+				altPrettyName : 'Tasks',
+				link : $scope.manageTasks,
+				rootDivClass : 'panel-body',
+				itemsCrudHelpers : $scope.tasksCrudHelpers,
+				color: "#F1C232"
+			},
+			ganttFieldMap : {
+				row: [
+					{
+						key : 'name',
+						ganttKey: 'description'
+					}
+				],
+				task: [
+					{
+						key : 'userStatus',
+						ganttKey: 'subject'
+					},
+					{
+						key : 'start',
+						type: 'date',
+						ganttKey : 'from'
+					},
+					{
+						key : 'stop',
+						type: 'date',
+						ganttKey : 'to'
+					}
+				],
+				colorMap: function (taskBurst) {
+					return taskBurst.color;
+				}
+			}
+		};
+
+		$scope.taskData = function (task) {
+			var data = [];
+			angular.forEach(task.bursts, function(burst) {
+				data.push({
+					userStatus: burst.data.status + ", " + burst.data.userId,
+					start: burst.start,
+					stop: burst.stop || Date.now(),
+					// stop: burst.stop,
+					color: task.getStatusDef(burst.data.status).color
+				});
+			});
+			return data;
+		};
+
+		$scope.tasksGanttUpdateValidator = function (item, update) {
+			var task = item;
+			return 1;
+		};
+
+		$scope.taskToGanttData = function (task) {
+
+		};
+
+		// /**************************************************
+		//  * gantt experiment end
+		//  **************************************************/
+
+
+
 		$scope.backlogItem = backlogItem;
+		console.log("Backlog Item=");
+		console.log(backlogItem);
 		$scope.project = project;
 
 		$scope.backlogItemsCrudHelpers = {};

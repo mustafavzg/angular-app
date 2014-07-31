@@ -2,6 +2,7 @@ angular.module('sprints', [
 	'ngRoute',
 	'resources.sprints',
 	'resources.tasks',
+	'resources.projects',
 	'directives.datecombofromto',
 	'directives.propertybar',
 	'directives.icon',
@@ -13,6 +14,7 @@ angular.module('sprints', [
 	// 'services.dictionary',
 	'services.resourceDictionary',
 	'services.locationHistory',
+	'resources.productbacklog',
 	'tasks',
 	'underscore',
 	'moment'
@@ -143,6 +145,7 @@ angular.module('sprints', [
 	'project',
 	'sprint',
 	'Tasks',
+	'ProductBacklog',
 	'$q',
 	'dateFilter',
 	'locationHistory',
@@ -154,13 +157,283 @@ angular.module('sprints', [
 		project,
 		sprint,
 		Tasks,
+		ProductBacklog,
 		$q,
 		dateFilter,
 		locationHistory,
 		_
 	){
 
+
+		// /**************************************************
+		//  * gantt experiment
+		//  **************************************************/
+
+		$scope.tasksGanttConf = {
+			resource : {
+				key : 'tasks',
+				prettyName : 'Tasks',
+				altPrettyName : 'Tasks',
+				link : $scope.manageTasks,
+				rootDivClass : 'panel-body',
+				itemsCrudHelpers : $scope.tasksCrudHelpers,
+				color: "#F1C232"
+			},
+			ganttFieldMap : {
+				row: [
+					{
+						key : 'name',
+						ganttKey: 'description'
+					}
+				],
+				task: [
+					{
+						key : 'userStatus',
+						ganttKey: 'subject'
+					},
+					{
+						key : 'start',
+						type: 'date',
+						ganttKey : 'from'
+					},
+					{
+						key : 'stop',
+						type: 'date',
+						ganttKey : 'to'
+					}
+				],
+				colorMap: function (taskBurst) {
+					return taskBurst.color;
+				}
+			}
+		};
+
+		$scope.taskData = function (task) {
+			var data = [];
+			angular.forEach(task.bursts, function(burst) {
+				data.push({
+					userStatus: burst.data.status + ", " + burst.data.userId,
+					start: burst.start,
+					stop: burst.stop || Date.now(),
+					// stop: burst.stop,
+					color: task.getStatusDef(burst.data.status).color
+				});
+			});
+			return data;
+		};
+
+		$scope.tasksGanttUpdateValidator = function (item, update) {
+			var task = item;
+			return 1;
+		};
+
+		$scope.taskToGanttData = function (task) {
+
+		};
+
 		$scope.sprint = sprint;
+		// /**************************************************
+		//  * gantt experiment end
+		//  **************************************************/
+
+		/**************************************************
+		 * Fetch sprints
+		 **************************************************/
+
+		$scope.fetchingSprints = false;
+		var sprint1stHalf = _.clone(sprint);
+		console.log("1st half=");
+		console.log(sprint1stHalf);
+		var sprint2ndHalf = _.clone(sprint);
+		console.log("2nd half=");
+		console.log(sprint2ndHalf);
+		$scope.sprints = [sprint];
+		var currentDate = new Date();
+		if(new Date(sprint.enddate) > currentDate){
+			sprint1stHalf.enddate = currentDate;
+			sprint1stHalf.numHalf = 1;
+			sprint2ndHalf.startdate = currentDate;
+			sprint2ndHalf.numHalf = 2;
+			$scope.sprints = [sprint1stHalf, sprint2ndHalf];
+			console.log("sprints=");
+			console.log($scope.sprints);
+		}
+		$scope.sprintsCrudHelpers = {};
+		angular.extend($scope.sprintsCrudHelpers, crudListMethods('/projects/'+project.$id()+'/sprints'));
+
+		$scope.manageSprints = function () {
+			$location.path('/projects/'+project.$id()+'/sprints');
+		};
+
+
+		$scope.sprintsGanttConf = {
+			resource : {
+				key : 'sprints',
+				prettyName : 'Sprints',
+				altPrettyName : 'Sprints',
+				link : $scope.manageSprints,
+				rootDivClass : 'panel-body',
+				itemsCrudHelpers : $scope.sprintsCrudHelpers,
+				color: "#F1C232"
+			},
+			ganttFieldMap : {
+				row: [
+					{
+						key : 'name',
+						ganttKey: 'description'
+					}
+				],
+				task: [
+					{
+						key : 'name',
+						ganttKey: 'subject'
+					},
+					{
+						key : 'startdate',
+						type: 'date',
+						ganttKey : 'from'
+					},
+					{
+						key : 'enddate',
+						type: 'date',
+						ganttKey : 'to'
+					}
+				],
+				colorMap: function (sprint) {
+					if( sprint.isExpired() ){
+						return "#D1C4B1";
+					}
+					if( sprint.isActive() ){
+						return "#FED559";
+					}
+					if( sprint.isPlanned() ){
+						return "#9FC5F8";
+					}
+					if(sprint.numHalf == 1){
+						console.log("numhalf is 1");
+						return "#FF0000";
+					}
+					return "#FFFFFF";
+				}
+			}
+		};
+
+		$scope.sprintsGanttUpdateValidator = function (item, update) {
+			var sprint = item;
+			if( sprint.isExpired() ){
+				return {
+					onError: function () {
+						i18nNotifications.pushForCurrentRoute('crud.sprints.expired.error', 'error', {});
+					}
+				};
+			}
+			return 1;
+		};
+
+
+		// /**************************************************
+		//  * gantt experiment
+		//  **************************************************/
+		$scope.backlogItem = [];
+		$scope.backlogItemsGanttConf = {
+			resource : {
+				key : 'tasks',
+				prettyName : 'Tasks',
+				altPrettyName : 'Tasks',
+				link : $scope.manageTasks,
+				rootDivClass : 'panel-body',
+				itemsCrudHelpers : $scope.tasksCrudHelpers
+			},
+			pagination : {
+				currentPage : 1,
+				itemsPerPage : 20
+			},
+			sortinit : {
+				fieldKey : 'name',
+				reverse : false
+			},
+			tableColumns : [
+				{
+					key : 'name',
+					prettyName : 'Name',
+					widthClass : 'col-md-4'
+				},
+				{
+					key : 'estimatedStartDate',
+					type: 'date',
+					prettyName : 'Start Date (Estimated)',
+					widthClass : 'col-md-2'
+				},
+				{
+					key : 'estimatedEndDate',
+					type: 'date',
+					prettyName : 'End Date (Estimated)',
+					widthClass : 'col-md-2'
+				},
+				{
+					key : 'priority',
+					prettyName : 'Priority',
+					widthClass : 'col-md-1'
+				},
+				{
+					key : 'estimation',
+					prettyName : 'Estimation',
+					widthClass : 'col-md-1'
+				},
+				{
+					key : 'status',
+					prettyName : 'Status',
+					widthClass : 'col-md-1'
+				}
+			]
+		};
+
+		$scope.backlogItemData = function (task) {
+			var data = [];
+			angular.forEach(task.bursts, function(burst) {
+				data.push({
+					userStatus: burst.data.status + ", " + burst.data.userId,
+					start: burst.start,
+					stop: burst.stop || Date.now(),
+					// stop: burst.stop,
+					color: task.getStatusDef(burst.data.status).color
+				});
+			});
+			return data;
+		};
+
+		$scope.sprintGanttUpdateValidator = function (item, update) {
+			var task = item;
+			return 1;
+		};
+		$scope.fetchingbacklogItems = true;
+		ProductBacklog.forSprint(
+			sprint.$id(),
+			function (items, responsestatus, responseheaders, responseconfig) {
+				$scope.backlogItem = items;
+				console.log("product backlog item");
+				console.log(items);
+				$scope.fetchingbacklogItems = false;
+				console.log("Succeeded to fetch tasks");
+				console.log("Tasks=");
+				console.log($scope.tasks);
+			},
+			function (response, responsestatus, responseheaders, responseconfig) {
+				$scope.fetchingTasks = false;
+				console.log("Failed to fetch tasks");
+				console.log(response);
+			}
+		);
+
+		$scope.taskToGanttData = function (task) {
+
+		};
+
+		// /**************************************************
+		//  * gantt experiment end
+		//  **************************************************/
+
+
 		$scope.project = project;
 
 		$scope.sprintsCrudHelpers = {};
@@ -216,6 +489,8 @@ angular.module('sprints', [
 		$scope.manageTasks = function () {
 			$location.path('/projects/'+project.$id()+'/tasks');
 		};
+		console.log("Sprint Backlog is:");
+		console.log(sprint.getBacklogItems());
 
 		Tasks.forSprint(
 			sprint.$id(),
@@ -223,6 +498,8 @@ angular.module('sprints', [
 				$scope.tasks = tasks;
 				$scope.fetchingTasks = false;
 				console.log("Succeeded to fetch tasks");
+				console.log("Tasks=");
+				console.log($scope.tasks);
 			},
 			function (response, responsestatus, responseheaders, responseconfig) {
 				$scope.fetchingTasks = false;
@@ -796,6 +1073,7 @@ angular.module('sprints', [
 			return $scope.notificationHelpers.onSave(savedSprint);
 		}
 
+	
 		// console.log("the location object");
 		// console.log($location);
 		// $scope.onSave = function (savedSprint) {

@@ -178,8 +178,86 @@ angular.module('tasksnew', [
 		i18nNotifications
 	) {
 
+
+///////////////////////////
+		$scope.tasksGanttConf2 = {
+			resource : {
+				key : 'tasks',
+				prettyName : 'Tasks',
+				altPrettyName : 'Tasks',
+				link : $scope.manageTasks,
+				rootDivClass : 'panel-body',
+				itemsCrudHelpers : $scope.tasksCrudHelpers,
+				color: "#F1C232"
+			},
+			ganttFieldMap : {
+				row: [
+					{
+						key : 'name',
+						ganttKey: 'description'
+					}
+				],
+				task: [
+					{
+						key : 'userStatus',
+						ganttKey: 'subject'
+					},
+					{
+						key : 'start',
+						type: 'date',
+						ganttKey : 'from'
+					},
+					{
+						key : 'stop',
+						type: 'date',
+						ganttKey : 'to'
+					}
+				],
+				colorMap: function (taskBurst) {
+					return taskBurst.color;
+				}
+			}
+		};
+
+		$scope.taskData = function (task) {
+			var data = [];
+			angular.forEach(task.bursts, function(burst) {
+				data.push({
+					userStatus: burst.data.status + ", " + burst.data.userId,
+					start: burst.start,
+					stop: burst.stop || Date.now(),
+					// stop: burst.stop,
+					color: task.getStatusDef(burst.data.status).color
+				});
+			});
+			console.log("Task data:\n");
+			console.log("Data=\n"+data);
+			return data;
+		};
+
+		$scope.tasksGanttUpdateValidator = function (item, update) {
+			var task = item;
+			return 1;
+		};
+
+		$scope.taskToGanttData = function (task) {
+
+		};
+
+
+
+
+
+
+		// /**************************************************
+		//  * gantt experiment end
+		//  **************************************************/
+
 		$scope.project = project;
 		$scope.task = task;
+		$scope.tasks = [task];
+		console.log("tasks=");
+		console.log($scope.tasks);
 		$scope.statusEnum = Tasks.statusEnum;
 		// $scope.sprintBacklogItems = sprintBacklogItems;
 		// $scope.teamMembers = teamMembers;
@@ -271,7 +349,6 @@ angular.module('tasksnew', [
 				function () {
 					if( angular.isDefined(startTime) ){
 						$scope.timer = Date.now() - startTime + prevBurstTime;
-
 					}
 				},
 				100
@@ -451,6 +528,9 @@ angular.module('tasksnew', [
 		resourceDictionary,
 		_
 	) {
+
+
+
 		$scope.task = task;
 		$scope.project = project;
 

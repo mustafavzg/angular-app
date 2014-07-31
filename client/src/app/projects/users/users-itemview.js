@@ -45,7 +45,7 @@ angular.module('users-itemview',[
 	) {
 
 		// /**************************************************
-		//  * gantt experiment
+		//  * gantt configuration
 		//  **************************************************/
 		$scope.tasksConf = {
 			resource : {
@@ -70,11 +70,6 @@ angular.module('users-itemview',[
 					prettyName : 'Name',
 					widthClass : 'col-md-4'
 				},
-				// {
-				// 	key : 'description',
-				// 	prettyName : 'Description',
-				// 	widthClass : 'col-md-4'
-				// },
 				{
 					key : 'estimatedStartDate',
 					type: 'date',
@@ -105,6 +100,7 @@ angular.module('users-itemview',[
 			]
 		};
 
+
 		$scope.tasksGanttConf = {
 			resource : {
 				key : 'tasks',
@@ -115,137 +111,6 @@ angular.module('users-itemview',[
 				itemsCrudHelpers : $scope.tasksCrudHelpers,
 				color: "#F1C232"
 			},
-			// pagination : {
-			// 	currentPage : 1,
-			// 	itemsPerPage : 10
-			// },
-			// sortinit : {
-			// 	fieldKey : 'name',
-			// 	reverse : false
-			// },
-			// ganttFieldMap : [
-			// 	{
-			// 		key : 'name',
-			// 		taskField: 'subject',
-			// 		rowField: 'description',
-			// 		prettyName : 'Name',
-			// 		widthClass : 'col-md-2'
-			// 	},
-			// 	{
-			// 		key : 'startdate',
-			// 		type: 'date',
-			// 		taskField : 'from',
-			// 		prettyName : 'Start Date',
-			// 		widthClass : 'col-md-2'
-			// 	},
-			// 	{
-			// 		key : 'enddate',
-			// 		type: 'date',
-			// 		taskField : 'to',
-			// 		prettyName : 'End Date',
-			// 		widthClass : 'col-md-2'
-			// 	},
-			// 	{
-			// 		key : 'status',
-			// 		prettyName : 'Status',
-			// 		widthClass : 'col-md-2'
-			// 	}
-			// ],
-			ganttFieldMap : {
-				row: [
-					{
-						key : 'name',
-						ganttKey: 'description'
-					}
-				],
-				task: [
-					{
-						key : 'name',
-						ganttKey: 'subject'
-					},
-					{
-						key : 'estimatedStartDate',
-						type: 'date',
-						ganttKey : 'from'
-					},
-					{
-						key : 'estimatedEndDate',
-						type: 'date',
-						ganttKey : 'to'
-					}
-				],
-				colorMap: function (task) {
-					var statusDef = task.getStatusDef() || {};
-					return statusDef.color;
-					// if( task.isExpired() ){
-					// 	// return "#FFCFC3";
-					// 	// return "#E8A729";
-					// 	// return "#F0F0F0";
-					// 	// return "#7F7F7F";
-					// 	// return "#ABABAB";
-					// 	return "#D1C4B1";
-					// }
-					// if( task.isActive() ){
-					// 	// return "#FFFE28";
-					// 	return "#FED559";
-					// 	// return "#93C47D";
-					// }
-					// if( task.isPlanned() ){
-					// 	// return "#10F0FF";
-					// 	// return "#62C0DC";
-					// 	return "#9FC5F8";
-					// }
-					// return "#FFFFFF";
-				}
-			}
-		};
-
-		$scope.tasksGanttConf2 = {
-			resource : {
-				key : 'tasks',
-				prettyName : 'Tasks',
-				altPrettyName : 'Tasks',
-				link : $scope.manageTasks,
-				rootDivClass : 'panel-body',
-				itemsCrudHelpers : $scope.tasksCrudHelpers,
-				color: "#F1C232"
-			},
-			// pagination : {
-			// 	currentPage : 1,
-			// 	itemsPerPage : 10
-			// },
-			// sortinit : {
-			// 	fieldKey : 'name',
-			// 	reverse : false
-			// },
-			// ganttFieldMap : [
-			// 	{
-			// 		key : 'name',
-			// 		taskField: 'subject',
-			// 		rowField: 'description',
-			// 		prettyName : 'Name',
-			// 		widthClass : 'col-md-2'
-			// 	},
-			// 	{
-			// 		key : 'startdate',
-			// 		type: 'date',
-			// 		taskField : 'from',
-			// 		prettyName : 'Start Date',
-			// 		widthClass : 'col-md-2'
-			// 	},
-			// 	{
-			// 		key : 'enddate',
-			// 		type: 'date',
-			// 		taskField : 'to',
-			// 		prettyName : 'End Date',
-			// 		widthClass : 'col-md-2'
-			// 	},
-			// 	{
-			// 		key : 'status',
-			// 		prettyName : 'Status',
-			// 		widthClass : 'col-md-2'
-			// 	}
-			// ],
 			ganttFieldMap : {
 				row: [
 					{
@@ -271,37 +136,18 @@ angular.module('users-itemview',[
 				],
 				colorMap: function (taskBurst) {
 					return taskBurst.color;
-					// if( task.isExpired() ){
-					// 	// return "#FFCFC3";
-					// 	// return "#E8A729";
-					// 	// return "#F0F0F0";
-					// 	// return "#7F7F7F";
-					// 	// return "#ABABAB";
-					// 	return "#D1C4B1";
-					// }
-					// if( task.isActive() ){
-					// 	// return "#FFFE28";
-					// 	return "#FED559";
-					// 	// return "#93C47D";
-					// }
-					// if( task.isPlanned() ){
-					// 	// return "#10F0FF";
-					// 	// return "#62C0DC";
-					// 	return "#9FC5F8";
-					// }
-					// return "#FFFFFF";
 				}
 			}
 		};
 
 		$scope.taskData = function (task) {
 			var data = [];
+			console.log("Task Bursts="+task.bursts);
 			angular.forEach(task.bursts, function(burst) {
 				data.push({
 					userStatus: burst.data.status + ", " + burst.data.userId,
 					start: burst.start,
 					stop: burst.stop || Date.now(),
-					// stop: burst.stop,
 					color: task.getStatusDef(burst.data.status).color
 				});
 			});
@@ -310,24 +156,11 @@ angular.module('users-itemview',[
 
 		$scope.tasksGanttUpdateValidator = function (item, update) {
 			var task = item;
-			// if( task.isExpired() ){
-			// 	return {
-			// 		onError: function () {
-			// 			i18nNotifications.pushForCurrentRoute('crud.tasks.expired.error', 'error', {});
-			// 		}
-			// 	};
-			// }
 			return 1;
 		};
 
 		$scope.taskToGanttData = function (task) {
-
 		};
-
-		// /**************************************************
-		//  * gantt experiment end
-		//  **************************************************/
-
 
 		$scope.user = user;
 
@@ -347,7 +180,7 @@ angular.module('users-itemview',[
 		/**************************************************
 		 * Fetch task and crud helpers
 		 **************************************************/
-		$scope.fetchingtasks = true;
+		$scope.fetchingTasks = true;
 		$scope.tasks = [];
 		Tasks.forUser(
 			user.$id(),
@@ -374,10 +207,10 @@ angular.module('users-itemview',[
 					];
 					$scope.tasks[i].showAddButton = true;
 				}
-				$scope.fetchingtasks = false;
+				$scope.fetchingTasks = false;
 			},
 			function (response) {
-				$scope.fetchingtasks = false;
+				$scope.fetchingTasks = false;
 			}
 		);
 

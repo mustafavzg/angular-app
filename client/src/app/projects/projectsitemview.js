@@ -611,7 +611,7 @@ angular.module('projectsitemview', [
 		 **************************************************/
 		$scope.fetchingTasks = true;
 		$scope.tasks = [];
-
+		console.log("==========================Tasks====================");
 		$scope.tasksCrudHelpers = {};
 		angular.extend($scope.tasksCrudHelpers, crudListMethods('/projects/'+project.$id()+'/tasks'));
 
@@ -623,6 +623,8 @@ angular.module('projectsitemview', [
 			project.$id(),
 			function (tasks, responsestatus, responseheaders, responseconfig) {
 				$scope.tasks = tasks;
+				console.log("Tasks=");
+				console.log(tasks);
 				$scope.fetchingTasks = false;
 				console.log("Succeeded to fetch tasks");
 			},
@@ -891,6 +893,8 @@ angular.module('projectsitemview', [
 					color: task.getStatusDef(burst.data.status).color
 				});
 			});
+			console.log("Task data:\n");
+			console.log("Data=\n"+data);
 			return data;
 		};
 

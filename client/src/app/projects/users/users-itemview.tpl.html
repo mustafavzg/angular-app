@@ -31,13 +31,13 @@
 				<div class="panel-body">
 					<div class="panel panel-default">
 						<gantt-chart
-							 items="tasks"
-							 resourceconf="tasksGanttConf2"
-							 item-to-task-data-source="taskData(item)"
-							 fetchingitems="fetchingTasks"
-							 update-validator="tasksGanttUpdateValidator(item, update)"
-							 title="{{user.username}}'s Tasks"
-							 >
+							items="tasks"
+							resourceconf="tasksGanttConf"
+							item-to-task-data-source="taskData(item)"
+							fetchingitems="fetchingTasks"
+							update-validator="tasksGanttUpdateValidator(item, update)"
+							title="{{user.username}}'s Tasks"
+							>
 						</gantt-chart>
 					</div>
 				</div>					

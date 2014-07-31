@@ -42,13 +42,9 @@
 
 	<!-- div row -->
 	<div class="row">
-		<div class="col-md-6 col-md-offset-5 page-heading">
-			<h1 ng-if="title != undefined">
-				{{title}}
-			</h1>
-			<h1 ng-if="title == undefined">
-				Gantt Chart
-			</h1>
+		<div class="col-md-12 page-heading">
+			<label ng-if="title != undefined">{{title}}</label>
+			<label ng-if="title == undefined">Gantt Chart</label>
 		</div>
 	</div>
 	<div class="row">

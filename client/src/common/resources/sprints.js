@@ -11,6 +11,9 @@ angular.module('resources.sprints').factory('Sprints', [
 		Sprints.forProject = function (projectId, successcb, errorcb) {
 			return Sprints.query({projectId:projectId}, successcb, errorcb);
 		};
+		Sprints.getSprint = function (sprintId, successcb, errorcd){
+			return Sprints.query({sprintId:sprintId}, successcb, errorcb);
+		};
 
 		Sprints.prototype.isExpired = function () {
 			var today = moment(new Date());
@@ -80,6 +83,9 @@ angular.module('resources.sprints').factory('Sprints', [
 			return status.key;
 		};
 
+		Sprints.prototype.getBacklogItems = function () {
+			return this.sprintBacklog;
+		};
 		return Sprints;
 	}
 ]);
