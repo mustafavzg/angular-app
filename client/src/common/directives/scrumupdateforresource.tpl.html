@@ -21,7 +21,11 @@
 		</div>
 		<p>
 			<div class='form-group block'>
-				<textarea class="form-control" ng-model="resource.scrumText" placeholder="Add your update here" cols="10" rows="5" ng-show="!resource.showAddButton">
+				<textarea class="form-control" ng-model="resource.scrumText" placeholder="Things completed yesterday" cols="10" rows="5" ng-show="!resource.showAddButton">
+				</textarea>
+				<textarea class="form-control" ng-model="resource.planForDay" placeholder="Plan for the day" cols="10" rows="5" ng-show="!resource.showAddButton">
+				</textarea>
+				<textarea class="form-control" ng-model="resource.impediments" placeholder="Impediments" cols="10" rows="5" ng-show="!resource.showAddButton">
 				</textarea>
 			</div>
 		</p>
