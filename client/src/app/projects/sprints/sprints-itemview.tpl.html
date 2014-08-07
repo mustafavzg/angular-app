@@ -58,14 +58,15 @@
 		<tabset justified="true" type="pills">
 			<tab heading="Dashboard">
 				<div class="panel">
-						<gantt-chart
-							 items="sprints"
-							 resourceconf="sprintsGanttConf"
-							 fetchingitems="fetchingSprints"
-							 update-validator="sprintsGanttUpdateValidator(item, update)"
-							 title="Sprint Gantt View"
-							 >
-						</gantt-chart>
+					<gantt-chart
+						 items="sprints"
+						 resourceconf="sprintsGanttConf"
+						 item-to-task-data-source="sprintData(item)"
+						 fetchingitems="fetchingSprints"
+						 update-validator="sprintsGanttUpdateValidator(item, update)"
+						 title="Sprint Gantt View"
+						 >
+					</gantt-chart>
 				</div>
 				<div class="panel">
 					<gantt-chart

@@ -249,15 +249,7 @@ angular.module('sprints', [
 		console.log(sprint2ndHalf);
 		$scope.sprints = [sprint];
 		var currentDate = new Date();
-		// if(new Date(sprint.enddate) > currentDate){
-		// 	sprint1stHalf.enddate = currentDate;
-		// 	sprint1stHalf.numHalf = 1;
-		// 	sprint2ndHalf.startdate = currentDate;
-		// 	sprint2ndHalf.numHalf = 2;
-		// 	$scope.sprints = [sprint1stHalf , sprint2ndHalf];
-		// 	console.log("sprints=");
-		// 	console.log($scope.sprints);
-		// }
+
 		$scope.sprintsCrudHelpers = {};
 		angular.extend($scope.sprintsCrudHelpers, crudListMethods('/projects/'+project.$id()+'/sprints'));
 
@@ -285,40 +277,45 @@ angular.module('sprints', [
 				],
 				task: [
 					{
-						key : 'name',
+						key : 'subject',
 						ganttKey: 'subject'
 					},
 					{
-						key : 'startdate',
+						key : 'start',
 						type: 'date',
 						ganttKey : 'from'
 					},
 					{
-						key : 'enddate',
+						key : 'stop',
 						type: 'date',
 						ganttKey : 'to'
+					},
+					{
+						key : 'color',
+						ganttKey : 'color'
 					}
-				],
-				colorMap: function (sprint) {
-					if( sprint.isExpired() ){
-						return "#D1C4B1";
-					}
-					if( sprint.isActive() ){
-						return "#FED559";
-					}
-					if( sprint.isPlanned() ){
-						return "#9FC5F8";
-					}
-					if(sprint.numHalf == 1){
-						console.log("numhalf is 1");
-						return "#FF0000";
-					}
-					if(sprint.numHalf == 2){
-						console.log("numhalf is 2");
-						return "#FFC703";
-					}
-					return "#FFFFFF";
-				}
+				]
+				// ],
+				// colorMap: function (sprint) {
+				// 	if( sprint.isExpired() ){
+				// 		return "#D1C4B1";
+				// 	}
+				// 	if( sprint.isActive() ){
+				// 		return "#FED559";
+				// 	}
+				// 	if( sprint.isPlanned() ){
+				// 		return "#9FC5F8";
+				// 	}
+				// 	if(sprint.numHalf == 1){
+				// 		console.log("numhalf is 1");
+				// 		return "#FF0000";
+				// 	}
+				// 	if(sprint.numHalf == 2){
+				// 		console.log("numhalf is 2");
+				// 		return "#FFC703";
+				// 	}
+				// 	return "#FFFFFF";
+				// }
 			}
 		};
 
@@ -334,6 +331,50 @@ angular.module('sprints', [
 			return 1;
 		};
 
+		$scope.sprintData = function (task) {
+			var data = [];
+			console.log("task=");
+			console.log(task);
+			var startdate = new Date(task.startdate);
+			var endate = new Date(task.enddate);
+			var currentdate = new Date();
+			if(currentdate <  endate && currentdate > startdate){
+				data.push({
+					subject: "past sprint",
+					start: startdate,
+					stop: currentdate,
+					// stop: burst.stop,
+					color: "#FFFF00"
+				});
+				data.push({
+					subject: "future sprint",
+					start: currentdate,
+					stop: endate,
+					// stop: burst.stop,
+					color: "#FFC703"
+				});
+			}
+			else{
+				data.push({
+					subject: "past sprint",
+					start: startdate,
+					stop: endate,
+					// stop: burst.stop,
+					color: "#FF0000"
+				});
+			}
+
+			/*angular.forEach(task.bursts, function(burst) {
+				data.push({
+					userStatus: burst.data.status + ", " + burst.data.userId,
+					start: burst.start,
+					stop: burst.stop || Date.now(),
+					// stop: burst.stop,
+					color: task.getStatusDef(burst.data.status).color
+				});
+			});*/
+			return data;
+		};
 
 		// /**************************************************
 		//  * gantt experiment
