@@ -107,11 +107,15 @@ angular.module('filters.groupBy', [
 			// The first argument obj is the items array which needs to be grouped
 			// Slice the arguments to contain an array of groupby keys
 			var targets = Array.prototype.slice.call(arguments, 1);
+ 			if( _.isArray(targets[0]) ){
+				targets = targets[0];
+			}
+
 			// Recursive function which groups by
 			// var result = _groupBy(obj, targets);
 			// return toItemGroupFilter(result, targets);
 
-			return _groupBy(obj, targets);
+			return _groupBy(obj, _.clone(targets));
 		};
 	}
 ]);

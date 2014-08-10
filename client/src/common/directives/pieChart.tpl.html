@@ -1,0 +1,22 @@
+<div ng-class="self.rootDivClass">
+	<div class="row">
+		<span class="col-md-12" ng-show="fetchingitems">Fetching {{resourcePrettyNameAlt}} ... 
+			<a href="#"><img src="/static/img/spinner.gif"></a>
+		</span>		
+		<span class="col-md-12" ng-show="!items.length && !fetchingitems">
+			No {{resourcePrettyNameAlt}} found
+		</span>		
+	</div>
+	<!-- div row -->
+
+	<div class="row" ng-show="items.length">
+		<div class="col-md-12">
+			<!-- <div ng-repeat="chart in pieCharts" ui-chart="chart.data" chart-options="chart.options"></div> -->
+			<div ng-repeat="chart in pieCharts">
+				<div ui-chart="chart.data" chart-options="chart.options"></div>
+			</div>
+		</div>
+		<!-- div col -->
+	</div>
+	<!-- div row -->
+</div>

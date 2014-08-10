@@ -167,7 +167,7 @@ angular.module('users-itemview',[
 					$scope.fetchingscrumupdates = false;
 				}
 			);
-			
+
 		};
 		$scope.closeScrumUpdate = function(task){
 			task.scrumText = "";

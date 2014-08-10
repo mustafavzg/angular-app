@@ -761,27 +761,7 @@ angular.module('projectsitemview', [
 					}
 				],
 				colorMap: function (task) {
-					var statusDef = task.getStatusDef() || {};
-					return statusDef.color;
-					// if( task.isExpired() ){
-					// 	// return "#FFCFC3";
-					// 	// return "#E8A729";
-					// 	// return "#F0F0F0";
-					// 	// return "#7F7F7F";
-					// 	// return "#ABABAB";
-					// 	return "#D1C4B1";
-					// }
-					// if( task.isActive() ){
-					// 	// return "#FFFE28";
-					// 	return "#FED559";
-					// 	// return "#93C47D";
-					// }
-					// if( task.isPlanned() ){
-					// 	// return "#10F0FF";
-					// 	// return "#62C0DC";
-					// 	return "#9FC5F8";
-					// }
-					// return "#FFFFFF";
+					return task.getStatusDef().color;
 				}
 			}
 		};

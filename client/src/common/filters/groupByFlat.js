@@ -42,10 +42,13 @@ angular.module('filters.groupByFlat', [
 
 		function groupByFlat( obj ) {
 			var targets = Array.prototype.slice.call(arguments, 1);
+ 			if( _.isArray(targets[0]) ){
+				targets = targets[0];
+			}
 			var flattenedData = {};
 			var keyStack = [];
 			var valueStack = [];
-			_groupByFlat(obj, targets, flattenedData, keyStack, valueStack);
+			_groupByFlat(obj, _.clone(targets), flattenedData, keyStack, valueStack);
 			return _.values(flattenedData);
 		};
 
