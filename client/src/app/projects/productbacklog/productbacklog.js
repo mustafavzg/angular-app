@@ -599,6 +599,13 @@ angular.module('productbacklog', [
 					ordering: 1,
 					colorMap: function (item) {
 						return item.getStatusDef().color;
+					},
+					groupByOrder: function (item) {
+						// console.log("ordering is");
+						// console.log(item.getStatusDef().ordering);
+						return item.getStatusDef().ordering;
+						// return item.getStatusDef().ordering || 0;
+
 					}
 				},
 				{
@@ -607,6 +614,10 @@ angular.module('productbacklog', [
 					ordering: 2,
 					colorMap: function (item) {
 						return item.getTypeDef().color;
+					},
+					groupByOrder: function (item) {
+						return item.getTypeDef().ordering;
+						// return item.getTypeDef().ordering || 0;
 					}
 				}
 			],
@@ -626,7 +637,7 @@ angular.module('productbacklog', [
 			],
 			count: 1,
 			// collapse: 0
-			collapse: 0,
+			collapse: 1,
 			cumulative: 0
 		};
 
@@ -636,7 +647,6 @@ angular.module('productbacklog', [
 			config = new pieChartConfig(config);
 			console.log("config blessed is ");
 			console.log(config);
-
 			var sortedItemGroups = summarizePieData(items, config);
 			console.log("sorted item status grousp");
 			console.log(sortedItemGroups);

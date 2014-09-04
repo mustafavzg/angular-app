@@ -16,7 +16,7 @@ angular.module('resources.tasks')
 		 * Status Defintions
 		 * Will be moved to back end persistence
 		 **************************************************/
-		Tasks.statusDef = [
+		var statusDef = [
 			{
 				key: 'TODO',
 				name: 'To Do',
@@ -75,7 +75,11 @@ angular.module('resources.tasks')
 				return status.key;
 			}
 		);
-		statusDictionary.setItems(Tasks.statusDef);
+		statusDictionary.setItems(statusDef);
+
+		Tasks.getStatusDef = function () {
+			return statusDef;
+		};
 
 		Tasks.prototype.getStatusDef = function (status) {
 			status = status || this.status;

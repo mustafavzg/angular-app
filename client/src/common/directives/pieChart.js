@@ -86,6 +86,421 @@ angular.module('directives.pieChart', [
 					};
 					directiveInitializer.init($scope, $scope.self, attrsData);
 
+					var pieChartConfig = function (config) {
+						angular.extend(this, config);
+						this.groupByDictionary = resourceDictionary(
+							'groupBy',
+							function (value) {
+								return value.key;
+							}
+						);
+						this.groupByDictionary.setItems(config.groupBy);
+
+						this.summaryItemsDictionary = resourceDictionary(
+							'summaryItems',
+							function (value) {
+								return value.key;
+							}
+						);
+						this.summaryItemsDictionary.setItems(config.summary);
+					};
+
+					pieChartConfig.lookUpSpec = function (specKey, specDictionary) {
+						return specDictionary.lookUpItem(specKey);
+					};
+
+					pieChartConfig.prototype.lookUpGroupBySpec = function (specKey) {
+						return pieChartConfig.lookUpSpec(specKey, this.groupByDictionary);
+					};
+
+					pieChartConfig.prototype.lookUpSummarySpec = function (specKey) {
+						if( specKey === "count" ){
+							return {
+								prettyName: "Number",
+								prettyNameSuffix: "of"
+							};
+						}
+						else {
+							return pieChartConfig.lookUpSpec(specKey, this.summaryItemsDictionary);
+						}
+					};
+
+					// Enable/Disable attributes
+					pieChartConfig.toggleAttr = function (attrSpec) {
+						attrSpec.disabled = !attrSpec.disabled;
+					};
+
+					// pieChartConfig.disableAttr = function (attrSpec) {
+					// 	attrSpec.disabled = true;
+					// };
+
+					// pieChartConfig.enableAttr = function (attrSpec) {
+					// 	attrSpec.disabled = false;
+					// };
+
+					pieChartConfig.isDisabledAttr = function (attrSpec) {
+						return attrSpec.disabled || false;
+					};
+
+					pieChartConfig.getAttributes = function (attrSpecs, options, attrKey) {
+						var that = this;
+						if( _.isObject(options) ){
+							if( _.isArray(options.customOrder) ){
+								// Note: for custom order, pass in the corresponding the dictionary
+								// for lookup
+								attrSpecs = _.map(options.customOrder, function (key) {
+									return options.dictionary.lookUpItem(key);
+								});
+							}
+							else if( !_.isUndefined(options.orderingKey) ){
+								attrSpecs = _.sortBy(attrSpecs, function (attrSpec) {
+									return attrSpec[options.orderingKey];
+								});
+							}
+						}
+
+						if( !options.allowDisabled ){
+							attrSpecs = _.filter(
+								attrSpecs,
+								function (attrSpec) {
+									return !pieChartConfig.isDisabledAttr(attrSpec);
+								}
+							);
+						}
+
+						if( !_.isUndefined(attrKey) ){
+							return _.map(
+								attrSpecs,
+								function (attrSpec) {
+									return attrSpec[attrKey];
+								}
+							);
+						}
+						else {
+							return attrSpecs;
+						}
+					};
+
+					pieChartConfig.getAttributeKeys = function (attrSpecs, options) {
+						// return pieChartConfig.getAttributes(attrSpecs, 'key', 'ordering');
+						// return pieChartConfig.getAttributes(attrSpecs, 'key', options);
+						return pieChartConfig.getAttributes(attrSpecs, options, 'key');
+					};
+
+					pieChartConfig.getAttributeDisplayNames = function (attrSpecs, options) {
+						// return pieChartConfig.getAttributes(attrSpecs, 'prettyName', 'ordering');
+						// return pieChartConfig.getAttributes(attrSpecs, 'prettyName', options);
+						return pieChartConfig.getAttributes(attrSpecs, options, 'prettyName');
+					};
+
+					pieChartConfig.prototype.getGroupByAttributeSpecs = function (options) {
+						// return pieChartConfig.getAttributes(this.groupBy);
+						var that = this;
+						return pieChartConfig.getAttributes(that.groupBy, angular.extend({}, options, {
+							dictionary: that.groupByDictionary,
+							orderingKey: 'ordering'
+						}));
+
+						// if( _.isArray(customOrder) ){
+						// 	return pieChartConfig.getAttributes(that.groupBy, {
+						// 		customOrder: customOrder,
+						// 		// customOrder: ['type', 'status'],
+						// 		// customOrder: ['status', 'type'],
+						// 		dictionary: that.groupByDictionary
+						// 	});
+						// }
+						// else {
+						// 	return pieChartConfig.getAttributes(that.groupBy, {
+						// 		orderingKey: 'ordering'
+						// 	});
+						// }
+					};
+
+					pieChartConfig.prototype.getGroupByAttributes = function (options) {
+						var that = this;
+						return pieChartConfig.getAttributeKeys(that.groupBy, angular.extend({}, options, {
+							dictionary: that.groupByDictionary,
+							orderingKey: 'ordering'
+						}));
+					};
+
+					pieChartConfig.prototype.getGroupByAttributesPretty = function (customOrder) {
+						// return pieChartConfig.getAttributeDisplayNames(this.groupBy);
+						var that = this;
+						if( _.isArray(customOrder) ){
+							return pieChartConfig.getAttributeDisplayNames(that.groupBy, {
+								customOrder: customOrder,
+								// customOrder: ['type', 'status'],
+								// customOrder: ['status', 'type'],
+								dictionary: that.groupByDictionary
+							});
+						}
+						else {
+							return pieChartConfig.getAttributeDisplayNames(that.groupBy, {
+								orderingKey: 'ordering'
+							});
+						}
+					};
+
+					pieChartConfig.prototype.getSummaryAttributeSpecs = function (options) {
+						var that = this;
+						return pieChartConfig.getAttributes(that.summary, angular.extend({}, options, {
+							dictionary: that.summaryItemsDictionary,
+							orderingKey: 'ordering'
+						}));
+					};
+
+					pieChartConfig.prototype.getSummaryAttributes = function (customOrder) {
+						// return pieChartConfig.getAttributeKeys(this.summary);
+						var that = this;
+						if( _.isArray(customOrder) ){
+						// if( 1 ){
+							return pieChartConfig.getAttributeKeys(that.summary, {
+								customOrder: customOrder,
+								// customOrder: ['estimation', 'remaining'],
+								// customOrder: ['remaining', 'estimation'],
+								dictionary: that.summaryItemsDictionary
+							});
+						}
+						else {
+							return pieChartConfig.getAttributeKeys(that.summary, {
+								orderingKey: 'ordering'
+							});
+						}
+					};
+
+					pieChartConfig.prototype.getSummaryAttributesPretty = function (customOrder) {
+						// return pieChartConfig.getAttributeDisplayNames(this.summary);
+						var that = this;
+						if( _.isArray(customOrder) ){
+							return pieChartConfig.getAttributeDisplayNames(that.summary, {
+								customOrder: customOrder,
+								// customOrder: ['type', 'status'],
+								// customOrder: ['status', 'type'],
+								dictionary: that.summaryItemsDictionary
+							});
+						}
+						else {
+							return pieChartConfig.getAttributeDisplayNames(that.summary, {
+								orderingKey: 'ordering'
+							});
+						}
+					};
+
+					pieChartConfig.prototype.getColorMap = function (groupByKey) {
+						var groupBySpec = this.groupByDictionary.lookUpItem(groupByKey);
+						return (!angular.isDefined(groupBySpec) || !angular.isDefined(groupBySpec.colorMap))? angular.noop : groupBySpec.colorMap;
+					};
+
+					pieChartConfig.prototype.getGroupByOrder = function (groupByKey) {
+						var groupBySpec = this.groupByDictionary.lookUpItem(groupByKey);
+						return (!angular.isDefined(groupBySpec) || !angular.isDefined(groupBySpec.groupByOrder))? angular.noop : groupBySpec.groupByOrder;
+					};
+
+					/**************************************************
+					 * Enable/Disable groupBy attributes
+					 **************************************************/
+					pieChartConfig.prototype.toggleGroupBy = function (groupByKey) {
+						var groupBySpec = this.groupByDictionary.lookUpItem(groupByKey);
+						pieChartConfig.toggleAttr(groupBySpec);
+					};
+
+					// pieChartConfig.prototype.disableGroupBy = function (groupByKey) {
+					// 	var groupBySpec = this.groupByDictionary.lookUpItem(groupByKey);
+					// 	pieChartConfig.disableAttr(groupBySpec);
+					// };
+
+					// pieChartConfig.prototype.enableGroupBy = function (groupByKey) {
+					// 	var groupBySpec = this.groupByDictionary.lookUpItem(groupByKey);
+					// 	pieChartConfig.enableAttr(groupBySpec);
+					// };
+
+					pieChartConfig.prototype.isDisabledGroupBy = function (groupByKey) {
+						var groupBySpec = this.groupByDictionary.lookUpItem(groupByKey);
+						return pieChartConfig.isDisabledAttr(groupBySpec);
+					};
+
+					/**************************************************
+					 * Enable/Disable summaryItem attributes
+					 **************************************************/
+					pieChartConfig.prototype.toggleSummaryItem = function (summaryItemKey) {
+						var summaryItemSpec = this.summaryItemsDictionary.lookUpItem(summaryItemKey);
+						pieChartConfig.toggleAttr(summaryItemSpec);
+					};
+
+					// pieChartConfig.prototype.disableSummaryItem = function (summaryItemKey) {
+					// 	var summaryItemSpec = this.summaryItemsDictionary.lookUpItem(summaryItemKey);
+					// 	pieChartConfig.disableAttr(summaryItemSpec);
+					// };
+
+					// pieChartConfig.prototype.enableSummaryItem = function (summaryItemKey) {
+					// 	var summaryItemSpec = this.summaryItemsDictionary.lookUpItem(summaryItemKey);
+					// 	pieChartConfig.enableAttr(summaryItemSpec);
+					// };
+
+					pieChartConfig.prototype.isDisabledSummaryItem = function (summaryItemKey) {
+						var summaryItemSpec = this.summaryItemsDictionary.lookUpItem(summaryItemKey);
+						return pieChartConfig.isDisabledAttr(summaryItemSpec);
+					};
+
+					/**************************************************
+					 * More helpers ...
+					 **************************************************/
+
+					pieChartConfig.prototype.getCount = function () {
+						return this.count;
+					};
+
+					pieChartConfig.prototype.collapseCharts = function (setCollapse) {
+						if( angular.isDefined(setCollapse) ){
+							this.collapse = setCollapse;
+						}
+						return this.collapse;
+					};
+
+					pieChartConfig.prototype.cumulativeGroupBy = function (setCumulative) {
+						if( angular.isDefined(setCumulative) ){
+							this.cumulative = setCumulative;
+						}
+						return this.cumulative;
+					};
+
+					pieChartConfig.prototype.getTitle = function () {
+						return this.title;
+					};
+
+					pieChartConfig.prototype.getChartTitle = function (groupByKey, summaryKey) {
+						var that = this;
+						var subTitles = [];
+						var summaryAttrs;
+						// if summary is undefined, get all the summary keys
+						if( _.isUndefined(summaryKey) ){
+							summaryAttrs = that.getSummaryAttributes();
+							// var summaryAttrsPretty = this.getSummaryAttributesPretty();
+							if( that.getCount() ){
+								summaryAttrs.unshift('count');
+								// subTitles.unshift(['Number', 'of', that.getTitle()].join(" "));
+							}
+						}
+						else {
+							summaryAttrs = [summaryKey];
+						}
+						_.each(summaryAttrs, function (summaryAttrKey, index) {
+							var summaryAttrSpec = that.lookUpSummarySpec(summaryAttrKey);
+							subTitles.push([summaryAttrSpec.prettyName, summaryAttrSpec.prettyNameSuffix, that.getTitle()].join(" "));
+						});
+
+						var groupByAttrSpec = that.lookUpGroupBySpec(groupByKey);
+						var title = subTitles.join(", ");
+						title += " by " + groupByAttrSpec.prettyName;
+						return title;
+					};
+
+					pieChartConfig.prototype.getChartTitleCumulative = function (summaryKey) {
+						var summarySpec = this.lookUpSummarySpec(summaryKey);
+						var groupByAttrsPretty = this.getGroupByAttributesPretty();
+						var title = [summarySpec.prettyName, summarySpec.prettyNameSuffix, this.getTitle()].join(" ");
+						// title += " grouped by " + groupByAttrsPretty.join(", ") + " (in order from outer ring to inner) ";
+						// title += " grouped by " + groupByAttrsPretty.slice(0,-1).join(", ") + " and " + groupByAttrsPretty.slice(-1)[0];
+						// title += " by " + groupByAttrsPretty.slice(0,-1).join(", ") + " and " + groupByAttrsPretty.slice(-1)[0];
+
+						title += " by ";
+						if( groupByAttrsPretty.length > 1 ){
+							title += groupByAttrsPretty.slice(0,-1).join(", ") + " and ";
+						}
+						title += groupByAttrsPretty.slice(-1)[0];
+						return title;
+					};
+
+					$scope.pieChartConfigInstance = new pieChartConfig($scope.chartConfig);
+
+					/**************************************************
+					 * GroupBy dropdown helpers
+					 **************************************************/
+					$scope.getGroupBySpecs = function () {
+						return $scope.pieChartConfigInstance.getGroupByAttributeSpecs({
+							allowDisabled: true
+						});
+					};
+
+					$scope.isActiveGroupBy = function (groupByKey) {
+						return !$scope.pieChartConfigInstance.isDisabledGroupBy(groupByKey);
+					};
+
+					$scope.toggleGroupBy = function (groupByKey) {
+						$scope.pieChartConfigInstance.toggleGroupBy(groupByKey);
+						console.log("toggled groupby");
+						console.log($scope.pieChartConfigInstance);
+					};
+
+
+					/**************************************************
+					 * Summary items dropdown helpers
+					 **************************************************/
+					$scope.getSummaryItemsSpecs = function () {
+						return $scope.pieChartConfigInstance.getSummaryAttributeSpecs({
+							allowDisabled: true
+						});
+					};
+
+					$scope.isActiveSummaryItem = function (summaryItemKey) {
+						return !$scope.pieChartConfigInstance.isDisabledSummaryItem(summaryItemKey);
+					};
+
+					$scope.toggleSummaryItem = function (summaryItemKey) {
+						$scope.pieChartConfigInstance.toggleSummaryItem(summaryItemKey);
+						console.log("toggled summaryItem");
+						console.log($scope.pieChartConfigInstance);
+					};
+
+					/**************************************************
+					 * Donut toggle helpers
+					 **************************************************/
+					$scope.donutToggleStates = [
+						{
+							isDonut: false,
+							toolTip: 'Donut Chart'
+						},
+						{
+							isDonut: true,
+							toolTip: 'Pie Chart'
+						}
+					];
+					$scope.donutToggle = $scope.donutToggleStates[1];
+					$scope.toggleDonut = function () {
+						$scope.donutToggle = (!$scope.donutToggle.isDonut)? $scope.donutToggleStates[1] : $scope.donutToggleStates[0];
+
+
+						// $scope.chartConfig.collapse = (!$scope.donutToggle.isDonut) ? 0 : 1;
+
+						(!$scope.donutToggle.isDonut) ? $scope.pieChartConfigInstance.collapseCharts(0) : $scope.pieChartConfigInstance.collapseCharts(1);
+					};
+
+					/**************************************************
+					 * Cumulative group by toggle helpers
+					 **************************************************/
+					$scope.cumulativeToggleStates = [
+						{
+							isCumulative: false,
+							toolTip: 'Cumulative Group By'
+						},
+						{
+							isCumulative: true,
+							toolTip: 'Non Cumulative Group By '
+						}
+					];
+					$scope.cumulativeToggle = ($scope.chartConfig.cumulative) ? $scope.cumulativeToggleStates[1] : $scope.cumulativeToggleStates[0];
+					$scope.toggleCumulative = function () {
+						$scope.cumulativeToggle = (!$scope.cumulativeToggle.isCumulative)? $scope.cumulativeToggleStates[1] : $scope.cumulativeToggleStates[0];
+
+						// $scope.chartConfig.cumulative = (!$scope.cumulativeToggle.isCumulative) ? 0 : 1;
+						(!$scope.cumulativeToggle.isCumulative) ? $scope.pieChartConfigInstance.cumulativeGroupBy(0) : $scope.pieChartConfigInstance.cumulativeGroupBy(1);
+					};
+
+					/**************************************************
+					 * Construct pie charts
+					 **************************************************/
+
 					// var augmentPieDataSummary = function (taskStatusGroups) {
 					// 	angular.forEach(taskStatusGroups, function(taskStatusGroup) {
 					// 		var status = taskStatusGroup.key;
@@ -172,198 +587,6 @@ angular.module('directives.pieChart', [
 					// 	console.log($scope.pieCharts);
 					// };
 
-					var pieChartConfig = function (config) {
-						angular.extend(this, config);
-						this.groupByDictionary = resourceDictionary(
-							'groupBy',
-							function (value) {
-								return value.key;
-							}
-						);
-						this.groupByDictionary.setItems(config.groupBy);
-
-						this.summaryItemsDictionary = resourceDictionary(
-							'summaryItems',
-							function (value) {
-								return value.key;
-							}
-						);
-						this.summaryItemsDictionary.setItems(config.summary);
-					};
-
-					pieChartConfig.lookUpSpec = function (specKey, specDictionary) {
-						return specDictionary.lookUpItem(specKey);
-					};
-
-					pieChartConfig.prototype.lookUpGroupBySpec = function (specKey) {
-						return pieChartConfig.lookUpSpec(specKey, this.groupByDictionary);
-					};
-
-					pieChartConfig.prototype.lookUpSummarySpec = function (specKey) {
-						if( specKey === "count" ){
-							return {
-								prettyName: "Number",
-								prettyNameSuffix: "of"
-							};
-						}
-						else {
-							return pieChartConfig.lookUpSpec(specKey, this.summaryItemsDictionary);
-						}
-					};
-
-					pieChartConfig.getAttributes = function (attrSpecs, attrKey, orderingOptions) {
-						if( _.isObject(orderingOptions) ){
-							if( !_.isUndefined(orderingOptions.orderingKey) ){
-								attrSpecs = _.sortBy(attrSpecs, function (attrSpec) {
-									return attrSpec[orderingOptions.orderingKey];
-								});
-							}
-							else if( _.isArray(orderingOptions.customOrder) ){
-								// Note: for custom order, pass in the corresponding the dictionary
-								// for lookup
-								attrSpecs = _.map(orderingOptions.customOrder, function (key) {
-									return orderingOptions.dictionary.lookUpItem(key);
-								});
-							}
-						}
-
-						return _.map(
-							attrSpecs,
-							function (attrSpec) {
-								return attrSpec[attrKey];
-							}
-						);
-					};
-
-					pieChartConfig.getAttributeKeys = function (attrSpecs, orderingOptions) {
-						// return pieChartConfig.getAttributes(attrSpecs, 'key', 'ordering');
-						return pieChartConfig.getAttributes(attrSpecs, 'key', orderingOptions);
-					};
-
-					pieChartConfig.getAttributeDisplayNames = function (attrSpecs, orderingOptions) {
-						// return pieChartConfig.getAttributes(attrSpecs, 'prettyName', 'ordering');
-						return pieChartConfig.getAttributes(attrSpecs, 'prettyName', orderingOptions);
-					};
-
-					pieChartConfig.prototype.getGroupByAttributes = function (customOrder) {
-						// return pieChartConfig.getAttributeKeys(this.groupBy);
-						var that = this;
-						if( _.isArray(customOrder) ){
-							return pieChartConfig.getAttributeKeys(that.groupBy, {
-								customOrder: customOrder,
-								// customOrder: ['type', 'status'],
-								// customOrder: ['status', 'type'],
-								dictionary: that.groupByDictionary
-							});
-						}
-						else {
-							return pieChartConfig.getAttributeKeys(that.groupBy, {
-								orderingKey: 'ordering'
-							});
-						}
-					};
-
-					pieChartConfig.prototype.getGroupByAttributesPretty = function (customOrder) {
-						// return pieChartConfig.getAttributeDisplayNames(this.groupBy);
-						var that = this;
-						if( _.isArray(customOrder) ){
-							return pieChartConfig.getAttributeDisplayNames(that.groupBy, {
-								customOrder: customOrder,
-								// customOrder: ['type', 'status'],
-								// customOrder: ['status', 'type'],
-								dictionary: that.groupByDictionary
-							});
-						}
-						else {
-							return pieChartConfig.getAttributeDisplayNames(that.groupBy, {
-								orderingKey: 'ordering'
-							});
-						}
-					};
-
-					pieChartConfig.prototype.getSummaryAttributes = function (customOrder) {
-						// return pieChartConfig.getAttributeKeys(this.summary);
-						var that = this;
-						if( _.isArray(customOrder) ){
-						// if( 1 ){
-							return pieChartConfig.getAttributeKeys(that.summary, {
-								customOrder: customOrder,
-								// customOrder: ['estimation', 'remaining'],
-								// customOrder: ['remaining', 'estimation'],
-								dictionary: that.summaryItemsDictionary
-							});
-						}
-						else {
-							return pieChartConfig.getAttributeKeys(that.summary, {
-								orderingKey: 'ordering'
-							});
-						}
-					};
-
-					pieChartConfig.prototype.getSummaryAttributesPretty = function (customOrder) {
-						// return pieChartConfig.getAttributeDisplayNames(this.summary);
-						var that = this;
-						if( _.isArray(customOrder) ){
-							return pieChartConfig.getAttributeDisplayNames(that.summary, {
-								customOrder: customOrder,
-								// customOrder: ['type', 'status'],
-								// customOrder: ['status', 'type'],
-								dictionary: that.summaryItemsDictionary
-							});
-						}
-						else {
-							return pieChartConfig.getAttributeDisplayNames(that.summary, {
-								orderingKey: 'ordering'
-							});
-						}
-					};
-
-					pieChartConfig.prototype.getColorMap = function (groupByKey) {
-						var groupBySpec = this.groupByDictionary.lookUpItem(groupByKey);
-						return (!angular.isDefined(groupBySpec) || !angular.isDefined(groupBySpec.colorMap))? angular.noop : groupBySpec.colorMap;
-					};
-
-					pieChartConfig.prototype.getCount = function () {
-						return this.count;
-					};
-
-					pieChartConfig.prototype.collapseCharts = function () {
-						return this.collapse;
-					};
-
-					pieChartConfig.prototype.cumulativeGroupBy = function () {
-						return this.cumulative;
-					};
-
-					pieChartConfig.prototype.getTitle = function () {
-						return this.title;
-					};
-
-					pieChartConfig.prototype.getChartTitle = function (groupByKey) {
-						var that = this;
-						var summaryAttrs = that.getSummaryAttributes();
-						// var summaryAttrsPretty = this.getSummaryAttributesPretty();
-						var subTitles = [];
-						_.each(summaryAttrs, function (summaryAttrKey, index) {
-							var summaryAttrSpec = that.lookUpSummarySpec(summaryAttrKey);
-							subTitles.push([summaryAttrSpec.prettyName, summaryAttrSpec.prettyNameSuffix, that.getTitle()].join(" "));
-						});
-						var groupByAttrSpec = that.lookUpGroupBySpec(groupByKey);
-						var title = subTitles.join(", ");
-						title += " by " + groupByAttrSpec.prettyName;
-						return title;
-					};
-
-					pieChartConfig.prototype.getChartTitleCumulative = function (summaryKey) {
-						var summarySpec = this.lookUpSummarySpec(summaryKey);
-						var groupByAttrsPretty = this.getGroupByAttributesPretty();
-						var title = [summarySpec.prettyName, summarySpec.prettyNameSuffix, this.getTitle()].join(" ");
-						// title += " grouped by " + groupByAttrsPretty.join(", ") + " (in order from outer ring to inner) ";
-						// title += " grouped by " + groupByAttrsPretty.slice(0,-1).join(", ") + " and " + groupByAttrsPretty.slice(-1)[0];
-						title += " by " + groupByAttrsPretty.slice(0,-1).join(", ") + " and " + groupByAttrsPretty.slice(-1)[0];
-						return title;
-					};
-
 					// var summarizePieData = function (items, config) {
 					// 	var groupByAttrs = config.getGroupByAttributes();
 					// 	// console.log("group by attrs");
@@ -389,7 +612,7 @@ angular.module('directives.pieChart', [
 					// 		// var statusColor = items[0].getStatusDef().color;
 					// 		_.extend(itemGroup.summary, {color: items[0].getStatusDef().color});
 
-					// 		// count
+ // 		// count
 					// 		if( config.getCount() ){
 					// 			// var itemCount = items.length;
 					// 			_.extend(itemGroup.summary, {count: items.length});
@@ -429,6 +652,25 @@ angular.module('directives.pieChart', [
 					// 		}
 					// 	);
 					// };
+
+					var _sortBy = function (itemGroups, targets, config) {
+						// var groupByOrderFn = config.getGroupByOrder(groupByKey);
+						console.log("sorting item groups");
+						var sortedItemGroups = _.sortBy(
+							itemGroups,
+							function (itemGroup) {
+								var order = 0;
+								angular.forEach(targets, function(groupByKey, index) {
+									var groupByOrderFn = config.getGroupByOrder(groupByKey);
+									order += (groupByOrderFn(itemGroup.values[0]) || 0) * Math.pow(10, targets.length - index - 1);
+								});
+								console.log("order is: " + order);
+								return order;
+								// return groupByOrderFn(itemGroup.values[0]);
+							}
+						);
+						return sortedItemGroups;
+					};
 
 					var _summarizeItemGroups = function (itemGroups, config, groupByKey) {
 						var summaryAttrs = config.getSummaryAttributes();
@@ -501,16 +743,22 @@ angular.module('directives.pieChart', [
 								_summarizeItemGroups(itemGroups, config, groupByKey);
 								console.log("itemgroups after summarize");
 								console.log(itemGroups);
-								// summarizedItemGroups[groupByKey] = itemGroups;
-								summarizedItemGroups[targets.join("::")] = itemGroups;
 
-								// !!!
-								// return _.sortBy(
+								// var groupByOrderFn = config.getGroupByOrder(groupByKey);
+								// var sortedItemGroups = _.sortBy(
 								// 	itemGroups,
 								// 	function (itemGroup) {
-								// 		return itemGroup.summary.count * -1;
+								// 		return groupByOrderFn(itemGroup.values[0]);
+								// 		// return itemGroup.summary.count * -1;
 								// 	}
 								// );
+
+								var sortedItemGroups = _sortBy(itemGroups, targets, config);
+								summarizedItemGroups[targets.join("::")] = sortedItemGroups;
+
+								// summarizedItemGroups[targets.join("::")] = itemGroups;
+								// summarizedItemGroups[groupByKey] = itemGroups;
+
 							});
 						}
 						else {
@@ -754,7 +1002,7 @@ angular.module('directives.pieChart', [
 					var getPieCharts = function (items, config) {
 						// var groupByColumns = config.getGroupByColumns();
 						// var itemGroups = groupByFilter(items, groupByColumns);
-						config = new pieChartConfig(config);
+						// config = new pieChartConfig(config);
 						console.log("config blessed is ");
 						console.log(config);
 
@@ -785,8 +1033,8 @@ angular.module('directives.pieChart', [
 									pieChart.options.title = config.getChartTitleCumulative(summaryKey);
 
 									angular.forEach(summarizedItemGroups, function(itemGroups, groupByKey) {
-										console.log("groupByKey");
-										console.log(groupByKey);
+										// console.log("groupByKey");
+										// console.log(groupByKey);
 										pieChart.data.push(pieChartDataSources[groupByKey](itemGroups));
 										pieChart.options.series.push({
 											label: groupByKey,
@@ -827,27 +1075,29 @@ angular.module('directives.pieChart', [
 									pieChart.data = [];
 									// pieChart.options.seriesColors = [];
 									pieChart.options.seriesColors = getSeriesColors(itemGroups);
-									// angular.forEach(_.keys(pieChartDataSource), function(dataKey) {
-									angular.forEach(pieChartDataSource[groupByKey], function(pieChartDataSourceFn, dataKey) {
-										// angular.forEach(pieChartDataSource, function(pieChartDataSourceFn, dataKey) {
-										console.log("data key");
-										console.log(dataKey);
-										// pieChart.data = [pieChartDataSource[dataKey](itemGroups)];
+									pieChart.options.title = config.getChartTitle(groupByKey);
+									// angular.forEach(_.keys(pieChartDataSource), function(summaryKey) {
+									angular.forEach(pieChartDataSource[groupByKey], function(pieChartDataSourceFn, summaryKey) {
+										// angular.forEach(pieChartDataSource, function(pieChartDataSourceFn, summaryKey) {
+										console.log("summary key");
+										console.log(summaryKey);
+										// pieChart.data = [pieChartDataSource[summaryKey](itemGroups)];
 										pieChart.data.push(pieChartDataSourceFn(itemGroups));
 										// pieChart.options.seriesColors.push(getSeriesColors(itemGroups));
 									});
 									$scope.pieCharts.push(pieChart);
 								}
 								else {
-									// angular.forEach(_.keys(pieChartDataSource), function(dataKey) {
-									angular.forEach(pieChartDataSource[groupByKey], function(pieChartDataSourceFn, dataKey) {
-										// angular.forEach(pieChartDataSource, function(pieChartDataSourceFn, dataKey) {
+									// angular.forEach(_.keys(pieChartDataSource), function(summaryKey) {
+									angular.forEach(pieChartDataSource[groupByKey], function(pieChartDataSourceFn, summaryKey) {
+										// angular.forEach(pieChartDataSource, function(pieChartDataSourceFn, summaryKey) {
 										var pieChart = {};
-										console.log("data key");
-										console.log(dataKey);
-										// pieChart.data = [pieChartDataSource[dataKey](itemGroups)];
+										console.log("summary key");
+										console.log(summaryKey);
+										// pieChart.data = [pieChartDataSource[summaryKey](itemGroups)];
 										pieChart.data = [pieChartDataSourceFn(itemGroups)];
 										pieChart.options = _.clone($scope.defaultPieOptions);
+										pieChart.options.title = config.getChartTitle(groupByKey, summaryKey);
 										pieChart.options.seriesColors = getSeriesColors(itemGroups);
 										$scope.pieCharts.push(pieChart);
 									});
@@ -904,14 +1154,45 @@ angular.module('directives.pieChart', [
 					// };
 
 					if( $scope.items.length ){
-						getPieCharts($scope.items, $scope.chartConfig);
+						// getPieCharts($scope.items, $scope.chartConfig);
+						getPieCharts($scope.items, $scope.pieChartConfigInstance);
 					}
 
 					$scope.$watchCollection('items', function (newObj, oldObj) {
 						if( !angular.equals(newObj, oldObj) ){
-							getPieCharts($scope.items, $scope.chartConfig);
+							// getPieCharts($scope.items, $scope.chartConfig);
+							getPieCharts($scope.items, $scope.pieChartConfigInstance);
 						}
 					});
+
+					// $scope.$watchCollection('chartConfig', function (newObj, oldObj) {
+					// 	if( !angular.equals(newObj, oldObj) ){
+					// 		$scope.pieChartConfigInstance = new pieChartConfig($scope.chartConfig);
+					// 		getPieCharts($scope.items, $scope.pieChartConfigInstance);
+					// 	}
+					// });
+
+					// $scope.$watchCollection('pieChartConfigInstance', function (newObj, oldObj) {
+					// 	if( !angular.equals(newObj, oldObj) ){
+					// 		// $scope.pieChartConfigInstance = new pieChartConfig($scope.chartConfig);
+					// 		getPieCharts($scope.items, $scope.pieChartConfigInstance);
+					// 	}
+					// });
+
+					$scope.$watch('pieChartConfigInstance', function (newObj, oldObj) {
+						if( !angular.equals(newObj, oldObj) ){
+							// $scope.pieChartConfigInstance = new pieChartConfig($scope.chartConfig);
+							getPieCharts($scope.items, $scope.pieChartConfigInstance);
+						}
+					}, true);
+
+					// $scope.$watchGroup(['items', 'chartConfig'], function (newValues, oldValues) {
+					// 	// getPieCharts($scope.items, $scope.chartConfig);
+					// 	if( !angular.equals(newValues, oldValues) ){
+					// 		console.log("something changed");
+					// 		getPieCharts($scope.items, $scope.chartConfig);
+					// 	}
+					// });
 
 					// $scope.tasksPieData = [[
 					// 	['Heavy Industry', 12],['Retail', 9], ['Light Industry', 14],
