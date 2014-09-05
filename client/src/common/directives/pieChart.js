@@ -24,7 +24,7 @@ angular.module('directives.pieChart', [
 			scope: {
 				items: '=',
 				fetchingitems: '=',
-  				resourceConfig: '=',
+  				// resourceConfig: '=',
   				chartConfig: '=',
 				rootDivClass: '@?',
   				chartOptions: '=?',
@@ -64,9 +64,9 @@ angular.module('directives.pieChart', [
 					directiveInitializer
 				) {
 
-					var resourceConfig = $scope.resourceConfig;
-					$scope.resourcePrettyName = resourceConfig.resource.prettyName;
-					$scope.resourcePrettyNameAlt = resourceConfig.resource.altPrettyName;
+					// var resourceConfig = $scope.resourceConfig;
+					// $scope.resourcePrettyName = resourceConfig.resource.prettyName;
+					// $scope.resourcePrettyNameAlt = resourceConfig.resource.altPrettyName;
 
 					// set some defaults for the directive's attributes
  					$scope.self = {};
@@ -130,24 +130,17 @@ angular.module('directives.pieChart', [
 						attrSpec.disabled = !attrSpec.disabled;
 					};
 
-					// pieChartConfig.disableAttr = function (attrSpec) {
-					// 	attrSpec.disabled = true;
-					// };
-
-					// pieChartConfig.enableAttr = function (attrSpec) {
-					// 	attrSpec.disabled = false;
-					// };
-
 					pieChartConfig.isDisabledAttr = function (attrSpec) {
 						return attrSpec.disabled || false;
 					};
 
+					// Fetch attributes specs or specific keys in the attribute specs
 					pieChartConfig.getAttributes = function (attrSpecs, options, attrKey) {
 						var that = this;
 						if( _.isObject(options) ){
 							if( _.isArray(options.customOrder) ){
-								// Note: for custom order, pass in the corresponding the dictionary
-								// for lookup
+								// Note: for custom order, pass in the
+								// corresponding the dictionary for lookup
 								attrSpecs = _.map(options.customOrder, function (key) {
 									return options.dictionary.lookUpItem(key);
 								});
@@ -305,16 +298,6 @@ angular.module('directives.pieChart', [
 						pieChartConfig.toggleAttr(groupBySpec);
 					};
 
-					// pieChartConfig.prototype.disableGroupBy = function (groupByKey) {
-					// 	var groupBySpec = this.groupByDictionary.lookUpItem(groupByKey);
-					// 	pieChartConfig.disableAttr(groupBySpec);
-					// };
-
-					// pieChartConfig.prototype.enableGroupBy = function (groupByKey) {
-					// 	var groupBySpec = this.groupByDictionary.lookUpItem(groupByKey);
-					// 	pieChartConfig.enableAttr(groupBySpec);
-					// };
-
 					pieChartConfig.prototype.isDisabledGroupBy = function (groupByKey) {
 						var groupBySpec = this.groupByDictionary.lookUpItem(groupByKey);
 						return pieChartConfig.isDisabledAttr(groupBySpec);
@@ -327,16 +310,6 @@ angular.module('directives.pieChart', [
 						var summaryItemSpec = this.summaryItemsDictionary.lookUpItem(summaryItemKey);
 						pieChartConfig.toggleAttr(summaryItemSpec);
 					};
-
-					// pieChartConfig.prototype.disableSummaryItem = function (summaryItemKey) {
-					// 	var summaryItemSpec = this.summaryItemsDictionary.lookUpItem(summaryItemKey);
-					// 	pieChartConfig.disableAttr(summaryItemSpec);
-					// };
-
-					// pieChartConfig.prototype.enableSummaryItem = function (summaryItemKey) {
-					// 	var summaryItemSpec = this.summaryItemsDictionary.lookUpItem(summaryItemKey);
-					// 	pieChartConfig.enableAttr(summaryItemSpec);
-					// };
 
 					pieChartConfig.prototype.isDisabledSummaryItem = function (summaryItemKey) {
 						var summaryItemSpec = this.summaryItemsDictionary.lookUpItem(summaryItemKey);
@@ -429,8 +402,8 @@ angular.module('directives.pieChart', [
 
 					$scope.toggleGroupBy = function (groupByKey) {
 						$scope.pieChartConfigInstance.toggleGroupBy(groupByKey);
-						console.log("toggled groupby");
-						console.log($scope.pieChartConfigInstance);
+						// console.log("toggled groupby");
+						// console.log($scope.pieChartConfigInstance);
 					};
 
 
@@ -449,8 +422,8 @@ angular.module('directives.pieChart', [
 
 					$scope.toggleSummaryItem = function (summaryItemKey) {
 						$scope.pieChartConfigInstance.toggleSummaryItem(summaryItemKey);
-						console.log("toggled summaryItem");
-						console.log($scope.pieChartConfigInstance);
+						// console.log("toggled summaryItem");
+						// console.log($scope.pieChartConfigInstance);
 					};
 
 					/**************************************************
@@ -466,13 +439,10 @@ angular.module('directives.pieChart', [
 							toolTip: 'Pie Chart'
 						}
 					];
-					$scope.donutToggle = $scope.donutToggleStates[1];
+					// $scope.donutToggle = $scope.donutToggleStates[1];
+					$scope.donutToggle = ($scope.chartConfig.collapse) ? $scope.donutToggleStates[1] : $scope.donutToggleStates[0];
 					$scope.toggleDonut = function () {
 						$scope.donutToggle = (!$scope.donutToggle.isDonut)? $scope.donutToggleStates[1] : $scope.donutToggleStates[0];
-
-
-						// $scope.chartConfig.collapse = (!$scope.donutToggle.isDonut) ? 0 : 1;
-
 						(!$scope.donutToggle.isDonut) ? $scope.pieChartConfigInstance.collapseCharts(0) : $scope.pieChartConfigInstance.collapseCharts(1);
 					};
 
@@ -500,162 +470,9 @@ angular.module('directives.pieChart', [
 					/**************************************************
 					 * Construct pie charts
 					 **************************************************/
-
-					// var augmentPieDataSummary = function (taskStatusGroups) {
-					// 	angular.forEach(taskStatusGroups, function(taskStatusGroup) {
-					// 		var status = taskStatusGroup.key;
-					// 		var tasks = taskStatusGroup.values;
-					// 		var statusColor = tasks[0].getStatusDef().color;
-					// 		var taskCount = tasks.length;
-					// 		var totalEstimation = 0, totalRemaining = 0;
-					// 		angular.forEach(tasks, function(task) {
-					// 			totalEstimation += task.estimation;
-					// 			totalRemaining += task.remaining;
-					// 		});
-					// 		taskStatusGroup.summary = {
-					// 			status: taskStatusGroup.key,
-					// 			color: statusColor,
-					// 			tasks: tasks,
-					// 			count: taskCount,
-					// 			estimation: totalEstimation,
-					// 			remaining: totalRemaining
-					// 		};
-					// 	});
-
-					// 	return _.sortBy(
-					// 		taskStatusGroups,
-					// 		function (taskStatusGroup) {
-					// 			return taskStatusGroup.summary.count * -1;
-					// 		}
-					// 	);
-					// };
-
-					// $scope.pieChartConfigSample = {
-					// 	title: 'Tasks',
-					// 	groupBy: [
-					// 		{
-					// 			prettyName: 'Status',
-					// 			key: 'status'
-					// 		}
-					// 	],
-					// 	summary: [
-					// 		{
-					// 			prettyName: 'Estimation',
-					// 			key: 'estimation'
-					// 		},
-					// 		{
-					// 			prettyName: 'Remaining',
-					// 			key: 'remaining'
-					// 		}
-					// 	],
-					// 	count: 1
-					// };
-
-					// var getPieChartsOld = function (tasks) {
-					// 	// var taskStatusGroups = groupByFilter(tasks, "status");
-					// 	var taskStatusGroups = groupByFlatFilter(tasks, "status");
-					// 	console.log("task groups are");
-					// 	console.log(taskStatusGroups);
-
-					// 	// console.log("testing the filters");
-					// 	// var taskStatusGroupsTest = groupByFilter(tasks, "status", "assignedUserId");
-					// 	// console.log("group by");
-					// 	// console.log(taskStatusGroupsTest);
-
-					// 	// taskStatusGroupsTest = flattenGroupByFilter(taskStatusGroupsTest, true);
-					// 	// console.log("flatten group by");
-					// 	// console.log(taskStatusGroupsTest);
-
-					// 	// console.log("group by flat");
-					// 	// taskStatusGroupsTest = groupByFlatFilter(tasks, "status", "assignedUserId");
-					// 	// console.log(taskStatusGroupsTest);
-
-					// 	var sortedTaskStatusGroups = augmentPieDataSummary(taskStatusGroups);
-					// 	console.log("sorted task status grousp");
-					// 	console.log(sortedTaskStatusGroups);
-					// 	var pieChartColors = getSeriesColors(sortedTaskStatusGroups);
-					// 	angular.forEach(_.keys(pieChartDataSource), function(dataKey) {
-					// 		var pieChart = {};
-					// 		console.log("data key");
-					// 		console.log(dataKey);
-					// 		pieChart.data = [pieChartDataSource[dataKey](sortedTaskStatusGroups)];
-					// 		pieChart.options = _.clone($scope.defaultPieOptions);
-					// 		pieChart.options.seriesColors = pieChartColors;
-					// 		$scope.pieCharts.push(pieChart);
-					// 	});
-					// 	console.log("pie charts");
-					// 	console.log($scope.pieCharts);
-					// };
-
-					// var summarizePieData = function (items, config) {
-					// 	var groupByAttrs = config.getGroupByAttributes();
-					// 	// console.log("group by attrs");
-					// 	// console.log(groupByAttrs);
-
-					// 	var itemGroups = groupByFlatFilter(items, groupByAttrs);
-					// 	// console.log("item groups before summarize");
-					// 	// console.log(itemGroups);
-
-					// 	var summaryAttrs = config.getSummaryAttributes();
-					// 	angular.forEach(itemGroups, function(itemGroup) {
-					// 		itemGroup.summary = {};
-
-					// 		angular.forEach(groupByAttrs, function(attrKey) {
-					// 			// itemGroup.summary[attrKey] = itemGroup.key;
-					// 			_.extend(itemGroup.summary, itemGroup.getTargetValues());
-					// 		});
-
-					// 		// var status = itemGroup.key;
-					// 		var items = itemGroup.values;
-
-					// 		// color
-					// 		// var statusColor = items[0].getStatusDef().color;
-					// 		_.extend(itemGroup.summary, {color: items[0].getStatusDef().color});
-
- // 		// count
-					// 		if( config.getCount() ){
-					// 			// var itemCount = items.length;
-					// 			_.extend(itemGroup.summary, {count: items.length});
-					// 		}
-
-					// 		// summary items
-					// 		// var totalEstimation = 0, totalRemaining = 0;
-					// 		angular.forEach(summaryAttrs, function(summaryAttr) {
-					// 			itemGroup.summary[summaryAttr] = 0;
-					// 		});
-					// 		angular.forEach(items, function(item) {
-					// 			// totalEstimation += item.estimation;
-					// 			// totalRemaining += item.remaining;
-					// 			angular.forEach(summaryAttrs, function(summaryAttr) {
-					// 				itemGroup.summary[summaryAttr] += item[summaryAttr];
-					// 			});
-					// 		});
-
-					// 		// itemGroup.summary = {
-					// 		// 	status: itemGroup.key,
-					// 		// 	color: statusColor,
-					// 		// 	items: items,
-					// 		// 	count: itemCount,
-					// 		// 	estimation: totalEstimation,
-					// 		// 	remaining: totalRemaining
-					// 		// }
-					// 	});
-
-					// 	console.log("itemgroups after summarize");
-					// 	console.log(itemGroups);
-
-					// 	// !!!
-					// 	return _.sortBy(
-					// 		itemGroups,
-					// 		function (itemGroup) {
-					// 			return itemGroup.summary.count * -1;
-					// 		}
-					// 	);
-					// };
-
 					var _sortBy = function (itemGroups, targets, config) {
 						// var groupByOrderFn = config.getGroupByOrder(groupByKey);
-						console.log("sorting item groups");
+						// console.log("sorting item groups");
 						var sortedItemGroups = _.sortBy(
 							itemGroups,
 							function (itemGroup) {
@@ -664,7 +481,7 @@ angular.module('directives.pieChart', [
 									var groupByOrderFn = config.getGroupByOrder(groupByKey);
 									order += (groupByOrderFn(itemGroup.values[0]) || 0) * Math.pow(10, targets.length - index - 1);
 								});
-								console.log("order is: " + order);
+								// console.log("order is: " + order);
 								return order;
 								// return groupByOrderFn(itemGroup.values[0]);
 							}
@@ -715,19 +532,6 @@ angular.module('directives.pieChart', [
 
 					var summarizePieData = function (items, config) {
 						var groupByAttrs = config.getGroupByAttributes();
-						// console.log("group by attrs");
-						// console.log(groupByAttrs);
-
-						// var itemGroups = groupByFlatFilter(items, groupByAttrs);
-						// console.log("item groups before summarize");
-						// console.log(itemGroups);
-
-						// mutually exclusive groupBy
-						// return itemGroup Sets for each groupBy
-						// var summaryAttrs = config.getSummaryAttributes();
-						// if( config.getCount() ){
-						// 	summaryAttrs.push('count');
-						// }
 
 						// mutually exclusive groupBy
 						var summarizedItemGroups = {};
@@ -737,27 +541,15 @@ angular.module('directives.pieChart', [
 
 								// itemGroup.summary[groupByKey] = itemGroup.key;
 								targets.push(groupByKey);
-								console.log("targets are");
-								console.log(targets.toString());
+								// console.log("targets are");
+								// console.log(targets.toString());
 								var itemGroups = groupByFlatFilter(items, targets);
 								_summarizeItemGroups(itemGroups, config, groupByKey);
-								console.log("itemgroups after summarize");
-								console.log(itemGroups);
-
-								// var groupByOrderFn = config.getGroupByOrder(groupByKey);
-								// var sortedItemGroups = _.sortBy(
-								// 	itemGroups,
-								// 	function (itemGroup) {
-								// 		return groupByOrderFn(itemGroup.values[0]);
-								// 		// return itemGroup.summary.count * -1;
-								// 	}
-								// );
+								// console.log("itemgroups after summarize");
+								// console.log(itemGroups);
 
 								var sortedItemGroups = _sortBy(itemGroups, targets, config);
 								summarizedItemGroups[targets.join("::")] = sortedItemGroups;
-
-								// summarizedItemGroups[targets.join("::")] = itemGroups;
-								// summarizedItemGroups[groupByKey] = itemGroups;
 
 							});
 						}
@@ -767,9 +559,12 @@ angular.module('directives.pieChart', [
 								// itemGroup.summary[groupByKey] = itemGroup.key;
 								var itemGroups = groupByFlatFilter(items, groupByKey);
 								_summarizeItemGroups(itemGroups, config, groupByKey);
-								console.log("itemgroups after summarize");
-								console.log(itemGroups);
-								summarizedItemGroups[groupByKey] = itemGroups;
+								// console.log("itemgroups after summarize");
+								// console.log(itemGroups);
+								// summarizedItemGroups[groupByKey] = itemGroups;
+
+								var sortedItemGroups = _sortBy(itemGroups, [groupByKey], config);
+								summarizedItemGroups[groupByKey] = sortedItemGroups;
 
 								// !!!
 								// return _.sortBy(
@@ -782,61 +577,6 @@ angular.module('directives.pieChart', [
 						}
 
 						return summarizedItemGroups;
-
-						// angular.forEach(itemGroups, function(itemGroup) {
-						// 	itemGroup.summary = {};
-
-						// 	angular.forEach(groupByAttrs, function(attrKey) {
-						// 		// itemGroup.summary[attrKey] = itemGroup.key;
-						// 		_.extend(itemGroup.summary, itemGroup.getTargetValues());
-						// 	});
-
-						// 	// var status = itemGroup.key;
-						// 	var items = itemGroup.values;
-
-						// 	// color
-						// 	// var statusColor = items[0].getStatusDef().color;
-						// 	_.extend(itemGroup.summary, {color: items[0].getStatusDef().color});
-
-						// 	// count
-						// 	if( config.getCount() ){
-						// 		// var itemCount = items.length;
-						// 		_.extend(itemGroup.summary, {count: items.length});
-						// 	}
-
-						// 	// summary items
-						// 	// var totalEstimation = 0, totalRemaining = 0;
-						// 	angular.forEach(summaryAttrs, function(summaryAttr) {
-						// 		itemGroup.summary[summaryAttr] = 0;
-						// 	});
-						// 	angular.forEach(items, function(item) {
-						// 		// totalEstimation += item.estimation;
-						// 		// totalRemaining += item.remaining;
-						// 		angular.forEach(summaryAttrs, function(summaryAttr) {
-						// 			itemGroup.summary[summaryAttr] += item[summaryAttr];
-						// 		});
-						// 	});
-
-						// 	// itemGroup.summary = {
-						// 	// 	status: itemGroup.key,
-						// 	// 	color: statusColor,
-						// 	// 	items: items,
-						// 	// 	count: itemCount,
-						// 	// 	estimation: totalEstimation,
-						// 	// 	remaining: totalRemaining
-						// 	// }
-						// });
-
-						// console.log("itemgroups after summarize");
-						// console.log(itemGroups);
-
-						// // !!!
-						// return _.sortBy(
-						// 	itemGroups,
-						// 	function (itemGroup) {
-						// 		return itemGroup.summary.count * -1;
-						// 	}
-						// );
 
 					};
 
@@ -894,27 +634,6 @@ angular.module('directives.pieChart', [
 
 						return pieChartDataSource;
 					};
-
-					// var pieChartDataSource = {
-					// 	counts: function (itemGroups) {
-					// 		return _.map(itemGroups, function (itemGroup) {
-					// 				   var data = itemGroup.summary;
-					// 				   return [data.status, data.count];
-					// 			   });
-					// 	},
-					// 	estimations: function (itemGroups) {
-					// 		return _.map(itemGroups, function (itemGroup) {
-					// 				   var data = itemGroup.summary;
-					// 				   return [data.status, data.estimation];
-					// 			   });
-					// 	},
-					// 	remainings: function (itemGroups) {
-					// 		return _.map(itemGroups, function (itemGroup) {
-					// 				   var data = itemGroup.summary;
-					// 				   return [data.status, data.remaining];
-					// 			   });
-					// 	}
-					// };
 
 					$scope.pieCharts = [];
 					$scope.defaultPieOptions = {
@@ -1003,12 +722,12 @@ angular.module('directives.pieChart', [
 						// var groupByColumns = config.getGroupByColumns();
 						// var itemGroups = groupByFilter(items, groupByColumns);
 						// config = new pieChartConfig(config);
-						console.log("config blessed is ");
-						console.log(config);
+						// console.log("config blessed is ");
+						// console.log(config);
 
 						var summarizedItemGroups = summarizePieData(items, config);
-						console.log("sorted item status grousp");
-						console.log(summarizedItemGroups);
+						// console.log("sorted item status grousp");
+						// console.log(summarizedItemGroups);
 
 						$scope.pieCharts = [];
 						var pieChartDataSource = getPieChartDataSources(config);
@@ -1052,8 +771,8 @@ angular.module('directives.pieChart', [
 										// angular.forEach(pieChartDataSource, function(pieChartDataSourceFn, groupByKey) {
 										if( groupByAttrs.join("::") ===  groupByKey){
 											var pieChart = {};
-											console.log("groupByKey");
-											console.log(groupByKey);
+											// console.log("groupByKey");
+											// console.log(groupByKey);
 											// pieChart.data = [pieChartDataSource[groupByKey](itemGroups)];
 											pieChart.data = [pieChartDataSources[groupByKey](itemGroups)];
 											pieChart.options = _.clone($scope.defaultPieOptions);
@@ -1079,8 +798,8 @@ angular.module('directives.pieChart', [
 									// angular.forEach(_.keys(pieChartDataSource), function(summaryKey) {
 									angular.forEach(pieChartDataSource[groupByKey], function(pieChartDataSourceFn, summaryKey) {
 										// angular.forEach(pieChartDataSource, function(pieChartDataSourceFn, summaryKey) {
-										console.log("summary key");
-										console.log(summaryKey);
+										// console.log("summary key");
+										// console.log(summaryKey);
 										// pieChart.data = [pieChartDataSource[summaryKey](itemGroups)];
 										pieChart.data.push(pieChartDataSourceFn(itemGroups));
 										// pieChart.options.seriesColors.push(getSeriesColors(itemGroups));
@@ -1092,8 +811,8 @@ angular.module('directives.pieChart', [
 									angular.forEach(pieChartDataSource[groupByKey], function(pieChartDataSourceFn, summaryKey) {
 										// angular.forEach(pieChartDataSource, function(pieChartDataSourceFn, summaryKey) {
 										var pieChart = {};
-										console.log("summary key");
-										console.log(summaryKey);
+										// console.log("summary key");
+										// console.log(summaryKey);
 										// pieChart.data = [pieChartDataSource[summaryKey](itemGroups)];
 										pieChart.data = [pieChartDataSourceFn(itemGroups)];
 										pieChart.options = _.clone($scope.defaultPieOptions);
@@ -1109,49 +828,6 @@ angular.module('directives.pieChart', [
 						console.log("pie charts");
 						console.log($scope.pieCharts);
 					};
-
-
-					// var getPieCharts = function (items, config) {
-					// 	// var groupByColumns = config.getGroupByColumns();
-					// 	// var itemGroups = groupByFilter(items, groupByColumns);
-					// 	config = new pieChartConfig(config);
-					// 	console.log("config blessed is ");
-					// 	console.log(config);
-
-					// 	var sortedItemGroups = summarizePieData(items, config);
-					// 	console.log("sorted item status grousp");
-					// 	console.log(sortedItemGroups);
-					// 	var pieChartColors = getSeriesColors(sortedItemGroups);
-					// 	$scope.pieCharts = [];
-
-					// 	// var pieChartDataSource = getPieChartDataSources(config);
-
-					// 	if( config.collapseCharts() ){
-					// 		var pieChart = {};
-					// 		pieChart.options = _.clone($scope.defaultDonutOptions);
-					// 		pieChart.options.seriesColors = pieChartColors;
-					// 		pieChart.data = [];
-					// 		angular.forEach(_.keys(pieChartDataSource), function(dataKey) {
-					// 			console.log("data key");
-					// 			console.log(dataKey);
-					// 			pieChart.data.push(pieChartDataSource[dataKey](sortedItemGroups));
-					// 		});
-					// 		$scope.pieCharts.push(pieChart);
-					// 	}
-					// 	else {
-					// 		angular.forEach(_.keys(pieChartDataSource), function(dataKey) {
-					// 			var pieChart = {};
-					// 			console.log("data key");
-					// 			console.log(dataKey);
-					// 			pieChart.data = [pieChartDataSource[dataKey](sortedItemGroups)];
-					// 			pieChart.options = _.clone($scope.defaultPieOptions);
-					// 			pieChart.options.seriesColors = pieChartColors;
-					// 			$scope.pieCharts.push(pieChart);
-					// 		});
-					// 	}
-					// 	console.log("pie charts");
-					// 	console.log($scope.pieCharts);
-					// };
 
 					if( $scope.items.length ){
 						// getPieCharts($scope.items, $scope.chartConfig);
@@ -1193,52 +869,6 @@ angular.module('directives.pieChart', [
 					// 		getPieCharts($scope.items, $scope.chartConfig);
 					// 	}
 					// });
-
-					// $scope.tasksPieData = [[
-					// 	['Heavy Industry', 12],['Retail', 9], ['Light Industry', 14],
-					// 	['Out of home', 16],['Commuting', 7], ['Orientation', 9]
-					// ]];
-
-					// $scope.tasksPieOptions = {
-					// 	gridPadding: {top:0, bottom:38, left:0, right:0},
-					// 	seriesColors:['#85802b', '#00749F', '#73C774', '#C7754C', '#17BDB8', '#C7754C'],
-					// 	seriesDefaults:{
-					// 		shadow: true,
-					// 		renderer: jQuery.jqplot.PieRenderer,
-					// 		trendline:{ show:false },
-					// 		rendererOptions: { padding: 8, showDataLabels: true }
-					// 	},
-					// 	legend:{
-					// 		show:true,
-					// 		placement: 'inside',
-					// 		rendererOptions: {
-					// 			// numberRows: 2
-					// 			numberColumns: 1
-					// 		},
-					// 		// location:'s',
-					// 		marginTop: '15px'
-					// 	}
-					// 	// seriesDefaults:{
-					// 	// 	shadow: false,
-					// 	// 	renderer:$.jqplot.PieRenderer,
-					// 	// 	rendererOptions:{
-					// 	// 		sliceMargin: 4,
-					// 	// 		// rotate the starting position of the pie around to 12 o'clock.
-					// 	// 		startAngle: -90
-					// 	// 	}
-					// 	// },
-					// 	// legend:{ show: true }
-					// 	// seriesDefaults: {
-					// 	// 	// Make this a pie chart.
-					// 	// 	renderer: jQuery.jqplot.PieRenderer,
-					// 	// 	rendererOptions: {
-					// 	// 		// Put data labels on the pie slices.
-					// 	// 		// By default, labels show the percentage of the slice.
-					// 	// 		showDataLabels: true
-					// 	// 	}
-					// 	// },
-					// 	// legend: { show:true, location: 'e' }
-					// };
 
 				}
 			]

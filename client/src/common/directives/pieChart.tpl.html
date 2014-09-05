@@ -1,10 +1,12 @@
 <div ng-class="self.rootDivClass">
 	<div class="row">
-		<span class="col-md-12" ng-show="fetchingitems">Fetching {{resourcePrettyNameAlt}} ... 
+		<!-- <span class="col-md-12" ng-show="fetchingitems">Fetching {{resourcePrettyNameAlt}} ...  -->
+		<span class="col-md-12" ng-show="fetchingitems">Fetching {{pieChartConfigInstance.getTitle()}} ... 
 			<a href="#"><img src="/static/img/spinner.gif"></a>
 		</span>		
 		<span class="col-md-12" ng-show="!items.length && !fetchingitems">
-			No {{resourcePrettyNameAlt}} found
+			<!-- No {{resourcePrettyNameAlt}} found -->
+			No {{pieChartConfigInstance.getTitle()}} found
 		</span>		
 	</div>
 	<!-- div row -->
@@ -16,7 +18,7 @@
 				<div class="form-group text-center">
 					<!-- <span class="help-block">Additional options</span> -->
 					<div class="form-group">
-						<div class="btn-group" dropdown is-open="isOpenGroupBy" >
+						<div class="btn-group" dropdown is-open="isOpenGroupBy">
 							<button type="button" class="btn btn-default dropdown-toggle" tooltip="Choose attributes to group by" tooltip-placement="top" ng-click="isOpenGroupBy = !isOpenGroupBy">
 								Group By <span class="caret"></span>
 							</button>
@@ -59,16 +61,6 @@
 							<span ng-show="!!cumulativeToggle.isCumulative"><icon id="align-justify"></icon></span>
 							<span ng-show="!cumulativeToggle.isCumulative"><icon id="link"></icon></span>
 						</button>
-
- 						<!-- <button class="btn btn-default" ng-click="toggleWeekends()" tooltip="{{weekendsToggle.toolTip}}" tooltip-placement="top"> -->
-						<!-- 	<icon id="arrow-right" flip="{{!weekendsToggle.showWeekends}}" watch-att="true"></icon> -->
-						<!-- 	<icon id="arrow-left" flip="{{!weekendsToggle.showWeekends}}" watch-att="true"></icon> -->
-						<!-- </button> -->
-
-						<!-- <button class="btn btn-default" ng-click="toggleWorkHours()" tooltip="{{workHoursToggle.toolTip}}" tooltip-placement="right"> -->
-						<!-- 	<span ng-show="workHoursToggle.showNonWorkHours"><icon id="eye-open"></icon></span> -->
-						<!-- 	<span ng-show="!workHoursToggle.showNonWorkHours"><icon id="eye-close"></icon></span> -->
-						<!-- </button> -->
 					</div>
 				</div>
 			</form>
