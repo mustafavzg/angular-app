@@ -60,6 +60,25 @@
 					 title="Tasks in {{backlogItem.name}}"
 					 >
 				</gantt-chart>
+
+				<!-- <div class="panel-body"> -->
+				<!-- 	<div class="col-md-6"> -->
+				<!-- 		<\!-- <div ui-chart="tasksPieData" chart-options="tasksPieOptions"></div> -\-> -->
+				<!-- 		<div ng-repeat="chart in pieCharts" ui-chart="chart.data" chart-options="chart.options"></div> -->
+				<!-- 	</div> -->
+				<!-- 	<\!-- div col -\-> -->
+				<!-- </div> -->
+				<!-- div panel body -->
+
+				<!-- <div class="panel-body"> -->
+				<!-- 	<pie-chart items="tasks" fetchingitems="fetchingTasks" chart-config="pieChartConfigSample" resource-config="tasksConf" root-div-class="col-md-6" ></pie-chart> -->
+				<!-- </div> -->
+				<!-- div panel body -->
+				<!-- <pie-chart items="tasks" fetchingitems="fetchingTasks" chart-config="pieChartConfigSample" resource-config="tasksConf"></pie-chart> -->
+				<!-- <pie-chart items="tasks" fetchingitems="fetchingTasks" chart-config="pieChartConfig"></pie-chart> -->
+
+				<burn-down-chart items="tasks" fetchingitems="fetchingTasks" chart-config="burnDownChartConfig"></burn-down-chart>
+
 			</tab>
 			<tab heading="Tasks">
 				<tableactive items="tasks" fetchingitems="fetchingTasks" resourceconf="tasksConf" ></tableactive>

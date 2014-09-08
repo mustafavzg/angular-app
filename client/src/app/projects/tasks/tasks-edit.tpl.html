@@ -75,6 +75,26 @@
 			</div>
 			<!-- div panel -->
 
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<label>Set Type</label>
+				</div>
+				<!-- div panel heading -->
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-md-2" ng-repeat="type in typeDef | orderBy:'ordering'">
+							<button class="btn btn-block" ng-click="setTaskType(type)" ng-class="setBtnClassesForType(type)">
+								{{type.name}} 
+							</button>
+						</div>
+						<!-- div col -->
+					</div>
+					<!-- div row -->
+				</div>
+				<!-- div panel body -->
+			</div>
+			<!-- div panel -->
+
 			
 			<div class="panel panel-default">
 				<div class="panel-heading">

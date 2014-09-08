@@ -12,11 +12,11 @@ angular.module('resources.tasks')
 
 		Tasks.statusEnum = ['TODO', 'IN_DEV', 'BLOCKED', 'IN_TEST', 'DONE'];
 
-		/**************************************************
+ 		/**************************************************
 		 * Status Defintions
 		 * Will be moved to back end persistence
 		 **************************************************/
-		Tasks.statusDef = [
+		var statusDef = [
 			{
 				key: 'TODO',
 				name: 'To Do',
@@ -75,11 +75,93 @@ angular.module('resources.tasks')
 				return status.key;
 			}
 		);
-		statusDictionary.setItems(Tasks.statusDef);
+		statusDictionary.setItems(statusDef);
+
+		Tasks.getStatusDef = function () {
+			return statusDef;
+		};
 
 		Tasks.prototype.getStatusDef = function (status) {
 			status = status || this.status;
-			return statusDictionary.lookUpItem(status);
+			return statusDictionary.lookUpItem(status) || {};
+		};
+
+
+ 		/**************************************************
+		 * Type Defintions
+		 * Will be moved to back end persistence
+		 **************************************************/
+		// CFCE95, 88697B, FACDD0, CEE0F4, FFDE99
+		var typeDef = [
+			{
+				key: 'ALPHA',
+				name: 'alpha',
+				ordering: 1,
+				btnclass : {
+					inactive: 'btn-default',
+					active: 'btn-primary'
+				},
+				color: '#CFCE95'
+			},
+			{
+				key: 'BETA',
+				name: 'beta',
+				ordering: 2,
+				btnclass : {
+					inactive: 'btn-default',
+					active: 'btn-primary'
+				},
+				color: '#88697B'
+			},
+			{
+				key: 'GAMMA',
+				name: 'gamma',
+				ordering: 3,
+				btnclass : {
+					inactive: 'btn-default',
+					active: 'btn-primary'
+				},
+				color: '#FACDD0'
+			},
+			{
+				key: 'DELTA',
+				name: 'delta',
+				ordering: 4,
+				btnclass : {
+					inactive: 'btn-default',
+					active: 'btn-primary'
+				},
+				color: '#CEE0F4'
+			},
+			{
+				key: 'THETA',
+				name: 'theta',
+				ordering: 5,
+				btnclass : {
+					inactive: 'btn-default',
+					active: 'btn-primary'
+				},
+				color: '#FFDE99'
+			}
+		];
+
+		var typeDictionary = resourceDictionary(
+			'type',
+			function (type) {
+				return type.key;
+			}
+		);
+
+		// typeDictionary.setItems(Tasks.typeDef);
+		typeDictionary.setItems(typeDef);
+
+		Tasks.getTypeDef = function () {
+			return typeDef;
+		};
+
+		Tasks.prototype.getTypeDef = function (type) {
+			type = type || this.type;
+			return typeDictionary.lookUpItem(type) || {color: '#AE4A32'};
 		};
 
 		/**************************************************

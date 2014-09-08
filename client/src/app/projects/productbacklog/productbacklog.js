@@ -6,9 +6,16 @@ angular.module('productbacklog', [
 	'directives.icon',
 	'directives.propertybar',
 	'directives.actionicon',
+	'directives.pieChart',
+	'directives.burnDownChart',
 	'services.locationHistory',
 	'services.crud',
-	'services.i18nNotifications'
+	'services.i18nNotifications',
+	'ui.chart',
+	'filters.groupBy',
+	'filters.groupByFlat',
+	'filters.flattenGroupBy',
+	'underscore'
 ])
 
 .config([
@@ -235,6 +242,10 @@ angular.module('productbacklog', [
 	'backlogItem',
 	'Tasks',
 	'$q',
+	'groupByFilter',
+	'groupByFlatFilter',
+	'flattenGroupByFilter',
+	'_',
 	function(
 		$scope,
 		$location,
@@ -242,7 +253,11 @@ angular.module('productbacklog', [
 		project,
 		backlogItem,
 		Tasks,
-		$q
+		$q,
+		groupByFilter,
+		groupByFlatFilter,
+		flattenGroupByFilter,
+		_
 	){
 
 
@@ -415,6 +430,11 @@ angular.module('productbacklog', [
 			function (tasks, responsestatus, responseheaders, responseconfig) {
 				$scope.tasks = tasks;
 				$scope.fetchingTasks = false;
+				// getPieCharts($scope.tasks);
+				// getPieChartsNew($scope.tasks, $scope.pieChartConfigSample);
+				// $scope.groupedTasks = groupByFilter($scope.tasks, "status");
+				// console.log("grouped tasks");
+				// console.log($scope.groupedTasks);
 				console.log("Succeeded to fetch tasks");
 			},
 			function (response, responsestatus, responseheaders, responseconfig) {
@@ -469,6 +489,109 @@ angular.module('productbacklog', [
 				}
 			]
 		};
+
+		$scope.pieChartConfig = {
+			title: 'Tasks',
+			groupBy: [
+				{
+					prettyName: 'Status',
+					key: 'status',
+					ordering: 1,
+					colorMap: function (item) {
+						return item.getStatusDef().color;
+					},
+					groupByOrder: function (item) {
+						// console.log("ordering is");
+						// console.log(item.getStatusDef().ordering);
+						return item.getStatusDef().ordering;
+						// return item.getStatusDef().ordering || 0;
+
+					}
+				},
+				{
+					prettyName: 'Type',
+					key: 'type',
+					ordering: 2,
+					colorMap: function (item) {
+						return item.getTypeDef().color;
+					},
+					groupByOrder: function (item) {
+						return item.getTypeDef().ordering;
+						// return item.getTypeDef().ordering || 0;
+					}
+				}
+			],
+			summary: [
+				{
+					prettyName: 'Estimation',
+					prettyNameSuffix: "for",
+					key: 'estimation',
+					ordering: 1
+				},
+				{
+					prettyName: 'Remaining estimation',
+					prettyNameSuffix: "for",
+					key: 'remaining',
+					ordering: 2
+				}
+			],
+			count: 1,
+			// collapse: 0
+			collapse: 0,
+			cumulative: 0
+		};
+
+		$scope.burnDownChartConfig = {
+			title: 'Tasks',
+			groupBy: [
+				{
+					prettyName: 'Status',
+					key: 'status',
+					ordering: 1,
+					colorMap: function (item) {
+						return item.getStatusDef().color;
+					},
+					groupByOrder: function (item) {
+						// console.log("ordering is");
+						// console.log(item.getStatusDef().ordering);
+						return item.getStatusDef().ordering;
+						// return item.getStatusDef().ordering || 0;
+
+					}
+				},
+				{
+					prettyName: 'Type',
+					key: 'type',
+					ordering: 2,
+					colorMap: function (item) {
+						return item.getTypeDef().color;
+					},
+					groupByOrder: function (item) {
+						return item.getTypeDef().ordering;
+						// return item.getTypeDef().ordering || 0;
+					}
+				}
+			],
+			summary: [
+				{
+					prettyName: 'Estimation',
+					prettyNameSuffix: "for",
+					key: 'estimation',
+					ordering: 1
+				},
+				{
+					prettyName: 'Remaining estimation',
+					prettyNameSuffix: "for",
+					key: 'remaining',
+					ordering: 2
+				}
+			],
+			count: 1,
+			// collapse: 0
+			collapse: 0,
+			cumulative: 0
+		};
+
 
 	}
 ]);

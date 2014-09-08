@@ -163,6 +163,10 @@ module.exports = function (grunt) {
 				src:['vendor/jquery-ui/*.js'],
 				dest: '<%= distdir %>/jquery-ui.js'
 			},
+			jqplot: {
+				src:['vendor/jqplot/jquery.jqplot.js', 'vendor/jqplot/plugins/*.min.js'],
+				dest: '<%= distdir %>/jquery.jqplot.js'
+			},
 
 			// Unserscore
 			underscore: {
@@ -179,7 +183,7 @@ module.exports = function (grunt) {
 			},
 
 			bootstrapcss: {
-				src:['vendor/bootstrap/dist/css/bootstrap.css', 'vendor/bootstrap/dist/css/bootstrap-theme.css', 'src/less/custom-utilities.less', 'src/less/gantt.css'],
+				src:['vendor/bootstrap/dist/css/bootstrap.css', 'vendor/bootstrap/dist/css/bootstrap-theme.css', 'src/less/custom-utilities.less', 'src/less/gantt.css', 'vendor/jqplot/jquery.jqplot.css'],
 				dest: '<%= distdir %>/<%= pkg.name %>.css'
 			},
 

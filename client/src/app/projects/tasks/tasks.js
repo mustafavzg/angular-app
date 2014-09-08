@@ -535,7 +535,13 @@ angular.module('tasksnew', [
 		$scope.project = project;
 
 		$scope.statusEnum = Tasks.statusEnum;
-		$scope.statusDef = Tasks.statusDef;
+
+		// status and type
+		// $scope.statusDef = Tasks.statusDef;
+		// $scope.typeDef = Tasks.typeDef;
+		$scope.statusDef = Tasks.getStatusDef();
+		$scope.typeDef = Tasks.getTypeDef();
+
 		$scope.productBacklogItems = productBacklogItems;
 		$scope.teamMembers = teamMembers;
 
@@ -563,6 +569,26 @@ angular.module('tasksnew', [
 			}
 			else {
 				return status.btnclass.inactive
+			}
+		};
+
+		/**************************************************
+		 * Type Widget
+		 **************************************************/
+		$scope.setTaskType = function (type) {
+			$scope.task.type = type.key;
+		};
+
+		$scope.isTaskType = function (type) {
+			return ($scope.task.type === type.key)? true : false;
+		};
+
+		$scope.setBtnClassesForType = function (type) {
+			if( $scope.isTaskType(type) ){
+				return type.btnclass.active
+			}
+			else {
+				return type.btnclass.inactive
 			}
 		};
 
@@ -656,7 +682,6 @@ angular.module('tasksnew', [
 		$scope.unassignBacklogItem = function () {
 			$scope.task.productBacklogItemId = undefined;
 		};
-
 
 		/**************************************************
 		 * Setup 'Assign User' widget
