@@ -457,8 +457,10 @@ angular.module('tasksnew', [
 		$scope.statusEnum = Tasks.statusEnum;
 
 		// status and type
-		$scope.statusDef = Tasks.statusDef;
-		$scope.typeDef = Tasks.typeDef;
+		// $scope.statusDef = Tasks.statusDef;
+		// $scope.typeDef = Tasks.typeDef;
+		$scope.statusDef = Tasks.getStatusDef();
+		$scope.typeDef = Tasks.getTypeDef();
 
 		$scope.productBacklogItems = productBacklogItems;
 		$scope.teamMembers = teamMembers;
@@ -600,7 +602,6 @@ angular.module('tasksnew', [
 		$scope.unassignBacklogItem = function () {
 			$scope.task.productBacklogItemId = undefined;
 		};
-
 
 		/**************************************************
 		 * Setup 'Assign User' widget

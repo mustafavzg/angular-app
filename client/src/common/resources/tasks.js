@@ -92,7 +92,7 @@ angular.module('resources.tasks')
 		 * Will be moved to back end persistence
 		 **************************************************/
 		// CFCE95, 88697B, FACDD0, CEE0F4, FFDE99
-		Tasks.typeDef = [
+		var typeDef = [
 			{
 				key: 'ALPHA',
 				name: 'alpha',
@@ -151,7 +151,13 @@ angular.module('resources.tasks')
 				return type.key;
 			}
 		);
-		typeDictionary.setItems(Tasks.typeDef);
+
+		// typeDictionary.setItems(Tasks.typeDef);
+		typeDictionary.setItems(typeDef);
+
+		Tasks.getTypeDef = function () {
+			return typeDef;
+		};
 
 		Tasks.prototype.getTypeDef = function (type) {
 			type = type || this.type;
