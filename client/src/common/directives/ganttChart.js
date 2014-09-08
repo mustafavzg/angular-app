@@ -53,6 +53,7 @@ angular.module('directives.ganttChart', [
 					$timeout
 				) {
 					console.log("title is "+$scope.title);
+					console.log("items are "+$scope.items);
 					/**************************************************
 					 * Settings
 					 **************************************************/
@@ -209,7 +210,7 @@ angular.module('directives.ganttChart', [
 
 					var truncateString = function (str, length) {
 						var shortString = str;
-						if( str.length > length && length >= 3){
+						if( str && str.length > length && length >= 3){
 							shortString = str.substr(0, length - 3);
 							shortString = shortString.trim();
 							shortString = shortString + '...'

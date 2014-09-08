@@ -893,8 +893,6 @@ angular.module('projectsitemview', [
 					color: task.getStatusDef(burst.data.status).color
 				});
 			});
-			console.log("Task data:\n");
-			console.log("Data=\n"+data);
 			return data;
 		};
 
