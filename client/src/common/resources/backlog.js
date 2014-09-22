@@ -1,7 +1,7 @@
-angular.module('resources.productbacklog', ['mongolabResource']);
-angular.module('resources.productbacklog').factory('ProductBacklog', ['mongolabResource', function (mongolabResource) {
+angular.module('resources.productbacklog', ['webappResource']);
+angular.module('resources.productbacklog').factory('ProductBacklog', ['webappResource', function (webappResource) {
 
-  var ProductBacklog = mongolabResource('productbacklog');
+  var ProductBacklog = webappResource('productbacklog');
 
   ProductBacklog.forProject = function (projectId, successcb, errorcb) {
     return ProductBacklog.query({projectId:projectId}, successcb, errorcb);

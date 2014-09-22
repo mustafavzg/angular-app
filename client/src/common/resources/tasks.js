@@ -1,14 +1,14 @@
 angular.module('resources.tasks', [
-	'mongolabResource',
+	'webappResource',
 	'services.resourceDictionary'
 ]);
 angular.module('resources.tasks')
 .factory('Tasks', [
-	'mongolabResource',
+	'webappResource',
 	'resourceDictionary',
-	function (mongolabResource, resourceDictionary) {
+	function (webappResource, resourceDictionary) {
 
-		var Tasks = mongolabResource('tasks');
+		var Tasks = webappResource('tasks');
 
 		Tasks.statusEnum = ['TODO', 'IN_DEV', 'BLOCKED', 'IN_TEST', 'DONE'];
 

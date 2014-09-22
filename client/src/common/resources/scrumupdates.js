@@ -1,10 +1,10 @@
-angular.module('resources.scrumUpdates', ['mongolabResource']);
+angular.module('resources.scrumUpdates', ['webappResource']);
 angular.module('resources.scrumUpdates')
 .factory('ScrumUpdates', [
-	'mongolabResource',
-	function (mongolabResource) {
+	'webappResource',
+	function (webappResource) {
 
-		var ScrumUpdates = mongolabResource('scrumupdates');
+		var ScrumUpdates = webappResource('scrumupdates');
 
 		// moved these to the mongolab-resource module
 		// ScrumUpdates.forResource = function (collectionName, resourceId, successcb, errorcb) {
