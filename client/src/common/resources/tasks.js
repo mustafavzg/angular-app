@@ -1,14 +1,14 @@
 angular.module('resources.tasks', [
-	'webappResource',
+	'dbResource',
 	'services.resourceDictionary'
 ]);
 angular.module('resources.tasks')
 .factory('Tasks', [
-	'webappResource',
+	'dbResource',
 	'resourceDictionary',
-	function (webappResource, resourceDictionary) {
+	function (dbResource, resourceDictionary) {
 
-		var Tasks = webappResource('tasks');
+		var Tasks = dbResource('tasks');
 
 		Tasks.statusEnum = ['TODO', 'IN_DEV', 'BLOCKED', 'IN_TEST', 'DONE'];
 
@@ -162,6 +162,10 @@ angular.module('resources.tasks')
 		Tasks.prototype.getTypeDef = function (type) {
 			type = type || this.type;
 			return typeDictionary.lookUpItem(type) || {color: '#AE4A32'};
+		};
+
+		Tasks.getCollectionName = function(){
+			return 'tasks';
 		};
 
 		/**************************************************

@@ -1,10 +1,13 @@
-angular.module('resources.users', ['webappResource']);
+angular.module('resources.users', ['dbResource']);
 angular.module('resources.users').factory('Users', [
-	'webappResource',
+	'dbResource',
 	'filterFilter',
-	function (webappResource, filterFilter) {
+	function (dbResource, filterFilter) {
 
-		var userResource = webappResource('users');
+		var userResource = dbResource('users');
+		userResource.getCollectionName = function(){
+			return 'users';
+		};
 
 		userResource.autocomplete = function(query, successcb, errorcb) {
 			// mongodb seems to accept only regex literals

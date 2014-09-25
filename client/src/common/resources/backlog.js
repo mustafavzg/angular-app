@@ -1,8 +1,12 @@
-angular.module('resources.productbacklog', ['webappResource']);
-angular.module('resources.productbacklog').factory('ProductBacklog', ['webappResource', function (webappResource) {
+angular.module('resources.productbacklog', ['dbResource']);
+angular.module('resources.productbacklog').factory('ProductBacklog', ['dbResource', function (dbResource) {
 
-  var ProductBacklog = webappResource('productbacklog');
+  var ProductBacklog = dbResource('productbacklog');
 
+  ProductBacklog.getCollectionName = function(){
+    return 'productbacklog';    
+  };
+   
   ProductBacklog.forProject = function (projectId, successcb, errorcb) {
     return ProductBacklog.query({projectId:projectId}, successcb, errorcb);
   };

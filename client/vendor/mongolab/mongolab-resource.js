@@ -190,7 +190,7 @@ angular.module('mongolabResource', [
 				var params = angular.isObject(queryJson) ? {q:JSON.stringify(queryJson)} : {};
 				// cacheService.checkAndClear(url, queryJson);
 				cacheService.checkAndClear('GLOBAL'); // this is temporary until cache dependencies are implemented
-
+				console.log("Resource Cache="+resourceCache);
 				var httpPromise = $http.get(url, {cache:resourceCache, params:angular.extend({}, defaultParams, params)});
 
 				return thenFactoryMethod(httpPromise, successcb, errorcb, true);
@@ -364,5 +364,16 @@ angular.module('mongolabResource', [
 			return Resource;
 		}
 		return MongolabResourceFactory;
+	}
+]);
+
+angular.module('resourceCache', [])
+.factory('resourceCacheFactory', [
+	'$cacheFactory',
+	function($cacheFactory) {
+		function ResourceCacheFactory(collectionName) {
+			return $cacheFactory(collectionName);
+		}
+		return ResourceCacheFactory;
 	}
 ]);

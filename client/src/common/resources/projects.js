@@ -1,10 +1,14 @@
-angular.module('resources.projects', ['webappResource']);
+angular.module('resources.projects', ['dbResource']);
 angular.module('resources.projects')
 .factory('Projects', [
-	'webappResource',
-	function (webappResource) {
+	'dbResource',
+	function (dbResource) {
 		console.log("\n Initializing Projects...\n");
-		var Projects = webappResource('projects');
+		var Projects = dbResource('projects');
+
+		Projects.getCollectionName = function(){
+			return 'projects';
+		};
 
 		Projects.forUser = function(userId, successcb, errorcb) {
 			return Projects.query({

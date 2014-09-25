@@ -1,13 +1,18 @@
 angular.module('resources.sprints', [
-	'webappResource',
+	'dbResource',
 	'moment'
 ]);
 angular.module('resources.sprints').factory('Sprints', [
-	'webappResource',
+	'dbResource',
 	'moment',
-	function (webappResource, moment) {
+	function (dbResource, moment) {
 
-		var Sprints = webappResource('sprints');
+		var Sprints = dbResource('sprints');
+
+		Sprints.getCollectionName = function(){
+			return 'sprints';
+		};
+
 		Sprints.forProject = function (projectId, successcb, errorcb) {
 			return Sprints.query({projectId:projectId}, successcb, errorcb);
 		};
