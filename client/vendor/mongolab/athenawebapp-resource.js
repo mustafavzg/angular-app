@@ -174,6 +174,8 @@ angular.module('athenawebappResource', ['resourceCache'])
                 // var httpPromise = $http.get(url);
                 // var httpPromise = $http.get(url);
                 console.log("fetching the new get");
+                console.log("resource cache factory:");
+                console.log(resourceCache);
 				var httpPromise = $http.get(url, {cache:resourceCache, params:angular.extend({}, defaultParams, params)});
                 // var httpPromise = $http.get(url, {params:angular.extend({}, defaultParams, params)});
 
@@ -241,5 +243,16 @@ angular.module('athenawebappResource', ['resourceCache'])
 			return Resource;
 		}
 		return AthenaWebAppResourceFactory;
+	}
+]);
+
+angular.module('resourceCache', [])
+.factory('resourceCacheFactory', [
+	'$cacheFactory',
+	function($cacheFactory) {
+		function ResourceCacheFactory(collectionName) {
+			return $cacheFactory(collectionName);
+		}
+		return ResourceCacheFactory;
 	}
 ]);

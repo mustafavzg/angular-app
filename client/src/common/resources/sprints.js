@@ -1,13 +1,18 @@
 angular.module('resources.sprints', [
-	'mongolabResource',
+	'dbResource',
 	'moment'
 ]);
 angular.module('resources.sprints').factory('Sprints', [
-	'mongolabResource',
+	'dbResource',
 	'moment',
-	function (mongolabResource, moment) {
+	function (dbResource, moment) {
 
-		var Sprints = mongolabResource('sprints');
+		var Sprints = dbResource('sprints');
+
+		Sprints.getCollectionName = function(){
+			return 'sprints';
+		};
+
 		Sprints.forProject = function (projectId, successcb, errorcb) {
 			return Sprints.query({projectId:projectId}, successcb, errorcb);
 		};

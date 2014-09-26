@@ -1,10 +1,14 @@
-angular.module('resources.projects', ['mongolabResource']);
+angular.module('resources.projects', ['dbResource']);
 angular.module('resources.projects')
 .factory('Projects', [
-	'mongolabResource',
-	function ($mongolabResource) {
+	'dbResource',
+	function (dbResource) {
+		console.log("\n Initializing Projects...\n");
+		var Projects = dbResource('projects');
 
-		var Projects = $mongolabResource('projects');
+		Projects.getCollectionName = function(){
+			return 'projects';
+		};
 
 		Projects.forUser = function(userId, successcb, errorcb) {
 			return Projects.query({

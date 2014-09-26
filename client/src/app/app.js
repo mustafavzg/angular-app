@@ -31,6 +31,11 @@ angular.module('app').constant('ATHENAWEBAPP_CONFIG', {
 	// dbName: 'ngpmtool'
 });
 
+angular.module('app').constant('DB_CONFIG', {
+	isDevNet: false
+});
+
+
 //TODO: move those messages to a separate module
 angular.module('app').constant('I18N.MESSAGES', {
 	'errors.route.changeError':"Route change error: {{reason}}",

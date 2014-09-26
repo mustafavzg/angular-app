@@ -1,10 +1,10 @@
-angular.module('resources.scrumUpdates', ['mongolabResource']);
+angular.module('resources.scrumUpdates', ['dbResource']);
 angular.module('resources.scrumUpdates')
 .factory('ScrumUpdates', [
-	'mongolabResource',
-	function (mongolabResource) {
+	'dbResource',
+	function (dbResource) {
 
-		var ScrumUpdates = mongolabResource('scrumupdates');
+		var ScrumUpdates = dbResource('scrumupdates');
 
 		// moved these to the mongolab-resource module
 		// ScrumUpdates.forResource = function (collectionName, resourceId, successcb, errorcb) {
@@ -28,6 +28,11 @@ angular.module('resources.scrumUpdates')
 		var failurecb = function(){
 			console.log("cannot save...");
 		};
+
+		ScrumUpdates.getCollectionName = function(){
+			return 'scrumupdates';
+		};
+
 		ScrumUpdates.forProductBacklogItem = function (productBacklogItemId, successcb, errorcb) {
 			return ScrumUpdates.forResource('productbacklog', productBacklogItemId, successcb, errorcb);
 		};
