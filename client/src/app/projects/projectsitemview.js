@@ -5,6 +5,7 @@ angular.module('projectsitemview', [
 	'resources.sprints',
 	'resources.tasks',
 	'resources.users',
+	'resources.comment',
 	'services.crud',
 	'services.i18nNotifications',
 	'ui.bootstrap',
@@ -132,6 +133,7 @@ angular.module('projectsitemview', [
 	'Sprints',
 	'Tasks',
 	'Users',
+	'Comments',
 	'crudListMethods',
 	'i18nNotifications',
 	'security',
@@ -149,6 +151,7 @@ angular.module('projectsitemview', [
 		Sprints,
 		Tasks,
 		Users,
+		Comments,
 		crudListMethods,
 		i18nNotifications,
 		security,
@@ -279,8 +282,19 @@ angular.module('projectsitemview', [
 		//  **************************************************/
 
 		$scope.project = project;
-
+		console.log("\nprojects are:");
+		console.log(project);
+		console.log("=========");
+		$scope.Sprints = Sprints;
+		$scope.ProductBacklog = ProductBacklog;
+		$scope.Tasks = Tasks;
+		$scope.Users = Users;
 		$scope.projectsCrudHelpers = {};
+		console.log("before rsc assg");
+		
+		
+		console.log("aftr rsc assg..."+$scope.resourceId);
+
 		angular.extend($scope.projectsCrudHelpers, crudListMethods('/projects'));
 
 		if( !angular.isDefined($scope.project.projectProfile) ){
@@ -371,6 +385,7 @@ angular.module('projectsitemview', [
 		$scope.manageBacklog = function () {
 			$location.path('/projects/'+project.$id()+'/productbacklog');
 		};
+		//$scope.resourceId = project.$id();
 
 		ProductBacklog.forProject(
 			project.$id(),
@@ -395,6 +410,7 @@ angular.module('projectsitemview', [
 				rootDivClass : 'panel-body',
 				itemsCrudHelpers : $scope.backlogItemsCrudHelpers
 			},
+
 			pagination : {
 				currentPage : 1,
 				itemsPerPage : 10
@@ -433,7 +449,6 @@ angular.module('projectsitemview', [
 		 **************************************************/
 		$scope.fetchingSprints = true;
 		$scope.sprints = [];
-
 		$scope.sprintsCrudHelpers = {};
 		angular.extend($scope.sprintsCrudHelpers, crudListMethods('/projects/'+project.$id()+'/sprints'));
 
@@ -605,6 +620,8 @@ angular.module('projectsitemview', [
 			}
 			return 1;
 		};
+		
+
 
 		/**************************************************
 		 * Fetch tasks
@@ -891,6 +908,20 @@ angular.module('projectsitemview', [
 		$scope.taskToGanttData = function (task) {
 
 		};
+
+		/*Comments.forProject(
+			 project.$id(), 
+			function (comments) {
+				$scope.comments = comments;
+				//$scope.fetchingcomments = false;
+				//allComments = $scope.comments;
+				//$scope.comments = allComments;
+			},
+			function (response) {
+				$scope.fetchingcomments = false;
+			}
+		);*/
+
 
 		/**************************************************
 		 * Crud helpers for users

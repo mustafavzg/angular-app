@@ -39,8 +39,12 @@
 	<!-- TODO: Implement this with ng-repeat or in separate template files -->
 	<!-- -------------------------------------------------- -->
 	<div class="panel panel-default">
-		<tabset justified="true" type="pills">
-			<tab heading="Dashboard">
+		<!--<tabset justified="true" type="pills">-->
+			<!--<tab heading="Dashboard">-->
+			<div class="panel panel-default">
+					
+					<comment resource-id="{{task.$id()}}" for-resource="tasks"></comment> 
+			</div>
 				<div class="panel-body">
 					<div class="col-md-6">
 						<div class="panel panel-default">
@@ -89,10 +93,10 @@
 					
 				</div>
 				<!-- div panel body -->
-			</tab>
-			<tab heading="Comments">
+			<!--</tab>-->
+			<!--<tab heading="Comments">
 				<tableactive items="task.comments" fetchingitems="fetchingComments" resourceconf="commentsConf" ></tableactive>
-			</tab>
+			<!--</tab>-->-->
 		</tabset>
 	</div>
 	<!-- Other Entities End -->

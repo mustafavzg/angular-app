@@ -3,6 +3,7 @@ angular.module('tasksnew', [
 	'resources.sprints',
 	'resources.productbacklog',
 	'resources.users',
+	'resources.comment',
 	'resources.tasks',
 	'resources.projects',
 	'directives.userscombosearchadd',
@@ -180,6 +181,8 @@ angular.module('tasksnew', [
 
 
 ///////////////////////////
+
+
 		$scope.tasksGanttConf2 = {
 			resource : {
 				key : 'tasks',
@@ -255,9 +258,12 @@ angular.module('tasksnew', [
 
 		$scope.project = project;
 		$scope.task = task;
+		
 		$scope.tasks = [task];
 		console.log("tasks=");
 		console.log($scope.tasks);
+		$scope.resourceId = task.$id();
+		$scope.forResource = "task";
 		$scope.statusEnum = Tasks.statusEnum;
 		// $scope.sprintBacklogItems = sprintBacklogItems;
 		// $scope.teamMembers = teamMembers;

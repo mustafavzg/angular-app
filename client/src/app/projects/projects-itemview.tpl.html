@@ -122,7 +122,13 @@
 		<tabset justified="true" type="pills">
 			<tab heading="Dashboard">
 				<div class="panel-body">
-					<div class="panel panel-default">
+				 
+				  <div class="panel panel-default">
+
+					<comment resource-id="{{project.$id()}}" for-resource="projects" user-id="{{Users.$id()}}"></comment>
+					<!--<comment resourceId = "resourceId"></comment>-->
+				  </div>
+				  <div class="panel panel-default">
 						<gantt-chart
 							 items="sprints"
 							 resourceconf="sprintsGanttConf"
@@ -160,7 +166,7 @@
 				</div>
 				<!-- div panel body -->
 			</tab>
-
+<!--
 			<tab heading="Scrum Updates">
 				<div class="panel-body row">
 				  <div class="col-md-6">
@@ -168,20 +174,25 @@
 				  </div>
 				  <div class="col-md-6">
 					<scrum resource="project"></scrum>
-					<!-- To Do: add Scrum Updates Here. -->
+					
 				  </div>
 				</div>
-			</tab>
+			</tab> -->
+			
 			<tab heading="Product Backlog">
 				<tableactive items="backlogItems" fetchingitems="fetchingBacklogItems" resourceconf="backlogItemsConf" ></tableactive>
+								
 			</tab>
 
 			<tab heading="Sprints">
 				<tableactive items="sprints" fetchingitems="fetchingSprints" resourceconf="sprintsConf" ></tableactive>
+				
+				
 			</tab>
 
 			<tab heading="Tasks">
 				<tableactive items="tasks" fetchingitems="fetchingTasks" resourceconf="tasksConf" ></tableactive>
+				
 			</tab>
 
 			<tab heading="Team">
