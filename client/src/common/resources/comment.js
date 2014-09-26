@@ -1,10 +1,10 @@
-angular.module('resources.comment', ['mongolabResource']);
+angular.module('resources.comment', ['dbResource']);
 angular.module('resources.comment')
 .factory('Comments', [
-	'mongolabResource',
-	function (mongolabResource) {
+	'dbResource',
+	function (dbResource) {
 
-		var Comments = mongolabResource('comments');
+		var Comments = dbResource('comments');
 
 		var successcb = function(){
 			console.log("Saved successfully!!!");
