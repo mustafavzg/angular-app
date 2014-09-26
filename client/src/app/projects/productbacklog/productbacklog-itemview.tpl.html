@@ -51,6 +51,9 @@
 	<div class="panel panel-default">
 		<tabset justified="true" type="pills">
 			<tab heading="Dashboard">
+			<div class="panel panel-default">
+					<comment resource-id="{{backlogItem.$id()}}" for-resource="productbacklog"></comment>
+			</div>
 				<gantt-chart
 					 items="tasks"
 					 resourceconf="tasksGanttConf"

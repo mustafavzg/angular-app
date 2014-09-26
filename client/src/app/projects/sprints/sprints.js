@@ -3,6 +3,7 @@ angular.module('sprints', [
 	'resources.sprints',
 	'resources.tasks',
 	'resources.projects',
+	'resources.comment',
 	'directives.datecombofromto',
 	'directives.propertybar',
 	'directives.icon',
@@ -105,6 +106,8 @@ angular.module('sprints', [
 								i18nNotifications.pushForNextRoute('crud.sprint.expired.error', 'error', {});
 								$location.path('/projects/' + projectId + '/sprints/' + sprint.$id());
 								// return $q.reject("Cannot Edit Sprint");
+								$scope.resourceId = sprint.$id();
+								$scope.forResource = "sprint";
 								return null;
 							}
 							else {
@@ -168,7 +171,8 @@ angular.module('sprints', [
 		// /**************************************************
 		//  * gantt experiment
 		//  **************************************************/
-
+		
+		
 		$scope.tasksGanttConf = {
 			resource : {
 				key : 'tasks',
@@ -232,6 +236,7 @@ angular.module('sprints', [
 		};
 
 		$scope.sprint = sprint;
+		
 		// /**************************************************
 		//  * gantt experiment end
 		//  **************************************************/
@@ -622,6 +627,7 @@ angular.module('sprints', [
 		// $scope.project = project;
 		$scope.productBacklog = productBacklog;
 		$scope.sprint = sprint;
+		
 
 		angular.forEach($scope.productBacklog, function (productBacklogItem) {
 			productBacklogItem.propertiesToDisplay = [

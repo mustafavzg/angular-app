@@ -3,21 +3,50 @@
 		<strong>Comments</strong>
 	</div>
 	<div class="panel-body">
-		<div class="row">
-			<textarea class="form-control" ng-model="newcomment" placeholder="Add your comments here" cols="10" rows="5">
-			</textarea>
-			<button ng-click="addComment()" class="btn btn-primary">
-				Add
-			</button>
-		</div>
-		<div class="media" ng-repeat="comment in resource.comments">
+		
+		<!---->
+		<div class="media" ng-repeat="comment in comments">
+
 			<img class="media-object photo-small pull-left" src="/static/img/foouser.jpg">
 				<div class="media-body"> 
 					<div class="media-heading"> 
-						{{comment.User}} 
-					</div>
-					<p>{{comment.Comment}}</p>
+						<span class = "text-primary">
+							{{comment.user}}
+						</span>
+						<span class="text-muted small">
+							
+							{{comment.now | date: 'dd MMM,yyyy, HH:mm:ss'}}
+							
+						</span>
+						<p><pre class="pre-display">{{comment.text}}</pre></p> 
+
+					</div>											      
+						
+
+					
 				</div>
-		</div>		
-	</div>
+		</div>
+			
+		<div class="row">
+			<!--<button ng-click="addComment()" class="btn btn-primary" style="top: 0;float: right;">
+				Add
+			</button>-->
+			<div class="col-md-12">
+				<div class='btn-group pull-right'>
+					<button type="button" class="btn btn-default" ng-click="addComment(newcomment)"  tooltip="Post Comment" tooltip-placement='bottom'><icon id="plus-sign"></icon></button>
+					<button type="button" class="btn btn-default" ng-click="clearComment(resource)"  tooltip="Clear the text area" tooltip-placement='bottom'><icon id="unchecked"></icon></button>
+				</div>	
+			</div>
+		</div>
+		<p>
+			<div class='form-group block'>			
+				<textarea class="form-control" ng-model="newcomment" placeholder="Add your comments here" cols="8" rows="1" id="comments" >
+				</textarea>
+			</div>
+		</p>
+		
+	
+		
+	
+</div>		
 </div>

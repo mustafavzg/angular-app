@@ -264,6 +264,7 @@ angular.module('productbacklog', [
 		// /**************************************************
 		//  * gantt experiment
 		//  **************************************************/
+		
 		$scope.tasksConf = {
 			resource : {
 				key : 'tasks',

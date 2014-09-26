@@ -57,6 +57,9 @@
 	<div class="panel panel-default">
 		<tabset justified="true" type="pills">
 			<tab heading="Dashboard">
+			    <div class="panel panel-default">
+					<comment resource-id="{{sprint.$id()}}" for-resource="sprints"></comment>
+				  </div> 
 				<div class="panel">
 					<gantt-chart
 						 items="sprints"
@@ -67,6 +70,7 @@
 						 title="Sprint Gantt View"
 						 >
 					</gantt-chart>
+					
 				</div>
 				<div class="panel">
 					<gantt-chart
