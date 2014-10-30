@@ -118,8 +118,7 @@ angular.module('projects', [
 	) {
 		$scope.projects = projects;
 		console.log(projects);
-		security.requestCurrentUser();
-
+		
 		angular.extend($scope, crudListMethods('/projects'));
 
 		// /**************************************************
@@ -162,7 +161,7 @@ angular.module('projects', [
 	'$scope',
 	'$location',
 	'i18nNotifications',
-	// 'users',
+	//'users',
 	'project',
 	'crudListMethods',
 	'crudEditHandlers',
@@ -171,7 +170,7 @@ angular.module('projects', [
 	// function($scope, $location, i18nNotifications, users, project, crudListMethods, _) {
 
 		$scope.project = project;
-		// $scope.users = users;
+		//$scope.users = users;
 		if( !angular.isDefined($scope.project.projectProfile) ){
 			$scope.project.projectProfile = {
 				ID : 1

@@ -58,7 +58,7 @@
 		<tabset justified="true" type="pills">
 			<tab heading="Dashboard">
 			    <div class="panel panel-default">
-					<comment resource-id="{{sprint.$id()}}" for-resource="sprints"></comment>
+					<comment resource-id="{{sprint.$id()}}" for-resource="sprints" user-id="{{Users.$id()}}"></comment>
 				  </div> 
 				<div class="panel">
 					<gantt-chart
@@ -94,6 +94,7 @@
 					 >
 					</gantt-chart>
 				</div>			
+				<pie-chart items="tasks" fetchingitems="fetchingTasks" chart-config="pieChartConfig"></pie-chart>
 			</tab>
 			<tab heading="Tasks">
 				<tableactive items="tasks" fetchingitems="fetchingTasks" resourceconf="tasksConf" ></tableactive>

@@ -43,7 +43,7 @@
 			<!--<tab heading="Dashboard">-->
 			<div class="panel panel-default">
 					
-					<comment resource-id="{{task.$id()}}" for-resource="tasks"></comment> 
+					<comment resource-id="{{task.$id()}}" for-resource="tasks" user-id="{{Users.$id()}}"></comment> 
 			</div>
 				<div class="panel-body">
 					<div class="col-md-6">
@@ -85,6 +85,7 @@
 									 update-validator="tasksGanttUpdateValidator(item, update)"
 									 >
 								</gantt-chart>
+								<pie-chart items="tasks" fetchingitems="fetchingTasks" chart-config="pieChartConfig"></pie-chart>
 
 							</div>
 						</div>

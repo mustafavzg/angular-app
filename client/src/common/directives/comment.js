@@ -1,94 +1,133 @@
-angular.module('directives.comment', [
-	'ui.bootstrap',
-	'directives.icon',
-	'resources.comment',
-	
-])
-.directive('comment', [
-	function() {
-		return {
-			restrict: 'E',
-			templateUrl: 'directives/comment.tpl.html',
-			replace: true,
-			require: '^form',
-			scope: {
-				label: '@',
-				forResource : '@',
-				resourceId : '@',	
-				date: '=',
-				//comments: '=?'
-				userId: '@'
-			},
-			controller: [
-				'$scope',
-				'$element',
-				'$attrs',
-				'Comments',
-				function ($scope, $element, $attrs,Comments) {
-					if(!$scope.comments)
-					{$scope.comments = [];}
-					
-						/* resources : {
- 							taskId : 123
- 							projectId : 456	
-						} */
-						var resourceId = $scope.resourceId;
-						var forResource = $scope.forResource;
-						$scope.addComment = function(commentVal){
+		angular.module('directives.comment', [
+			'ui.bootstrap',
+			'directives.icon',
+			'resources.comment',
+			'resources.projects',
+			'resources.users',
+			'projectsitemview',
+			'productbacklog',
+			'sprints',
+			'tasksnew',
+			'users',
+			
+		])
+		.directive('comment', [
+			function() {
+				return {
+					restrict: 'E',
+					templateUrl: 'directives/comment.tpl.html',
+					replace: true,
+					require: '^form',
+					scope: {
+						label: '@',
+						forResource : '@',
+						resourceId : '@',	
+						date: '=',
+						//userId: '@'
+					},
+					controller: [
+						'$scope',
+						'$element',
+						'$attrs',
+						'Comments',
+						'security',
+						'$q',
 						
-						if(commentVal){
-							var now = new Date();
-							tagObj = {};
-							var tagKey = Comments.getResourceKey(forResource);
-							tagObj[tagKey] = resourceId;
-							comment = {};
-							comment.now=now;
-							comment.text = commentVal;
-							comment.user = 'test';
-							comment.userId = $scope.userId;
-							angular.extend(comment,tagObj);
-							var commentObj = new Comments(comment);
-							console.log("newly added comment ="+comment.text);
-							console.log("comment obj...");
-							console.log(comment);
-							$scope.comments.push({text : comment.text, user : 'test', now : comment.now});
-							var successcb = function(){ 
-								console.log("saved successfully!!!");
-							};
+						function ($scope, $element, $attrs,Comments,security,$q) {
+							if(!$scope.comments)
+							{
+								$scope.comments = [];
+							}
 							
-							var failurecb = function(){
-								console.log("could not save");  
+							
+								
+							$q.when(security.requestCurrentUser()).then(
+								function (currentUser) {
+							 		return currentUser;
+					 			}
+							);
+																					
+								var resourceId = $scope.resourceId;
+								var forResource = $scope.forResource;
+								$scope.addComment = function(commentVal){
+									if(commentVal){
+									var now = new Date();
+									var date = now.getDate();
+									var period="AM";
+									var year= now.getFullYear();
+									var hour= now.getHours();
+									var minutes= now.getMinutes();
+									if (hour > 12) {
+		 							   hour -= 12;
+		 							   period="PM";
+									} else if (hour === 0) {
+		   								hour = 12;
+		   								period="AM";
+									}
+									 else if(hour == 12 && minutes >= 0)
+									 {
+
+									 	period ="PM";
+									 }
+									
+									var seconds= now.getSeconds();
+									var time= hour+"."+minutes+"."+seconds+"."+now.getMilliseconds()+" "+period;
+									var months = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
+									var month= months[now.getMonth()];
+									tagObj = {};
+									var tagKey = Comments.getResourceKey(forResource);
+									tagObj[tagKey] = resourceId;
+									comment = {};
+									comment.timeStamp =date+"-"+month+"-"+year+" "+time;
+									comment.text = commentVal;
+									comment.createdBy = security.currentUser.Username;
+									comment.hiveUserProfileId = security.currentUser.ID;
+									angular.extend(comment,tagObj);
+									console.log("Comments Obj");
+									console.log(comment);
+
+									var commentObj = new Comments(comment);
+									$scope.comments.push({text : comment.text,  createdBy: comment.createdBy, timeStamp: comment.timeStamp});
+									var successcb = function(){ 
+										console.log("saved successfully!!!");
+									};
+									
+									var failurecb = function(){
+										console.log("could not save");  
+									};
+									commentObj.$save(successcb, failurecb);
+								}
+								
+								else {
+									
+									console.log("blanks not allowed");  
+								}
+								
+								$scope.newcomment = "";	
+								
 							};
-							commentObj.$save(successcb, failurecb);
-						}
-						
-						else {
-							//alert("Empty Comments cannot be posted !");
-							console.log("blanks not allowed");  
-						}
-						
-						$scope.newcomment = "";	
-						
-					};
 
-					Comments.forResource(
-			 			forResource,
-			 			resourceId,
-			 			function (comments) {
-							$scope.comments = comments;
-						},
-						function (response) {
+							Comments.forResource(
+					 			forResource,
+					 			resourceId,
+					 			function (comments) {
+									$scope.comments = comments;
+									console.log("comments fetchec");
+									console.log($scope.comments);	
+									
+								},
+								function (response) {
+								}
+							);					
+							$scope.clearComment = function(resource){
+								$scope.newcomment = "";
+								};
+							
+							
 						}
-					);					
-					$scope.clearComment = function(resource){
-						$scope.newcomment = "";
-						};
-					
-					
-				}
 
 
-			]	
-		};
-	}
-])
+					]	
+				};
+			}
+		])
