@@ -8,6 +8,7 @@ angular.module('tasksnew', [
 	'resources.projects',
 	'directives.userscombosearchadd',
 	'directives.datecombofromto',
+	'directives.pieChart',
 	'services.crud',
 	'services.resourceDictionary',
 	'filters.stopWatch',
@@ -255,6 +256,108 @@ angular.module('tasksnew', [
 		// /**************************************************
 		//  * gantt experiment end
 		//  **************************************************/
+		$scope.pieChartConfig = {
+			title: 'Tasks',
+			groupBy: [
+				{
+					prettyName: 'Status',
+					key: 'status',
+					ordering: 1,
+					colorMap: function (item) {
+						return item.getStatusDef().color;
+					},
+					groupByOrder: function (item) {
+						// console.log("ordering is");
+						// console.log(item.getStatusDef().ordering);
+						return item.getStatusDef().ordering;
+						// return item.getStatusDef().ordering || 0;
+
+					}
+				},
+				{
+					prettyName: 'Type',
+					key: 'type',
+					ordering: 2,
+					colorMap: function (item) {
+						return item.getTypeDef().color;
+					},
+					groupByOrder: function (item) {
+						return item.getTypeDef().ordering;
+						// return item.getTypeDef().ordering || 0;
+					}
+				}
+			],
+			summary: [
+				{
+					prettyName: 'Estimation',
+					prettyNameSuffix: "for",
+					key: 'estimation',
+					ordering: 1
+				},
+				{
+					prettyName: 'Remaining estimation',
+					prettyNameSuffix: "for",
+					key: 'remaining',
+					ordering: 2
+				}
+			],
+			count: 1,
+			// collapse: 0
+			collapse: 0,
+			cumulative: 0
+		};
+
+		$scope.pieChartConfig = {
+			title: 'Tasks',
+			groupBy: [
+				{
+					prettyName: 'Status',
+					key: 'status',
+					ordering: 1,
+					colorMap: function (item) {
+						return item.getStatusDef().color;
+					},
+					groupByOrder: function (item) {
+						// console.log("ordering is");
+						// console.log(item.getStatusDef().ordering);
+						return item.getStatusDef().ordering;
+						// return item.getStatusDef().ordering || 0;
+
+					}
+				},
+				{
+					prettyName: 'Type',
+					key: 'type',
+					ordering: 2,
+					colorMap: function (item) {
+						return item.getTypeDef().color;
+					},
+					groupByOrder: function (item) {
+						return item.getTypeDef().ordering;
+						// return item.getTypeDef().ordering || 0;
+					}
+				}
+			],
+			summary: [
+				{
+					prettyName: 'Estimation',
+					prettyNameSuffix: "for",
+					key: 'estimation',
+					ordering: 1
+				},
+				{
+					prettyName: 'Remaining estimation',
+					prettyNameSuffix: "for",
+					key: 'remaining',
+					ordering: 2
+				}
+			],
+			count: 1,
+			// collapse: 0
+			collapse: 0,
+			cumulative: 0
+		};
+
 
 		$scope.project = project;
 		$scope.task = task;

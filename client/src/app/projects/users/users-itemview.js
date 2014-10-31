@@ -9,6 +9,7 @@ angular.module('users-itemview',[
 	'directives.datecombofromto',
 	'directives.scrumupdatecalendar',
 	'directives.scrumupdateforresource',
+	'directives.pieChart',
 	'underscore',
 	'filters.groupBy',
 	'filters.momentsAgo',
@@ -100,6 +101,56 @@ angular.module('users-itemview',[
 			]
 		};
 
+		$scope.pieChartConfig = {
+			title: 'Tasks',
+			groupBy: [
+				{
+					prettyName: 'Status',
+					key: 'status',
+					ordering: 1,
+					colorMap: function (item) {
+						return item.getStatusDef().color;
+					},
+					groupByOrder: function (item) {
+						// console.log("ordering is");
+						// console.log(item.getStatusDef().ordering);
+						return item.getStatusDef().ordering;
+						// return item.getStatusDef().ordering || 0;
+
+					}
+				},
+				{
+					prettyName: 'Type',
+					key: 'type',
+					ordering: 2,
+					colorMap: function (item) {
+						return item.getTypeDef().color;
+					},
+					groupByOrder: function (item) {
+						return item.getTypeDef().ordering;
+						// return item.getTypeDef().ordering || 0;
+					}
+				}
+			],
+			summary: [
+				{
+					prettyName: 'Estimation',
+					prettyNameSuffix: "for",
+					key: 'estimation',
+					ordering: 1
+				},
+				{
+					prettyName: 'Remaining estimation',
+					prettyNameSuffix: "for",
+					key: 'remaining',
+					ordering: 2
+				}
+			],
+			count: 1,
+			// collapse: 0
+			collapse: 0,
+			cumulative: 0
+		};
 
 		$scope.tasksGanttConf = {
 			resource : {
@@ -335,7 +386,7 @@ angular.module('users-itemview',[
 			var date2 = new Date(obj2.date);
 			return date2.getTime() - date1.getTime();
 		}
-
+		console.log("Scrum Updates="+$scope.scrumupdates);
 		$scope.$watchCollection('scrumupdates', function (newUpdates, oldUpdates) {
 			if (!angular.equals(newUpdates, oldUpdates)) {
 				$scope.scrumupdates.sort(dateCompReverse)

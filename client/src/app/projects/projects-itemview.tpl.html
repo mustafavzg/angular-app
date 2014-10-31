@@ -124,8 +124,7 @@
 				<div class="panel-body">
 				 
 				  <div class="panel panel-default">
-
-					<comment resource-id="{{project.$id()}}" for-resource="projects" user-id="{{Users.$id()}}"></comment>
+					<comment resource-id="{{project.$id()}}" for-resource="projects" user-id="{{security.currentUser.ID}}"></comment>
 					<!--<comment resourceId = "resourceId"></comment>-->
 				  </div>
 				  <div class="panel panel-default">
@@ -150,9 +149,9 @@
 							 >
 						</gantt-chart>
 					</div>
-
+				<!--
 					<div class="panel panel-default">
-						<gantt-chart
+						 <gantt-chart
 							 items="tasks"
 							 resourceconf="tasksGanttConf2"
 							 item-to-task-data-source="taskData(item)"
@@ -160,8 +159,9 @@
 							 update-validator="tasksGanttUpdateValidator(item, update)"
 							 >
 						</gantt-chart>
+						
 					</div>
-
+				-->	
 					<!-- div panel -->
 				</div>
 				<!-- div panel body -->

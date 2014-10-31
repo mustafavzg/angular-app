@@ -39,6 +39,7 @@
 							title="{{user.username}}'s Tasks"
 							>
 						</gantt-chart>
+						<pie-chart items="tasks" fetchingitems="fetchingTasks" chart-config="pieChartConfig"></pie-chart>
 					</div>
 				</div>					
 			</tab>
@@ -122,6 +123,7 @@
 											</scrumupdateforresource>
 										</div>
 									</div>
+									{{groupedScrumUpdates}}
 									<div class="media" ng-repeat="dateGroup in groupedScrumUpdates">
 										<div class="media-heading">
 											<span class = "text-primary">
