@@ -24,6 +24,7 @@ angular.module('directives.scrumupdateforresource', [
 				'ScrumUpdates',
 				function ($scope, $element, $attrs, ScrumUpdates) {
 					$scope.saveScrumUpdate = function(resource){
+						console.log("\nInside saveScrumUpdate:\n");
 						resource.showAddButton = true;
 						if (resource.scrumText) {
 							var successcb = function(){

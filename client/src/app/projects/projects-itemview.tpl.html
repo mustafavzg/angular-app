@@ -178,6 +178,72 @@
 								<span class="pull-right hover-pointer" ng-show="!scrumOpen"><icon id="chevron-down"></icon></span>
 								<span class="pull-right hover-pointer" ng-show="scrumOpen"><icon id="chevron-up"></icon></span>
 							</accordion-heading>
+							<!--
+								Adding scrum update
+							-->
+							<div class="panel-body">
+								<div class="panel panel-default">
+									<div class="panel-body">
+										<div class="panel">
+											<div class="panel-heading">
+												<table>
+													<tr>
+														<scrumupdatecalendar
+															label="Scrum Status"
+															update="updateStatus"
+															datechosen="scrumDates.chosendate">
+														</scrumupdatecalendar>
+													</tr>
+												</table>
+											</div>
+											<div class="panel-body">
+												<datecombofromto
+													 name="dateCombo"
+													 from-date="scrumDates.startdate"
+													 to-date="scrumDates.enddate"
+													 from-date-label="Start Date"
+													 to-date-label="End Date"
+													 from-date-required="true"
+													 to-date-required="true">
+												</datecombofromto>
+												<scrumupdateforresource
+													label="Scrum Update for {{scrumDates.chosendate | date : format}}"
+													resource="project"
+													date="scrumDates.chosendate"
+													scrumupdates="scrumupdates">
+												</scrumupdateforresource>
+											</div>
+										</div>
+										<div class="media" ng-repeat="dateGroup in groupedScrumUpdates">
+											<div class="media-heading">
+												<span class = "text-primary">
+													{{dateGroup.key | momentsAgo}}
+												</span>
+											</div>
+											<div class="media-body">
+												<div class="media" ng-repeat="taskGroup in dateGroup.values">
+													<div class="media-heading">
+														<span ng-if="taskGroup.key != 'undefined'">
+															{{taskGroup.key}}
+														</span>
+														<span ng-if="taskGroup.key == 'undefined'">
+															{{user.username}}
+														</span>
+													</div>
+													<div class="media-body">
+														<ul>
+															<li ng-repeat="update in taskGroup.values">
+																<span class="text-muted">{{update.timeString}} </span><br>
+																{{update.text}}
+															</li>
+														</ul>				
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
 							<!-- <comment resource-id="{{project.$id()}}" for-resource="projects" user-id="{{security.currentUser.ID}}"></comment> -->
 							<span class="pull-right hover-pointer" ng-show="scrumOpen"><icon id="chevron-up"></icon></span>
 						</accordion-group>

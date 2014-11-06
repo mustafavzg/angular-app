@@ -42,6 +42,7 @@ angular.module('resources.scrumUpdates')
 		};
 
 		ScrumUpdates.forProject = function (projectId, successcb, errorcb) {
+			console.log("\nupdates for project\n");
 			return ScrumUpdates.forResource('projects', projectId, successcb, errorcb);
 		};
 
