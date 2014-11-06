@@ -41,7 +41,7 @@ angular.module('services.resourceDictionary').factory('resourceDictionary', [
 				},
 				setItem: function (item) {
 					var key = this.getId(item);
-					dictionary.set(key, item)
+					dictionary.set(key, item);
 				},
 				setItems: function (items, force) {
 					var that = this;

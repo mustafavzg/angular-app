@@ -1,4 +1,3 @@
-
 angular.module('projects', [
 	'resources.projects',
 	'resources.users',
@@ -17,6 +16,7 @@ angular.module('projects', [
 	'directives.icon',
 	'directives.actionicon',
 	'directives.test',
+	'directives.tableactive',
 	'services.crud',
 	'security.authorization',
 	'services.i18nNotifications',
@@ -42,11 +42,12 @@ angular.module('projects', [
 			projects: ['Projects', function(Projects) { return Projects.all(); }]
 			// adminUser: securityAuthorizationProvider.requireAdminUser
 		})
-		.whenNew({
-			project: ['Projects', function(Projects) { return new Projects(); }],
-			users: getAllUsers,
-			adminUser: securityAuthorizationProvider.requireAdminUser
-		})
+		// .whenNew({
+		// 	project: ['Projects', function(Projects) { return new Projects(); }],
+		// 	users: getAllUsers,
+		// 	adminUser: securityAuthorizationProvider.requireAdminUser
+		// })
+
 		// project is not getting assigned, need to figure out why
 		// .whenView({
 		// 	project:[
@@ -75,30 +76,6 @@ angular.module('projects', [
 	}
 ])
 
-// .config([
-// 	'$routeProvider',
-// 	'securityAuthorizationProvider',
-// 	function (
-// 		$routeProvider,
-// 		securityAuthorizationProvider
-// 	) {
-// 		$routeProvider.when('/projects', {
-// 			templateUrl:'projects/projects-list.tpl.html',
-// 			controller:'ProjectsListCtrl',
-// 			resolve:{
-// 				projects:[
-// 					'Projects',
-// 					function (Projects) {
-// 						//TODO: fetch only for the current user
-// 						return Projects.all();
-// 					}
-// 				]
-// 				// authenticatedUser: securityAuthorizationProvider.requireAuthenticatedUser
-// 			}
-// 		});
-// 	}
-// ])
-
 .controller('ProjectsListCtrl', [
 	'$scope',
 	'$location',
@@ -117,7 +94,7 @@ angular.module('projects', [
 		$q
 	) {
 		$scope.projects = projects;
-		console.log(projects);
+		// console.log(projects);
 		security.requestCurrentUser();
 
 		angular.extend($scope, crudListMethods('/projects'));
@@ -137,24 +114,67 @@ angular.module('projects', [
 		// 	}
 		// );
 
+		$scope.projectsConf = {
+			resource : {
+				key : 'projects',
+				prettyName : 'Projects',
+				altPrettyName : 'Projects',
+				link : $scope.manageProjects,
+				rootDivClass : 'panel-body',
+				itemsCrudHelpers : $scope.projectsCrudHelpers
+			},
+			pagination : {
+				currentPage : 1,
+				itemsPerPage : 10
+			},
+			sortinit : {
+				fieldKey : 'name',
+				reverse : false
+			},
+			tableColumns : [
+				{
+					key : 'name',
+					prettyName : 'Name',
+					widthClass : 'col-md-2'
+				},
+				{
+					key : 'startdate',
+					type: 'date',
+					prettyName : 'Start Date',
+					widthClass : 'col-md-2'
+				},
+				{
+					key : 'enddate',
+					type: 'date',
+					prettyName : 'End Date',
+					widthClass : 'col-md-2'
+				},
+				{
+					key : 'status',
+					prettyName : 'Status',
+					widthClass : 'col-md-2'
+				}
+			]
+		};
+
 		$scope.viewProject = function (project) {
-			console.log('view is being called');
 			$location.path('/projects/'+project.$id());
 		};
 
-		$scope.manageBacklog = function (project) {
-			$location.path('/projects/'+project.$id()+'/productbacklog');
-		};
+		// $scope.manageBacklog = function (project) {
+		// 	$location.path('/projects/'+project.$id()+'/productbacklog');
+		// };
 
-		$scope.manageSprints = function (project) {
-			$location.path('/projects/'+project.$id()+'/sprints');
-		};
+		// $scope.manageSprints = function (project) {
+		// 	$location.path('/projects/'+project.$id()+'/sprints');
+		// };
 
-		$scope.getMyRoles = function(project) {
-			if ( security.currentUser ) {
-				return project.getRoles(security.currentUser.id);
-			}
-		};
+		// $scope.getMyRoles = function(project) {
+		// 	if ( security.currentUser ) {
+		// 		return project.getRoles(security.currentUser.id);
+		// 	}
+		// };
+
 	}
 ])
 
@@ -167,9 +187,15 @@ angular.module('projects', [
 	'crudListMethods',
 	'crudEditHandlers',
 	'_',
-	function($scope, $location, i18nNotifications, project, crudListMethods, crudEditHandlers, _) {
-	// function($scope, $location, i18nNotifications, users, project, crudListMethods, _) {
-
+	function(
+		$scope,
+		$location,
+		i18nNotifications,
+		project,
+		crudListMethods,
+		crudEditHandlers,
+		_
+	) {
 		$scope.project = project;
 		// $scope.users = users;
 		if( !angular.isDefined($scope.project.projectProfile) ){

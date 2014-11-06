@@ -1,4 +1,4 @@
-describe('ProjectsViewCtrl', function() {
+xdescribe('ProjectsViewCtrl', function() {
 
 	beforeEach(module('projects'));
 

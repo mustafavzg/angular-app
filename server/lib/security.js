@@ -45,7 +45,11 @@ var security = {
   },
   login: function(req, res, next) {
     function authenticationFailed(err, user, info){
-      if (err) { return next(err); }
+      if (err) {
+		  console.log("authentication error");
+		  console.log(err);
+		  return next(err);
+	  }
       if (!user) { return res.json(filterUser(user)); }
       req.logIn(user, function(err) {
         if ( err ) { return next(err); }

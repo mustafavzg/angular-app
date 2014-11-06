@@ -201,7 +201,6 @@ angular.module('resources.tasks')
 			return Tasks.forResourceList('productbacklog', productBacklogItemsOrIds, successcb, errorcb);
 		};
 
-
 		/**************************************************
 		 * Tasks vs Sprints
 		 **************************************************/

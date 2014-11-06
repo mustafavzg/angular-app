@@ -1,4 +1,4 @@
-describe('httpRequestTracker', function () {
+xdescribe('httpRequestTracker', function () {
 
   var http, httpRequestTracker;
   beforeEach(module('services.httpRequestTracker'));

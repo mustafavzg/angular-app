@@ -41,19 +41,19 @@ app.use(function(req, res, next) {
 });
 
 app.namespace('/databases/:db/collections/:collection*', function() {
+  // app.all('/', function(req, res, next) {
+  //   if ( req.method !== 'GET' ) {
+  //     // We require the user is authenticated to modify any collections
+  //     security.authenticationRequired(req, res, next);
+  //   } else {
+  //     next();
+  //   }
+  // });
   app.all('/', function(req, res, next) {
-    if ( req.method !== 'GET' ) {
-      // We require the user is authenticated to modify any collections
-      security.authenticationRequired(req, res, next);
-    } else {
-      next();
-    }
-  });
-  app.all('/', function(req, res, next) {
-    if ( req.method !== 'GET' && (req.params.collection === 'users' || req.params.collection === 'projects') ) {
-      // We require the current user to be admin to modify the users or projects collection
-      return security.adminRequired(req, res, next);
-    }
+    // if ( req.method !== 'GET' && (req.params.collection === 'users' || req.params.collection === 'projects') ) {
+    //   // We require the current user to be admin to modify the users or projects collection
+    //   return security.adminRequired(req, res, next);
+    // }
     next();
   });
   // Proxy database calls to the MongoDB

@@ -1,4 +1,4 @@
-describe('admin-users-list', function() {
+xdescribe('admin-users-list', function() {
 
   beforeEach(function() {
     angular.module('I18N-mock', []).value('I18N.MESSAGES', {});

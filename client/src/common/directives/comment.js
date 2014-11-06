@@ -1,4 +1,5 @@
 angular.module('directives.comment', [
+	'ngSanitize',
 	'ui.bootstrap',
 	'directives.icon',
 	'resources.comment',
@@ -8,8 +9,7 @@ angular.module('directives.comment', [
 	'productbacklog',
 	'sprints',
 	'tasksnew',
-	'users',
-	
+	'users'
 ])
 .directive('comment', [
 	function() {
@@ -21,8 +21,8 @@ angular.module('directives.comment', [
 			scope: {
 				label: '@',
 				forResource : '@',
-				resourceId : '@',	
-				date: '=',
+				resourceId : '@',
+				date: '='
 				//userId: '@'
 			},
 			controller: [
@@ -32,25 +32,23 @@ angular.module('directives.comment', [
 				'Comments',
 				'security',
 				'$q',
-				
+
 				function ($scope, $element, $attrs,Comments,security,$q) {
 					if(!$scope.comments)
 					{
 						$scope.comments = [];
 					}
-					
-					
-						
-					$q.when(security.requestCurrentUser()).then(
+
+ 					$q.when(security.requestCurrentUser()).then(
 						function (currentUser) {
-					 		return currentUser;
+					 		$scope.currentUser = currentUser;
 			 			}
 					);
-																			
-						var resourceId = $scope.resourceId;
-						var forResource = $scope.forResource;
-						$scope.addComment = function(commentVal){
-							if(commentVal){
+
+					var resourceId = $scope.resourceId;
+					var forResource = $scope.forResource;
+					$scope.addComment = function(commentVal){
+						if(commentVal){
 							var now = new Date();
 							var date = now.getDate();
 							var period="AM";
@@ -58,18 +56,18 @@ angular.module('directives.comment', [
 							var hour= now.getHours();
 							var minutes= now.getMinutes();
 							if (hour > 12) {
- 							   hour -= 12;
- 							   period="PM";
+ 								hour -= 12;
+ 								period="PM";
 							} else if (hour === 0) {
    								hour = 12;
    								period="AM";
 							}
-							 else if(hour == 12 && minutes >= 0)
-							 {
+							else if(hour == 12 && minutes >= 0)
+							{
 
 							 	period ="PM";
-							 }
-							
+							}
+
 							var seconds= now.getSeconds();
 							var time= hour+"."+minutes+"."+seconds+"."+now.getMilliseconds()+" "+period;
 							var months = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
@@ -80,31 +78,28 @@ angular.module('directives.comment', [
 							comment = {};
 							comment.timeStamp =date+"-"+month+"-"+year+" "+time;
 							comment.text = commentVal;
-							comment.createdBy = security.currentUser.Username;
-							comment.hiveUserProfileId = security.currentUser.ID;
+							comment.createdBy = ($scope.currentUser)? $scope.currentUser.Username : "";
+							comment.hiveUserProfileId = ($scope.currentUser)? $scope.currentUser.ID : "";;
 							angular.extend(comment,tagObj);
 							console.log("Comments Obj");
 							console.log(comment);
 
 							var commentObj = new Comments(comment);
 							$scope.comments.push({text : comment.text,  createdBy: comment.createdBy, timeStamp: comment.timeStamp});
-							var successcb = function(){ 
+							var successcb = function(){
 								console.log("saved successfully!!!");
 							};
-							
+
 							var failurecb = function(){
-								console.log("could not save");  
+								console.log("could not save");
 							};
 							commentObj.$save(successcb, failurecb);
 						}
-						
+
 						else {
-							
-							console.log("blanks not allowed");  
+							console.log("blanks not allowed");
 						}
-						
-						$scope.newcomment = "";	
-						
+						$scope.newcomment = "";
 					};
 
 					Comments.forResource(
@@ -113,21 +108,20 @@ angular.module('directives.comment', [
 			 			function (comments) {
 							$scope.comments = comments;
 							console.log("comments fetchec");
-							console.log($scope.comments);	
-							
+							console.log($scope.comments);
 						},
 						function (response) {
 						}
-					);					
+					);
 					$scope.clearComment = function(resource){
 						$scope.newcomment = "";
-						};
-					
-					
+					};
+
+
 				}
 
 
-			]	
+			]
 		};
 	}
 ])

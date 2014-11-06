@@ -1,4 +1,4 @@
-describe('admin projects', function () {
+xdescribe('admin projects', function () {
 
 	beforeEach(module('admin-projects'));
 

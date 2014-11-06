@@ -1,4 +1,4 @@
-describe('login-toolbar', function() {
+xdescribe('login-toolbar', function() {
   var $rootScope, scope, toolbar, security;
   beforeEach(module('security/login/toolbar.tpl.html', 'security'));
   beforeEach(inject(function(_$rootScope_, $compile, _security_) {

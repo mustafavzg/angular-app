@@ -54,8 +54,10 @@
 									<div class="form-group">
 										<!-- <span class="help-block">Action</span> -->
 										<div class="btn-group">
-											<button class="btn btn-default btn-lg" ng-show="!timerRunning" ng-click="startTimer()"><icon id="play"></icon></button>
-											<button class="btn btn-default btn-lg" ng-show="timerRunning" ng-click="stopTimer()"><icon id="stop"></icon></button>
+											<!-- <button class="btn btn-default btn-lg" ng-show="!timerRunning" ng-click="startTimer()"><icon id="play"></icon></button> -->
+											<!-- <button class="btn btn-default btn-lg" ng-show="timerRunning" ng-click="stopTimer()"><icon id="stop"></icon></button> -->
+											<button class="btn btn-default btn-lg" ng-show="!timerRunning" ng-click="startTimer2(beforeTimerStart)"><icon id="play"></icon></button>
+											<button class="btn btn-default btn-lg" ng-show="timerRunning" ng-click="stopTimer2(beforeTimerStop)"><icon id="stop"></icon></button>
 											<span class="timer">
  												{{clock | date:'mediumTime'}}
 												<icon id="record"></icon>

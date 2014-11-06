@@ -27,7 +27,8 @@ module.exports = function (grunt) {
 	// grunt.registerTask('default', ['build','karma:unit']);
 	// grunt.registerTask('new', ['jshint','build','karma:unit','server']);
 	// grunt.registerTask('build', ['clean','html2js','concat','recess:build','copy:assets']);
-	grunt.registerTask('build', ['clean','html2js','concat','copy:assets']);
+	// grunt.registerTask('build', ['clean','html2js','concat','copy:assets']);
+	grunt.registerTask('build', ['clean','html2js','concat','copy:assets', 'karma:unit']);
 	grunt.registerTask('server', function() {
 		grunt.task.run([
 			// 'connect:livereload',
@@ -140,7 +141,7 @@ module.exports = function (grunt) {
 				}
 			},
 			angular: {
-				src:['vendor/angular/angular.js', 'vendor/angular/angular-route.js'],
+				src:['vendor/angular/angular.js', 'vendor/angular/angular-route.js', 'vendor/angular/angular-sanitize.js'],
 				dest: '<%= distdir %>/angular.js'
 			},
 			// angularmock: {

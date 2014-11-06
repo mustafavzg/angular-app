@@ -1,4 +1,4 @@
-describe('crud-edit directive', function () {
+xdescribe('crud-edit directive', function () {
   var resourceMock;
 
   beforeEach(module('directives.crud.edit'));

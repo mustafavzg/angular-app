@@ -50,6 +50,23 @@
 			</div>
 		</div>
 	</div>
+
+	<accordion close-others="false">
+		<accordion-group is-open="commentAccord.commentOpen" panel-class="success" ng-init="commentAccord = {commentOpen: false}">
+			<accordion-heading>
+				<span class="hover-pointer">Comments</span>
+				<span class="pull-right hover-pointer" ng-show="!commentAccord.commentOpen"><icon id="chevron-down"></icon></span>
+				<span class="pull-right hover-pointer" ng-show="commentAccord.commentOpen"><icon id="chevron-up"></icon></span>
+			</accordion-heading>
+			<!-- <comment resource-id="{{sprint.$id()}}" for-resource="sprints" user-id="{{Users.$id()}}"></comment> -->
+			<comment resource-id="{{sprint.$id()}}" for-resource="sprints" user-id="{{security.currentUser.ID}}"></comment>
+			<span class="pull-right hover-pointer" ng-show="commentAccord.commentOpen" ng-click="commentAccord.commentOpen = false"><icon id="chevron-up"></icon></span>
+		</accordion-group>
+		<!-- <accordion-group-chevron heading="Comments" panel-class="success"> -->
+		<!-- 	<comment resource-id="{{project.$id()}}" for-resource="projects" user-id="{{security.currentUser.ID}}"></comment> -->
+		<!-- </accordion-group-chevron> -->
+	</accordion>
+
 	<!-- -------------------------------------------------- -->
 	<!-- Other Entities -->
 	<!-- TODO: Implement this with ng-repeat or in separate template files -->
@@ -57,10 +74,7 @@
 	<div class="panel panel-default">
 		<tabset justified="true" type="pills">
 			<tab heading="Dashboard">
-			    <div class="panel panel-default">
-					<comment resource-id="{{sprint.$id()}}" for-resource="sprints" user-id="{{Users.$id()}}"></comment>
-				  </div> 
-				<div class="panel">
+				<div class="panel panel-default">
 					<gantt-chart
 						 items="sprints"
 						 resourceconf="sprintsGanttConf"
@@ -70,30 +84,35 @@
 						 title="Sprint Gantt View"
 						 >
 					</gantt-chart>
-					
 				</div>
-				<div class="panel">
+				<!-- div panel -->
+
+				<div class="panel panel-default">
 					<gantt-chart
-					 items="tasks"
-					 resourceconf="tasksGanttConf"
-					 item-to-task-data-source="taskData(item)"
-					 fetchingitems="fetchingTasks"
-					 update-validator="tasksGanttUpdateValidator(item, update)"
-					 title="Tasks in {{sprint.name}}"
-					 >
+						 items="tasks"
+						 resourceconf="tasksGanttConf"
+						 item-to-task-data-source="taskData(item)"
+						 fetchingitems="fetchingTasks"
+						 update-validator="tasksGanttUpdateValidator(item, update)"
+						 title="Tasks in {{sprint.name}}"
+						 >
 					</gantt-chart>
 				</div>
-				<div class="panel">
+				<!-- div panel -->
+
+				<div class="panel panel-default">
 					<gantt-chart
-					 items="backlogItem"
-					 resourceconf="backlogItemsGanttConf"
-					 item-to-task-data-source="backlogItemData(item)"
-					 fetchingitems="fetchingbacklogItems"
-					 update-validator="sprintGanttUpdateValidator(item, update)"
-					 title="Backlog Items in {{sprint.name}}"
-					 >
+						 items="backlogItem"
+						 resourceconf="backlogItemsGanttConf"
+						 item-to-task-data-source="backlogItemData(item)"
+						 fetchingitems="fetchingbacklogItems"
+						 update-validator="sprintGanttUpdateValidator(item, update)"
+						 title="Backlog Items in {{sprint.name}}"
+						 >
 					</gantt-chart>
 				</div>
+				<!-- div panel -->
+
 				<pie-chart items="tasks" fetchingitems="fetchingTasks" chart-config="pieChartConfig"></pie-chart>		
 			</tab>
 			<tab heading="Tasks">

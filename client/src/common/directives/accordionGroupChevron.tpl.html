@@ -1,0 +1,10 @@
+<accordion-group is-open="accordRef.isOpen" panel-class="{{panelClass}}" ng-init="accordRef = {isOpen: false}">
+	<accordion-heading>
+		<span class="hover-pointer">{{heading}}</span>
+		<span class="pull-right hover-pointer" ng-show="!accordRef.isOpen"><icon id="chevron-down"></icon></span>
+		<span class="pull-right hover-pointer" ng-show="accordRef.isOpen"><icon id="chevron-up"></icon></span>				
+	</accordion-heading>
+	<div id="transdiv"></div>
+	<!-- <div id="transdiv" ng-transclude></div> -->
+	<span class="pull-right hover-pointer" ng-show="accordRef.isOpen" ng-click="accordRef.isOpen = false"><icon id="chevron-up"></icon></span>
+</accordion-group>

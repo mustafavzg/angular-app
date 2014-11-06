@@ -223,57 +223,9 @@ angular.module('directives.ganttChart', [
 					 **************************************************/
 					var getGanttData = function (items) {
 						var data = [];
-
 						angular.forEach(items, function(item) {
 							data.push(getGanttDataForItem(item));
 						});
-
-						// $scope.minDate =
-						// angular.forEach(items, function(item) {
-						// 	var itemRow = {};
-						// 	var task = {};
-						// 	itemRow.tasks = [task];
-						// 	itemRow.id = item.$id();
-						// 	task.id = item.$id();
-
-						// 	// task.color = conf.resource.color;
-						// 	// angular.forEach($scope.ganttFieldMap, function(fieldSpec) {
-						// 	// 	if( angular.isDefined(fieldSpec.taskField) ){
-						// 	// 		task[fieldSpec.taskField] = item[fieldSpec.key];
-						// 	// 		if( fieldSpec.taskField === 'subject' ){
-						// 	// 			task[fieldSpec.taskField] = truncateString(task[fieldSpec.taskField], 50);
-						// 	// 		}
-						// 	// 	}
-						// 	// 	if( angular.isDefined(fieldSpec.rowField) ){
-						// 	// 		itemRow[fieldSpec.rowField] = item[fieldSpec.key];
-						// 	// 		if( fieldSpec.rowField === 'description' ){
-						// 	// 			itemRow[fieldSpec.rowField] = truncateString(itemRow[fieldSpec.rowField], 50);
-						// 	// 		}
-						// 	// 	}
-						// 	// });
-
-						// 	task.color = $scope.ganttFieldMap.colorMap(item);
-
-						// 	angular.forEach($scope.ganttFieldMap.task, function(fieldSpec) {
-						// 		if( angular.isDefined(fieldSpec.ganttKey) ){
-						// 			task[fieldSpec.ganttKey] = item[fieldSpec.key];
-						// 			if( fieldSpec.ganttKey === 'subject' ){
-						// 				task[fieldSpec.ganttKey] = truncateString(task[fieldSpec.ganttKey], 50);
-						// 			}
-						// 		}
-						// 	});
-
-						// 	angular.forEach($scope.ganttFieldMap.row, function(fieldSpec) {
-						// 		if( angular.isDefined(fieldSpec.ganttKey) ){
-						// 			itemRow[fieldSpec.ganttKey] = item[fieldSpec.key];
-						// 			if( fieldSpec.ganttKey === 'description' ){
-						// 				itemRow[fieldSpec.ganttKey] = truncateString(itemRow[fieldSpec.ganttKey], 50);
-						// 			}
-						// 		}
-						// 	});
-
-						// 	data.push(itemRow);
-						// });
 						return data;
 					};
 
@@ -285,49 +237,10 @@ angular.module('directives.ganttChart', [
 							return {};
 						}
 
-						// var itemRow = {};
-						// var task = {};
-						// itemRow.tasks = [task];
-						// itemRow.id = item.$id();
-						// task.data = { rowId: itemRow.id };
-						// task.id = itemRow.id + '1';
-
-						// task.color = $scope.ganttFieldMap.colorMap(item);
-
-						// angular.forEach($scope.ganttFieldMap.task, function(fieldSpec) {
-						// 	if( angular.isDefined(fieldSpec.ganttKey) ){
-						// 		task[fieldSpec.ganttKey] = item[fieldSpec.key];
-						// 		if( fieldSpec.ganttKey === 'subject' ){
-						// 			task[fieldSpec.ganttKey] = truncateString(task[fieldSpec.ganttKey], 50);
-						// 		}
-						// 	}
-						// });
-
-						// angular.forEach($scope.ganttFieldMap.row, function(fieldSpec) {
-						// 	if( angular.isDefined(fieldSpec.ganttKey) ){
-						// 		itemRow[fieldSpec.ganttKey] = item[fieldSpec.key];
-						// 		if( fieldSpec.ganttKey === 'description' ){
-						// 			itemRow[fieldSpec.ganttKey] = truncateString(itemRow[fieldSpec.ganttKey], 50);
-						// 		}
-						// 	}
-						// });
-						// return itemRow;
-
-						// var rowDataSource;
-						// if( angular.isDefined($attrs['itemToRowDataSource']) ){
-						// 	rowDataSource = $scope.itemToRowDataSource({item: item});
-						// }
-
 						var rowDataSource = $scope.itemToRowDataSource({item: item}) || item;
 						var ganttRow = getGanttRowData(rowDataSource, $scope.ganttFieldMap.row, {
 							rowId: $scope.itemToRowId({item: item}) || item.$id()
 						});
-
-						// ganttRow.tasks = [getGanttTaskData(item, $scope.ganttFieldMap.task, {
-						// 	rowId: item.$id(),
-						// 	index: 0,
-						// 	colorMap: $scope.ganttFieldMap.colorMap
-						// })];
 
 						var taskDataSource = $scope.itemToTaskDataSource({item: item}) || [item];
 						ganttRow.tasks = getGanttTaskData(taskDataSource, $scope.ganttFieldMap.task, {
@@ -421,25 +334,6 @@ angular.module('directives.ganttChart', [
 
 						return task;
 					};
-
-					// console.log("items are");
-					// console.log(getGanttData($scope.items));
-
-					// angular.forEach($scope.items, function(item) {
-					// 	var itemRow = {};
-					// 	var task = {};
-					// 	itemRow.tasks = [task];
-					// 	itemRow.id = item.$id();
-					// 	task.id = item.$id();
-					// 	angular.forEach($scope.ganttFieldMap, function(fieldSpec) {
-					// 		if( angular.isDefined(fieldSpec.taskField) ){
-					// 			task[fieldSpec.taskField] = item[fieldSpec.key];
-					// 		}
-					// 		if( angular.isDefined(fieldSpec.rowField) ){
-					// 			itemRow[fieldSpec.rowField] = item[fieldSpec.key];
-					// 		}
-					// 	});
-					// });
 
 					/**************************************************
 					 * Get the updated data for the item when a gantt

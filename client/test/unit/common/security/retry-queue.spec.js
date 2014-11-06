@@ -1,4 +1,4 @@
-describe('securityRetryQueue', function() {
+xdescribe('securityRetryQueue', function() {
   var queue;
 
   function mockRetryItem() {
@@ -63,5 +63,5 @@ describe('securityRetryQueue', function() {
       expect(queue.hasMore()).toBe(false);
     });
   });
-  
+
 });

@@ -152,9 +152,7 @@ angular.module('services.crud').factory('crudEditHandlers', function () {
 angular.module('services.crud').factory('crudListMethods', [
 	'$location',
 	function ($location) {
-
 		return function (pathPrefix) {
-
 			var mixin = {};
 
 			mixin['new'] = function () {

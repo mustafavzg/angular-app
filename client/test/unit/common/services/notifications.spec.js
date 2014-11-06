@@ -1,4 +1,4 @@
-describe('notifications', function () {
+xdescribe('notifications', function () {
 
   var $scope, notifications;
   beforeEach(module('services.notifications'));

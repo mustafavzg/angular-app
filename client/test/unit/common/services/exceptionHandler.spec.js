@@ -1,4 +1,4 @@
-describe('exception handler', function () {
+xdescribe('exception handler', function () {
 
   var $exceptionHandler, notifications;
   beforeEach(function () {

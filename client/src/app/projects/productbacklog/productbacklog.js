@@ -70,7 +70,7 @@ angular.module('productbacklog', [
 					return new ProductBacklog({projectId:$route.current.params.projectId});
 				}
 			]
-		}) 
+		})
 
 		// How to handle the "view a product backlog item" route
 		.whenView({
@@ -264,7 +264,7 @@ angular.module('productbacklog', [
 		// /**************************************************
 		//  * gantt experiment
 		//  **************************************************/
-		
+
 		$scope.tasksConf = {
 			resource : {
 				key : 'tasks',
@@ -506,7 +506,6 @@ angular.module('productbacklog', [
 						// console.log(item.getStatusDef().ordering);
 						return item.getStatusDef().ordering;
 						// return item.getStatusDef().ordering || 0;
-
 					}
 				},
 				{

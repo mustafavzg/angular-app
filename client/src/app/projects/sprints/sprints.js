@@ -10,6 +10,7 @@ angular.module('sprints', [
 	'directives.actionicon',
 	'directives.pieChart',
 	'directives.warningblock',
+	'directives.accordionGroupChevron',
 	'ui.bootstrap',
 	'services.crud',
 	'services.i18nNotifications',
@@ -120,7 +121,6 @@ angular.module('sprints', [
 			],
 			productBacklog : productBacklog
 		});
-
 	}
 ])
 
@@ -172,8 +172,8 @@ angular.module('sprints', [
 		// /**************************************************
 		//  * gantt experiment
 		//  **************************************************/
-		
-		
+
+
 		$scope.tasksGanttConf = {
 			resource : {
 				key : 'tasks',
@@ -237,7 +237,7 @@ angular.module('sprints', [
 		};
 
 		$scope.sprint = sprint;
-		
+
 		// /**************************************************
 		//  * gantt experiment end
 		//  **************************************************/
@@ -680,7 +680,7 @@ angular.module('sprints', [
 		// $scope.project = project;
 		$scope.productBacklog = productBacklog;
 		$scope.sprint = sprint;
-		
+
 
 		angular.forEach($scope.productBacklog, function (productBacklogItem) {
 			productBacklogItem.propertiesToDisplay = [
@@ -1177,7 +1177,6 @@ angular.module('sprints', [
 			return $scope.notificationHelpers.onSave(savedSprint);
 		}
 
-	
 		// console.log("the location object");
 		// console.log($location);
 		// $scope.onSave = function (savedSprint) {

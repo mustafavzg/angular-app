@@ -1,4 +1,4 @@
-describe('CRUD scope mix-ins', function () {
+xdescribe('CRUD scope mix-ins', function () {
 
   var $rootScope;
 
