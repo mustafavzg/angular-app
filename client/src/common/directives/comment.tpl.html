@@ -1,6 +1,13 @@
+
 <div class="row" >
 	<div class="col-md-12">
-
+		<span class="col-md-12" ng-show="fetchingComments">Fetching Comments...
+			<a href="#"><img src="/static/img/spinner.gif"></a>
+		</span>	
+		<span class="col-md-12" ng-show="!comments.length && !fetchingComments">
+			No Comments found
+		</span>
+		
 		<div class="media" ng-repeat="comment in comments">
 
 			<img class="media-object photo-small pull-left" src="/static/img/foouser.jpg">
@@ -10,7 +17,7 @@
 						{{comment.createdBy}}
 					</span>
 					<span class="text-muted small">
-						{{comment.timeStamp}}
+						{{comment.timeStampDate}}
 					</span>
 				</div>											      
 				<p class="pre-wrap" ng-bind-html="comment.text"></p>
@@ -28,7 +35,7 @@
 		</div>
 		<p>
 			<div class='form-group block'>			
-				<textarea class="form-control" ng-model="newcomment" placeholder="Add your comments here" cols="8" rows="1" id="comments" >
+				<textarea class="form-control" ng-model="newcomment" placeholder="Add your comments here" cols="8" rows="" id="comments" >
 				</textarea>
 			</div>
 		</p>
