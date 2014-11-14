@@ -53,7 +53,9 @@ angular.module('resources.scrumUpdates')
 		ScrumUpdates.forUser = function (userId, successcb, errorcb) {
 			return ScrumUpdates.forResource('users', userId, successcb, errorcb);
 		};
-
+		ScrumUpdates.forUsers = function (userIds, successcb, errorcb) {
+			return ScrumUpdates.forResourceList('users', userIds, successcb, errorcb);
+		};
 		return ScrumUpdates;
 	}
 ]);

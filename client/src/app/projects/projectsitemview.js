@@ -25,7 +25,8 @@ angular.module('projectsitemview', [
 	'underscore',
 	'gantt',
 	'filters.groupBy',
-	'filters.momentsAgo'
+	'filters.momentsAgo',
+	'directives.datelookup'
 ])
 
 .config([
@@ -122,8 +123,8 @@ angular.module('projectsitemview', [
 	) {
 
 		$scope.project = project;
-		// console.log("fetched project");
-		// console.log(project);
+		console.log("fetched project");
+		console.log(project);
 		$scope.Sprints = Sprints;
 		$scope.ProductBacklog = ProductBacklog;
 		$scope.Tasks = Tasks;
@@ -776,128 +777,103 @@ angular.module('projectsitemview', [
 		/**************************************************
 		 * Fetch scrumupdates and add it in the dashboard page.
 		 **************************************************/
+
+		// Initializing the values.
+		$scope.showAddButton = true;
+		$scope.scrumDates = {};
+		$scope.planVal = true;
+		$scope.updateVal = true;
+		$scope.impedimentVal = true;
+		var todaysDate = new Date();
+		$scope.scrumDates.startdate = todaysDate;
+		// Setting chosendate to current date.
+		$scope.scrumDates.chosenDate = new Date();
+		$scope.scrumDates.startdate.setDate(todaysDate.getDate() - 7);
+		todaysDate = new Date();
+		$scope.scrumDates.enddate = todaysDate;
+		$scope.currentDate = todaysDate.toDateString();
+		$scope.scrumDates.chosenUser = '';
+
+		// Fetch all users on the project.
+		var productOwner = [project.productOwner];
+		var stakeHolders = project.stakeHolders;
+		var teamMembers = project.teamMembers;
+		var projectUsers = [productOwner, stakeHolders, teamMembers];
+		var projectUserIds = _.union.apply(_, projectUsers);
+		var userObjects = Users.getByIds(
+			projectUserIds,
+			function (users, responsestatus, responseheaders, responseconfig) {
+				$scope.scrumusers = users;
+				$scope.fetchingTasks = false;
+			},
+			function (response, responsestatus, responseheaders, responseconfig) {
+				$scope.fetchingTasks = false;
+			}
+		);
 		$scope.fetchingscrumupdates = true;
 		$scope.scrumupdates = [];
 		$scope.updateStatus = {}; // keeps track of the scrum dates which are updated.
-		var allScrumUpdates = [];
-		ScrumUpdates.forProject(
-			project.$id(),
-			function (scrumupdates) {
-				console.log("\nScrum Updates:\n");
-				$scope.scrumupdates = scrumupdates;
-				$scope.fetchingscrumupdates = false;
-				allScrumUpdates = $scope.scrumupdates;
-				$scope.scrumupdates = allScrumUpdates;
+		$scope.allScrumUpdates = [];
+
+
+		// Fetch the scrumupdates for all users based on userids..
+		ScrumUpdates.forUsers(
+			projectUserIds,
+			function (scrumupdates, responsestatus, responseheaders, responseconfig) {
+				$scope.allScrumUpdates = scrumupdates;
+				$scope.userscrumhash = {};
+				for(var updateIndex in scrumupdates){
+					if($scope.userscrumhash[scrumupdates[updateIndex].userId]){
+						$scope.userscrumhash[scrumupdates[updateIndex].userId].push(scrumupdates[updateIndex]);
+					}
+					else{
+						$scope.userscrumhash[scrumupdates[updateIndex].userId] = [scrumupdates[updateIndex]];
+					}
+				}
 			},
-			function (response) {
-				$scope.fetchingscrumupdates = false;
+			function (response, responsestatus, responseheaders, responseconfig) {
+				console.log("Failed to fetch team members");
+				console.log(response);
 			}
 		);
 
-		$scope.showAddButton = true;
-		$scope.scrumDates = {};
-		var todaysDate = new Date();
-		$scope.scrumDates.startdate = todaysDate;
-		$scope.scrumDates.chosendate = todaysDate;
-		$scope.scrumDates.startdate.setDate(todaysDate.getDate() - 7);
-		todaysDate = new Date();
-		$scope.scrumDates.enddate = todaysDate;
-		$scope.currentDate = todaysDate.toDateString();
-		$scope.saveScrumUpdate = function(project){
-			project.showAddButton = true;
-			console.log(project.scrumText);
-			if (project.scrumText) {
-				var successcb = function(){
-					console.log("scrum saved successfully!!!");
-				};
-				var failurecb = function(){
-					console.log("scrum cannot be saved!!!");
-				};
-				scrum = {};
-				scrum.date = new Date();
-				scrum.text = project.scrumText;
-				scrum.task = project.name;
-				var currentDate = scrum.date;
-				scrum.dateString = currentDate.toLocaleDateString();
-				scrum.timeString = currentDate.getHours()+":"+currentDate.getMinutes()+":"+currentDate.getSeconds();
-				scrum.userId = user.$id();
-				scrum.taskId = task.$id();
-				project.scrum = scrum;
-				$scope.scrumupdates.push(scrum);
-				var scrumupdateobj = new ScrumUpdates(scrum);
-				scrumupdateobj.$save(successcb, failurecb);
-				project.hasHistory = false;
-				successcb = function(){
-					console.log("task saved successfully!!!");
-				};
-				failurecb = function(){
-					console.log("task cannot be saved!!!");
-				};
-			}
-		};
-		$scope.addScrumUpdate = function(project){
-			project.showAddButton = false;
-			ScrumUpdates.forProject(
-				project.$id(),
-				function (scrumupdates) {
-					project.hasHistory = scrumupdates.length > 0;
-					project.taskUpdates = scrumupdates;
-			 	},
-				function (response) {
-					$scope.fetchingscrumupdates = false;
-				}
-			);
-		};
-		$scope.closeScrumUpdate = function(project){
-			project.scrumText = "";
-			project.showAddButton = true;
-			project.hasHistory = false;
-		};
-
-		$scope.clearScrumUpdate = function(task){
-			project.scrumText = "";
-			project.showAddButton = false;
-			project.hasHistory = true;
-		};
-
-
-
-		$scope.$watchCollection('scrumDates', function(newObj, oldObj){
-			var startDate = new Date($scope.scrumDates.startdate);
-			var endDate = new Date($scope.scrumDates.enddate);
-			// Check equality just to be sure, as listeners are fired atleast
-			// once during initialization even if the object has not changed
-			if( !angular.equals(newObj, oldObj) ){
-				var filteredUpdates = [];
-				// Iterate through the scrum updates and filter only those updates which
-				// are in the current date range.
-				for(var taskIndex in allScrumUpdates){
-					var currentUpdate = allScrumUpdates[taskIndex];
-					var currentDate = new Date(currentUpdate.date);
-					if(currentDate >= startDate && currentDate <= endDate){
-						var dateString = currentDate.toLocaleDateString();
-						currentUpdate.dateString = dateString;
-						var timeString = currentDate.getHours()+":"+currentDate.getMinutes()+":"+currentDate.getSeconds();
-						currentUpdate.timeString = timeString;
-						filteredUpdates.push(currentUpdate);
-					}
-				}
-				$scope.scrumupdates = filteredUpdates;
-			}
-		});
-
 		function dateCompReverse(obj1, obj2){
 			var date1 = new Date(obj1.date);
 			var date2 = new Date(obj2.date);
 			return date2.getTime() - date1.getTime();
 		}
-		console.log("Scrum Updates="+$scope.scrumupdates);
-		$scope.$watchCollection('scrumupdates', function (newUpdates, oldUpdates) {
-			if (!angular.equals(newUpdates, oldUpdates)) {
-				$scope.scrumupdates.sort(dateCompReverse)
-				$scope.groupedScrumUpdates = groupByFilter($scope.scrumupdates, "dateString", "project");
-				for(updateIndex in $scope.scrumupdates){
-					currentScrumUpdate = $scope.scrumupdates[updateIndex];
+
+		$scope.showError = function (error) {
+			return $scope.$error[error];
+		}
+
+		$scope.setValidationClasses = function () {
+			console.log("\nSetting Validation Classes\n");
+			return {
+				'has-success' : $scope.$valid,
+				'has-error' : $scope.$invalid
+			};
+		}
+
+		// Whenever an user in chosen update the scrumupdate to show only for the chosen user
+		$scope.$watch('scrumDates.chosenUser', function(newObj, oldObj){
+			// Check equality just to be sure, as listeners are fired atleast
+			// once during initialization even if the object has not changed
+			if( !angular.equals(newObj, oldObj) ){
+				var filteredUpdates = [];
+				// Fetch the scrum updates for the user and update the updateStatus hash
+				// to contain only the current updates.
+				// When the user chosen is showall then make the scrumupadtes contain all list of updates
+				if($scope.scrumDates.chosenUser != 'showall' && $scope.scrumDates.chosenUser != ''){
+					$scope.scrumupdates = $scope.userscrumhash[$scope.scrumDates.chosenUser];	
+				}
+				else{
+					console.log("\n:Showing all Scrum Updates:\n");
+					$scope.scrumupdates = $scope.allScrumUpdates;
+				}
+				$scope.updateStatus = {};
+				for(updateIndex in $scope.allScrumUpdates){
+					var currentScrumUpdate = $scope.scrumupdates[updateIndex];
 					currentDate = new Date(currentScrumUpdate.date);
 					if(!$scope.updateStatus[currentDate.toDateString()] && (currentDate.toDateString() == todaysDate.toDateString())){
 						$scope.updateStatus[currentDate.toDateString()] = true;
@@ -906,97 +882,75 @@ angular.module('projectsitemview', [
 						$scope.updateStatus[currentDate.toDateString()] = 'updated-later';
 					}
 				}
+			}
+		});
+
+		$scope.$watch('scrumDates.chosenDate', function(newObj, oldObj){
+			// Check equality just to be sure, as listeners are fired atleast
+			// once during initialization even if the object has not changed
+			console.log("\nChosen date has changed.\n");
+			if( !angular.equals(newObj, oldObj) ){
+				var chosenDate = $scope.scrumDates.chosenDate;
+				$scope.scrumDates.startdate = chosenDate;
+				var nextChosenDate = new Date(chosenDate);
+				nextChosenDate.setDate( nextChosenDate.getDate() + 1 );
+				$scope.scrumDates.enddate = nextChosenDate;
+			}
+		});
+
+
+		// Changed groupedScrumUpdates whenever the scrumupdates gets changed.
+		$scope.$watchCollection('scrumupdates', function (newUpdates, oldUpdates) {
+			if (!angular.equals(newUpdates, oldUpdates)) {
+				$scope.scrumupdates.sort(dateCompReverse)
+				$scope.groupedScrumUpdates = groupByFilter($scope.scrumupdates, "dateString");
 			};
 		});
+
+		// set validation
+		$scope.$watchCollection('scrumDates', function (newObj, oldObj) {
+			console.log("inside watching dates:");
+			if( !angular.equals(newObj, oldObj) ){
+				if( $scope.scrumDates.startdate >= $scope.scrumDates.enddate ){
+					console.log("\nfromDate is greater than toDate.");
+					if( !angular.equals(newObj[0], oldObj[0]) ){
+						//$scope.scrumDates.startdate.dateField.$setValidity('datecombocheck', false);
+					}
+					if( !angular.equals(newObj[1], oldObj[1]) ){
+						//$scope.scrumDates.startdate.dateField.$setValidity('datecombocheck', false);
+					}
+				}
+				else {
+					//$scope.fromDate.dateField.$setValidity('datecombocheck', true);
+					//$scope.toDate.dateField.$setValidity('datecombocheck', true);
+					var filteredUpdates = [];
+					// Iterate through the scrum updates and filter only those updates which
+					// are in the current date range.
+
+					for(var taskIndex in $scope.allScrumUpdates){
+						var currentUpdate = $scope.allScrumUpdates[taskIndex];
+						var currentDate = new Date(currentUpdate.date);
+						if(currentDate >= $scope.scrumDates.startdate && currentDate <= $scope.scrumDates.enddate){
+							var dateString = currentDate.toLocaleDateString();
+							currentUpdate.dateString = dateString;
+							var timeString = currentDate.getHours()+":"+currentDate.getMinutes()+":"+currentDate.getSeconds();
+							currentUpdate.timeString = timeString;
+							filteredUpdates.push(currentUpdate);
+						}
+					}
+					$scope.scrumupdates = filteredUpdates;
+				}
+			}
+		});
+
+
+		function dateCompReverse(obj1, obj2){
+			var date1 = new Date(obj1.date);
+			var date2 = new Date(obj2.date);
+			return date2.getTime() - date1.getTime();
+		}
 		/**************************************************
 		 * ScrumUpdates End.
 		 **************************************************/
-		// $scope.taskscrudhelpers = {};
-		// angular.extend($scope.taskscrudhelpers, crudListMethods('/projects/'+project.$id()+'/tasks'));
-		$scope.showAddButton = true;
-		$scope.scrumDates = {};
-		var todaysDate = new Date();
-		$scope.scrumDates.startdate = todaysDate;
-		$scope.scrumDates.chosendate = todaysDate;
-		$scope.scrumDates.startdate.setDate(todaysDate.getDate() - 7);
-		todaysDate = new Date();
-		$scope.scrumDates.enddate = todaysDate;
-		$scope.currentDate = todaysDate.toDateString();
-
-		$scope.addScrumUpdate = function(project){
-			project.showAddButton = false;
-			ScrumUpdates.forProject(
-				project.$id(),
-				function (scrumupdates) {
-					project.hasHistory = scrumupdates.length > 0;
-					project.taskUpdates = scrumupdates;
-			 	},
-				function (response) {
-					$scope.fetchingscrumupdates = false;
-				}
-			);
-
-		};
-		$scope.closeScrumUpdate = function(project){
-			project.scrumText = "";
-			project.showAddButton = true;
-			project.hasHistory = false;
-		};
-
-		$scope.clearScrumUpdate = function(project){
-			project.scrumText = "";
-			project.showAddButton = false;
-			project.hasHistory = true;
-		};
-
-
-
-		$scope.$watchCollection('scrumDates', function(newObj, oldObj){
-			var startDate = new Date($scope.scrumDates.startdate);
-			var endDate = new Date($scope.scrumDates.enddate);
-			// Check equality just to be sure, as listeners are fired atleast
-			// once during initialization even if the object has not changed
-			if( !angular.equals(newObj, oldObj) ){
-				var filteredUpdates = [];
-				// Iterate through the scrum updates and filter only those updates which
-				// are in the current date range.
-				for(var taskIndex in allScrumUpdates){
-					var currentUpdate = allScrumUpdates[taskIndex];
-					var currentDate = new Date(currentUpdate.date);
-					if(currentDate >= startDate && currentDate <= endDate){
-						var dateString = currentDate.toLocaleDateString();
-						currentUpdate.dateString = dateString;
-						var timeString = currentDate.getHours()+":"+currentDate.getMinutes()+":"+currentDate.getSeconds();
-						currentUpdate.timeString = timeString;
-						filteredUpdates.push(currentUpdate);
-					}
-				}
-				$scope.scrumupdates = filteredUpdates;
-			}
-		});
-
-		function dateCompReverse(obj1, obj2){
-			var date1 = new Date(obj1.date);
-			var date2 = new Date(obj2.date);
-			return date2.getTime() - date1.getTime();
-		}
-		console.log("\nScrum Updates="+$scope.scrumupdates+"\n");
-		console.log("\nGrouped Updates="+$scope.groupedScrumUpdates+"\n");
-		$scope.$watchCollection('scrumupdates', function (newUpdates, oldUpdates) {
-			if (!angular.equals(newUpdates, oldUpdates)) {
-				$scope.scrumupdates.sort(dateCompReverse)
-				$scope.groupedScrumUpdates = groupByFilter($scope.scrumupdates, "dateString", "task");
-				for(updateIndex in $scope.scrumupdates){
-					currentScrumUpdate = $scope.scrumupdates[updateIndex];
-					currentDate = new Date(currentScrumUpdate.date);
-					if(!$scope.updateStatus[currentDate.toDateString()] && (currentDate.toDateString() == todaysDate.toDateString())){
-						$scope.updateStatus[currentDate.toDateString()] = true;
-					}
-					if(!$scope.updateStatus[currentDate.toDateString()]){
-						$scope.updateStatus[currentDate.toDateString()] = 'updated-later';
-					}
-				}
-			};
-		});
 	}
 ]);

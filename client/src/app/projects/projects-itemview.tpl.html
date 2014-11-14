@@ -141,7 +141,6 @@
 							<!-- 		 item-to-task-data-source="taskData(item)" -->
 							<!-- 		 fetchingitems="fetchingTasks" -->
 							<!-- 		 update-validator="tasksGanttUpdateValidator(item, update)" -->
-							<\! -\-> -->
 							<!-- 	</gantt-chart> -->
 							<!-- </div> -->
 							<!-- div panel -->
@@ -172,7 +171,7 @@
 						<!-- </accordion-group-chevron> -->
 
 						<!-- Scrum Updates -->
-						<accordion-group is-open="scrumOpen" panel-class="warning" ng-init="scrumOpen = false">
+						<accordion-group is-open="scrumOpen" panel-class="warning" ng-init="scrumOpen = false" style="overflow: visible;">
 							<accordion-heading>
 								Scrum Updates
 								<span class="pull-right hover-pointer" ng-show="!scrumOpen"><icon id="chevron-down"></icon></span>
@@ -181,39 +180,63 @@
 							<!--
 								Adding scrum update
 							-->
-							<div class="panel-body">
-								<div class="panel panel-default">
-									<div class="panel-body">
-										<div class="panel">
-											<div class="panel-heading">
-												<table>
-													<tr>
-														<scrumupdatecalendar
-															label="Scrum Status"
-															update="updateStatus"
-															datechosen="scrumDates.chosendate">
-														</scrumupdatecalendar>
-													</tr>
-												</table>
-											</div>
-											<div class="panel-body">
-												<datecombofromto
-													 name="dateCombo"
-													 from-date="scrumDates.startdate"
-													 to-date="scrumDates.enddate"
-													 from-date-label="Start Date"
-													 to-date-label="End Date"
-													 from-date-required="true"
-													 to-date-required="true">
-												</datecombofromto>
-												<scrumupdateforresource
-													label="Scrum Update for {{scrumDates.chosendate | date : format}}"
-													resource="project"
-													date="scrumDates.chosendate"
-													scrumupdates="scrumupdates">
-												</scrumupdateforresource>
-											</div>
-										</div>
+							<div class="row">
+								<div class="col-md-8">
+									<datecombofromto
+										name="dateCombo"
+										from-date="scrumDates.startdate"
+										to-date="scrumDates.enddate"
+										from-date-label="Start Date"
+										to-date-label="End Date"
+										from-date-required="true"
+										to-date-required="true">
+									</datecombofromto>
+								</div>
+								<div class="col-md-4">
+									<label>Select User</label>
+									<select class="form-control" ng-model="scrumDates.chosenUser">
+										<option value="showall" selected="selected">Show All</option>
+										<option ng-repeat="user in scrumusers" value="{{user.$id()}}"> {{user.username}} </option> 
+									</select>
+								</div>
+							</div>
+							<div class="row" ng-show="scrumDates.chosenUser && scrumDates.chosenUser != 'showall'">
+								<div class="col-md-3">
+									<img style="width: 100%;height: 100%;"class="media-object photo-small pull-left" src="/static/img/foouser.jpg">
+								</div>
+								<div class="col-md-9">
+									<table>
+										<tr>
+											<scrumupdatecalendar
+												label="Scrum Status"
+												update="updateStatus"
+												datechosen="scrumDates.chosenDate">
+											</scrumupdatecalendar>
+										</tr>
+									</table>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-4">
+									<label class="checkbox-inline">
+										<input type="checkbox" ng-model="planVal">Show Plan
+									</label>
+								</div>
+								<div class="col-md-4">
+									<label class="checkbox-inline">
+										<input type="checkbox" ng-model="updateVal">Show Update
+									</label>
+								</div>
+								<div class="col-md-4">
+									<label class="checkbox-inline">
+										<input type="checkbox" ng-model="impedimentVal">Show Impediments
+									</label>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-4" >
+									<div ng-show="planVal">
 										<div class="media" ng-repeat="dateGroup in groupedScrumUpdates">
 											<div class="media-heading">
 												<span class = "text-primary">
@@ -221,22 +244,60 @@
 												</span>
 											</div>
 											<div class="media-body">
-												<div class="media" ng-repeat="taskGroup in dateGroup.values">
+												<div class="media" ng-repeat="update in dateGroup.values">
 													<div class="media-heading">
-														<span ng-if="taskGroup.key != 'undefined'">
-															{{taskGroup.key}}
+														<span ng-if="update.text != 'undefined'">
+															{{update.text}}
 														</span>
 														<span ng-if="taskGroup.key == 'undefined'">
-															{{user.username}}
+															No Update
 														</span>
 													</div>
-													<div class="media-body">
-														<ul>
-															<li ng-repeat="update in taskGroup.values">
-																<span class="text-muted">{{update.timeString}} </span><br>
-																{{update.text}}
-															</li>
-														</ul>				
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-4" >
+									<div ng-show="updateVal">
+										<div class="media" ng-repeat="dateGroup in groupedScrumUpdates">
+											<div class="media-heading">
+												<span class = "text-primary">
+													{{dateGroup.key | momentsAgo}}
+												</span>
+											</div>
+											<div class="media-body">
+												<div class="media" ng-repeat="update in dateGroup.values">
+													<div class="media-heading">
+														<span ng-if="update.plan != undefined">
+															{{update.plan}}
+														</span>
+														<span ng-if="update.plan == undefined">
+															No Update
+														</span>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-4" >
+									<div ng-show="impedimentVal">
+										<div class="media" ng-repeat="dateGroup in groupedScrumUpdates">
+											<div class="media-heading">
+												<span class = "text-primary">
+													{{dateGroup.key | momentsAgo}}
+												</span>
+											</div>
+											<div class="media-body">
+												<div class="media" ng-repeat="update in dateGroup.values">
+													<div class="media-heading">
+														<span ng-if="update.impediments != undefined">
+															{{update.impediments}}
+														</span>
+														<span ng-if="update.impediments == undefined">
+															No Update
+														</span>
 													</div>
 												</div>
 											</div>
@@ -258,7 +319,6 @@
 
 			<tab heading="Product Backlog">
 				<tableactive items="backlogItems" fetchingitems="fetchingBacklogItems" resourceconf="backlogItemsConf" ></tableactive>
-								
 			</tab>
 
 			<tab heading="Sprints">
