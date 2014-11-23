@@ -8,7 +8,9 @@ angular.module('resources.users').factory('Users', [
 		userResource.getCollectionName = function(){
 			return 'users';
 		};
-
+		userResource.getUserIdList = function (userIds, successcb, errorcb) {
+			return userResource.forResourceList('users', userIds, successcb, errorcb);
+		};
 		userResource.autocomplete = function(query, successcb, errorcb) {
 			// mongodb seems to accept only regex literals
 			// so getting all users and using filter as temporary hack
@@ -60,6 +62,10 @@ angular.module('resources.users').factory('Users', [
 			return this.lastName + " " + this.firstName;
 		};
 
+		userResource.forProject = function (projectId, successcb, errorcb) {
+			return userResource.forResource('projects', projectId, successcb, errorcb);
+			// return Tasks.query({projectId:projectId}, successcb, errorcb);
+		};
 
 		return userResource;
 	}

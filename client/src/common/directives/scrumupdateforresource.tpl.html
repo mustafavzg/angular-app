@@ -1,11 +1,11 @@
 <div class="media">
  	<!--<div class="media-heading">-->
 
-		<button ng-click="addScrumUpdate(resource)" class="btn btn-success media-object pull-left" ng-show="resource.showAddButton" tooltip="Add a scrum update for this resource">
+		<button ng-click="addScrumUpdate(resource)" class="btn btn-success media-object pull-left" ng-show="resource.showAddButton" tooltip="Add a scrum update">
 			<icon id="comment"></icon>
 		</button>
 	<!--</div>-->
- 
+
  	<div class="media-body">
 		<div class="media-heading">
 			{{label}}
@@ -20,13 +20,30 @@
 			</div>
 		</div>
 		<p>
-			<div class='form-group block'>
-				<textarea class="form-control" ng-model="resource.scrumText" placeholder="Things completed yesterday" cols="10" rows="5" ng-show="!resource.showAddButton">
-				</textarea>
-				<textarea class="form-control" ng-model="resource.planForDay" placeholder="Plan for the day" cols="10" rows="5" ng-show="!resource.showAddButton">
-				</textarea>
-				<textarea class="form-control" ng-model="resource.impediments" placeholder="Impediments" cols="10" rows="5" ng-show="!resource.showAddButton">
-				</textarea>
+			<div class='form-group block' ng-show="!resource.showAddButton">
+				<div class="row">
+					<div class="col-md-4">
+						<button type="button" class="btn btn-default" ng-click="togglePlanButton(resource)" ng-show="!resource.showPlanButton" tooltip="Add Plan" tooltip-placement='bottom'>Add Plan</button>
+						<textarea class="form-control" ng-show="resource.showPlanButton" ng-model="resource.planForDay" placeholder="Plan for the day" cols="10" rows="5" ng-show="resource.showPlanButton">
+						</textarea>
+						<br/>
+						<br/>
+					</div>
+					<div class="col-md-4">
+						<button type="button" class="btn btn-default" ng-click="toggleUpdateButton(resource)" ng-show="!resource.showUpdateButton" tooltip="Add Update" tooltip-placement='bottom'>Add Update</button>
+						<textarea class="form-control" ng-model="resource.scrumText" placeholder="Things completed Today" cols="10" rows="5" ng-show="resource.showUpdateButton">
+						</textarea>
+						<br/>
+						<br/>
+					</div>
+					<div class="col-md-4">
+						<button type="button" class="btn btn-default" ng-click="toggleImpedimentsButton(resource)" ng-show="!resource.showImpedimentsButton" tooltip="Add Impediments" tooltip-placement='bottom'>Add Impediments</button>
+						<textarea class="form-control" ng-model="resource.impediments" ng-show="resource.showImpedimentsButton" placeholder="Impediments" cols="10" rows="5">
+						</textarea>
+						<br/>
+						<br/>
+					</div>
+				</div>
 			</div>
 		</p>
 	</div>

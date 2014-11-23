@@ -269,9 +269,6 @@ angular.module('users-itemview',[
 		/**************************************************
 		 * Fetch scrum updates and crud helpers
 		 **************************************************/
-		$scope.planVal = true;
-		$scope.updateVal = true;
-		$scope.impedimentVal = true;
 		$scope.fetchingscrumupdates = true;
 		$scope.scrumupdates = [];
 		$scope.updateStatus = {}; // keeps track of the scrum dates which are updated.
@@ -279,26 +276,10 @@ angular.module('users-itemview',[
 		ScrumUpdates.forUser(
 			user.$id(),
 			function (scrumupdates) {
+				$scope.scrumupdates = scrumupdates;
 				$scope.fetchingscrumupdates = false;
-				allScrumUpdates = scrumupdates;
-				var filteredUpdates = [];
-				console.log("\nfetched all updates:\n");
-				console.log(allScrumUpdates);
-				var startDate = new Date($scope.scrumDates.startdate);
-				var endDate = new Date($scope.scrumDates.enddate);
-				console.log("\nFiltering Updates:\n");
-				for(var taskIndex in allScrumUpdates){
-					var currentUpdate = allScrumUpdates[taskIndex];
-					var currentDate = new Date(currentUpdate.date);
-					if(currentDate >= startDate && currentDate <= endDate){
-						var dateString = currentDate.toLocaleDateString();
-						currentUpdate.dateString = dateString;
-						var timeString = currentDate.getHours()+":"+currentDate.getMinutes()+":"+currentDate.getSeconds();
-						currentUpdate.timeString = timeString;
-						filteredUpdates.push(currentUpdate);
-					}
-				}
-				$scope.scrumupdates = filteredUpdates;
+				allScrumUpdates = $scope.scrumupdates;
+				$scope.scrumupdates = allScrumUpdates;
 			},
 			function (response) {
 				$scope.fetchingscrumupdates = false;
@@ -311,7 +292,7 @@ angular.module('users-itemview',[
 		$scope.scrumDates = {};
 		var todaysDate = new Date();
 		$scope.scrumDates.startdate = todaysDate;
-		$scope.scrumDates.chosendate = new Date();
+		$scope.scrumDates.chosendate = todaysDate;
 		$scope.scrumDates.startdate.setDate(todaysDate.getDate() - 7);
 		todaysDate = new Date();
 		$scope.scrumDates.enddate = todaysDate;
@@ -374,6 +355,8 @@ angular.module('users-itemview',[
 			task.hasHistory = true;
 		};
 
+
+
 		$scope.$watchCollection('scrumDates', function(newObj, oldObj){
 			var startDate = new Date($scope.scrumDates.startdate);
 			var endDate = new Date($scope.scrumDates.enddate);
@@ -407,8 +390,7 @@ angular.module('users-itemview',[
 		$scope.$watchCollection('scrumupdates', function (newUpdates, oldUpdates) {
 			if (!angular.equals(newUpdates, oldUpdates)) {
 				$scope.scrumupdates.sort(dateCompReverse)
-				//$scope.groupedScrumUpdates = groupByFilter($scope.scrumupdates, "dateString", "task");
-				$scope.groupedScrumUpdates = groupByFilter($scope.scrumupdates, "dateString");
+				$scope.groupedScrumUpdates = groupByFilter($scope.scrumupdates, "dateString", "task");
 				for(updateIndex in $scope.scrumupdates){
 					currentScrumUpdate = $scope.scrumupdates[updateIndex];
 					currentDate = new Date(currentScrumUpdate.date);

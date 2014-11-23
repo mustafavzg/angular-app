@@ -1,0 +1,18 @@
+<button type="button" class="btn btn-primary btn-block" ng-click="new()">New suggestion</button>
+
+<hr />
+
+<table class="table table-condensed table-striped table-hover">
+    <thead>
+        <tr>
+            <th class="col-md-3">&nbsp;</th>
+            <th class="col-md-3">Title</th>
+            <th class="col-md-3">Description</th>
+        </tr>
+    <tbody>
+        <tr ng-repeat="suggestion in suggestions" ng-click="view(suggestion.$id())">
+            <td>{{suggestion.title}}</td>
+            <td>{{suggestion.description}}</td>
+        </tr>
+    </tbody>
+</table>

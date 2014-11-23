@@ -1,4 +1,4 @@
-angular.module('directives.datecombofromto', [
+angular.module('directives.datecombofromtowithusers', [
 	'ui.bootstrap',
 	'directives.datelookup'
 ])
@@ -8,7 +8,7 @@ angular.module('directives.datecombofromto', [
 	function() {
 		return {
 			restrict: 'E',
-			templateUrl: 'directives/datecombofromto.tpl.html',
+			templateUrl: 'directives/datecombofromtowithusers.tpl.html',
 			replace: true,
 			require: '^form',
 			scope: {
@@ -19,9 +19,11 @@ angular.module('directives.datecombofromto', [
 				fromDateRequired: '@',
 				toDateRequired: '@',
 				fromDate: '=',
-				toDate: '='
+				toDate: '=',
+				scrumusers: '='
 			},
 			link: function(scope, element, attrs, ngform) {
+				console.log("\n:Inside Directive DataComboFromToWithUsers:\n");
 				scope.fromDate = scope.fromDate || new Date();
 				//console.log("Column Size="+scope.colSize);
 				if( !angular.isDefined(scope.toDate) ){
@@ -61,6 +63,21 @@ angular.module('directives.datecombofromto', [
 						'has-error' : scope.ngform.$invalid
 					};
 				}
+				var productOwner = [resource.productOwner];
+				var stakeHolders = resource.stakeHolders;
+				var teamMembers = resource.teamMembers;
+				var projectUsers = [productOwner, stakeHolders, teamMembers];
+				var projectUserIds = _.union.apply(_, projectUsers);
+				var userObjects = Users.getByIds(
+					projectUserIds,
+					function (users, responsestatus, responseheaders, responseconfig) {
+						$scope.scrumusers = users;
+						$scope.fetchingTasks = false;
+					},
+					function (response, responsestatus, responseheaders, responseconfig) {
+						$scope.fetchingTasks = false;
+					}
+				);
 
 				// console.log("PRINTING THE FORM OBJECT from the date combo isolated scope");
 				// console.log(ngform);
