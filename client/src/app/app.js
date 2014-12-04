@@ -5,6 +5,7 @@ angular.module('app', [
 	'projects',
 	'admin',
 	'users',
+	'suggestions',
 	'services.breadcrumbs',
 	'services.i18nNotifications',
 	'services.httpRequestTracker',

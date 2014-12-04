@@ -20,6 +20,7 @@ angular.module('projects', [
 	'services.crud',
 	'security.authorization',
 	'services.i18nNotifications',
+	'resources.suggestions',
 	'underscore'
 ])
 

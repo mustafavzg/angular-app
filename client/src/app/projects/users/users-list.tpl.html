@@ -12,7 +12,7 @@
         </tr>
     <tbody>
         <tr ng-repeat="user in users" ng-click="view(user.$id())">
-            <td><gravatar email="user.username" size="50" default-image="'monsterid'"></gravatar></td>
+            <td><gravatar email="user.username" size="50" default-image="/hive/get-user-photo/{{user.userName}}"></gravatar></td>
             <td>{{user.username}}</td>
             <td>{{user.lastName}}</td>
             <td>{{user.firstName}}</td>

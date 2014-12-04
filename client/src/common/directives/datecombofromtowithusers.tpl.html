@@ -1,0 +1,26 @@
+<ng-form>
+	hihihi
+	<div class="row">
+		<div class="form-group" ng-class="setValidationClasses()">
+			<div class="col-md-4">
+				<datelookup name="fromDate" date="fromDate" label="{{fromDateLabel}}" required="{{fromDateRequired}}"></datelookup>
+			</div>
+
+			<div class="col-md-4">
+				<datelookup name="toDate" date="toDate" label="{{toDateLabel}}" required="{{toDateRequired}}"></datelookup>
+			</div>
+			<div class="col-md-4">
+				<label>Select User</label>
+				<select class="form-control" ng-model="chosenUser">
+				<option value="showall" selected="selected">Show All</option>
+				<option ng-repeat="user in scrumusers" value="{{user.username}}"> {{user.username}} </option> 
+				</select>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12" ng-class="setValidationClasses()">
+			<span class="help-block" ng-show="showError('datecombocheck')" >{{toDateLabel}} must be greater than {{fromDateLabel}}</span>							
+		</div>
+	</div>
+</ng-form>
