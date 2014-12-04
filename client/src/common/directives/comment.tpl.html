@@ -16,7 +16,7 @@
 						{{comment.createdBy}}
 					</span>
 					<span class="text-muted small">
-						{{comment.timeStampDate}}
+						{{comment.timeStampDate | date : 'yyyy-MM-dd HH:mm:ss' : IST}}
 					</span>
 				</div>											      
 				<p class="pre-wrap" ng-bind-html="comment.text"></p>

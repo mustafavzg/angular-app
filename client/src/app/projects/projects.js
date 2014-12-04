@@ -6,6 +6,7 @@ angular.module('projects', [
 	'sprints',
 	'tasksnew',
 	'users',
+	'taskclass',
 	'directives.datelookup',
 	'directives.datecombofromto',
 	'directives.helptip',
@@ -95,7 +96,8 @@ angular.module('projects', [
 		$q
 	) {
 		$scope.projects = projects;
-		// console.log(projects);
+		console.log("projects");
+		console.log(projects);
 		security.requestCurrentUser();
 
 		angular.extend($scope, crudListMethods('/projects'));

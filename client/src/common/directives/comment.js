@@ -49,33 +49,13 @@ angular.module('directives.comment', [
 					var forResource = $scope.forResource;
 					$scope.addComment = function(commentVal){
 						if(commentVal){
+
 							var now = new Date();
-							var date = now.getDate();
-							var period="AM";
-							var year= now.getFullYear();
-							var hour= now.getHours();
-							var minutes= now.getMinutes();
-							if (hour > 12) {
- 								hour -= 12;
- 								period="PM";
-							} else if (hour === 0) {
-   								hour = 12;
-   								period="AM";
-							}
-							else if(hour == 12 && minutes >= 0)
-							{
-
-							 	period ="PM";
-							}
-
-							var time= hour+"."+minutes+" "+period;
-							var months = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
-							var month= months[now.getMonth()];
 							tagObj = {};
 							var tagKey = Comments.getResourceKey(forResource);
 							tagObj[tagKey] = resourceId;
 							comment = {};
-							comment.timeStampDate =date+"-"+month+"-"+year+" "+time;
+							comment.timeStampDate = new Date(new Date().setMinutes(new Date().getMinutes()-new Date().getTimezoneOffset()));
 							var firstPartOfUrl = window.location.pathname.match(/\/projects\/.*\//);
 							if (commentVal.indexOf("#") != -1 ) 
 									{
@@ -137,22 +117,24 @@ angular.module('directives.comment', [
 											{
 												var regex = /(^|\s)@([^\s]+)/;
 												var match = regex.exec(commentVal);
-												comment.user = match[2];
+												user = match[2];
 												console.log("\n User..");
-												console.log(comment.user);
+												console.log(user);
 												commentVal=commentVal.replace(/(^|\s)@([^\s]+)/g,' <a href=\"'+firstPartOfUrl+'users\/'+"$2"+'\">@$2</a>');
 											}
 										}
 									}
 							comment.text = commentVal;
-							comment.createdBy = ($scope.currentUser)? $scope.currentUser.Username : "";
-							comment.hiveUserProfileId = ($scope.currentUser)? $scope.currentUser.ID : "";;
+							comment.createdBy = ($scope.currentUser)? $scope.currentUser.Username : "janusha";
+							comment.hiveUserProfileId = ($scope.currentUser)? $scope.currentUser.ID : "23";
 							angular.extend(comment,tagObj);
 							console.log("Comments Obj");
 							console.log(comment);
-
+							console.log("now query..");
 							var commentObj = new Comments(comment);
-							$scope.comments.push({text : comment.text,  createdBy: comment.createdBy, timeStampDate: comment.timeStampDate});
+							console.log("now");
+							console.log(now);
+							$scope.comments.push({text : comment.text,  createdBy: comment.createdBy, timeStampDate: now});
 							var successcb = function(){
 								console.log("saved successfully!!!");
 							};
@@ -160,6 +142,7 @@ angular.module('directives.comment', [
 							var failurecb = function(){
 								console.log("could not save");
 							};
+							
 							commentObj.$save(successcb, failurecb);
 						}
 
@@ -177,6 +160,7 @@ angular.module('directives.comment', [
 			 				$scope.fetchingComments = false;
 							console.log("comments fetched");
 							console.log($scope.comments);
+							
 						},
 						function (response) {
 

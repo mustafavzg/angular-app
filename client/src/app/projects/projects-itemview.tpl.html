@@ -46,9 +46,21 @@
 			<comment resource-id="{{project.$id()}}" for-resource="projects" user-id="{{security.currentUser.ID}}"></comment>
 			<span class="pull-right hover-pointer" ng-show="commentAccord.commentOpen" ng-click="commentAccord.commentOpen = false"><icon id="chevron-up"></icon></span>
 		</accordion-group>
+
 		<!-- <accordion-group-chevron heading="Comments" panel-class="success"> -->
 		<!-- 	<comment resource-id="{{project.$id()}}" for-resource="projects" user-id="{{security.currentUser.ID}}"></comment> -->
 		<!-- </accordion-group-chevron> -->
+	</accordion>
+	<accordion close-others="false">
+		<accordion-group is-open="documentAccord.documentOpen" panel-class="success" ng-init="documentAccord = {documentOpen: false}">
+			<accordion-heading>
+				<span class="hover-pointer">Attach a Document</span>
+				<span class="pull-right hover-pointer" ng-show="!documentAccord.documentOpen"><icon id="chevron-down"></icon></span>
+				<span class="pull-right hover-pointer" ng-show="documentAccord.documentOpen"><icon id="chevron-up"></icon></span>
+			</accordion-heading>
+	<document resource-id="{{project.$id()}}" for-resource="projects"></document>
+	<span class="pull-right hover-pointer" ng-show="documentAccord.documentOpen" ng-click="documentAccord.documentOpen = false"><icon id="chevron-up"></icon></span>
+		</accordion-group>
 	</accordion>
 
 	<!-- -------------------------------------------------- -->

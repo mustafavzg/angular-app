@@ -6,6 +6,7 @@ angular.module('app', [
 	'admin',
 	'users',
 	'suggestions',
+	'taskclass',
 	'services.breadcrumbs',
 	'services.i18nNotifications',
 	'services.httpRequestTracker',
@@ -27,7 +28,7 @@ angular.module('app').constant('MONGOLAB_CONFIG', {
 });
 
 angular.module('app').constant('ATHENAWEBAPP_CONFIG', {
-	baseUrl: '/projectile'
+	baseUrl: '/hive'
 	// baseUrl: '/databases/',
 	// dbName: 'ngpmtool'
 });
@@ -162,10 +163,25 @@ angular.module('app').constant('I18N.MESSAGES', {
 	// Gantt chart errors
 	'gantt.task.update.error': "Updates for this item are not allowed: (name: {{subject}}, id: {{id}}).",
 	'gantt.row.update.error': "Updates for this item are not allowed: (name: {{description}}, id: {{id}}).",
-	'gantt.task.data.error': "Error in Gantt Task data: 'to' date is undefined : (name: {{subject}}, id: {{id}})."
+	'gantt.task.data.error': "Error in Gantt Task data: 'to' date is undefined : (name: {{subject}}, id: {{id}}).",
+
+	// --------------------------------------------------
+	// Task Class
+	'crud.taskclass.save.success':"Task Class was saved successfully. (id :'{{id}}')",
+	'crud.taskclass.save.error':"An error occurred while saving the taskclass: '{{error}}'",
+	
+	'crud.taskclass.remove.success':"Task Class was removed successfully. (id :'{{id}}')",
+	'crud.taskclass.remove.error':"An error occurred while removing the taskclass : '{{error}}'.",
+
+
+	'crud.document.save.success':"Document was saved successfully. (id :'{{id}}')",
+	'crud.document.save.error':"An error occurred while saving the document: '{{error}}'",
+	
+	'crud.document.remove.success':"Document was removed successfully. (id :'{{id}}')",
+	'crud.document.remove.error':"An error occurred while removing the document : '{{error}}'."
 });
 
-angular.module('app').config([
+	angular.module('app').config([
 	'$routeProvider',
 	'$locationProvider',
 	function (
@@ -173,16 +189,20 @@ angular.module('app').config([
 		$locationProvider
 	) {
 		$locationProvider.html5Mode(true);
+		// $routeProvider.when('/suggestions', {templateUrl:'/settings/suggestions/suggestions.tpl.html'});
+		// $routeProvider.when('/taskclass', {templateUrl:'/settings/taskclass/taskclass.tpl.html'});
 		$routeProvider.otherwise({redirectTo:'/projects'});
 	}
 ]);
+	
+
 
 angular.module('app').run(['security', function(security) {
   // Get the current user when the application starts
   // (in case they are still logged in from a previous session)
 
-  security.login();
-  security.requestCurrentUser();
+  //security.login();
+  //security.requestCurrentUser();
 
 }]);
 

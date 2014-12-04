@@ -2,7 +2,7 @@
 	<!-- <div class="navbar navbar-inverse" role="navigation"> -->
 	<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 		<div class="container">
-		<!-- <div class="col-md-10 col-md-offset-1"> -->
+			<!-- <div class="col-md-10 col-md-offset-1"> -->
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
 					<span class="sr-only">Toggle navigation</span>
@@ -17,71 +17,28 @@
 			<ul class="nav navbar-nav">
 				<li ng-class="{active:isNavbarActive('projects')}"><a href="/projects">Projects</a></li>
 				<li class="dropdown">
-				<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Settings<span class="caret"></span></a>
-				<ul class="dropdown-menu" role="menu">
-					<li><a href="/suggestions/new">Add Suggestion</a></li>
-					<li><a href="/taskclass">Add a Task Class</a></li>
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Settings<span class="caret"></span></a>
+					<ul class="dropdown-menu" role="menu">
+						<li><a href="/suggestions/new">Add Suggestion</a></li>
+						<li><a href="/taskclass">Add a Task Class</a></li>
+					</ul>
 				</ul>
-			</ul>
-			<ul class="nav navbar-right" ng-show="hasPendingRequests()">
-				<li class="divider-vertical"></li>
-				<li><a href="#"><img src="/static/img/spinner.gif"></a></li>
-			</ul>
-			<!-- </div> -->
+				<ul class="nav navbar-right" ng-show="hasPendingRequests()">
+					<li class="divider-vertical"></li>
+					<li><a href="#"><img src="/static/img/spinner.gif"></a></li>
+				</ul>
+				<!-- </div> -->
+
+			</div>
 
 		</div>
-		<!-- container fluid -->
+		<!-- navbar -->
 
-		<!-- <div class="navbar-inner"> -->
-		<!--   <a class="brand" ng-click="home()">Projectile</a> -->
-		<!--     <ul class="nav"> -->
-		<!--         <\!-- <li ng-class="{active:isNavbarActive('projectsinfo')}"><a href="/projectsinfo">Current Projects</a></li> -\-> -->
-		<!--     </ul> -->
-
-		<!--     <ul class="nav" ng-show="isAuthenticated()"> -->
-		<!--         <li ng-class="{active:isNavbarActive('projects')}"><a href="/projects">Projects</a></li> -->
-		<!--         <\!-- <li><a href="/admin/projects">Manage Projects</a></li> -\-> -->
-		<!--         <\!-- <li><a href="/users">Users</a></li> -\-> -->
-		
-		<!--         <\!-- <li class="dropdown" ng-class="{active:isNavbarActive('admin'), open:isAdminOpen}" ng-show="isAdmin()"> -\-> -->
-		<!--         <\!--     <a id="adminmenu" role="button" class="dropdown-toggle" ng-click="isAdminOpen=!isAdminOpen">Admin<b class="caret"></b></a> -\-> -->
-
-		<!--         <\!--     <ul class="dropdown-menu" role="menu" aria-labelledby="adminmenu"> -\-> -->
-		<!--         <\!--         <li><a tabindex="-1" href="/admin/projects" ng-click="isAdminOpen=false">Manage Projects</a></li> -\-> -->
-		<!--         <\!--         <li><a tabindex="-1" href="/admin/users" ng-click="isAdminOpen=false">Manage Users</a></li> -\-> -->
-		<!--         <\!--     </ul> -\-> -->
-
-		<!--         <\!-- </li> -\-> -->
-		<!--     </ul> -->
-
-		<!--     <ul class="nav pull-right" ng-show="hasPendingRequests()"> -->
-		<!--         <li class="divider-vertical"></li> -->
-		<!--         <li><a href="#"><img src="/static/img/spinner.gif"></a></li> -->
-		<!--     </ul> -->
-		<!--     <\!-- <login-toolbar></login-toolbar> -\-> -->
-
-		<!-- </div> -->
-
-		<!-- <div> -->
-		<!--     <ul class="breadcrumb"> -->
-		<!--         <li ng-repeat="breadcrumb in breadcrumbs.getAll()"> -->
-		<!--             <span class="divider">/</span> -->
-		<!--             <ng-switch on="$last"> -->
-		<!--                 <span ng-switch-when="true">{{breadcrumb.name}}</span> -->
-		<!--                 <span ng-switch-default><a href="{{breadcrumb.path}}">{{breadcrumb.name}}</a></span> -->
-		<!--             </ng-switch> -->
-		<!--         </li> -->
-		<!--     </ul> -->
-		<!-- </div> -->
-
-	</div>
-	<!-- navbar -->
-
-	<div class="row">
-		<div class="col-md-12" >
-			<ol class="breadcrumb">
-				<li ng-repeat="breadcrumb in breadcrumbs.getAll()">
-					<ng-switch on="$last">
+		<div class="row">
+			<div class="col-md-12" >
+				<ol class="breadcrumb">
+					<li ng-repeat="breadcrumb in breadcrumbs.getAll()">
+						<ng-switch on="$last">
 						<span ng-switch-when="true">{{breadcrumb.name}}</span>
 						<span ng-switch-default>
 							<a href="{{breadcrumb.path}}">{{breadcrumb.name}}</a>
