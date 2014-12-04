@@ -508,6 +508,8 @@ angular.module('projectsitemview', [
 			]
 		};
 
+		
+
 		$scope.tasksGanttConf = {
 			resource : {
 				key : 'tasks',

@@ -937,6 +937,7 @@ angular.module('tasksnew', [
 			}
 		);
 
+		
 		$scope.viewProductBacklogItem = function (productBacklogItemId) {
 			$location.path('/projects/'+project.$id()+'/productbacklog/'+productBacklogItemId);
 		};

@@ -193,4 +193,4 @@ angular.module('directives.comment', [
 			]
 		};
 	}
-])
+]);

@@ -183,7 +183,7 @@ angular.module('projects', [
 	'$scope',
 	'$location',
 	'i18nNotifications',
-	// 'users',
+	//'users',
 	'project',
 	'crudListMethods',
 	'crudEditHandlers',
@@ -198,7 +198,7 @@ angular.module('projects', [
 		_
 	) {
 		$scope.project = project;
-		// $scope.users = users;
+		//$scope.users = users;
 		if( !angular.isDefined($scope.project.projectProfile) ){
 			$scope.project.projectProfile = {
 				ID : 1
