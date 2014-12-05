@@ -17,6 +17,7 @@ angular.module('mongolabResource', [
 
 
 			var url = MONGOLAB_CONFIG.baseUrl + MONGOLAB_CONFIG.dbName + '/collections/' + collectionName;
+			console.log("resource url="+url);
 			var defaultParams = {};
 			if (MONGOLAB_CONFIG.apiKey) {
 				defaultParams.apiKey = MONGOLAB_CONFIG.apiKey;
@@ -210,6 +211,7 @@ angular.module('mongolabResource', [
 			};
 
 			Resource.getByIds = function (ids, successcb, errorcb) {
+				console.log("\n:Getting user by Ids:\n");
 				return Resource.query({_id:{$in:Resource.getObjectIds(ids)}}, successcb, errorcb, true);
 			};
 

@@ -15,7 +15,7 @@
 	<!-- -------------------------------------------------- -->
 	<div class="panel panel-default">
 		<div class="panel-body">
-			<img class="media-object photo-small pull-left" src="/static/img/foouser.jpg">
+			<img class="media-object photo-small pull-left" src="/hive/get-user-photo/{{user.userName}}">
 			<div class="media-body"> 
 				<div class="media-heading">
 					{{user.lastName}} {{user.firstName}} ({{user.username}})
@@ -153,7 +153,7 @@
 													<div class="media" ng-repeat="update in dateGroup.values">
 														<div class="media-heading">
 															<span ng-if="update.text != 'undefined'">
-																{{update.text}}
+																{{update.plan}}
 															</span>
 															<span ng-if="taskGroup.key == 'undefined'">
 																No Update
@@ -176,7 +176,7 @@
 													<div class="media" ng-repeat="update in dateGroup.values">
 														<div class="media-heading">
 															<span ng-if="update.plan != undefined">
-																{{update.plan}}
+																{{update.text}}
 															</span>
 															<span ng-if="update.plan == undefined">
 																No Update

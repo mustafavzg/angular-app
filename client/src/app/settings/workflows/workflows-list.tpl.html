@@ -1,0 +1,63 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <strong>
+            Workflow
+        </strong>
+    </div>
+    <form name="form" crud-edit="workflow">
+        <div class="panel-body">
+            <div class="row">
+                <div class="form-group">
+                    <div class="text-center">
+                        <button type="button" class="btn btn-default" ng-click="createNewState()" tooltip="Create a New State" ng-show="showAdd" tooltip-placement='bottom'><icon id="plus-sign"></icon></button>
+                        <button type="button" class="btn btn-default" ng-click="defineStateTransitions()" tooltip="Define State Transitions" ng-show="showStateTransition" tooltip-placement='bottom'><icon id="random"></icon></button>
+                    </div>
+                    <div ng-show="!showAdd">
+                        <div class="row">
+                            <div class="col-md-3"></div>
+                            <div class="col-md-3">
+                                <label class="checkbox-inline">
+                                    <label>Enter the Current State Name:</label>
+                                </label>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="checkbox-inline">
+                                    <input name="name" ng-model="stateName" class="form-control" type="text">
+                                </label>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <button type="button" class="btn btn-default" ng-click="saveState(stateName)" tooltip="Save States" tooltip-placement='bottom'><icon id="floppy-open"></icon></button>
+                        </div>
+                    </div>
+                    <div ng-show="!showStateTransition">
+                        <div class="row">
+                            <div class="col-md-3"></div>
+                            <div class="col-md-3">
+                                <label class="checkbox-inline">
+                                    <label>Enter the Number of Allowable Next States:</label>
+                                </label>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="checkbox-inline">
+                                    <input name="name" ng-model="allowableStateNum" class="form-control" type="text">
+                                </label>
+                            </div>
+                            <div class="col-md-3">
+                                <button type="button" class="btn btn-default" ng-click="addAllowableStatesFromCurrent(allowableStateNum)" tooltip="Add Allowable State" ng-show="showAddAllowableButton" tooltip-placement='bottom'><icon id="plus-sign"></icon></button>
+                            </div>
+                        </div>
+                        <div class="row" ng-show="!showAddAllowableButton">
+                            <ul>
+                                <li ng-repeat="state in allowableStates">
+                                    <input name="name" ng-model="state.stateName" class="form-control" type="text">
+                                </li>
+                            </ul>
+                            <input name="name" ng-model="stateName" class="form-control" type="text">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

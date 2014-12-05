@@ -46,6 +46,8 @@
 
 			// Create the templateUrl for a route to our resource that does the specified operation.
 			var templateUrl = function(operation) {
+				console.log("Inside crudRouteProvider.js\n");
+				console.log(baseUrl + '/' + resourceName.toLowerCase() +'-'+operation.toLowerCase()+'.tpl.html');
 				return baseUrl + '/' + resourceName.toLowerCase() +'-'+operation.toLowerCase()+'.tpl.html';
 			};
 			// Create the controller name for a route to our resource that does the specified operation.

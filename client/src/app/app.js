@@ -7,6 +7,7 @@ angular.module('app', [
 	'users',
 	'suggestions',
 	'taskclass',
+	'workflows',
 	'services.breadcrumbs',
 	'services.i18nNotifications',
 	'services.httpRequestTracker',

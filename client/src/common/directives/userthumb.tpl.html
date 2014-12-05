@@ -2,7 +2,7 @@
 	<p>{{ user.getFullName() }}</p>		
  	<!-- <div class="caption"> -->
 	<!-- </div> -->
-	<img src="/static/img/foouser.jpg" class="photo">
+	<img src="/hive/get-user-photo/{{user.userName}}" class="photo">
 	<!-- <gravatar email="user.email" size="50" default-image="'monsterid'"></gravatar> -->
 	<!-- <p><span class="{{role.icon}}" ng-repeat="role in roleFunction({user: user})" tooltip="{{role.name}}"></span></p> -->
 	<div class="roles" ng-show="rolesDefined"><span class="{{role.icon}}" ng-repeat="role in roleFunction({user: user})" tooltip="{{role.name}}" tooltip-placement="bottom"></span></div>

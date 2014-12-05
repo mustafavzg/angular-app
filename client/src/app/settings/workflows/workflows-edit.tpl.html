@@ -1,0 +1,43 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <strong>
+            Workflow
+        </strong>
+    </div>
+    <form name="form" crud-edit="workflow">
+        <div class="panel-body">
+            <div class="row">
+                <div class="form-group">
+                    <ul style="list-style: none;">
+                        <li ng-repeat = "props in displayProps">
+                            <div class="row" ng-if="props.type == 'textbox'">
+                                <div class="col-md-offset-2 col-md-5">
+                                    <input name="name" ng-model="props.stateName" class="form-control" type="text">
+                                </div>
+                                <div class="col-md-2" ng-if="showStateTransition[props.stateID] == true">
+                                    <button type="button" class="btn btn-default" ng-click="defineStateTransitionsFrom(props)" tooltip="Define State Transitions" tooltip-placement='bottom'><icon id="random"></icon></button>
+                                </div>
+                                <div class="col-md-3" ng-if="showStateTransition[props.stateID] == false">
+                                    <input name="name" ng-model="nextStates[props.stateID]" class="form-control" type="text" tooltip="Enter State Transitions in space separated format giving the state name">
+                                </div>
+                                <div class="com-md-3" ng-if="showStateTransition[props.stateID] == false">
+                                    <button type="button" class="btn btn-default" ng-click="saveStateTransitionsFrom(props)" tooltip="Save State Transitions" tooltip-placement='bottom'><icon id="ok-circle"></icon></button>
+                                </div>
+                            </div>
+                            <div ng-if="props.type == 'button'">
+                                <div class="row">
+                                    <div class="col-md-offset-4">
+                                        <button type="button" class="btn btn-default" ng-click="createNewState(props)" tooltip="Create a New State" tooltip-placement='bottom'><icon id="plus-sign"></icon></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer">
+            <crud-buttons></crud-buttons>
+        </div>
+    </form>
+</div>

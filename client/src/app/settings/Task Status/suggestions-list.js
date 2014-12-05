@@ -10,10 +10,9 @@ angular.module('suggestions-list', [
 	'i18nNotifications',
 	function ($scope, crudListMethods, suggestions, i18nNotifications) {
 		$scope.suggestions = suggestions;
-		console.log(suggestions);
 
-		$scope.suggestionscrudhelpers = {};
-		angular.extend($scope, crudListMethods('/projects'+'/suggestions'));
+		$scope.userscrudhelpers = {};
+		angular.extend($scope, crudListMethods('/suggestions'));
 
 
 		$scope.remove = function(suggestion, $index, $event) {
@@ -27,9 +26,9 @@ angular.module('suggestions-list', [
 				// It is gone from the DB so we can remove it from the local list too
 				$scope.suggestions.splice($index,1);
 				i18nNotifications.pushForCurrentRoute('crud.suggestion.remove.success', 'success', {id : suggestion.$id()});
-			}, function() {
+				}, function() {
 				   i18nNotifications.pushForCurrentRoute('crud.suggestion.remove.error', 'error', {id : suggestion.$id()});
-			   });
+			});
 		};
 	}
 ]);

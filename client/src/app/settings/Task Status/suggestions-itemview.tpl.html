@@ -1,0 +1,64 @@
+<div id="container-user-face-view row-fluid">
+
+	<!-- -------------------------------------------------- -->
+	<!-- Suggestion Header -->
+	<!-- -------------------------------------------------- -->
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			<strong>Suggestion</strong>
+		</div>
+	</div>
+
+
+	<!-- -------------------------------------------------- -->
+	<!-- User scrum update, Dev estimate -->
+	<!-- -------------------------------------------------- -->
+	<div class="panel panel-default">
+		<div class="panel-body">
+			{{suggestion.title}}
+			<div class="media-body"> 
+				<div class="media-heading">
+					{{suggestion.description}}
+				</div>
+				<p></p>
+			</div>
+		</div>
+	</div>
+
+</div>
+<!-- 
+	suggestions.tpl.html
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <strong>
+            Suggestion
+        </strong>
+    </div>
+    <form name="form" crud-edit="suggestion">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Suggestion Title:</label>
+                        <input type="text" name="suggestion.title" ng-model="title" class="form-control" required autofocus>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Suggestion Description:</label>
+                        <textarea class="form-control ng-pristine ng-valid" name="description" ng-model="suggestion.description" placeholder="Add Suggestion Description Here." cols="10" rows="5" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Suggestion Type:</label>
+                        <div class="btn-group">
+                            <select ng-model="suggestion.status" ng-options="status for status in statuses"></select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer">
+            <crud-buttons></crud-buttons>
+        </div>
+    </form>
+</div>
+-->
