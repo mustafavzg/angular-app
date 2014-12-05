@@ -9,214 +9,318 @@
 		</div>
 	</div>
 
-
 	<!-- -------------------------------------------------- -->
-	<!-- User scrum update, Dev estimate -->
+	<!-- User Name, Description, Properties -->
 	<!-- -------------------------------------------------- -->
 	<div class="panel panel-default">
 		<div class="panel-body">
-			<img class="media-object photo-small pull-left" src="/hive/get-user-photo/{{user.userName}}">
-			<div class="media-body"> 
-				<div class="media-heading">
-					{{user.lastName}} {{user.firstName}} ({{user.username}})
+			<div class="media">
+				<div class="media-object pull-left">
+					<!-- <img src="/static/img/foouser.png" class="photo"/> -->
+					<img class="photo" src="/hive/get-user-photo/{{user.userName}}"/>
 				</div>
-				<p></p>
+				<!-- <div class="media-object pull-left"><img src="/static/img/foouser.png" class="photo"/></div> -->
+				<div class="media-body">
+					<div class="media-heading">
+						<h4>{{user.firstName}} {{user.lastName}}</h4>
+						<p class="text-muted">@{{user.username}}</p>
+					</div>
+					<!-- div media-heading -->
+					{{user.about}}
+				</div>
+				<!-- div media-body -->
 			</div>
+			<!-- div media -->
+
 		</div>
 	</div>
+
+
+	<!-- -------------------------------------------------- -->
+	<!-- Comments -->
+	<!-- -------------------------------------------------- -->
+
+	<accordion close-others="false">
+		<accordion-group is-open="commentAccord.commentOpen" panel-class="success" ng-init="commentAccord = {commentOpen: false}">
+			<accordion-heading>
+				<span class="hover-pointer">Comments</span>
+				<span class="pull-right hover-pointer" ng-show="!commentAccord.commentOpen"><icon id="chevron-down"></icon></span>
+				<span class="pull-right hover-pointer" ng-show="commentAccord.commentOpen"><icon id="chevron-up"></icon></span>
+			</accordion-heading>
+			<comment resource-id="{{user.$id()}}" for-resource="users" user-id="{{security.currentUser.ID}}"></comment>
+			<span class="pull-right hover-pointer" ng-show="commentAccord.commentOpen" ng-click="commentAccord.commentOpen = false"><icon id="chevron-up"></icon></span>
+		</accordion-group>
+		<!-- <accordion-group-chevron heading="Comments" panel-class="success"> -->
+		<!-- 	<comment resource-id="{{project.$id()}}" for-resource="projects" user-id="{{security.currentUser.ID}}"></comment> -->
+		<!-- </accordion-group-chevron> -->
+	</accordion>
+
+	<!-- -------------------------------------------------- -->
+	<!-- Other Entities -->
+	<!-- TODO: Implement this with ng-repeat or in separate template files -->
+	<!-- -------------------------------------------------- -->
 
 	<div class="panel panel-default">	
 		<tabset justified="true" type="pills">
 			<tab heading="Dashboard">
-				<div class="panel-body">
-					<div class="panel panel-default">
+
+				<accordion close-others="false">
+					<!-- -------------------------------------------------- -->
+					<!-- Pie Charts -->
+					<!-- -------------------------------------------------- -->
+					<accordion-group is-open="pieAccord.pieOpen" panel-class="warning" ng-init="pieAccord = {pieOpen: true}">
+						<accordion-heading>
+							<span class="hover-pointer">Break Downs</span>
+							<span class="pull-right hover-pointer" ng-show="!pieAccord.pieOpen"><icon id="chevron-down"></icon></span>
+							<span class="pull-right hover-pointer" ng-show="pieAccord.pieOpen"><icon id="chevron-up"></icon></span>
+						</accordion-heading>
+ 						<pie-chart items="tasks" fetchingitems="fetchingTasks" chart-config="pieChartConfig"></pie-chart>
+						<span class="pull-right hover-pointer" ng-show="pieAccord.pieOpen" ng-click="pieAccord.pieOpen = false"><icon id="chevron-up"></icon></span>
+					</accordion-group>
+
+					<!-- -------------------------------------------------- -->
+					<!-- Burn down Charts -->
+					<!-- -------------------------------------------------- -->
+					<accordion-group is-open="burnDownAccord.burnDownOpen" panel-class="warning" ng-init="burnDownAccord = {burnDownOpen: false}">
+						<accordion-heading>
+							<span class="hover-pointer">Burn Downs</span>
+							<span class="pull-right hover-pointer" ng-show="!burnDownAccord.burnDownOpen"><icon id="chevron-down"></icon></span>
+							<span class="pull-right hover-pointer" ng-show="burnDownAccord.burnDownOpen"><icon id="chevron-up"></icon></span>
+						</accordion-heading>
+						<!-- <burn-down-chart items="tasks" fetchingitems="fetchingTasks" chart-config="burnDownChartConfig"></burn-down-chart> -->
+						<span class="pull-right hover-pointer" ng-show="burnDownAccord.burnDownOpen" ng-click="burnDownAccord.burnDownOpen = false"><icon id="chevron-up"></icon></span>
+					</accordion-group>
+
+					<!-- -------------------------------------------------- -->
+					<!-- Kanban Board -->
+					<!-- -------------------------------------------------- -->
+					<accordion-group is-open="kanbanAccord.kanbanOpen" panel-class="warning" ng-init="kanbanAccord = {kanbanOpen: false}">
+						<accordion-heading>
+							<span class="hover-pointer">Kanban</span>
+							<span class="pull-right hover-pointer" ng-show="!kanbanAccord.kanbanOpen"><icon id="chevron-down"></icon></span>
+							<span class="pull-right hover-pointer" ng-show="kanbanAccord.kanbanOpen"><icon id="chevron-up"></icon></span>
+						</accordion-heading>
+						<!-- <kanban items="tasks" fetchingitems="fetchingTasks" kanban-config="kanbanConfig"></kanban> -->
+						<span class="pull-right hover-pointer" ng-show="kanbanAccord.kanbanOpen" ng-click="kanbanAccord.kanbanOpen = false"><icon id="chevron-up"></icon></span>
+					</accordion-group>
+
+					<!-- -------------------------------------------------- -->
+					<!-- Gantt Charts -->
+					<!-- -------------------------------------------------- -->
+					<accordion-group is-open="ganttAccord.ganttOpen" panel-class="warning" ng-init="ganttAccord = {ganttOpen: false}">
+						<accordion-heading>
+							<span class="hover-pointer">Time Lines</span>
+							<span class="pull-right hover-pointer" ng-show="!ganttAccord.ganttOpen"><icon id="chevron-down"></icon></span>
+							<span class="pull-right hover-pointer" ng-show="ganttAccord.ganttOpen"><icon id="chevron-up"></icon></span>
+						</accordion-heading>
+
 						<gantt-chart
-							items="tasks"
-							resourceconf="tasksGanttConf"
-							item-to-task-data-source="taskData(item)"
-							fetchingitems="fetchingTasks"
-							update-validator="tasksGanttUpdateValidator(item, update)"
-							title="{{user.username}}'s Tasks"
-							>
+							 items="tasks"
+							 resourceconf="tasksGanttConf"
+							 item-to-task-data-source="taskData(item)"
+							 fetchingitems="fetchingTasks"
+							 title="Tasks"
+							 >
 						</gantt-chart>
-						<pie-chart items="tasks" fetchingitems="fetchingTasks" chart-config="pieChartConfig"></pie-chart>
-					</div>
-				</div>					
+
+					</accordion-group>
+				</accordion>
+
+				<!-- <div class="panel-body"> -->
+				<!-- 	<div class="panel panel-default"> -->
+				<!-- 		<pie-chart items="tasks" fetchingitems="fetchingTasks" chart-config="pieChartConfig"></pie-chart> -->
+				<!-- 	</div> -->
+				<!-- </div> -->
+
 			</tab>
+
 			<tab heading="Inbox">
 				<!--<div class="col-md-12">-->
-					<div class="panel-body">
-						<div class="panel panel-default">
-							<div class="panel-body">
-								<div class="media" ng-repeat="task in tasks">
-									<property-bar properties="task.propertiesToDisplay" root-div-class="media-object pull-left" reverse="false" ></property-bar>
-									<button ng-click="addScrumUpdate(task)" class="btn btn-success media-object pull-right" ng-show="task.showAddButton" tooltip="Add a scrum update for this task">
-										<icon id="comment"></icon>
-									</button>									
+				<div class="panel-body">
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<div class="media" ng-repeat="task in tasks">
+								<property-bar properties="task.propertiesToDisplay" root-div-class="media-object pull-left" reverse="false" ></property-bar>
+								<button ng-click="addScrumUpdate(task)" class="btn btn-success media-object pull-right" ng-show="task.showAddButton" tooltip="Add a scrum update for this task">
+									<icon id="comment"></icon>
+								</button>
 
-									<div class="media-body">
-										<div class="media-heading">
-											<a ng-click="viewTask(task)" href="#" tooltip="{{task.description}}">
-												{{task.name}}
-											</a>
-											<div class="row">
-												<div class="col-md-12">
-													<div class='btn-group pull-left'>
-														<button type="button" class="btn btn-default" ng-click="saveScrumUpdate(task)" ng-show="!task.showAddButton" tooltip="Save scrum update" tooltip-placement='bottom'><icon id="plus-sign"></icon></button>
-														<button type="button" class="btn btn-default" ng-click="clearScrumUpdate(task)" ng-show="!task.showAddButton" tooltip="Clear the text area" tooltip-placement='bottom'><icon id="unchecked"></button>
-														<button type="button" class="btn btn-default" ng-click="closeScrumUpdate(task)" ng-show="!task.showAddButton" tooltip="Discard the scrum update" tooltip-placement='bottom'><icon id="trash"></icon></button>
-													</div>
+								<div class="media-body">
+									<div class="media-heading">
+										<a ng-click="viewTask(task)" href="#" tooltip="{{task.description}}">
+											{{task.name}}
+										</a>
+										<div class="row">
+											<div class="col-md-12">
+												<div class='btn-group pull-left'>
+													<button type="button" class="btn btn-default" ng-click="saveScrumUpdate(task)" ng-show="!task.showAddButton" tooltip="Save scrum update" tooltip-placement='bottom'><icon id="plus-sign"></icon></button>
+													<button type="button" class="btn btn-default" ng-click="clearScrumUpdate(task)" ng-show="!task.showAddButton" tooltip="Clear the text area" tooltip-placement='bottom'><icon id="unchecked"></button>
+													<button type="button" class="btn btn-default" ng-click="closeScrumUpdate(task)" ng-show="!task.showAddButton" tooltip="Discard the scrum update" tooltip-placement='bottom'><icon id="trash"></icon></button>
 												</div>
 											</div>
 										</div>
-										<p>
-											<div class='form-group block'>
-												<textarea class="form-control" ng-model="task.scrumText" placeholder="Add your update here" cols="10" rows="5" ng-show="!task.showAddButton">
-												</textarea>
-											</div>
-											<div ng-show="task.hasHistory">
-												<li ng-repeat="update in Updates = ( task.taskUpdates | orderBy:'date':true)">
-													<span class="text-muted time-stamp">{{update.dateString}} @ {{update.timeString}} </span><br>
-													{{update.text}}
-												</li>
-											</div>
-										</p>
 									</div>
+									<p>
+										<div class='form-group block'>
+											<textarea class="form-control" ng-model="task.scrumText" placeholder="Add your update here" cols="10" rows="5" ng-show="!task.showAddButton">
+											</textarea>
+										</div>
+										<div ng-show="task.hasHistory">
+											<li ng-repeat="update in Updates = ( task.taskUpdates | orderBy:'date':true)">
+												<span class="text-muted time-stamp">{{update.dateString}} @ {{update.timeString}} </span><br>
+												{{update.text}}
+											</li>
+										</div>
+									</p>
 								</div>
 							</div>
 						</div>
 					</div>
+				</div>
 				<!--</div>-->
 			</tab>
-				<tab heading="Scrum Updates">
-					<div class="panel-body">
-						<div class="panel panel-default">
-							<div class="panel-body">
-								<div class="panel">
-									<div class="panel-heading">
-										<table>
-											<tr>
-												<scrumupdatecalendar
-													label="Scrum Status"
-													update="updateStatus"
-													datechosen="scrumDates.chosendate">
-												</scrumupdatecalendar>
-											</tr>
-										</table>
-									</div>
-									<div class="panel-body">
-										<datecombofromto
-											 name="dateCombo"
-											 from-date="scrumDates.startdate"
-											 to-date="scrumDates.enddate"
-											 from-date-label="Start Date"
-											 to-date-label="End Date"
-											 from-date-required="true"
-											 to-date-required="true">
-										</datecombofromto>
-										<scrumupdateforresource
-											label="Scrum Update for {{scrumDates.chosendate | date : format}}"
-											resource="user"
-											date="scrumDates.chosendate"
-											scrumupdates="scrumupdates">
-										</scrumupdateforresource>
-									</div>
+
+			<!-- <<<<<<< Updated upstream -->
+			<tab heading="Scrum Updates">
+				<div class="panel-body">
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<div class="panel">
+								<div class="panel-heading">
+									<table>
+										<tr>
+											<scrumupdatecalendar
+												 label="Scrum Status"
+												 update="updateStatus"
+												 datechosen="scrumDates.chosendate">
+											</scrumupdatecalendar>
+										</tr>
+									</table>
 								</div>
-								<!-- Displaying the updates-->
-								<div class="row">
-									<div class="col-md-4">
-										<label class="checkbox-inline">
-											<input type="checkbox" ng-model="planVal">Show Plan
-										</label>
-									</div>
-									<div class="col-md-4">
-										<label class="checkbox-inline">
-											<input type="checkbox" ng-model="updateVal">Show Update
-										</label>
-									</div>
-									<div class="col-md-4">
-										<label class="checkbox-inline">
-											<input type="checkbox" ng-model="impedimentVal">Show Impediments
-										</label>
-									</div>
+								<div class="panel-body">
+									<datecombofromto
+										 name="dateCombo"
+										 from-date="scrumDates.startdate"
+										 to-date="scrumDates.enddate"
+										 from-date-label="Start Date"
+										 to-date-label="End Date"
+										 from-date-required="true"
+										 to-date-required="true">
+									</datecombofromto>
+									<scrumupdateforresource
+										 label="Scrum Update for {{scrumDates.chosendate | date : format}}"
+										 resource="user"
+										 date="scrumDates.chosendate"
+										 scrumupdates="scrumupdates">
+									</scrumupdateforresource>
 								</div>
-								<div class="row">
-									<div class="col-md-4" >
-										<div ng-show="planVal">
-											<div class="media" ng-repeat="dateGroup in groupedScrumUpdates">
-												<div class="media-heading">
-													<span class = "text-primary">
-														{{dateGroup.key | momentsAgo}}
-													</span>
-												</div>
-												<div class="media-body">
-													<div class="media" ng-repeat="update in dateGroup.values">
-														<div class="media-heading">
-															<span ng-if="update.text != 'undefined'">
-																{{update.plan}}
-															</span>
-															<span ng-if="taskGroup.key == 'undefined'">
-																No Update
-															</span>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="col-md-4" >
-										<div ng-show="updateVal">
-											<div class="media" ng-repeat="dateGroup in groupedScrumUpdates">
-												<div class="media-heading">
-													<span class = "text-primary">
-														{{dateGroup.key | momentsAgo}}
-													</span>
-												</div>
-												<div class="media-body">
-													<div class="media" ng-repeat="update in dateGroup.values">
-														<div class="media-heading">
-															<span ng-if="update.plan != undefined">
-																{{update.text}}
-															</span>
-															<span ng-if="update.plan == undefined">
-																No Update
-															</span>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="col-md-4" >
-										<div ng-show="impedimentVal">
-											<div class="media" ng-repeat="dateGroup in groupedScrumUpdates">
-												<div class="media-heading">
-													<span class = "text-primary">
-														{{dateGroup.key | momentsAgo}}
-													</span>
-												</div>
-												<div class="media-body">
-													<div class="media" ng-repeat="update in dateGroup.values">
-														<div class="media-heading">
-															<span ng-if="update.impediments != undefined">
-																{{update.impediments}}
-															</span>
-															<span ng-if="update.impediments == undefined">
-																No Update
-															</span>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<!-- -->
 							</div>
+							<!-- Displaying the updates-->
+							<div class="row">
+								<div class="col-md-4">
+									<label class="checkbox-inline">
+										<input type="checkbox" ng-model="planVal">Show Plan
+									</label>
+								</div>
+								<div class="col-md-4">
+									<label class="checkbox-inline">
+										<input type="checkbox" ng-model="updateVal">Show Update
+									</label>
+								</div>
+								<div class="col-md-4">
+									<label class="checkbox-inline">
+										<input type="checkbox" ng-model="impedimentVal">Show Impediments
+									</label>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-4" >
+									<div ng-show="planVal">
+										<div class="media" ng-repeat="dateGroup in groupedScrumUpdates">
+											<div class="media-heading">
+												<span class = "text-primary">
+													{{dateGroup.key | momentsAgo}}
+												</span>
+											</div>
+											<div class="media-body">
+												<div class="media" ng-repeat="update in dateGroup.values">
+													<div class="media-heading">
+														<span ng-if="update.text != 'undefined'">
+															{{update.plan}}
+														</span>
+														<span ng-if="taskGroup.key == 'undefined'">
+															No Update
+														</span>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-4" >
+									<div ng-show="updateVal">
+										<div class="media" ng-repeat="dateGroup in groupedScrumUpdates">
+											<div class="media-heading">
+												<span class = "text-primary">
+													{{dateGroup.key | momentsAgo}}
+												</span>
+											</div>
+											<div class="media-body">
+												<div class="media" ng-repeat="update in dateGroup.values">
+													<div class="media-heading">
+														<span ng-if="update.plan != undefined">
+															{{update.text}}
+														</span>
+														<span ng-if="update.plan == undefined">
+															No Update
+														</span>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-4" >
+									<div ng-show="impedimentVal">
+										<div class="media" ng-repeat="dateGroup in groupedScrumUpdates">
+											<div class="media-heading">
+												<span class = "text-primary">
+													{{dateGroup.key | momentsAgo}}
+												</span>
+											</div>
+											<div class="media-body">
+												<div class="media" ng-repeat="update in dateGroup.values">
+													<div class="media-heading">
+														<span ng-if="update.impediments != undefined">
+															{{update.impediments}}
+														</span>
+														<span ng-if="update.impediments == undefined">
+															No Update
+														</span>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<!--
+									<li ng-repeat="taskGroup in dateGroup.values">
+										{{taskGroup.key}}
+										<ul>
+											<li ng-repeat="update in taskGroup.values">
+												<span class="text-muted time-stamp">{{update.timeString}} </span><br>
+												{{update.text}}
+											</li>	
+										</ul>
+									</li>
+									-->
+							</div>
+							<!-- -->
 						</div>
 					</div>
-				</tab>
-			</tabset>
-		</div>
+				</div>
+			</tab>
+		</tabset>
 	</div>
 </div>

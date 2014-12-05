@@ -16,7 +16,7 @@
 	<div class="panel panel-info">
 		<div class="panel-heading">
 			<div class="media">
-				<property-bar properties="task.attributeValuesToDisplay" root-div-class="media-object pull-right" reverse="true" ></property-bar>
+				<property-bar properties="task.attributeValuesToDisplay" root-div-class="media-object pull-right" reverse="true"></property-bar>
 				<div class="media-body">
 					<label class="media-heading">{{task.name}}</label>
 					<br /><div class="badge" ng-cloak><strong>{{task.$id()}}</strong></div>
@@ -35,70 +35,112 @@
 	</div>
 
 	<!-- -------------------------------------------------- -->
+	<!-- Comments -->
+	<!-- -------------------------------------------------- -->
+
+	<accordion close-others="false">
+		<accordion-group is-open="commentAccord.commentOpen" panel-class="success" ng-init="commentAccord = {commentOpen: false}">
+			<accordion-heading>
+				<span class="hover-pointer">Comments</span>
+				<span class="pull-right hover-pointer" ng-show="!commentAccord.commentOpen"><icon id="chevron-down"></icon></span>
+				<span class="pull-right hover-pointer" ng-show="commentAccord.commentOpen"><icon id="chevron-up"></icon></span>
+			</accordion-heading>
+			<comment resource-id="{{task.$id()}}" for-resource="tasks" user-id="{{security.currentUser.ID}}"></comment>
+			<span class="pull-right hover-pointer" ng-show="commentAccord.commentOpen" ng-click="commentAccord.commentOpen = false"><icon id="chevron-up"></icon></span>
+		</accordion-group>
+		<!-- <accordion-group-chevron heading="Comments" panel-class="success"> -->
+		<!-- 	<comment resource-id="{{project.$id()}}" for-resource="projects" user-id="{{security.currentUser.ID}}"></comment> -->
+		<!-- </accordion-group-chevron> -->
+	</accordion>
+
+	<!-- -------------------------------------------------- -->
+	<!-- Task Timer -->
+	<!-- -------------------------------------------------- -->
+
+	<div class="panel panel-default">
+		<div class="panel-body" ng-class="{'bg-danger': timerRunning, 'bg-warning': !timerRunning}">
+			<div class="media" ng-class="{'text-danger': timerRunning, 'text-muted': !timerRunning}">
+				<div class="media-object pull-left">
+					<button class="btn btn-success btn-lg" id="playpause" ng-show="!timerRunning" ng-click="startTimer(beforeTimerStart)"><icon id="play"></icon></button>
+					<button class="btn btn-danger btn-lg" id="playpause" ng-show="timerRunning" ng-click="stopTimer(beforeTimerStop)"><icon id="stop"></icon></button>
+					<!-- <button class="btn btn-default btn-lg" ng-click="addSamples()"><icon id="pause"></icon></button> -->
+
+					<span class="timer text-center">
+ 						<span ng-show="!!timer">{{timer | stopWatch}}</span>
+						<span ng-show="timerRunning"><img src="/static/img/spinner.gif"></span>
+ 						<!-- {{timer | date:'yyyy MM dd HH::mm::ss .sss'}} -->
+ 						<!-- {{timer}} -->
+					</span>
+				</div>
+
+				<div class="media-object pull-right">
+					<span class="timer">
+						<icon id="time"></icon> {{clock | date:'mediumTime'}}
+					</span>
+
+				</div>
+			</div>
+			<!-- div media -->
+
+		</div>
+		<!-- div panel body -->
+	</div>
+	<!-- div panel -->
+
+	<!-- -------------------------------------------------- -->
 	<!-- Other Entities -->
 	<!-- TODO: Implement this with ng-repeat or in separate template files -->
 	<!-- -------------------------------------------------- -->
 	<div class="panel panel-default">
-		<!--<tabset justified="true" type="pills">-->
-			<!--<tab heading="Dashboard">-->
-			<div class="panel panel-default">
-					
-					<comment resource-id="{{task.$id()}}" for-resource="tasks" user-id="{{Users.$id()}}"></comment> 
-			</div>
-				<div class="panel-body">
-					<div class="col-md-6">
-						<div class="panel panel-default">
-							<div class="panel-body">
+		<tabset justified="true" type="pills">
+			<tab heading="Dashboard">
+					<accordion close-others="true">
 
-								<form role="form" class="form-inline pull-left">
-									<div class="form-group">
-										<!-- <span class="help-block">Action</span> -->
-										<div class="btn-group">
-											<!-- <button class="btn btn-default btn-lg" ng-show="!timerRunning" ng-click="startTimer()"><icon id="play"></icon></button> -->
-											<!-- <button class="btn btn-default btn-lg" ng-show="timerRunning" ng-click="stopTimer()"><icon id="stop"></icon></button> -->
-											<button class="btn btn-default btn-lg" ng-show="!timerRunning" ng-click="startTimer2(beforeTimerStart)"><icon id="play"></icon></button>
-											<button class="btn btn-default btn-lg" ng-show="timerRunning" ng-click="stopTimer2(beforeTimerStop)"><icon id="stop"></icon></button>
-											<span class="timer">
- 												{{clock | date:'mediumTime'}}
-												<icon id="record"></icon>
- 												<!-- {{timer | date:'yyyy MM dd HH::mm::ss .sss'}} -->
- 												<!-- {{timer}} -->
- 												<span ng-show="!!timer">{{timer | stopWatch}}</span>
-											</span>
-											<!-- <button class="btn btn-default btn-lg" ng-click="addSamples()"><icon id="pause"></icon></button> -->
-										</div>
-									</div>
-								</form>
-								
-							</div>
-							<!-- div panel body -->
-						</div>
-						<!-- div panel -->
-					</div>
-					<!-- div col -->
-					<div class="col-md-12">
-						<div class="panel panel-default">
-							<div class="panel-body">
+						<!-- -------------------------------------------------- -->
+						<!-- Gantt Charts -->
+						<!-- -------------------------------------------------- -->
+						<accordion-group is-open="ganttAccord.ganttOpen" panel-class="warning" ng-init="ganttAccord = {ganttOpen: true}">
+							<accordion-heading>
+								<span class="hover-pointer">Time Lines</span>
+								<span class="pull-right hover-pointer" ng-show="!ganttAccord.ganttOpen"><icon id="chevron-down"></icon></span>
+								<span class="pull-right hover-pointer" ng-show="ganttAccord.ganttOpen"><icon id="chevron-up"></icon></span>
+							</accordion-heading>
+
+							<div class="panel panel-default">
 								<gantt-chart
-									 items="tasks"
+									 items="[task]"
+									 title="Timeline"
 									 resourceconf="tasksGanttConf2"
 									 item-to-task-data-source="taskData(item)"
 									 fetchingitems="fetchingTasks"
-									 update-validator="tasksGanttUpdateValidator(item, update)"
 									 >
 								</gantt-chart>
-								<pie-chart items="tasks" fetchingitems="fetchingTasks" chart-config="pieChartConfig"></pie-chart>
 							</div>
-						</div>
-					</div>
-					<!-- div col -->
-					
-				</div>
-				<!-- div panel body -->
-			<!--</tab>-->
+							<!-- div panel -->
+
+						</accordion-group>
+
+						<!-- -------------------------------------------------- -->
+						<!-- Pie Charts -->
+						<!-- -------------------------------------------------- -->
+						<accordion-group is-open="pieAccord.pieOpen" panel-class="warning" ng-init="pieAccord = {pieOpen: false}">
+							<accordion-heading>
+								<span class="hover-pointer">Break Downs</span>
+								<span class="pull-right hover-pointer" ng-show="!pieAccord.pieOpen"><icon id="chevron-down"></icon></span>
+								<span class="pull-right hover-pointer" ng-show="pieAccord.pieOpen"><icon id="chevron-up"></icon></span>
+							</accordion-heading>
+ 							<!-- <pie-chart items="tasks" fetchingitems="fetchingTasks" chart-config="pieChartConfig"></pie-chart> -->
+							<span class="pull-right hover-pointer" ng-show="pieAccord.pieOpen" ng-click="pieAccord.pieOpen = false"><icon id="chevron-up"></icon></span>
+						</accordion-group>
+
+					</accordion>
+
+			</tab>
+
 			<!--<tab heading="Comments">
 				<tableactive items="task.comments" fetchingitems="fetchingComments" resourceconf="commentsConf" ></tableactive>
-			<!--</tab>-->-->
+			<!--</tab>-->
+
 		</tabset>
 	</div>
 	<!-- Other Entities End -->

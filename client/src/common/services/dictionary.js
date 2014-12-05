@@ -57,8 +57,17 @@ angular.module('services.dictionary').factory('dictionary', [
 						});
 					}
 					angular.extend(dictionary, filteredKeyValueMap);
-					console.log("items in dictionary after setList");
-					console.log(dictionary);
+					// console.log("items in dictionary after setList");
+					// console.log(dictionary);
+				},
+				clear: function (key) {
+					delete dictionary[key];
+				},
+				clearList: function (keys) {
+					var i = -1, len = keys.length;
+					for(; ++i < len;){
+						this.clear(keys[i]);
+					}
 				},
 				lookUp: function (key) {
 					return dictionary[key];
@@ -74,7 +83,11 @@ angular.module('services.dictionary').factory('dictionary', [
 								return angular.isDefined(value);
 							});
 					return values;
+				},
+				getLookUp: function () {
+					return dictionary;
 				}
+
 			};
 
 			dictionaryService.init(label);

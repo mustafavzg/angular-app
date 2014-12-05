@@ -166,23 +166,41 @@ angular.module('app').constant('I18N.MESSAGES', {
 	'gantt.row.update.error': "Updates for this item are not allowed: (name: {{description}}, id: {{id}}).",
 	'gantt.task.data.error': "Error in Gantt Task data: 'to' date is undefined : (name: {{subject}}, id: {{id}}).",
 
+
+	// --------------------------------------------------
+	// Comments
+	'crud.comments.save.success':"Comment was saved successfully. (id :'{{id}}')",
+	'crud.comments.save.error':"An error occurred while saving the comment: '{{error}}'",
+
+	'crud.comments.update.success':"Comment was updated successfully. (id :'{{id}}')",
+	'crud.comments.update.error':"An error occurred while updating the comment: '{{error}}'",
+
+	'crud.comments.remove.success':"Comment ['{{text}}'] was removed successfully. (id :'{{id}}')",
+	'crud.comments.remove.error':"An error occurred while removing the comment : '{{error}}'.",
+
+	// --------------------------------------------------
+	// Kanban board notifications
+	'crud.kanban.save.success':"{{resources}} ({{resourceids}}) successfully updated.",
+	'crud.kanban.save.error':"An error occurred while updating {{resources}} ({{resourceids}}): '{{error}}'",
+
 	// --------------------------------------------------
 	// Task Class
 	'crud.taskclass.save.success':"Task Class was saved successfully. (id :'{{id}}')",
 	'crud.taskclass.save.error':"An error occurred while saving the taskclass: '{{error}}'",
-	
+
 	'crud.taskclass.remove.success':"Task Class was removed successfully. (id :'{{id}}')",
 	'crud.taskclass.remove.error':"An error occurred while removing the taskclass : '{{error}}'.",
 
-
+	// --------------------------------------------------
+	// Document
 	'crud.document.save.success':"Document was saved successfully. (id :'{{id}}')",
 	'crud.document.save.error':"An error occurred while saving the document: '{{error}}'",
-	
+
 	'crud.document.remove.success':"Document was removed successfully. (id :'{{id}}')",
 	'crud.document.remove.error':"An error occurred while removing the document : '{{error}}'."
 });
 
-	angular.module('app').config([
+angular.module('app').config([
 	'$routeProvider',
 	'$locationProvider',
 	function (
@@ -195,8 +213,6 @@ angular.module('app').constant('I18N.MESSAGES', {
 		$routeProvider.otherwise({redirectTo:'/projects'});
 	}
 ]);
-	
-
 
 angular.module('app').run(['security', function(security) {
   // Get the current user when the application starts

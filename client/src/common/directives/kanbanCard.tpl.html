@@ -1,0 +1,283 @@
+<div class="thumbnail thumbnail-kanban">
+	<!-- <div class="thumbnail bg-info"> -->
+	<div id="header" class="media">
+		<!-- <img ng-show="!!username" class="media-object pull-left photo-xs" src="/hive/get-user-photo/{{username}}"> -->
+		<!-- <img ng-show="!username" class="media-object pull-left photo-xs" src="/static/img/foouser.png"> -->
+		<img class="media-object pull-left photo-xs" src="/static/img/foouser.png">
+		<div class="media-body">
+			<div class="media-heading">
+				<p>
+					<span class="text-muted">@{{username || 'unassigned'}}</span>
+					<!-- <span class="text-muted">@{{username}}</span> -->
+					<!-- <span class="text-muted pull-right"><icon id="pushpin"></icon></span> -->
+					<!-- <span class="pull-right hover-pointer" ng-class="{'text-succes': isPinned, 'text-muted': !isPinned}" ng-click="pinToggle()"> -->
+					<!-- <span class="text-muted"> -->
+					<!-- 	{{item.priority}}<icon id="star"></icon> -->
+					<!-- </span> -->
+					<span class="pull-right hover-pointer" ng-class="{'text-succes': _isPinned(), 'text-muted': !_isPinned()}" ng-click="pinToggle()" tooltip="Pin this item" >
+						<icon id="pushpin"></icon>
+					</span>
+				</p>
+			</div>
+		</div>
+	</div>
+	<!-- div media -->
+
+	<!-- <div class="caption" ng-class="['caption' , task.kanbanClass]"> -->
+	<!-- <div ng-class="['caption' , task.kanbanClass, 'bg-info']"> -->
+	<!-- <div ng-class="['caption' , 'bg-info']"> -->
+	<div id="caption" class="caption" >
+		<p>
+			<span class="badge">{{item.$id()}}</span>
+			<h5>
+				{{item.name}}
+				<a ng-href="{{itemViewUrl({item: item})}}" tooltip="Open this item" ><icon id="new-window"></icon></a>
+			</h5>
+			<span class="badge" tooltip="Priority" >
+				<icon id="star"></icon>
+				{{item.priority}}
+			</span>
+
+			<!-- <a href="#" ng-click="itemView({item: item})">{{item.name}}</a> -->
+			<!-- <a ng-href="{{itemViewUrl({item: item})}}">{{item.name}}</a> -->
+			<!-- <a ng-href="{{itemViewUrl({item: item})}}"><icon id="new-window"></icon></a> -->
+		</p>
+	</div>
+	<!-- div caption -->
+
+	<div class="row toggles" ng-show="noneOpen()">
+		<div class="col-xs-12 text-center">
+		<!-- <div class="col-xs-12" ng-show="noneOpen()"> -->
+			<a class="pull-left" >
+				<span tooltip="Move back"><icon id="hand-left" ng-click="toggleLeft()"></icon></span>
+				<!-- <span tooltip="Move back" ng-show="!statusToggles.leftIsOpen && !statusToggles.rightIsOpen"><icon id="hand-left" ng-click="toggleLeft()"></icon></span> -->
+				<!-- <span tooltip="Cancel" ng-show="!!statusToggles.leftIsOpen"><icon id="remove" ng-click="toggleLeft()"></icon></span> -->
+			</a>
+
+			<a>
+				<span tooltip="Reassign"><icon id="user" ng-click="toggleReassign()"></icon></span>
+				<!-- <span tooltip="Move back" ng-show="!statusToggles.leftIsOpen && !statusToggles.rightIsOpen"><icon id="hand-left" ng-click="toggleLeft()"></icon></span> -->
+				<!-- <span tooltip="Cancel" ng-show="!!statusToggles.leftIsOpen"><icon id="remove" ng-click="toggleLeft()"></icon></span> -->
+			</a>
+
+			<!-- <a class="pull-right" > -->
+			<a class="pull-right" >
+				<span tooltip="Move forward"><icon id="hand-right" ng-click="toggleRight()"></icon></span>
+				<!-- <span tooltip="Move forward" ng-show="!statusToggles.rightIsOpen && !statusToggles.leftIsOpen"><icon id="hand-right" ng-click="toggleRight()"></icon></span> -->
+				<!-- <span tooltip="Cancel" ng-show="!!statusToggles.rightIsOpen"><icon id="remove" ng-click="toggleRight()"></icon></span> -->
+			</a>
+		</div>
+		<!-- div col -->
+
+		<!-- <div class="col-xs-12" ng-show="anyOpen()"> -->
+		<!-- 	<\!-- <a class="pull-left" > -\-> -->
+		<!-- 	<\!-- 	<span tooltip="Cancel" ng-show="!!statusToggles.leftIsOpen"><icon id="remove" ng-click="toggleLeft()"></icon></span> -\-> -->
+		<!-- 	<\!-- </a> -\-> -->
+
+		<!-- 	<\!-- <\\!-- <a class="pull-right" > -\\-> -\-> -->
+		<!-- 	<\!-- <a class="pull-right" > -\-> -->
+		<!-- 	<\!-- 	<span tooltip="Cancel" ng-show="!!statusToggles.rightIsOpen"><icon id="remove" ng-click="toggleRight()"></icon></span> -\-> -->
+		<!-- 	<\!-- </a> -\-> -->
+		<!-- </div> -->
+		<!-- <\!-- div col -\-> -->
+
+	</div>
+	<!-- div row -->
+
+	<div class="row" ng-show="statusToggles.rightIsOpen">
+		<div class="col-xs-12">
+			<a class="pull-right toggles" >
+				<span tooltip="Cancel"><icon id="remove" ng-click="toggleRight();clearFields();"></icon></span>
+			</a>
+		</div>
+
+		<!-- div col -->
+		<div class="col-xs-10 col-xs-offset-1">
+			<form name="statusRight">
+				<span ng-show="showError(statusRight, 'required')" ng-class="setWarningClasses(statusRight)">Both status and username are required</span>
+				<div class="form-group">
+					<div class="input-group input-group-sm" ng-class="setValidationClasses(statusRight.status)">
+						<span class="input-group-addon">&</span>
+						<!-- <select class="form-control" ng-model="nextStatus" ng-options="statusKey for statusKey in listNextStatus({statusKey: $scope.item.status})"> -->
+						<select name="status" class="form-control" ng-model="moveToStatus" ng-options="statusKey for statusKey in nextStatusList()" required>
+							<option value="" selected disabled>Select Status</option>
+						</select>
+					</div>
+
+					<br />
+
+ 					<div class="input-group input-group-sm"  ng-class="setValidationClasses(statusRight.username)">
+						<span class="input-group-addon">@</span>
+						<!-- <select class="form-control" placeholder="Username" focus-me="statusToggles.rightIsOpen"> -->
+						<select name="username" class="form-control" ng-model="assignToUser" ng-options="user.username as user.username for user in usersList()" required>
+							<option value="" selected disabled>Select Username</option>
+						</select>
+					</div>
+				</div>
+			</form>
+		</div>
+		<!-- div col -->
+
+		<div class="col-xs-12">
+			<a class="pull-right" ng-show="statusRight.$valid">
+				<!-- <span tooltip="Move forward"><icon id="hand-right" ng-click="toggleRight()"></icon></span> -->
+				<span tooltip="Update"><icon id="ok" ng-click="_notifyUpdates('right')"></icon></span>
+			</a>
+		</div>
+		<!-- div col -->
+	</div>
+	<!-- div row -->
+
+	<div class="row" ng-show="statusToggles.leftIsOpen">
+		<div class="col-xs-12">
+			<a class="pull-left toggles" >
+				<span tooltip="Cancel"><icon id="remove" ng-click="toggleLeft();clearFields();"></icon></span>
+			</a>
+		</div>
+		<!-- div col -->
+
+		<div class="col-xs-10 col-xs-offset-1">
+			<form name="statusLeft">
+				<span ng-show="showError(statusLeft, 'required')" ng-class="setWarningClasses(statusLeft)">Both status and username are required</span>
+				<div class="form-group">
+					<div class="input-group input-group-sm" ng-class="setValidationClasses(statusLeft.status)">
+						<span class="input-group-addon">&</span>
+						<select name="status" class="form-control" ng-model="moveToStatus" ng-options="statusKey for statusKey in prevStatusList()" required>
+							<option value="" selected disabled>Select Status</option>
+						</select>
+						<!-- <input type="text" class="form-control" placeholder="Status"> -->
+					</div>
+
+					<br />
+
+ 					<div class="input-group input-group-sm"  ng-class="setValidationClasses(statusLeft.username)">
+						<span class="input-group-addon">@</span>
+						<!-- <select class="form-control" placeholder="Username" focus-me="statusToggles.leftIsOpen"> -->
+						<select name="username" class="form-control" ng-model="assignToUser" ng-options="user.username as user.username for user in usersList()" required>
+							<option value="" selected disabled>Select Username</option>
+						</select>
+						<!-- <input type="text" class="form-control" placeholder="Username" focus-me="statusToggles.leftIsOpen" > -->
+					</div>
+				</div>
+			</form>
+		</div>
+		<!-- div col -->
+
+		<div class="col-xs-12">
+			<a class="pull-left" ng-show="statusLeft.$valid">
+				<!-- <span tooltip="Move back"><icon id="hand-left" ng-click="toggleLeft()"></icon></span> -->
+				<span tooltip="Update"><icon id="ok" ng-click="_notifyUpdates('left')"></icon></span>
+			</a>
+		</div>
+		<!-- div col -->
+	</div>
+	<!-- div row -->
+
+	<div class="row" ng-show="statusToggles.reassignIsOpen">
+		<div class="col-xs-12 text-center toggles">
+			<a>
+				<span tooltip="Cancel"><icon id="remove" ng-click="toggleReassign();clearFields();"></icon></span>
+			</a>
+		</div>
+
+		<!-- div col -->
+		<div class="col-xs-10 col-xs-offset-1">
+			<form name="reassign">
+				<span ng-show="showError(reassign, 'required')" ng-class="setWarningClasses(reassign)">Username is required</span>
+				<div class="form-group">
+					<div class="input-group input-group-sm" ng-class="setValidationClasses(reassign.username)">
+						<span class="input-group-addon">@</span>
+						<!-- <select class="form-control" placeholder="Username" focus-me="statusToggles.reassignIsOpen"> -->
+						<select name="username" class="form-control" ng-model="assignToUser" ng-options="user.username as user.username for user in usersReassignList()" required>
+							<option value="" selected disabled>Select Username</option>
+						</select>
+					</div>
+				</div>
+			</form>
+		</div>
+		<!-- div col -->
+
+		<div class="col-xs-12 text-center">
+			<a ng-show="reassign.$valid">
+				<!-- <span tooltip="Reassign"><icon id="hand-right" ng-click="toggleReassign()"></icon></span> -->
+				<span tooltip="Update"><icon id="ok" ng-click="_notifyUpdates('reassign')"></icon></span>
+			</a>
+		</div>
+		<!-- div col -->
+	</div>
+	<!-- div row -->
+
+	<!-- <div class="row" ng-show="statusToggles.rightIsOpen || statusToggles.leftIsOpen"> -->
+	<!-- 	<div class="col-xs-10 col-xs-offset-1"> -->
+	<!-- 		<br /> -->
+
+	<!-- 		<\!-- <div class="form-group" ng-show="statusToggles.rightIsOpen"> -\-> -->
+	<!-- 		<\!-- 	<div class="input-group input-group-sm"> -\-> -->
+	<!-- 		<\!-- 		<span class="input-group-addon">&</span> -\-> -->
+	<!-- 		<\!-- 		<\\!-- <select class="form-control" ng-model="nextStatus" ng-options="statusKey for statusKey in listNextStatus({statusKey: $scope.item.status})"> -\\-> -\-> -->
+	<!-- 		<\!-- 		<select class="form-control" ng-model="moveToStatus" ng-options="statusKey for statusKey in nextStatusList()"> -\-> -->
+	<!-- 		<\!-- 			<option value="" selected disabled>Select Status</option> -\-> -->
+	<!-- 		<\!-- 		</select> -\-> -->
+	<!-- 		<\!-- 	</div> -\-> -->
+
+	<!-- 		<\!-- 	<br /> -\-> -->
+
+ 	<!-- 		<\!-- 	<div class="input-group input-group-sm"> -\-> -->
+	<!-- 		<\!-- 		<span class="input-group-addon">@</span> -\-> -->
+	<!-- 		<\!-- 		<\\!-- <select class="form-control" placeholder="Username" focus-me="statusToggles.rightIsOpen"> -\\-> -\-> -->
+	<!-- 		<\!-- 		<select class="form-control" ng-model="assignToUser" ng-options="user.username for user in usersList()"> -\-> -->
+	<!-- 		<\!-- 			<option value="" selected disabled>Select Username</option> -\-> -->
+	<!-- 		<\!-- 		</select> -\-> -->
+	<!-- 		<\!-- 		<\\!-- <select class="form-control" placeholder="Username"> -\\-> -\-> -->
+	<!-- 		<\!-- 		<\\!-- 	<option value="" selected disabled>Select Username</option> -\\-> -\-> -->
+	<!-- 		<\!-- 		<\\!-- 	<option value="1">1</option> -\\-> -\-> -->
+	<!-- 		<\!-- 		<\\!-- 	<option value="2">2</option> -\\-> -\-> -->
+	<!-- 		<\!-- 		<\\!-- 	<option value="3">3</option> -\\-> -\-> -->
+	<!-- 		<\!-- 		<\\!-- 	<option value="4">4</option> -\\-> -\-> -->
+	<!-- 		<\!-- 		<\\!-- 	<option value="5">5</option> -\\-> -\-> -->
+	<!-- 		<\!-- 		<\\!-- </select> -\\-> -\-> -->
+	<!-- 		<\!-- 		<\\!-- <input type="text" class="form-control" placeholder="Username" focus-me="statusToggles.rightIsOpen" > -\\-> -\-> -->
+	<!-- 		<\!-- 	</div> -\-> -->
+	<!-- 		<\!-- </div> -\-> -->
+
+	<!-- 		<\!-- <div class="form-group" ng-show="statusToggles.leftIsOpen"> -\-> -->
+
+	<!-- 		<\!-- 	<div class="input-group input-group-sm"> -\-> -->
+	<!-- 		<\!-- 		<span class="input-group-addon">&</span> -\-> -->
+	<!-- 		<\!-- 		<select class="form-control" ng-model="moveToStatus" ng-options="statusKey for statusKey in prevStatusList()"> -\-> -->
+	<!-- 		<\!-- 			<option value="" selected disabled>Select Status</option> -\-> -->
+	<!-- 		<\!-- 		</select> -\-> -->
+	<!-- 		<\!-- 		<\\!-- <input type="text" class="form-control" placeholder="Status"> -\\-> -\-> -->
+	<!-- 		<\!-- 	</div> -\-> -->
+
+	<!-- 		<\!-- 	<br /> -\-> -->
+
+ 	<!-- 		<\!-- 	<div class="input-group input-group-sm"> -\-> -->
+	<!-- 		<\!-- 		<span class="input-group-addon">@</span> -\-> -->
+	<!-- 		<\!-- 		<\\!-- <select class="form-control" placeholder="Username" focus-me="statusToggles.leftIsOpen"> -\\-> -\-> -->
+	<!-- 		<\!-- 		<select class="form-control" ng-model="assignToUser" ng-options="user.username for user in usersList()"> -\-> -->
+	<!-- 		<\!-- 			<option value="" selected disabled>Select Username</option> -\-> -->
+	<!-- 		<\!-- 		</select> -\-> -->
+	<!-- 		<\!-- 		<\\!-- <input type="text" class="form-control" placeholder="Username" focus-me="statusToggles.leftIsOpen" > -\\-> -\-> -->
+	<!-- 		<\!-- 	</div> -\-> -->
+	<!-- 		<\!-- </div> -\-> -->
+
+	<!-- 	</div> -->
+	<!-- 	<\!-- div col -\-> -->
+	<!-- </div> -->
+	<!-- <\!-- div row -\-> -->
+	
+	<!-- <div class="row"> -->
+	<!-- 	<div class="col-xs-12"> -->
+	<!-- 		<\!-- <a class="pull-left" > -\-> -->
+	<!-- 		<\!-- 	<span tooltip="Move back" ng-show="statusToggles.leftIsOpen"><icon id="hand-left" ng-click="toggleLeft()"></icon></span> -\-> -->
+	<!-- 		<\!-- </a> -\-> -->
+	<!-- 		<\!-- <a class="pull-right" > -\-> -->
+	<!-- 		<\!-- 	<span tooltip="Move forward" ng-show="statusToggles.rightIsOpen"><icon id="hand-right" ng-click="toggleRight()"></icon></span> -\-> -->
+	<!-- 		<\!-- </a> -\-> -->
+	<!-- 	</div> -->
+	<!-- 	<\!-- div col -\-> -->
+	<!-- </div> -->
+	<!-- <\!-- div row -\-> -->
+
+</div>

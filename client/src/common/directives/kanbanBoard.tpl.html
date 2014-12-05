@@ -1,0 +1,378 @@
+<div ng-class="rootDivClass" >
+<!-- <div class="col-xs-12" > -->
+	<!-- div row -->
+	<div class="row" ng-show="!modal">
+ 		<label ng-if="!!widgetTitle">{{widgetTitle}}</label>
+		<label ng-if="!widgetTitle">Kanban Board</label>
+		<!-- <div class="col-xs-12"> -->
+ 		<!-- 	<label ng-if="!!widgetTitle">{{widgetTitle}}</label> -->
+		<!-- 	<label ng-if="!widgetTitle">Kanban Board</label> -->
+		<!-- </div> -->
+
+		<!-- <span class="pull-right hover-pointer close" ng-click="modalOpen()" tooltip="Fullscreen"> -->
+		<!-- <span class="close" ng-click="modalOpen()" tooltip="Fullscreen"> -->
+		<!-- 	<icon id="fullscreen"></icon> -->
+		<!-- </span> -->
+	</div>
+
+	<!-- -------------------------------------------------- -->
+	<!-- Pin Board -->
+	<!-- -------------------------------------------------- -->
+	<div class="panel panel-default" ng-show="pinBoardHasItems()">
+		<div class="panel-heading">
+			Pin Board <action-icon icon="info-sign" tip="Items pinned are shown here. A bulk action can be taken on all the pinned items simultaneously"></action-icon>
+            <span class="close" ng-click="clearPinBoard()"><icon id="remove"></icon></span>
+		</div>
+		<!-- div panel heading -->
+		<div class="panel-body">
+			<div class="row">
+				<!-- <div class="col-xs-12"> -->
+					<!-- is-pinned="{{true}}" -->
+					<kanban-card
+						 item="item"
+						 username="{{getUsername(item)}}"
+						 status-color="getStatusColor(item)"
+						 list-prev-status="getPrevStatus(statusKey)"
+						 list-next-status="getNextStatus(statusKey)"
+						 list-users="getUsers(exceptUsername)"
+						 notify-updates="updateItem(item, updates)"
+						 pin-me="pinItem(item, off, inPinBoard)"
+						 is-pinned="true"
+						 in-pin-board="{{true}}"
+						 class="kanban-animate" 
+						 ng-repeat="item in pinBoard track by item.$id()"
+						 >
+					</kanban-card>
+				<!-- </div> -->
+				<!-- <\!-- div col -\-> -->
+			</div>
+			<!-- div row -->
+
+			<div class="row">
+				<div class="col-xs-4 col-xs-offset-4">
+					<br />
+					<form name="kanbanUpdate">
+						<span ng-show="showError(kanbanUpdate, 'required')" ng-class="setWarningClasses(kanbanUpdate)">Username is required</span>
+						<div class="form-group">
+							<div class="input-group input-group-sm" ng-class="setValidationClasses(kanbanUpdate.status)">
+								<span class="input-group-addon">&</span>
+								<!-- <select class="form-control" ng-model="nextStatus" ng-options="statusKey for statusKey in listNextStatus({statusKey: $scope.item.status})"> -->
+								<select name="status" class="form-control" ng-model="moveToStatus" ng-options="statusKey for statusKey in getAllStatuses()">
+									<option value="" selected disabled>Select Status</option>
+								</select>
+							</div>
+
+							<br />
+
+							<div class="input-group input-group-sm" ng-class="setValidationClasses(kanbanUpdate.username)">
+								<span class="input-group-addon">@</span>
+								<!-- <select class="form-control" placeholder="Username" focus-me="statusToggles.rightIsOpen"> -->
+								<select name="username" class="form-control" ng-model="assignToUser" ng-options="user.username as user.username for user in getUsers()" required>
+									<option value="" selected disabled>Select Username</option>
+								</select>
+							</div>
+
+							<br />
+
+							<button type="button" class="btn btn-success btn-block" ng-click="updatePinBoardItems()" ng-show="kanbanUpdate.$valid"><icon id="ok"></icon> Update</button>
+
+						</div>
+					</form>
+				</div>
+				<!-- div col -->
+			</div>
+			<!-- div row -->
+		</div>
+		<!-- div panel body -->
+	</div>
+	<!-- div panel -->
+	<br />
+
+	<!-- -------------------------------------------------- -->
+	<!-- Filters -->
+	<!-- -------------------------------------------------- -->
+	<div class="row">
+		<form class="form-inline">
+			<!-- <div class="form-group"> -->
+			<!-- 	<select name="statusDrillDown" class="form-control" ng-model="statusDrillDown" ng-options="statusKey for statusKey in getAllStatuses()"> -->
+			<!-- 		<option value="" selected disabled>Select Status</option> -->
+			<!-- 		<\!-- <option value="*">-- All --</option> -\-> -->
+			<!-- 	</select> -->
+			<!-- </div> -->
+			<div class="form-group">
+				<input name="taskNameFilter" class="form-control" ng-model="taskNameFilter"  ng-model-options="{ debounce: 200 }" placeholder="Search by name"/>
+			</div>
+			<div class="form-group">
+				<div class="input-group">
+					<div class="input-group-addon">
+						<span ng-show="!!usernameFilter" ng-click="clearUsernameFilter()" class="hover-pointer" tooltip="Clear username"><icon id="trash"></icon></span>
+						<!-- <span ng-show="!usernameFilter">@</span> -->
+						<span ng-show="!usernameFilter" tooltip="Select username" ><icon id="user"></icon></span>
+					</div>
+					<select name="usernameFilter" class="form-control" ng-model="usernameFilter" ng-options="user.username as user.username for user in getUsers()">
+						<option value="" selected disabled>Select Username</option>
+						<!-- <option value="*">-- All --</option> -->
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="input-group">
+					<div class="input-group-addon">
+						<span tooltip="Search by priority (e.g. 2.5) or priority range (e.g. 2.5 - 5)" class="hover-pointer"><icon id="star"></icon></span>
+					</div>
+					<input name="priorityRangeFilterText" class="form-control" ng-model="priorityRangeFilterText" ng-model-options="{ debounce: 200 }" placeholder="Search by priority (e.g. 2.5) or priority range (e.g. 2.5 - 5)"/>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="input-group">
+ <div class="input-group-addon hover-pointer">
+						<span ng-show="sortByFilterReverse" ng-click="toggleReverseSort()" tooltip="Sort in ascending order" ><icon id="sort-by-attributes"></icon></span>
+						<span ng-show="!sortByFilterReverse" ng-click="toggleReverseSort()" tooltip="Sort in descending order"><icon id="sort-by-attributes-alt"></icon></span>
+
+						<!-- <button type="button" class="btn btn-default" ng-show="sortByFilterReverse" ng-click="toggleReverseSort()"><icon id="sort-by-attributes"></icon></button> -->
+						<!-- <button type="button" class="btn btn-default" ng-show="!sortByFilterReverse" ng-click="toggleReverseSort()"><icon id="sort-by-attributes-alt"></icon></button> -->
+					</div>
+					<!-- <input name="taskNameFilter" class="form-control" ng-model="taskNameFilter" placeholder="Search by name"/> -->
+					<select name="sortByFilter" class="form-control" ng-model="sortByFilter">
+						<option value="" selected disabled>Sort By</option>
+						<option value="id">Id</option>
+						<option value="name">Name</option>
+						<option value="priority">Priority</option>
+						<option value="username">Username</option>
+						<!-- <option value="assignedUserId">Username</option> -->
+					</select>
+				</div>
+			</div>
+			<div class="form-group pull-right" ng-show="!modal">
+				<div class="btn-group">
+					<button class="btn btn-default" ng-click="modalOpen()" tooltip="Fullsreen Mode" ><icon id="fullscreen"></icon></button>
+					<button class="btn btn-default" ng-click="reloadKanbanData()" tooltip="Reload"><icon id="repeat"></icon></button>
+				</div>
+			</div>
+		</form>
+	</div>
+	<!-- div row -->
+	<br />
+
+	<div class="row">
+		<span class="col-md-12" ng-show="fetchingitems">Fetching {{resourcePrettyNameAlt}} ... 
+			<a href="#"><img src="/static/img/spinner.gif"></a>
+		</span>		
+		<span class="col-md-12" ng-show="!items.length && !fetchingitems">
+			No {{resourcePrettyNameAlt}} found
+		</span>
+	</div>
+	<!-- div row -->
+
+	<div class="row" ng-show="items.length">
+		<table class="table table-condensed table-bordered">
+			<thead>
+				<tr>
+					<!-- <th ng-repeat="statusKey in sortedStatusKeysWithData"> -->
+					<th ng-repeat="statusKey in sortedStatusKeys">
+						{{statusKey}}
+						<span class="badge pull-right hover-pointer" ng-show="!isFilteredData()" tooltip="Total tasks in this status">{{kanbanData[statusKey].length || '0'}}</span>
+						<span class="badge pull-right hover-pointer" ng-show="isFilteredData()" tooltip="Filtered/Total tasks in this status">{{filteredKanbanData[statusKey].length || '0'}}/{{kanbanData[statusKey].length || '0'}}</span>
+						<!-- <div class="row"> -->
+						<!-- 	<form class="form-inline"> -->
+						<!-- 		<span class="col-xs-2">{{statusKey}}</span> -->
+						<!-- 		<input class="form-control input-sm col-xs-2"/> -->
+						<!-- 		<span class="badge pull-right">{{kanbanData[statusKey].length || '0'}}</span> -->
+						<!-- 		<\!-- <span class="badge">{{kanbanData[statusKey].length || '0'}}</span> -\-> -->
+						<!-- 	</form> -->
+						<!-- 	<\!-- div col -\-> -->
+						<!-- </div> -->
+						<!-- <\!-- div row -\-> -->
+					</th>
+
+				</tr>
+				<tbody>
+					<tr>
+						<!-- <td ng-repeat="statusKey in sortedStatusKeysWithData"> -->
+						<td ng-repeat="statusKey in sortedStatusKeys">
+							<!-- is-pinned="{{isPinned[item.$id()]}}" -->
+							<kanban-card
+								 item="item"
+								 username="{{getUsername(item)}}"
+								 item-view-url="viewItem(item)"
+								 status-color="getStatusColor(item)"
+								 list-prev-status="getPrevStatus(statusKey)"
+								 list-next-status="getNextStatus(statusKey)"
+								 list-users="getUsers(exceptUsername)"
+								 notify-updates="updateItem(item, updates)"
+								 pin-me="pinItem(item, off)"
+								 is-pinned="itemIsPinned(item)"
+								 class="kanban-animate" 
+								 ng-repeat="item in filteredKanbanData[statusKey] = (kanbanData[statusKey] | filter:{name:taskNameFilter} | filter:itemFilter | orderBy:sortItemsBy:sortByFilterReverse) track by item.$id()"
+								 >
+								 <!-- ng-repeat="item in kanbanData[statusKey]" -->
+
+								 <!-- ng-repeat="item in (kanbanData[statusKey] | filter:{name:taskNameFilter} | filter:filterByUsername | filter:priorityRangeFilter | orderBy:sortItemsBy:sortByFilterReverse) track by item.$id()" -->
+								 <!-- ng-repeat="item in (kanbanData[statusKey] | filter:{name:taskNameFilter} | filter:filterByUsername | filter:priorityRangeFilter | orderBy:sortItemsBy:sortByFilterReverse) track by item.$id()" -->
+								 <!-- ng-repeat="item in (kanbanData[statusKey] | filter:{name:taskNameFilter} | filter:filterByUsername | orderBy:sortItemsBy:sortByFilterReverse) track by item.$id()" -->
+								 <!-- ng-repeat="item in (kanbanData[statusKey] | filter:{name:taskNameFilter} | filter:filterByUsername | filter:priorityRangeFilter | orderBy:sortItemsBy:sortByFilterReverse) track by item.$id()" -->
+							</kanban-card>
+
+							<!-- <div class="thumbnail thumbnail-kanban" ng-repeat="task in kanbanData[statusKey]"> -->
+							<!-- 	<\!-- <div class="thumbnail bg-info"> -\-> -->
+							<!-- 	<div class="media"> -->
+							<!-- 		<\!-- <img class="media-object pull-left photo-xs" src="/static/img/foouser.png"> -\-> -->
+							<!-- 		<\!-- <img class="media-object pull-left photo-xs img-circle" src="/static/img/foouser_old.jpg"> -\-> -->
+							<!-- 		<img class="media-object pull-left photo-xs" src="/static/img/foouser_old.jpg"> -->
+							<!-- 		<div class="media-body"> -->
+							<!-- 			<div class="media-heading"> -->
+							<!-- 				<p> -->
+							<!-- 					<span class="text-muted">@loremipsum</span> -->
+							<!-- 					<span class="text-muted pull-right"><icon id="pushpin"></icon></span> -->
+							<!-- 				</p> -->
+							<!-- 			</div> -->
+							<!-- 		</div> -->
+							<!-- 		<\!-- div media-body -\-> -->
+							<!-- 		<\!-- div media-heading -\-> -->
+							<!-- 		<\!-- <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p> -\-> -->
+							<!-- 		<\!-- <a href="#" class="btn btn-xs btn-default" role="button"><icon id="hand-left"></icon></a> -\-> -->
+							<!-- 		<\!-- <a href="#" class="btn btn-xs btn-info" role="button"><icon id="hand-right"></icon></a>  -\-> -->
+							<!-- 	</div> -->
+							<!-- 	<\!-- div media -\-> -->
+
+							<!-- 	<\!-- <div class="caption" ng-class="['caption' , task.kanbanClass]"> -\-> -->
+							<!-- 	<\!-- <div ng-class="['caption' , task.kanbanClass, 'bg-info']"> -\-> -->
+							<!-- 	<div ng-class="['caption' , 'bg-info']"> -->
+							<!-- 		<p> -->
+							<!-- 			<\!-- <h5>Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet</h5> -\-> -->
+							<!-- 			<h5>{{task.name}}</h5> -->
+							<!-- 		</p> -->
+							<!-- 	</div> -->
+							<!-- 	<\!-- div caption -\-> -->
+
+							<!-- 	<div class="row"> -->
+							<!-- 		<div class="col-xs-12"> -->
+							<!-- 			<a href="#" class="pull-left" > -->
+							<!-- 				<span tooltip="Move back" ng-show="!statusKeyToggles[statusKey].leftIsOpen && !statusKeyToggles[statusKey].rightIsOpen"><icon id="hand-left" ng-click="toggleLeft(statusKey)"></icon></span> -->
+							<!-- 				<span tooltip="Cancel" ng-show="!!statusKeyToggles[statusKey].leftIsOpen"><icon id="remove" ng-click="toggleLeft(statusKey)"></icon></span> -->
+							<!-- 			</a> -->
+
+							<!-- 			<a href="#" class="pull-right" > -->
+							<!-- 				<span tooltip="Move forward" ng-show="!statusKeyToggles[statusKey].rightIsOpen && !statusKeyToggles[statusKey].leftIsOpen"><icon id="hand-right" ng-click="toggleRight(statusKey)"></icon></span> -->
+							<!-- 				<span tooltip="Cancel" ng-show="!!statusKeyToggles[statusKey].rightIsOpen"><icon id="remove" ng-click="toggleRight(statusKey)"></icon></span> -->
+							<!-- 			</a> -->
+
+							<!-- 			<\!-- <a href="#" tooltip="Move forward" class="pull-right" ><icon id="hand-right" ng-click="toggleRight(statusKey)" ng-show="!statusKeyToggles[statusKey].leftIsOpen"></icon></a> -\-> -->
+
+							<!-- 			<\!-- <action-icon icon="hand-left" action="" tip="Move back" class="pull-left" ng-click="statusKeyToggles[statusKey].leftIsOpen"></action-icon> -\-> -->
+							<!-- 			<\!-- <action-icon icon="hand-right" action="" tip="Move forward" class="pull-right" ng-click="statusKeyToggles[statusKey].rightIsOpen"></action-icon> -\-> -->
+
+							<!-- 			<\!-- <div class="btn-toolbar" role="toolbar"> -\-> -->
+							<!-- 			<\!-- 	<\\!-- <button class="btn btn-xs btn-default pull-left"><icon id="hand-left"></icon></button> -\\-> -\-> -->
+							<!-- 			<\!-- 	<\\!-- <button class="btn btn-xs btn-default pull-right"><icon id="hand-right"></icon></button> -\\-> -\-> -->
+							<!-- 			<\!-- </div> -\-> -->
+							<!-- 		</div> -->
+							<!-- 		<\!-- div col -\-> -->
+							<!-- 	</div> -->
+							<!-- 	<\!-- div row -\-> -->
+
+							<!-- 	<div class="row" ng-show="statusKeyToggles[statusKey].rightIsOpen || statusKeyToggles[statusKey].leftIsOpen"> -->
+							<!-- 		<div class="col-xs-10 col-xs-offset-1"> -->
+							<!-- 			<br /> -->
+
+							<!-- 			<div class="form-group" ng-show="statusKeyToggles[statusKey].rightIsOpen"> -->
+ 							<!-- 				<div class="input-group input-group-sm"> -->
+							<!-- 					<span class="input-group-addon">@</span> -->
+							<!-- 					<\!-- <select class="form-control" placeholder="Username" focus-me="statusKeyToggles[statusKey].rightIsOpen"> -\-> -->
+							<!-- 					<select class="form-control" placeholder="Username"> -->
+							<!-- 						<option value="" selected disabled>Select Username</option> -->
+							<!-- 						<option value="1">1</option> -->
+							<!-- 						<option value="2">2</option> -->
+							<!-- 						<option value="3">3</option> -->
+							<!-- 						<option value="4">4</option> -->
+							<!-- 						<option value="5">5</option> -->
+							<!-- 					</select> -->
+							<!-- 					<\!-- <input type="text" class="form-control" placeholder="Username" focus-me="statusKeyToggles[statusKey].rightIsOpen" > -\-> -->
+							<!-- 				</div> -->
+
+							<!-- 				<br /> -->
+							<!-- 				<div class="input-group input-group-sm"> -->
+							<!-- 					<span class="input-group-addon">&</span> -->
+							<!-- 					<select class="form-control" placeholder="Status"> -->
+							<!-- 						<option value="" selected disabled>Select Status</option> -->
+							<!-- 						<option value="1">1</option> -->
+							<!-- 						<option value="2">2</option> -->
+							<!-- 						<option value="3">3</option> -->
+							<!-- 						<option value="4">4</option> -->
+							<!-- 						<option value="5">5</option> -->
+							<!-- 					</select> -->
+							<!-- 					<\!-- <input type="text" class="form-control" placeholder="Status"> -\-> -->
+							<!-- 				</div> -->
+							<!-- 			</div> -->
+
+							<!-- 			<\!-- <div class="row form-group" ng-show="statusKeyToggles[statusKey].leftIsOpen"> -\-> -->
+							<!-- 			<\!-- 	<div class="input-group input-group-sm"> -\-> -->
+							<!-- 			<\!-- 		<span class="input-group-addon">@</span> -\-> -->
+							<!-- 			<\!-- 		<input type="text" class="form-control" placeholder="Username" focus-me="statusKeyToggles[statusKey].leftIsOpen" > -\-> -->
+							<!-- 			<\!-- 	</div> -\-> -->
+							<!-- 			<\!-- 	<div class="input-group input-group-sm"> -\-> -->
+							<!-- 			<\!-- 		<span class="input-group-addon">$</span> -\-> -->
+							<!-- 			<\!-- 		<input type="text" class="form-control" placeholder="Status"> -\-> -->
+							<!-- 			<\!-- 	</div> -\-> -->
+							<!-- 			<\!-- </div> -\-> -->
+							
+							<!-- 			<div class="form-group" ng-show="statusKeyToggles[statusKey].leftIsOpen"> -->
+ 							<!-- 				<div class="input-group input-group-sm"> -->
+							<!-- 					<span class="input-group-addon">@</span> -->
+							<!-- 					<\!-- <select class="form-control" placeholder="Username" focus-me="statusKeyToggles[statusKey].leftIsOpen"> -\-> -->
+							<!-- 					<select class="form-control" placeholder="Username"> -->
+							<!-- 						<option value="" selected disabled>Select Username</option> -->
+							<!-- 						<option value="1">1</option> -->
+							<!-- 						<option value="2">2</option> -->
+							<!-- 						<option value="3">3</option> -->
+							<!-- 						<option value="4">4</option> -->
+							<!-- 						<option value="5">5</option> -->
+							<!-- 					</select> -->
+							<!-- 					<\!-- <input type="text" class="form-control" placeholder="Username" focus-me="statusKeyToggles[statusKey].leftIsOpen" > -\-> -->
+							<!-- 				</div> -->
+
+							<!-- 				<br /> -->
+							<!-- 				<div class="input-group input-group-sm"> -->
+							<!-- 					<span class="input-group-addon">&</span> -->
+							<!-- 					<select class="form-control" placeholder="Status"> -->
+							<!-- 						<option value="" selected disabled>Select Status</option> -->
+							<!-- 						<option value="1">1</option> -->
+							<!-- 						<option value="2">2</option> -->
+							<!-- 						<option value="3">3</option> -->
+							<!-- 						<option value="4">4</option> -->
+							<!-- 						<option value="5">5</option> -->
+							<!-- 					</select> -->
+							<!-- 					<\!-- <input type="text" class="form-control" placeholder="Status"> -\-> -->
+							<!-- 				</div> -->
+							<!-- 			</div> -->
+
+							<!-- 		</div> -->
+							<!-- 		<\!-- div col -\-> -->
+							<!-- 	</div> -->
+							<!-- 	<\!-- div row -\-> -->
+							
+							<!-- 	<div class="row"> -->
+							<!-- 		<div class="col-xs-12"> -->
+							<!-- 			<a href="#" class="pull-left" > -->
+							<!-- 				<span tooltip="Move back" ng-show="statusKeyToggles[statusKey].leftIsOpen"><icon id="hand-left" ng-click="toggleLeft(statusKey)"></icon></span> -->
+							<!-- 			</a> -->
+
+							<!-- 			<a href="#" class="pull-right" > -->
+							<!-- 				<span tooltip="Move forward" ng-show="statusKeyToggles[statusKey].rightIsOpen"><icon id="hand-right" ng-click="toggleRight(statusKey)"></icon></span> -->
+							<!-- 			</a> -->
+							<!-- 		</div> -->
+							<!-- 		<\!-- div col -\-> -->
+							<!-- 	</div> -->
+							<!-- 	<\!-- div row -\-> -->
+
+							<!-- </div> -->
+							<!-- <\!-- <div class="thumbnail"> -\-> -->
+
+						</td>
+					</tr>
+
+				</tbody>
+		</table>
+
+	</div>
+</div>

@@ -124,10 +124,12 @@ angular.module('services.crud').factory('crudEditHandlers', function () {
 		mixin.onRemove = function (item) {
 			console.log("removing backlog");
 			console.log(item);
+			var context = angular.extend({}, item, {id : item.$id()});
 			return {
 				key: 'crud.' + notificationKey + '.remove.success',
 				type: 'success',
-				context: {id : item.$id()}
+				// context: {id : item.$id()}
+				context: context
 			};
 
 			// var projectId = $route.current.params.projectId;
@@ -153,26 +155,38 @@ angular.module('services.crud').factory('crudListMethods', [
 	'$location',
 	function ($location) {
 		return function (pathPrefix) {
+			var basePath = "/hive"
 			var mixin = {};
 
-			mixin['new'] = function () {
-				console.log("CALLIN NEW:"+pathPrefix+'/new');
-				$location.path(pathPrefix+'/new');
+			var returnOrSetRoute = function (route, returnRoute) {
+				if( returnRoute ){
+					return basePath + route;
+				}
+				return $location.path(route);
 			};
 
-			mixin['view'] = function (itemId) {
+			mixin['new'] = function (returnRoute) {
+				// console.log("CALLIN NEW:"+pathPrefix+'/new');
+				// $location.path(pathPrefix+'/new');
+				return returnOrSetRoute(pathPrefix+'/new', returnRoute);
+			};
+
+			mixin['view'] = function (itemId, returnRoute) {
 				if( angular.isDefined(itemId) ){
-					console.log('CALLING VIEW  '+pathPrefix+'/'+itemId+'/view');
-					$location.path(pathPrefix+'/'+itemId+'/view');
+					// console.log('CALLING VIEW  '+pathPrefix+'/'+itemId+'/view');
+					// $location.path(pathPrefix+'/'+itemId+'/view');
+					return returnOrSetRoute(pathPrefix+'/'+itemId+'/view', returnRoute);
 				}
 				else {
-					console.log('CALLING VIEW  '+pathPrefix);
-					$location.path(pathPrefix);
+					// console.log('CALLING VIEW  '+pathPrefix);
+					// $location.path(pathPrefix);
+					return returnOrSetRoute(pathPrefix, returnRoute);
 				}
 			};
 
-			mixin['edit'] = function (itemId) {
-				$location.path(pathPrefix+'/'+itemId+'/edit');
+			mixin['edit'] = function (itemId, returnRoute) {
+				// $location.path(pathPrefix+'/'+itemId+'/edit');
+				return returnOrSetRoute(pathPrefix+'/'+itemId+'/edit', returnRoute);
 			};
 
 			return mixin;

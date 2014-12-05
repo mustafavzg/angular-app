@@ -10,28 +10,39 @@ angular.module('filters.stopWatch', [
 
 		var setSuffix = function (element, type) {
 			var suffixMap = {
-				dd: 'd'
+				dd: 'days'
 			};
 			return element + (suffixMap[type] || '');
  		};
 
 		var format = function (days, timeElements, deciseconds) {
-			var formattedDays = '';
+			var allTimeElements = new Array();
+			// Days
 			if( angular.isDefined(days) && days > 0){
-				formattedDays = setSuffix(setPadding(days), 'dd');
+				var formattedDays = setSuffix(setPadding(days), 'dd');
+				allTimeElements.push(formattedDays);
 			}
+
+			// Time in HH::MM::SS
 			var formattedTimeElements = new Array();
 			angular.forEach(timeElements.reverse(), function(element) {
 				if( angular.isDefined(element) ){
 					formattedTimeElements.push(setSuffix(setPadding(element)));
 				}
 			});
-			var formattedDeciseconds = '';
-			if( angular.isDefined(deciseconds) ){
-				formattedDeciseconds = setSuffix(deciseconds);
+			if(formattedTimeElements.length){
+				allTimeElements.push(formattedTimeElements.join(':'));
 			}
 
-			return formattedDays + ' ' + formattedTimeElements.join(':') + ' ' + formattedDeciseconds;
+			// Deciseconds
+			if( angular.isDefined(deciseconds) ){
+				var formattedDeciseconds = setSuffix(deciseconds);
+				allTimeElements.push(formattedDeciseconds);
+			}
+
+			// return formattedDays + ' ' + formattedTimeElements.join(':') + ' ' + formattedDeciseconds;
+			return allTimeElements.join(" ");
+
 		};
 
 		/**************************************************
@@ -122,7 +133,9 @@ angular.module('filters.stopWatch', [
 			var timeindays = getDays(timeinhours);
 			days = timeindays;
 
-			return format(days, hoursMinsSeconds, deciseconds);
+			// return format(days, hoursMinsSeconds, deciseconds);
+			return format(days, hoursMinsSeconds);
+
 			// return days + " days, " + hours + " hours, " + minutes + " minutes, " + seconds + " seconds, " + deciseconds + " deciseconds, ";
 		};
 	}

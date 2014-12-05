@@ -10,7 +10,8 @@ angular.module('services.breadcrumbs').factory('breadcrumbs', ['$rootScope', '$l
 
     var pathElements = $location.path().split('/'), result = [], i;
     var breadcrumbPath = function (index) {
-      return '/' + (pathElements.slice(0, index + 1)).join('/');
+      // return '/' + (pathElements.slice(0, index + 1)).join('/');
+      return '/hive/' + (pathElements.slice(0, index + 1)).join('/'); // account for the base path
     };
 
     pathElements.shift();

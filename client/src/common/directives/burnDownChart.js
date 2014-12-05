@@ -26,6 +26,7 @@ angular.module('directives.burnDownChart', [
 				fetchingitems: '=',
   				// resourceConfig: '=',
   				chartConfig: '=',
+  				chartData: '=',
 				rootDivClass: '@?',
   				chartOptions: '=?',
 				itemToPieData: '&?',
@@ -870,7 +871,139 @@ angular.module('directives.burnDownChart', [
 					// 	}
 					// });
 
+					// $scope.chartData['data'].unshift($scope.chartData['data'][0]);
+					$scope.defaultBurnDownOptions = {
+						// title:'Default Date Axis',
+						axes:{
+							xaxis:{
+								renderer:jQuery.jqplot.DateAxisRenderer
+							}
+						},
+						series:[
+							{
+								label: 'Closed',
+								pointLabels: {
+									show: true
+								},
+								renderer: jQuery.jqplot.BarRenderer,
+								showHighlight: true,
+								// yaxis: 'y2axis',
+								rendererOptions: {
+									// Speed up the animation a little bit.
+									// This is a number of milliseconds.
+									// Default for bar series is 3000.
+									animation: {
+										speed: 2500
+									},
+									barWidth: 15,
+									barPadding: -15,
+									barMargin: 0,
+									highlightMouseOver: false
+								}
+							},
+							{
+								label: 'Open',
+								pointLabels: {
+									show: true
+								},
+								lineWidth:4
+							},
+							// {
+							// 	label: 'Closed',
+							// 	lineWidth:2,
+							// 	pointLabels: {
+							// 		show: true
+							// 	}
+							// },
+							{
+								label: 'Total',
+								pointLabels: {
+									show: true
+								},
+								lineWidth:2,
+								markerOptions:{style:'square'}
+							}
+						],
+						// y2axis: {
+						// 	tickOptions: {
+						// 		formatString: "$%'d"
+						// 	},
+						// 	rendererOptions: {
+						// 		// align the ticks on the y2 axis with the y axis.
+						// 		alignTicks: true,
+						// 		forceTickAt0: true
+						// 	}
+						// },
+						animate: true,
+						// Will animate plot on calls to plot1.replot({resetAxes:true})
+						animateReplot: true,
+						cursor: {
+							show: true,
+							zoom: true,
+							looseZoom: true,
+							showTooltip: false
+						},
+						highlighter: {
+							show: true,
+							showLabel: true,
+							tooltipAxes: 'y',
+							sizeAdjust: 7.5 , tooltipLocation : 'ne'
+						},
+						gridPadding: {top:30, bottom:20, left:0, right:0},
+						legend:{
+							show:true,
+							placement: 'inside',
+							renderer: jQuery.jqplot.EnhancedLegendRenderer,
+							rendererOptions: {
+								// numberRows: 2
+								numberColumns: 1
+							},
+							// location:'s',
+							marginTop: '15px'
+						}
+
+						// seriesColors:['#85802b', '#00749F', '#73C774', '#C7754C', '#17BDB8', '#C7754C'],
+						// seriesDefaults:{
+						// 	shadow: false,
+						// 	renderer: jQuery.jqplot.PieRenderer,
+						// 	// trendline:{ show:false },
+						// 	rendererOptions: {
+						// 		padding: 8,
+						// 		showDataLabels: true,
+						// 		sliceMargin: 5,
+						// 		// highlight not working !!!
+						// 		highlightMouseOver: true,
+						// 		startAngle: 270
+						// 	}
+						// },
+						// seriesDefaults:{
+						// 	shadow: false,
+						// 	renderer:$.jqplot.PieRenderer,
+						// 	rendererOptions:{
+						// 		sliceMargin: 4,
+						// 		// rotate the starting position of the pie around to 12 o'clock.
+						// 		startAngle: -90
+						// 	}
+						// },
+						// legend:{ show: true }
+						// seriesDefaults: {
+						// 	// Make this a pie chart.
+						// 	renderer: jQuery.jqplot.PieRenderer,
+						// 	rendererOptions: {
+						// 		// Put data labels on the pie slices.
+						// 		// By default, labels show the percentage of the slice.
+						// 		showDataLabels: true
+						// 	}
+						// },
+						// legend: { show:true, location: 'e' }
+					};
+
+					$scope.burnDownChart = {
+						data: [$scope.chartData],
+						options: $scope.defaultBurnDownOptions
+					};
 				}
+
 			]
 		};
 	}

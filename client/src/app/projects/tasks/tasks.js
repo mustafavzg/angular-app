@@ -12,6 +12,7 @@ angular.module('tasksnew', [
 	'services.crud',
 	'services.resourceDictionary',
 	'services.timeBursts',
+	'services.statusLog',
 	'filters.stopWatch',
 	'services.i18nNotifications',
 	'underscore'
@@ -185,6 +186,51 @@ angular.module('tasksnew', [
 		timeBursts
 	) {
 
+		$scope.project = project;
+		$scope.task = task;
+
+		$scope.tasks = [task];
+		console.log("tasks=");
+		console.log($scope.tasks);
+		$scope.resourceId = task.$id();
+		$scope.forResource = "task";
+		$scope.statusEnum = Tasks.statusEnum;
+		// $scope.sprintBacklogItems = sprintBacklogItems;
+		// $scope.teamMembers = teamMembers;
+
+		$scope.tasksCrudHelpers = {};
+		angular.extend($scope.tasksCrudHelpers, crudListMethods('/projects/'+project.$id()+'/tasks'));
+
+		$scope.taskCrudNotificationHelpers = angular.extend({}, crudEditHandlers('tasks'));;
+
+		$scope.task.attributesToDisplay = {
+			estimation : {
+				name : 'Estimation',
+				value : task.estimation,
+				icon : 'time',
+				ordering : 1
+			},
+			remaining : {
+				name : 'Remaining',
+				value : task.remaining,
+				icon : 'signal',
+				flip : true,
+				ordering : 2
+			},
+ 			status : {
+				name : 'Status',
+				value : task.status,
+				icon : 'sound-stereo',
+				ordering : 3
+			}
+		};
+		$scope.task.attributeValuesToDisplay = _.values($scope.task.attributesToDisplay);
+
+
+		/**************************************************
+		 * Task timer data Gantt chart
+		 **************************************************/
+
 		$scope.tasksGanttConf2 = {
 			resource : {
 				key : 'tasks',
@@ -237,213 +283,10 @@ angular.module('tasksnew', [
 					});
 				}
 			});
-			console.log("Task data:\n");
-			console.log("Data=\n"+data);
+			console.log("burst data:\n");
+			console.log(data);
 			return data;
 		};
-
-		$scope.tasksGanttUpdateValidator = function (item, update) {
-			var task = item;
-			return 1;
-		};
-
-		// /**************************************************
-		//  * gantt experiment end
-		//  **************************************************/
-		$scope.pieChartConfig = {
-			title: 'Tasks',
-			groupBy: [
-				{
-					prettyName: 'Status',
-					key: 'status',
-					ordering: 1,
-					colorMap: function (item) {
-						return item.getStatusDef().color;
-					},
-					groupByOrder: function (item) {
-						// console.log("ordering is");
-						// console.log(item.getStatusDef().ordering);
-						return item.getStatusDef().ordering;
-						// return item.getStatusDef().ordering || 0;
-
-					}
-				},
-				{
-					prettyName: 'Type',
-					key: 'type',
-					ordering: 2,
-					colorMap: function (item) {
-						return item.getTypeDef().color;
-					},
-					groupByOrder: function (item) {
-						return item.getTypeDef().ordering;
-						// return item.getTypeDef().ordering || 0;
-					}
-				}
-			],
-			summary: [
-				{
-					prettyName: 'Estimation',
-					prettyNameSuffix: "for",
-					key: 'estimation',
-					ordering: 1
-				},
-				{
-					prettyName: 'Remaining estimation',
-					prettyNameSuffix: "for",
-					key: 'remaining',
-					ordering: 2
-				}
-			],
-			count: 1,
-			// collapse: 0
-			collapse: 0,
-			cumulative: 0
-		};
-
-		$scope.pieChartConfig = {
-			title: 'Tasks',
-			groupBy: [
-				{
-					prettyName: 'Status',
-					key: 'status',
-					ordering: 1,
-					colorMap: function (item) {
-						return item.getStatusDef().color;
-					},
-					groupByOrder: function (item) {
-						// console.log("ordering is");
-						// console.log(item.getStatusDef().ordering);
-						return item.getStatusDef().ordering;
-						// return item.getStatusDef().ordering || 0;
-
-					}
-				},
-				{
-					prettyName: 'Type',
-					key: 'type',
-					ordering: 2,
-					colorMap: function (item) {
-						return item.getTypeDef().color;
-					},
-					groupByOrder: function (item) {
-						return item.getTypeDef().ordering;
-						// return item.getTypeDef().ordering || 0;
-					}
-				}
-			],
-			summary: [
-				{
-					prettyName: 'Estimation',
-					prettyNameSuffix: "for",
-					key: 'estimation',
-					ordering: 1
-				},
-				{
-					prettyName: 'Remaining estimation',
-					prettyNameSuffix: "for",
-					key: 'remaining',
-					ordering: 2
-				}
-			],
-			count: 1,
-			// collapse: 0
-			collapse: 0,
-			cumulative: 0
-		};
-
-
-		$scope.project = project;
-		$scope.task = task;
-
-		$scope.tasks = [task];
-		console.log("tasks=");
-		console.log($scope.tasks);
-		$scope.resourceId = task.$id();
-		$scope.forResource = "task";
-		$scope.statusEnum = Tasks.statusEnum;
-		// $scope.sprintBacklogItems = sprintBacklogItems;
-		// $scope.teamMembers = teamMembers;
-
-		$scope.tasksCrudHelpers = {};
-		angular.extend($scope.tasksCrudHelpers, crudListMethods('/projects/'+project.$id()+'/tasks'));
-
-		$scope.taskCrudNotificationHelpers = angular.extend({}, crudEditHandlers('tasks'));;
-
-		$scope.task.attributesToDisplay = {
-			estimation : {
-				name : 'Estimation',
-				value : task.estimation,
-				icon : 'time',
-				ordering : 1
-			},
-			remaining : {
-				name : 'Remaining',
-				value : task.remaining,
-				icon : 'signal',
-				flip : true,
-				ordering : 2
-			},
- 			status : {
-				name : 'Status',
-				value : task.status,
-				icon : 'sound-stereo',
-				ordering : 3
-			}
-		};
-		$scope.task.attributeValuesToDisplay = _.values($scope.task.attributesToDisplay);
-
-		/**************************************************
-		 * timeBursts service
-		 **************************************************/
-		// var bursts = [];
-		// var timeBursts = function (timeBursts) {
-		// 	this.bursts = (angular.isArray(timeBursts))? timeBursts : bursts;
-		// 	// if( angular.isArray(timeBursts) ){
-		// 	// 	this.bursts = timeBursts;
-		// 	// }
-		// };
-
-		// timeBursts.prototype.push = function (burst) {
-		// 	if( angular.isObject(burst) ){
-		// 		this.bursts.push(burst);
-		// 	}
-		// };
-
-		// timeBursts.prototype.pop = function () {
-		// 	return this.bursts.pop();
-		// };
-
-		// timeBursts.prototype.getBursts = function () {
-		// 	return this.bursts.slice(0);
-		// };
-
-		// timeBursts.prototype.sumBursts = function () {
-		// 	var burstTime = 0;
-		// 	angular.forEach(this.bursts, function(burst) {
-		// 		// console.log("calculating burst time");
-		// 		// console.log(burst);
-		// 		// console.log(burstTime);
-		// 		// console.log(burst.stop - burst.start);
-		// 		if( burst.stop ){
-		// 			burstTime += burst.stop - burst.start;
-		// 		}
-		// 	});
-		// 	return burstTime;
-		// };
-
-		// timeBursts.prototype.lastBurst = function () {
-		// 	return this.bursts.slice(-1)[0];
-		// };
-
-		// timeBursts.prototype.totalBurstTime = function () {
-		// 	return this.sumBursts();
-		// };
-
-		// timeBursts.prototype.timerRunning = function () {
-		// 	var lastBurst = this.lastBurst();
-		// 	return (lastBurst && !lastBurst.stop)? true : false;
-		// };
 
 		/**************************************************
 		 * Task Timer
@@ -467,54 +310,16 @@ angular.module('tasksnew', [
 		var stopTime;
 		$scope.timerRunning = false;
 
-		// var sumBursts = function (taskBursts) {
-		// 	var burstTime = 0;
-		// 	angular.forEach(taskBursts, function(burst) {
-		// 		// console.log("calculating burst time");
-		// 		// console.log(burst);
-		// 		// console.log(burstTime);
-		// 		// console.log(burst.stop - burst.start);
-  		// 		// var stopTime = burst.stop || Date.now();
-		// 		// burstTime += stopTime - burst.start;
-		// 		// burst.data =  {
-		// 		// 	status: $scope.task.status,
-		// 		// 	userId: $scope.task.assignedUserId
-		// 		// };
-
-		// 		if( burst.stop ){
-		// 			burstTime += burst.stop - burst.start;
-		// 		}
-		// 	});
-		// 	return burstTime;
-		// };
-
-		// var taskBursts = $scope.task.bursts || [];
-		// var lastBurst = taskBursts.slice(-1)[0];
-		// var prevBurstTime = sumBursts(taskBursts);
-
-		// var taskBursts = new timeBursts($scope.task.bursts);
 		var taskBursts = timeBursts($scope.task.bursts);
 		var lastBurst = taskBursts.lastBurst();
 		var prevBurstTime = taskBursts.totalBurstTime();
 
+		console.log("Initial tasks bursts");
 		console.log(taskBursts);
 
 		$scope.timer = prevBurstTime;
-		console.log("burst time total");
-		console.log($scope.timer);
-
-		// if( lastBurst && !lastBurst.stop ){
-		// 	$scope.timerRunning = true;
-		// 	startTime = lastBurst.start;
-		// 	taskTimer = $interval(
-		// 		function () {
-		// 			if( angular.isDefined(startTime) ){
-		// 				$scope.timer = Date.now() - startTime + prevBurstTime;
-		// 			}
-		// 		},
-		// 		100
-		// 	);
-		// }
+		// console.log("burst time total");
+		// console.log($scope.timer);
 
 		if( taskBursts.timerRunning() ){
 			$scope.timerRunning = true;
@@ -525,7 +330,7 @@ angular.module('tasksnew', [
 						$scope.timer = Date.now() - startTime + prevBurstTime;
 					}
 				},
-				100
+				1000
 			);
 		}
 
@@ -549,16 +354,6 @@ angular.module('tasksnew', [
 					console.log("updated the burst: startTime : beforeTimerStart");
 					console.log($scope.task);
 					console.log(response);
-
-					// taskTimer = $interval(
-					// 	function () {
-					// 		if( angular.isDefined(startTime) ){
-					// 			$scope.timer = Date.now() - startTime + prevBurstTime;
-
-					// 		}
-					// 	},
-					// 	100
-					// );
 				},
 				function (error) {
 					var notification = $scope.taskCrudNotificationHelpers.onUpdateError(error);
@@ -566,8 +361,6 @@ angular.module('tasksnew', [
 					taskBursts.pop();
 					console.log("Failed to update the time burst: startTime : beforeTimerStart");
 					return $q.reject("Error in time burst updates");
-
-					// $scope.timerRunning = false;
 				}
 			);
 		};
@@ -578,7 +371,7 @@ angular.module('tasksnew', [
 		 * beforeTimerStart : a callback that returns a promise object
 		 * - Timer should be started only if the callback succeeds
 		 **************************************************/
-		$scope.startTimer2 = function (beforeTimerStart) {
+		$scope.startTimer = function (beforeTimerStart) {
 			$scope.timerRunning = true;
 			startTime = Date.now();
 			if( angular.isFunction(beforeTimerStart) ){
@@ -592,7 +385,7 @@ angular.module('tasksnew', [
 
 								}
 							},
-							100
+							1000
 						);
 						console.log("started the timer: startTimer2");
 					},
@@ -604,42 +397,6 @@ angular.module('tasksnew', [
 				);
 			}
 		};
-
-		// $scope.startTimer = function () {
-		// 	$scope.timerRunning = true;
-		// 	startTime = Date.now();
-		// 	taskBursts.push({
-		// 		start: startTime,
-		// 		data: {
-		// 			status: task.status,
-		// 			userId: task.assignedUserId
-		// 		}
-		// 	});
-		// 	$scope.task.$updateFields(
-		// 		{bursts: taskBursts},
-		// 		function (response) {
-		// 			// console.log("updated the burst: startTime");
-		// 			// console.log($scope.task);
-		// 			// console.log(response);
-		// 			taskTimer = $interval(
-		// 				function () {
-		// 					if( angular.isDefined(startTime) ){
-		// 						$scope.timer = Date.now() - startTime + prevBurstTime;
-
-		// 					}
-		// 				},
-		// 				100
-		// 			);
-		// 		},
-		// 		function (error) {
-		// 			var notification = $scope.taskCrudNotificationHelpers.onUpdateError(error);
-		// 			i18nNotifications.pushForCurrentRoute(notification.key, notification.type, notification.context);
-		// 			taskBursts.pop();
-		// 			$scope.timerRunning = false;
-		// 		}
-		// 	);
-
-		// };
 
 		/**************************************************
 		 * Callback when the timer stops
@@ -679,7 +436,7 @@ angular.module('tasksnew', [
 		 *
 		 * stop the timer
 		 **************************************************/
-		$scope.stopTimer2 = function (beforeTimerStop) {
+		$scope.stopTimer = function (beforeTimerStop) {
 			stopTime = Date.now();
 
 			if( angular.isFunction(beforeTimerStop) ){
@@ -696,32 +453,6 @@ angular.module('tasksnew', [
 				);
 			}
 		};
-
-		// $scope.stopTimer = function () {
-		// 	stopTime = Date.now();
-
-		// 	var lastBurst =  taskBursts.pop();
-		// 	lastBurst.stop = stopTime;
-		// 	taskBursts.push(lastBurst);
-		// 	$scope.task.$updateFields(
-		// 		{bursts: taskBursts},
-		// 		function (response) {
-		// 			console.log("updated the burst: stopTime");
-		// 			console.log($scope.task);
-		// 			console.log(response);
-		// 			$scope.timerRunning = false;
-		// 			destroyTimer();
-		// 			prevBurstTime = sumBursts(taskBursts);
-		// 		},
-		// 		function (error) {
-		// 			var notification = $scope.taskCrudNotificationHelpers.onUpdateError(error);
-		// 			i18nNotifications.pushForCurrentRoute(notification.key, notification.type, notification.context);
-		// 			var lastBurst = taskBursts.pop();
-		// 			delete lastBurst.stop;
-		// 			taskBursts.push(lastBurst);
-		// 		}
-		// 	);
-		// };
 
 		var destroyClock = function () {
 			if( angular.isDefined(clock) ){
@@ -741,7 +472,6 @@ angular.module('tasksnew', [
 			destroyClock();
 			destroyTimer();
 		});
-
 
 		/**************************************************
 		 * Task comments
@@ -780,6 +510,61 @@ angular.module('tasksnew', [
 			]
 		};
 
+		/**************************************************
+		 * Task Pie Chart
+		 * Shows the time spent in a particular status
+		**************************************************/
+		$scope.pieChartConfig = {
+			title: 'Tasks',
+			groupBy: [
+				{
+					prettyName: 'Status',
+					key: 'status',
+					ordering: 1,
+					colorMap: function (item) {
+						return item.getStatusDef().color;
+					},
+					groupByOrder: function (item) {
+						// console.log("ordering is");
+						// console.log(item.getStatusDef().ordering);
+						return item.getStatusDef().ordering;
+						// return item.getStatusDef().ordering || 0;
+
+					}
+				},
+				{
+					prettyName: 'Type',
+					key: 'type',
+					ordering: 2,
+					colorMap: function (item) {
+						return item.getTypeDef().color;
+					},
+					groupByOrder: function (item) {
+						return item.getTypeDef().ordering;
+						// return item.getTypeDef().ordering || 0;
+					}
+				}
+			],
+			summary: [
+				{
+					prettyName: 'Estimation',
+					prettyNameSuffix: "for",
+					key: 'estimation',
+					ordering: 1
+				},
+				{
+					prettyName: 'Remaining estimation',
+					prettyNameSuffix: "for",
+					key: 'remaining',
+					ordering: 2
+				}
+			],
+			count: 1,
+			// collapse: 0
+			collapse: 0,
+			cumulative: 0
+		};
+
 	}
 ])
 
@@ -795,6 +580,10 @@ angular.module('tasksnew', [
 	'crudListMethods',
 	'crudEditHandlers',
 	'resourceDictionary',
+	'$interval',
+	'$q',
+	'statusLog',
+	// 'stopWatchFilter',
 	'_',
 	function (
 		$scope,
@@ -808,6 +597,10 @@ angular.module('tasksnew', [
 		crudListMethods,
 		crudEditHandlers,
 		resourceDictionary,
+		$interval,
+		$q,
+		statusLog,
+		// stopWatchFilter,
 		_
 	) {
 
@@ -819,6 +612,12 @@ angular.module('tasksnew', [
 		// status and type
 		// $scope.statusDef = Tasks.statusDef;
 		// $scope.typeDef = Tasks.typeDef;
+		$scope.statusDef = _.sortBy(
+			Tasks.getStatusDef(),
+			function (statusSpec) {
+				return statusSpec.ordering;
+			}
+		);
 		$scope.statusDef = Tasks.getStatusDef();
 		$scope.typeDef = Tasks.getTypeDef();
 
@@ -831,6 +630,297 @@ angular.module('tasksnew', [
 
 		$scope.productBacklogDictionary = resourceDictionary('productbacklog');
 		$scope.productBacklogDictionary.setItems($scope.productBacklogItems);
+
+		/**************************************************
+		 * Status Logging
+		 **************************************************/
+
+		var statusLogger;
+		var startTime;
+		var stopTime;
+		var clickTime;
+		$scope.statusLogging = false;
+		$scope.task.statusLogs = $scope.task.statusLogs || [];
+
+		var statusLogs = statusLog($scope.task.statusLogs, {lookUp: ['status']});
+		console.log("statusLog is");
+		console.log($scope.task.statusLogs);
+		console.log("status log map is");
+		console.log(statusLogs.getLookUp('status'));
+
+		var prevLogTime = statusLogs.totalLogTime();
+		$scope.lastStatusLog = statusLogs.lastLog();
+
+		// if( !$scope.task.$id() ){
+		// 	// find the staring status and
+		// 	// and set that as the task status
+		// 	var startStatus = $scope.statusDef[0];
+		// 	statusLogs.push({
+		// 		start: clickTime,
+		// 		data: {
+		// 			status: startStatus.key
+		// 		}
+		// 	});
+		// }
+
+		console.log("initial status logs");
+		console.log(statusLogs.getLogs());
+		console.log($scope.task.statusLogs);
+
+		$scope.logger = prevLogTime;
+		// console.log("log time total");
+		// console.log($scope.logger);
+
+		if( statusLogs.statusLogging() ){
+			$scope.statusLogging = true;
+			clickTime = $scope.lastStatusLog.start;
+			statusLogger = $interval(
+				function () {
+					if( angular.isDefined(clickTime) ){
+						$scope.logger = Date.now() - clickTime + prevLogTime;
+					}
+				},
+				1000
+			);
+		}
+
+		// /**************************************************
+		//  * Callback when the logger starts
+		//  * the callback should return a promise object
+		//  * indicating the callback success
+		//  **************************************************/
+		// $scope.beforeLoggerStart = function (status, clickTime) {
+		// 	$scope.setTaskStatus(status);
+		// 	statusLogs.push({
+		// 		start: clickTime,
+		// 		data: {
+		// 			status: status.key,
+		// 			userId: task.assignedUserId
+		// 		}
+		// 	});
+		// 	return $scope.task.$updateFields(
+		// 		// {logs: statusLogs},
+		// 		{statusLogs: statusLogs.getLogs()},
+		// 		function (response) {
+		// 			console.log("updated the log: clickTime : beforeLoggerStart");
+		// 			console.log($scope.task.statusLogs);
+		// 			console.log(response);
+		// 		},
+		// 		function (error) {
+		// 			var notification = $scope.taskCrudNotificationHelpers.onUpdateError(error);
+		// 			i18nNotifications.pushForCurrentRoute(notification.key, notification.type, notification.context);
+		// 			statusLogs.pop();
+		// 			console.log("Failed to update the time log: clickTime : beforeLoggerStart");
+		// 			return $q.reject("Error in time log updates");
+		// 		}
+		// 	);
+		// };
+
+		// /**************************************************
+		//  * startLogger
+		//  *
+		//  * beforeLoggerStart : a callback that returns a promise object
+		//  * - Logger should be started only if the callback succeeds
+		//  **************************************************/
+		// $scope.startLogger = function (beforeLoggerStart) {
+		// 	$scope.statusLogging = true;
+		// 	clickTime = Date.now();
+		// 	if( angular.isFunction(beforeLoggerStart) ){
+		// 		beforeLoggerStart('foobar', clickTime).then(
+		// 			function (response) {
+		// 				// start the logger
+		// 				statusLogger = $interval(
+		// 					function () {
+		// 						if( angular.isDefined(clickTime) ){
+		// 							$scope.logger = Date.now() - clickTime + prevLogTime;
+
+		// 						}
+		// 					},
+		// 					1000
+		// 				);
+		// 				console.log("started the logger: startLogger2");
+		// 			},
+		// 			function (error) {
+		// 				// reset logger state
+		// 				$scope.statusLogging = false;
+		// 				console.log("reset the logger state: startLogger2");
+		// 			}
+		// 		);
+		// 	}
+		// };
+
+		/**************************************************
+		 * Callback when the logger stops
+		 * the callback should return a promise object
+		 * indicating the callback success
+		 **************************************************/
+		var beforeLogStatus = function (status, clickTime, async) {
+			var currentLastLog =  statusLogs.pop('status');
+			// var currentLastLog = statusLogs.currentLastLog();
+
+			if( currentLastLog ){
+				currentLastLog.stop = clickTime;
+				statusLogs.push(currentLastLog, 'status');
+			}
+
+			statusLogs.push({
+				start: clickTime,
+				data: {
+					status: status.key,
+					userId: task.assignedUserId
+				}
+			}, 'status');
+
+			if( async ){
+				return $scope.task.$updateFields(
+					{statusLogs: statusLogs.getLogs()},
+					function (response) {
+						console.log("updated the log: clickTime");
+						// console.log($scope.task);
+						console.log($scope.task.statusLogs);
+						console.log(response);
+						// $scope.statusLogging = false;
+						// destroyLogger();
+						// prevLogTime = sumLogs(statusLogs);
+						$scope.setTaskStatus(status);
+						prevLogTime = statusLogs.totalLogTime();
+					},
+					function (error) {
+						var notification = $scope.taskCrudNotificationHelpers.onUpdateError(error);
+						i18nNotifications.pushForCurrentRoute(notification.key, notification.type, notification.context);
+						// discard the new status change
+						statusLogs.pop();
+						// delete the out time for previous status
+						var lastLog = statusLogs.pop('status');
+						delete lastLog.stop;
+						statusLogs.push(lastLog, 'status');
+						return $q.reject("Error in time log updates");
+					}
+				);
+
+			}
+			else {
+				$scope.setTaskStatus(status);
+				prevLogTime = statusLogs.totalLogTime();
+				console.log("q is ");
+				console.log($q);
+				return $q.when(true);
+			}
+
+
+			// if( lastLog ){
+			// 	lastLog.stop = clickTime;
+			// 	statusLogs.push(lastLog);
+
+			// 	return $scope.task.$updateFields(
+			// 		{statusLogs: statusLogs.getLogs()},
+			// 		function (response) {
+			// 			console.log("updated the log: clickTime");
+			// 			// console.log($scope.task);
+			// 			console.log($scope.task.statusLogs);
+			// 			console.log(response);
+			// 			// $scope.statusLogging = false;
+			// 			// destroyLogger();
+			// 			// prevLogTime = sumLogs(statusLogs);
+			// 			prevLogTime = statusLogs.totalLogTime();
+			// 		},
+			// 		function (error) {
+			// 			var notification = $scope.taskCrudNotificationHelpers.onUpdateError(error);
+			// 			i18nNotifications.pushForCurrentRoute(notification.key, notification.type, notification.context);
+			// 			var lastLog = statusLogs.pop();
+			// 			delete lastLog.stop;
+			// 			statusLogs.push(lastLog);
+			// 			return $q.reject("Error in time log updates");
+			// 		}
+			// 	);
+			// }
+			// else {
+			// 	return $q.when(true);;
+			// }
+
+		};
+
+		/**************************************************
+		 * logStatus
+		 *
+		 * log status
+		 **************************************************/
+		$scope.logStatus = function (status) {
+			var async = ($scope.task.$id())? 1 : 0;
+			_logStatus(status, beforeLogStatus, async);
+		};
+
+		var _logStatus = function (status, beforeLogStatus, async) {
+			clickTime = Date.now();
+
+			if( angular.isFunction(beforeLogStatus) && !$scope.isTaskStatus(status)){
+				// beforeLogStatus(clickTime).then(
+				beforeLogStatus(status, clickTime, async).then(
+					function (response) {
+						// stop the previous logger
+						$scope.statusLogging = false;
+						destroyLogger();
+						console.log("stopped the previous logger: logStatus2");
+
+						// Start a new logger
+						$scope.statusLogging = true;
+						statusLogger = $interval(
+							function () {
+								if( angular.isDefined(clickTime) ){
+									$scope.logger = Date.now() - clickTime + prevLogTime;
+
+								}
+							},
+							1000
+						);
+						console.log("started the next logger: startLogger2");
+						console.log("statusLog is");
+						console.log($scope.task.statusLogs);
+						// var foolog = statusLog($scope.task.statusLogs, {lookUp: ['status']});
+						console.log("status log map is");
+						console.log(statusLogs.getLookUp('status'));
+
+						// Start the timer again
+						// $scope.beforeLoggerStart(status, clickTime).then(
+						// 	function (response) {
+						// 		// start the logger
+						// 		$scope.statusLogging = true;
+						// 		statusLogger = $interval(
+						// 			function () {
+						// 				if( angular.isDefined(clickTime) ){
+						// 					$scope.logger = Date.now() - clickTime + prevLogTime;
+
+						// 				}
+						// 			},
+						// 			1000
+						// 		);
+						// 		console.log("started the logger: startLogger2");
+						// 	},
+						// 	function (error) {
+						// 		// reset logger state
+						// 		$scope.statusLogging = false;
+						// 		console.log("reset the logger state: startLogger2");
+						// 	}
+						// );
+
+					},
+					function (error) {
+						console.log("error occured in saving status - logger: logStatus2");
+					}
+				);
+			}
+		};
+
+		var destroyLogger = function () {
+			if( angular.isDefined(statusLogger) ){
+				$interval.cancel(statusLogger);
+				statusLogger = undefined;
+			}
+		};
+
+		$scope.$on('$destroy', function () {
+			destroyLogger();
+		});
 
 		/**************************************************
 		 * Status Widget

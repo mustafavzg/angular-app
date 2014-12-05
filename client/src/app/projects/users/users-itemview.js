@@ -45,9 +45,9 @@ angular.module('users-itemview',[
 		momentsAgoFilter
 	) {
 
-		// /**************************************************
-		//  * gantt configuration
-		//  **************************************************/
+		/**************************************************
+		 * Table active
+		 **************************************************/
 		$scope.tasksConf = {
 			resource : {
 				key : 'tasks',
@@ -101,6 +101,9 @@ angular.module('users-itemview',[
 			]
 		};
 
+		/**************************************************
+		 * Pie chart config
+		 **************************************************/
 		$scope.pieChartConfig = {
 			title: 'Tasks',
 			groupBy: [
@@ -152,6 +155,10 @@ angular.module('users-itemview',[
 			cumulative: 0
 		};
 
+
+		/**************************************************
+		 * Gantt chart config
+		 **************************************************/
 		$scope.tasksGanttConf = {
 			resource : {
 				key : 'tasks',

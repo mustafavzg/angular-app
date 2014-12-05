@@ -47,7 +47,7 @@ angular.module('services.indexFactory').factory('indexFactory', [
 					}
 				},
 
-				getindexid: function (item) {
+				getIndexId: function (item) {
 					// return _(this.indexAttributes).map(function (indexAttr) {
 					// 	return item[indexAttr];
 					// }).join('_');

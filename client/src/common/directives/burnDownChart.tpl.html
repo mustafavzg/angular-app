@@ -1,4 +1,5 @@
 <div ng-class="self.rootDivClass">
+	<label>{{burnDownChartConfigInstance.getTitle()}} Burn down</label>
 	<div class="row">
 		<!-- <span class="col-md-12" ng-show="fetchingitems">Fetching {{resourcePrettyNameAlt}} ...  -->
 		<span class="col-md-12" ng-show="fetchingitems">Fetching {{burnDownChartConfigInstance.getTitle()}} ... 
@@ -17,50 +18,51 @@
 			<form role="form" class="form-inline pull-right">
 				<div class="form-group text-center">
 					<!-- <span class="help-block">Additional options</span> -->
-					<div class="form-group">
-						<div class="btn-group" dropdown is-open="isOpenGroupBy">
-							<button type="button" class="btn btn-default dropdown-toggle" tooltip="Choose attributes to group by" tooltip-placement="top" ng-click="isOpenGroupBy = !isOpenGroupBy">
-								Group By <span class="caret"></span>
-							</button>
-							<!-- <ul class="dropdown-menu" role="menu" ng-click="isOpenGroupBy = false"> -->
-							<ul class="dropdown-menu" role="menu">
-								<!-- <li ng-repeat="groupBySpec in burnDownChartConfigInstance.getGroupByAttributeSpecs()" ng-click="toggleGroupBy(groupBySpec.key)" ng-class="{'active': isActiveGroupBy(groupBySpec.key)}"> -->
-								<!-- <li ng-repeat="groupBy in getGroupByAttributes()" ng-click="toggleGroupBy(groupBy)" ng-class="{'active': isActiveGroupBy(groupBy)}"> -->
-								<!-- <li ng-repeat="groupBySpec in getGroupBySpecs()" ng-click="toggleGroupBy(groupBySpec.key)" ng-class="{'active': isActiveGroupBy(groupBySpec.key)}"> -->
-								<li ng-repeat="groupBySpec in getGroupBySpecs()" ng-click="toggleGroupBy(groupBySpec.key)">
-									<!-- <a href="#"> <icon ng-show="isActiveGroupBy(groupBy)" id="ok"></icon> {{groupBy}}</a> -->
-									<a href="#"> <icon id="ok" ng-show="isActiveGroupBy(groupBySpec.key)"></icon> {{groupBySpec.prettyName}}</a>
-									<!-- <a href="#"> <icon id="ok"></icon> {{groupBy}}</a> -->
-								</li>
-							</ul>
-						</div>
-					</div>
 
-					<div class="form-group">
-						<div class="btn-group" dropdown is-open="isOpenSummary" >
-							<button type="button" class="btn btn-default dropdown-toggle" tooltip="Choose attributes to aggregate by" tooltip-placement="top" ng-click="isOpenSummary = !isOpenSummary">
-								Summarize By <span class="caret"></span>
-							</button>
-							<!-- <ul class="dropdown-menu" role="menu" ng-click="isOpenSummary = false"> -->
-							<ul class="dropdown-menu" role="menu">
-								<li ng-repeat="summaryItemSpec in getSummaryItemsSpecs()" ng-click="toggleSummaryItem(summaryItemSpec.key)">
-									<!-- <a href="#"> <icon ng-show="isActiveSummaryItem(summaryItem)" id="ok"></icon> {{summaryItem}}</a> -->
-									<a href="#"> <icon id="ok" ng-show="isActiveSummaryItem(summaryItemSpec.key)"></icon> {{summaryItemSpec.prettyName}}</a>
-								</li>
-							</ul>
-						</div>
-					</div>
+					<!-- <div class="form-group"> -->
+					<!-- 	<div class="btn-group" dropdown is-open="isOpenGroupBy"> -->
+					<!-- 		<button type="button" class="btn btn-default dropdown-toggle" tooltip="Choose attributes to group by" tooltip-placement="top" ng-click="isOpenGroupBy = !isOpenGroupBy"> -->
+					<!-- 			Group By <span class="caret"></span> -->
+					<!-- 		</button> -->
+					<!-- 		<\!-- <ul class="dropdown-menu" role="menu" ng-click="isOpenGroupBy = false"> -\-> -->
+					<!-- 		<ul class="dropdown-menu" role="menu"> -->
+					<!-- 			<\!-- <li ng-repeat="groupBySpec in burnDownChartConfigInstance.getGroupByAttributeSpecs()" ng-click="toggleGroupBy(groupBySpec.key)" ng-class="{'active': isActiveGroupBy(groupBySpec.key)}"> -\-> -->
+					<!-- 			<\!-- <li ng-repeat="groupBy in getGroupByAttributes()" ng-click="toggleGroupBy(groupBy)" ng-class="{'active': isActiveGroupBy(groupBy)}"> -\-> -->
+					<!-- 			<\!-- <li ng-repeat="groupBySpec in getGroupBySpecs()" ng-click="toggleGroupBy(groupBySpec.key)" ng-class="{'active': isActiveGroupBy(groupBySpec.key)}"> -\-> -->
+					<!-- 			<li ng-repeat="groupBySpec in getGroupBySpecs()" ng-click="toggleGroupBy(groupBySpec.key)"> -->
+					<!-- 				<\!-- <a href="#"> <icon ng-show="isActiveGroupBy(groupBy)" id="ok"></icon> {{groupBy}}</a> -\-> -->
+					<!-- 				<a href="#"> <icon id="ok" ng-show="isActiveGroupBy(groupBySpec.key)"></icon> {{groupBySpec.prettyName}}</a> -->
+					<!-- 				<\!-- <a href="#"> <icon id="ok"></icon> {{groupBy}}</a> -\-> -->
+					<!-- 			</li> -->
+					<!-- 		</ul> -->
+					<!-- 	</div> -->
+					<!-- </div> -->
+
+					<!-- <div class="form-group"> -->
+					<!-- 	<div class="btn-group" dropdown is-open="isOpenSummary" > -->
+					<!-- 		<button type="button" class="btn btn-default dropdown-toggle" tooltip="Choose attributes to aggregate by" tooltip-placement="top" ng-click="isOpenSummary = !isOpenSummary"> -->
+					<!-- 			Summarize By <span class="caret"></span> -->
+					<!-- 		</button> -->
+					<!-- 		<\!-- <ul class="dropdown-menu" role="menu" ng-click="isOpenSummary = false"> -\-> -->
+					<!-- 		<ul class="dropdown-menu" role="menu"> -->
+					<!-- 			<li ng-repeat="summaryItemSpec in getSummaryItemsSpecs()" ng-click="toggleSummaryItem(summaryItemSpec.key)"> -->
+					<!-- 				<\!-- <a href="#"> <icon ng-show="isActiveSummaryItem(summaryItem)" id="ok"></icon> {{summaryItem}}</a> -\-> -->
+					<!-- 				<a href="#"> <icon id="ok" ng-show="isActiveSummaryItem(summaryItemSpec.key)"></icon> {{summaryItemSpec.prettyName}}</a> -->
+					<!-- 			</li> -->
+					<!-- 		</ul> -->
+					<!-- 	</div> -->
+					<!-- </div> -->
 
 					<div class="btn-group">
-						<button class="btn btn-default" ng-click="toggleDonut()" tooltip="{{donutToggle.toolTip}}" tooltip-placement="top">
-							<span ng-show="!!donutToggle.isDonut"><icon id="adjust"></icon></span>
-							<span ng-show="!donutToggle.isDonut"><icon id="record"></icon></span>
+						<button class="btn btn-default" ng-click="toggleDonut()" tooltip="Reload" tooltip-placement="top">
+							<span ng-show="!!donutToggle.isDonut"><icon id="repeat"></icon></span>
+							<span ng-show="!donutToggle.isDonut"><icon id="repeat"></icon></span>
 						</button>
 
-						<button class="btn btn-default" ng-click="toggleCumulative()" tooltip="{{cumulativeToggle.toolTip}}" tooltip-placement="top">
-							<span ng-show="!!cumulativeToggle.isCumulative"><icon id="align-justify"></icon></span>
-							<span ng-show="!cumulativeToggle.isCumulative"><icon id="link"></icon></span>
-						</button>
+						<!-- <button class="btn btn-default" ng-click="toggleCumulative()" tooltip="{{cumulativeToggle.toolTip}}" tooltip-placement="top"> -->
+						<!-- 	<span ng-show="!!cumulativeToggle.isCumulative"><icon id="align-justify"></icon></span> -->
+						<!-- 	<span ng-show="!cumulativeToggle.isCumulative"><icon id="link"></icon></span> -->
+						<!-- </button> -->
 					</div>
 				</div>
 			</form>
@@ -73,11 +75,25 @@
 	<div class="row" ng-show="items.length">
 		<div class="col-md-12">
 			<!-- <div ng-repeat="chart in burnDownCharts" ui-chart="chart.data" chart-options="chart.options"></div> -->
-			<div ng-repeat="chart in burnDownCharts">
-				<div ui-chart="chart.data" chart-options="chart.options"></div>
+			<!-- <div ng-repeat="chart in burnDownCharts"> -->
+			<!-- 	<div ui-chart="chart.data" chart-options="chart.options"></div> -->
+			<!-- 	<\!-- <div ui-chart="burnDownChart.data" chart-options="bundDownChart.options"></div> -\-> -->
+			<!-- </div> -->
+		</div>
+		<!-- div col -->
+	</div>
+	<!-- div row -->
+ 
+	<div ui-chart="chartData['data']" chart-options="defaultBurnDownOptions"></div>
+	<div class="row">
+		<div class="col-md-12">
+
+			<div ng-repeat="chart in chartData">
+
 			</div>
 		</div>
 		<!-- div col -->
 	</div>
 	<!-- div row -->
+
 </div>

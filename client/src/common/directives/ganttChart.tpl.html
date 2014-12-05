@@ -1,45 +1,5 @@
 <div class="panel-body">
 
-	<!-- <\!-- gantt demo -\-> -->
-	<!-- <div class="row"> -->
-	<!-- 	<form role="form" class="form-inline"> -->
-	<!-- 		<div class="form-group"> -->
-	<!-- 			<span class="help-block">Action</span> -->
-	<!-- 			<div class="btn-group"> -->
-	<!-- 				<button class="btn btn-default" ng-click="addSamples()">Load data</button> -->
-	<!-- 				<button class="btn btn-default" ng-click="removeSomeSamples()">Remove some</button> -->
-	<!-- 				<button class="btn btn-default" ng-click="removeSamples()">Remove all</button> -->
-	<!-- 			</div> -->
-	<!-- 		</div> -->
-	<!-- 		<div class="form-group"> -->
-	<!-- 			<span class="help-block">View scale</span> -->
-	<!-- 			<select class="form-control" style="width: 100px;" ng-model="scale" ng-options="s for s in ['hour', 'day', 'week', 'month']"></select> -->
-	<!-- 		</div> -->
-	<!-- 		<div class="form-group"> -->
-	<!-- 			<span class="help-block">Sort order</span> -->
-	<!-- 			<select class="form-control" style="width: 100px;" ng-model="mode" ng-options="m for m in ['name', 'date', 'custom']"></select> -->
-	<!-- 		</div> -->
-	<!-- 		<div class="form-group text-center"> -->
-	<!-- 			<span class="help-block">Max height</span> -->
-	<!-- 			<div ng-show="maxHeight > 0"> -->
-	<!-- 				<button class="btn btn-default" ng-click="maxHeight = 0">Deactivate</button> -->
-	<!-- 			</div> -->
-	<!-- 			<div ng-show="maxHeight === 0"> -->
-	<!-- 				<button class="btn btn-default" ng-click="maxHeight = 300">Activate</button> -->
-	<!-- 			</div> -->
-	<!-- 		</div> -->
-	<!-- 		<div class="form-group text-center"> -->
-	<!-- 			<span class="help-block">Additional options</span> -->
-	<!-- 			<div class="btn-group"> -->
-	<!-- 				<button ng-show="showWeekends" class="btn btn-default" ng-click="showWeekends = false">Hide weekends</button> -->
-	<!-- 				<button ng-show="showWeekends == false" class="btn btn-default" ng-click="showWeekends = true">Show weekends</button> -->
-	<!-- 				<button ng-show="showNonWorkHours == false" class="btn btn-default" ng-click="showNonWorkHours = true; subScale = 6">Show non working hours</button> -->
-	<!-- 				<button ng-show="showNonWorkHours" class="btn btn-default" ng-click="showNonWorkHours = false; subScale = 8">Hide non working hours</button> -->
-	<!-- 			</div> -->
-	<!-- 		</div> -->
-	<!-- 	</form> -->
-	<!-- </div> -->
-
 	<!-- div row -->
 	<div class="row">
 		<div class="col-md-12 page-heading">
@@ -49,18 +9,20 @@
 	</div>
 	<div class="row">
 		<div class="col-md-12">
-			<form role="form" class="form-inline pull-left">
-				<div class="form-group">
-					<!-- <span class="help-block">Action</span> -->
-					<div class="btn-group">
-						<button class="btn btn-default" ng-click="reloadData()">Load data</button>
-						<button class="btn btn-default" ng-click="removeSomeSamples()">Remove some</button>
-						<button class="btn btn-default" ng-click="removeSamples()">Remove all</button>
-					</div>
-				</div>
-			</form>
+
+			<!-- <form role="form" class="form-inline pull-left"> -->
+			<!-- 	<div class="form-group"> -->
+			<!-- 		<\!-- <span class="help-block">Action</span> -\-> -->
+			<!-- 		<div class="btn-group"> -->
+			<!-- 			<button class="btn btn-default" ng-click="reloadData()">Load data</button> -->
+			<!-- 			<button class="btn btn-default" ng-click="removeSomeSamples()">Remove some</button> -->
+			<!-- 			<button class="btn btn-default" ng-click="removeSamples()">Remove all</button> -->
+			<!-- 		</div> -->
+			<!-- 	</div> -->
+			<!-- </form> -->
 		
 			<form role="form" class="form-inline pull-right">
+
 				<!-- <div class="form-group"> -->
 				<!-- 	<\!-- <span class="help-block">View scale</span> -\-> -->
 				<!-- 	<select class="form-control" style="width: 100px;" ng-model="scale" ng-options="s for s in ['hour', 'day', 'week', 'month']"></select> -->
@@ -87,7 +49,8 @@
 							{{mode}} <span class="caret"></span>
 						</button>
 						<ul class="dropdown-menu" role="menu" ng-click="isOpenMode = false">
-							<li ng-repeat="m in ['name', 'date', 'custom']" ng-click="setMode(m)" ng-class="{'active': isActiveMode(m)}"><a href="#">{{m}}</a></li>
+							<li ng-repeat="m in ['name', 'date']" ng-click="setMode(m)" ng-class="{'active': isActiveMode(m)}"><a href="#">{{m}}</a></li>
+							<!-- <li ng-repeat="m in ['name', 'date', 'custom']" ng-click="setMode(m)" ng-class="{'active': isActiveMode(m)}"><a href="#">{{m}}</a></li> -->
 						</ul>
 					</div>
 				</div>
@@ -100,6 +63,8 @@
 				<!-- 	<\!-- 	<button class="btn btn-default" ng-click="maxHeight = 300">Activate</button> -\-> -->
 				<!-- 	<\!-- </div> -\-> -->
 				<!-- </div> -->
+
+
 				<div class="form-group text-center">
 					<!-- <span class="help-block">Additional options</span> -->
 					<div class="btn-group">
@@ -143,6 +108,15 @@
 
 					</div>
 				</div>
+
+				<div class="form-group">
+					<div class="btn-group">
+						<button class="btn btn-default" ng-click="reloadData()" tooltip="Reload" tooltip-placement="top">
+							<icon id="repeat"></icon>
+						</button>
+					</div>
+				</div>
+
 			</form>
 	
 		</div>

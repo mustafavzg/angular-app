@@ -18,7 +18,7 @@ angular.module('services.notifications', []).factory('notifications', ['$rootSco
   $rootScope.$on('$routeChangeSuccess', function (event, current, previous, other) {
 	  // console.log("notifications before route change");
 	  // console.log(JSON.stringify(notifications));
-	  if( !angular.isDefined(current.$$route.redirectTo) ){
+	  if( !angular.isDefined(current && current.$$route && current.$$route.redirectTo) ){
 		  notifications.ROUTE_CURRENT.length = 0;
 		  notifications.ROUTE_CURRENT = angular.copy(notifications.ROUTE_NEXT);
 		  notifications.ROUTE_NEXT.length = 0;

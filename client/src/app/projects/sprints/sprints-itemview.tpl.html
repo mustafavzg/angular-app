@@ -58,7 +58,6 @@
 				<span class="pull-right hover-pointer" ng-show="!commentAccord.commentOpen"><icon id="chevron-down"></icon></span>
 				<span class="pull-right hover-pointer" ng-show="commentAccord.commentOpen"><icon id="chevron-up"></icon></span>
 			</accordion-heading>
-			<!-- <comment resource-id="{{sprint.$id()}}" for-resource="sprints" user-id="{{Users.$id()}}"></comment> -->
 			<comment resource-id="{{sprint.$id()}}" for-resource="sprints" user-id="{{security.currentUser.ID}}"></comment>
 			<span class="pull-right hover-pointer" ng-show="commentAccord.commentOpen" ng-click="commentAccord.commentOpen = false"><icon id="chevron-up"></icon></span>
 		</accordion-group>
@@ -74,46 +73,97 @@
 	<div class="panel panel-default">
 		<tabset justified="true" type="pills">
 			<tab heading="Dashboard">
-				<div class="panel panel-default">
-					<gantt-chart
-						 items="sprints"
-						 resourceconf="sprintsGanttConf"
-						 item-to-task-data-source="sprintData(item)"
-						 fetchingitems="fetchingSprints"
-						 update-validator="sprintsGanttUpdateValidator(item, update)"
-						 title="Sprint Gantt View"
-						 >
-					</gantt-chart>
-				</div>
-				<!-- div panel -->
 
-				<div class="panel panel-default">
-					<gantt-chart
-						 items="tasks"
-						 resourceconf="tasksGanttConf"
-						 item-to-task-data-source="taskData(item)"
-						 fetchingitems="fetchingTasks"
-						 update-validator="tasksGanttUpdateValidator(item, update)"
-						 title="Tasks in {{sprint.name}}"
-						 >
-					</gantt-chart>
-				</div>
-				<!-- div panel -->
+				<accordion close-others="true">
+					
+					<!-- -------------------------------------------------- -->
+					<!-- Pie Charts -->
+					<!-- -------------------------------------------------- -->
+					<accordion-group is-open="pieAccord.pieOpen" panel-class="warning" ng-init="pieAccord = {pieOpen: true}">
+						<accordion-heading>
+							<span class="hover-pointer">Break Downs</span>
+							<span class="pull-right hover-pointer" ng-show="!pieAccord.pieOpen"><icon id="chevron-down"></icon></span>
+							<span class="pull-right hover-pointer" ng-show="pieAccord.pieOpen"><icon id="chevron-up"></icon></span>
+						</accordion-heading>
+						<pie-chart items="tasks" fetchingitems="fetchingTasks" chart-config="pieChartConfig"></pie-chart>		
+						<span class="pull-right hover-pointer" ng-show="pieAccord.pieOpen" ng-click="pieAccord.pieOpen = false"><icon id="chevron-up"></icon></span>
+					</accordion-group>
 
-				<div class="panel panel-default">
-					<gantt-chart
-						 items="backlogItem"
-						 resourceconf="backlogItemsGanttConf"
-						 item-to-task-data-source="backlogItemData(item)"
-						 fetchingitems="fetchingbacklogItems"
-						 update-validator="sprintGanttUpdateValidator(item, update)"
-						 title="Backlog Items in {{sprint.name}}"
-						 >
-					</gantt-chart>
-				</div>
-				<!-- div panel -->
 
-				<pie-chart items="tasks" fetchingitems="fetchingTasks" chart-config="pieChartConfig"></pie-chart>		
+					<!-- -------------------------------------------------- -->
+					<!-- Burn down Charts -->
+					<!-- -------------------------------------------------- -->
+					<accordion-group is-open="burnDownAccord.burnDownOpen" panel-class="warning" ng-init="burnDownAccord = {burnDownOpen: false}">
+						<accordion-heading>
+							<span class="hover-pointer">Burn Downs</span>
+							<span class="pull-right hover-pointer" ng-show="!burnDownAccord.burnDownOpen"><icon id="chevron-down"></icon></span>
+							<span class="pull-right hover-pointer" ng-show="burnDownAccord.burnDownOpen"><icon id="chevron-up"></icon></span>
+						</accordion-heading>
+						<!-- <burn-down-chart items="tasks" fetchingitems="fetchingTasks" chart-config="burnDownChartConfig"></burn-down-chart> -->
+						<span class="pull-right hover-pointer" ng-show="burnDownAccord.burnDownOpen" ng-click="burnDownAccord.burnDownOpen = false"><icon id="chevron-up"></icon></span>
+					</accordion-group>
+
+					<!-- -------------------------------------------------- -->
+					<!-- Kanban Board -->
+					<!-- -------------------------------------------------- -->
+					<accordion-group is-open="kanbanAccord.kanbanOpen" panel-class="warning" ng-init="kanbanAccord = {kanbanOpen: false}">
+						<accordion-heading>
+							<span class="hover-pointer">Kanban</span>
+							<span class="pull-right hover-pointer" ng-show="!kanbanAccord.kanbanOpen"><icon id="chevron-down"></icon></span>
+							<span class="pull-right hover-pointer" ng-show="kanbanAccord.kanbanOpen"><icon id="chevron-up"></icon></span>
+						</accordion-heading>
+						<!-- <kanban items="tasks" fetchingitems="fetchingTasks" kanban-config="kanbanConfig"></kanban> -->
+						<span class="pull-right hover-pointer" ng-show="kanbanAccord.kanbanOpen" ng-click="kanbanAccord.kanbanOpen = false"><icon id="chevron-up"></icon></span>
+					</accordion-group>
+					
+					<!-- -------------------------------------------------- -->
+					<!-- Gantt Charts -->
+					<!-- -------------------------------------------------- -->
+					<accordion-group is-open="ganttAccord.ganttOpen" panel-class="warning" ng-init="ganttAccord = {ganttOpen: false}">
+						<accordion-heading>
+							<span class="hover-pointer">Time Lines</span>
+							<span class="pull-right hover-pointer" ng-show="!ganttAccord.ganttOpen"><icon id="chevron-down"></icon></span>
+							<span class="pull-right hover-pointer" ng-show="ganttAccord.ganttOpen"><icon id="chevron-up"></icon></span>
+						</accordion-heading>
+
+						<!-- This Sprint -->
+						<gantt-chart
+							 items="sprints"
+							 resourceconf="sprintsGanttConf"
+							 item-to-task-data-source="sprintData(item)"
+							 fetchingitems="fetchingSprints"
+							 title="Sprint Gantt View"
+							 >
+						</gantt-chart>
+
+						<!-- Tasks -->
+						<gantt-chart
+							 items="tasks"
+							 resourceconf="tasksGanttConf"
+							 item-to-task-data-source="taskData(item)"
+							 fetchingitems="fetchingTasks"
+							 update-validator="tasksGanttUpdateValidator(item, update)"
+							 title="Tasks in {{sprint.name}}"
+							 >
+						</gantt-chart>
+
+						<!-- BacklogItems -->
+						<gantt-chart
+							 items="backlogItem"
+							 resourceconf="backlogItemsGanttConf"
+							 item-to-task-data-source="backlogItemData(item)"
+							 fetchingitems="fetchingbacklogItems"
+							 title="Backlog Items in {{sprint.name}}"
+							 >
+						</gantt-chart>
+
+					</accordion-group>
+
+
+
+				</accordion>
+
+
 			</tab>
 			<tab heading="Tasks">
 				<tableactive items="tasks" fetchingitems="fetchingTasks" resourceconf="tasksConf" ></tableactive>

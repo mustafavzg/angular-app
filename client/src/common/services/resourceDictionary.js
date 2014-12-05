@@ -39,8 +39,11 @@ angular.module('services.resourceDictionary').factory('resourceDictionary', [
 				getId: function (value) {
 					return value.$id();
 				},
-				setItem: function (item) {
+				setItem: function (item, noForce) {
 					var key = this.getId(item);
+					if( noForce && this.lookUpItem(key) ){
+						return;
+					}
 					dictionary.set(key, item);
 				},
 				setItems: function (items, force) {
@@ -48,16 +51,32 @@ angular.module('services.resourceDictionary').factory('resourceDictionary', [
 					var keyValueMap = {};
 					angular.forEach(items, function(item) {
 						var key = that.getId(item);
-						keyValueMap[key] = item;
+						if( !keyValueMap[key] || (force && keyValueMap[key]) ){
+							keyValueMap[key] = item;
+						}
 					});
 					dictionary.setList(keyValueMap, force);
+				},
+				clearItem: function (item) {
+					var key = this.getId(item);
+					dictionary.clear(key);
+				},
+				clearItems: function (items) {
+					var that = this;
+					angular.forEach(items, function(item) {
+						that.clearItem(item);
+					});
 				},
 				lookUpItem: function (itemId) {
 					return dictionary.lookUp(itemId);
 				},
 				lookUpItems: function (itemsIdList) {
 					return dictionary.lookUpList(itemsIdList);
+				},
+				getDictionary: function () {
+					return dictionary.getLookUp();
 				}
+
 			};
 
 			resourceDictionaryService.init(idFunction);

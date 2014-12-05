@@ -1,12 +1,14 @@
 angular.module('resources.tasks', [
 	'dbResource',
-	'services.resourceDictionary'
+	'services.resourceDictionary',
+	'services.statusLog'
 ]);
 angular.module('resources.tasks')
 .factory('Tasks', [
 	'dbResource',
 	'resourceDictionary',
-	function (dbResource, resourceDictionary) {
+	'statusLog',
+	function (dbResource, resourceDictionary, statusLog) {
 
 		var Tasks = dbResource('tasks');
 
@@ -38,6 +40,16 @@ angular.module('resources.tasks')
 				color: '#8DB173'
 			},
 			{
+				key: 'CODECHECK',
+				name: 'Codecheck',
+				ordering: 2.5,
+				btnclass : {
+					inactive: 'btn-default',
+					active: 'btn-primary'
+				},
+				color: '#F38725'
+			},
+			{
 				key: 'BLOCKED',
 				name: 'Blocked',
 				ordering: 3,
@@ -55,7 +67,7 @@ angular.module('resources.tasks')
 					inactive: 'btn-default',
 					active: 'btn-primary'
 				},
-				color: '#F38725'
+				color: '#FFFC19'
 			},
 			{
 				key: 'DONE',
@@ -85,7 +97,6 @@ angular.module('resources.tasks')
 			status = status || this.status;
 			return statusDictionary.lookUpItem(status) || {};
 		};
-
 
  		/**************************************************
 		 * Type Defintions

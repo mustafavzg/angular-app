@@ -18,8 +18,8 @@
 			<div class="media">
 				<property-bar properties="project.attributeValuesToDisplay" root-div-class="media-object pull-right" reverse="true" ></property-bar>
 				<div class="media-body">
-					<label class="media-heading">{{project.name}}</label>
-					<br /><div class="badge" ng-cloak><strong>{{project.$id()}}</strong></div>
+					<label class="media-heading">{{::project.name}}</label>
+					<br/><div class="badge" ng-cloak><strong>{{project.$id()}}</strong></div>
 				</div>
 			</div>
 
@@ -36,6 +36,9 @@
 		</div>
 	</div>
 
+	<!-- -------------------------------------------------- -->
+	<!-- Comments -->
+	<!-- -------------------------------------------------- -->
 	<accordion close-others="false">
 		<accordion-group is-open="commentAccord.commentOpen" panel-class="success" ng-init="commentAccord = {commentOpen: false}">
 			<accordion-heading>
@@ -51,6 +54,7 @@
 		<!-- 	<comment resource-id="{{project.$id()}}" for-resource="projects" user-id="{{security.currentUser.ID}}"></comment> -->
 		<!-- </accordion-group-chevron> -->
 	</accordion>
+
 	<accordion close-others="false">
 		<accordion-group is-open="documentAccord.documentOpen" panel-class="success" ng-init="documentAccord = {documentOpen: false}">
 			<accordion-heading>
@@ -58,275 +62,834 @@
 				<span class="pull-right hover-pointer" ng-show="!documentAccord.documentOpen"><icon id="chevron-down"></icon></span>
 				<span class="pull-right hover-pointer" ng-show="documentAccord.documentOpen"><icon id="chevron-up"></icon></span>
 			</accordion-heading>
-	<document resource-id="{{project.$id()}}" for-resource="projects"></document>
-	<span class="pull-right hover-pointer" ng-show="documentAccord.documentOpen" ng-click="documentAccord.documentOpen = false"><icon id="chevron-up"></icon></span>
+			<document resource-id="{{project.$id()}}" for-resource="projects"></document>
+			<span class="pull-right hover-pointer" ng-show="documentAccord.documentOpen" ng-click="documentAccord.documentOpen = false"><icon id="chevron-up"></icon></span>
 		</accordion-group>
 	</accordion>
+
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			Kanban board
+		</div>
+		<kanban-board-with-modal
+			 items="tasks"
+			 users="teamMembers"
+			 resourceconf="tasksKanbanConf"
+			 items-crud-helpers="tasksCrudHelpers"
+			 fetchingitems="fetchingTasks"
+			 widget-title="Tasks Kanban"
+			 root-div-class="panel-body"
+			 />
+	</div>
 
 	<!-- -------------------------------------------------- -->
 	<!-- Other Entities -->
 	<!-- TODO: Implement this with ng-repeat or in separate template files -->
 	<!-- -------------------------------------------------- -->
+	<!-- <style type="text/css" ng-repeat="statusKey in sortedStatusKeys"> -->
+	<!-- 	.kanban_{{statusKey.toLowerCase()}} { -->
+	<!-- 	color: {{indexedStatusDef[statusKey].color}}; -->
+	<!-- 	} -->
+	<!-- </style> -->
+
+	<!-- <script type="text/ng-template" id="kanbanBoardModal.html"> -->
+    <!--     <div class="modal-header"> -->
+    <!--         <button class="close" ng-click="done()"><icon id="remove"></icon></button> -->
+	<!-- 		<h4 class="modal-title">Kanban board</h4> -->
+	<!-- 		<\!-- <button type="button" class="close" ng-click="done()"></button> -\-> -->
+	<!-- 		<\!-- <kanban-board -\-> -->
+	<!-- 		<\!-- 	items="tasks" -\-> -->
+	<!-- 		<\!-- 	users="users" -\-> -->
+	<!-- 		<\!-- 	resourceconf="tasksKanbanConf" -\-> -->
+	<!-- 		<\!-- 	fetchingitems="fetchingTasks" -\-> -->
+	<!-- 		<\!-- 	widget-title="Tasks Kanban" -\-> -->
+	<!-- 		<\!-- 	modal="{{true}}" -\-> -->
+	<!-- 		<\!-- /> -\-> -->
+    <!--     </div> -->
+    <!--     <div class="modal-body"> -->
+	<!-- 		<\!-- <br /> -\-> -->
+    <!--         <\!-- <ul> -\-> -->
+    <!--         <\!--     <li ng-repeat="item in items"> -\-> -->
+    <!--         <\!--         <a ng-click="selected.item = item">{{ item }}</a> -\-> -->
+    <!--         <\!--     </li> -\-> -->
+    <!--         <\!-- </ul> -\-> -->
+    <!--         <\!-- Selected: <b>{{ selected.item }}</b> -\-> -->
+
+	<!-- 		<kanban-board -->
+	<!-- 			items="tasks" -->
+	<!-- 			users="users" -->
+	<!-- 			resourceconf="tasksKanbanConf" -->
+	<!-- 			fetchingitems="fetchingTasks" -->
+	<!-- 			widget-title="Tasks Kanban" -->
+	<!-- 			modal="{{true}}" -->
+	<!-- 		/> -->
+
+	<!-- 		<\!-- <kanban-board items="tasks" resourceconf="tasksKanbanConf" fetchingitems="fetchingTasks" widget-title="Tasks Kanban"/> -\-> -->
+	<!-- 		<\!-- <kanban-board items="tasks" modal="true"/> -\-> -->
+
+ 	<!-- <\!-- <table class="table table-condensed table-bordered table-responsive"> -\-> -->
+	<!-- <\!-- 	<thead> -\-> -->
+	<!-- <\!-- 		<tr> -\-> -->
+	<!-- <\!-- 			<th ng-repeat="statusKey in sortedStatusKeys"> -\-> -->
+	<!-- <\!-- 				{{statusKey}} <span class="badge pull-right">{{kanbanData[statusKey].length}}</span> -\-> -->
+	<!-- <\!-- 			</th> -\-> -->
+	<!-- <\!-- 		</tr> -\-> -->
+	<!-- <\!-- 		<tbody> -\-> -->
+	<!-- <\!-- 			<tr> -\-> -->
+	<!-- <\!-- 				<td ng-repeat="statusKey in sortedStatusKeys"> -\-> -->
+	<!-- <\!-- 					<kanban-card item="item" ng-repeat="item in kanbanData[statusKey]"/> -\-> -->
+
+	<!-- <\!-- 					<\\!-- <div class="thumbnail thumbnail-kanban" ng-repeat="task in kanbanData[statusKey]"> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 	<\\\!-- <div class="thumbnail bg-info"> -\\\-> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 	<div class="media"> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 		<\\\!-- <img class="media-object pull-left photo-xs" src="/static/img/foouser.png"> -\\\-> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 		<\\\!-- <img class="media-object pull-left photo-xs img-circle" src="/static/img/foouser_old.jpg"> -\\\-> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 		<img class="media-object pull-left photo-xs" src="/static/img/foouser_old.jpg"> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 		<div class="media-body"> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 			<div class="media-heading"> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 				<p> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 					<span class="text-muted">@loremipsum</span> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 					<span class="text-muted pull-right"><icon id="pushpin"></icon></span> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 				</p> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 			</div> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 		</div> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 		<\\\!-- div media-body -\\\-> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 		<\\\!-- div media-heading -\\\-> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 		<\\\!-- <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p> -\\\-> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 		<\\\!-- <a href="#" class="btn btn-xs btn-default" role="button"><icon id="hand-left"></icon></a> -\\\-> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 		<\\\!-- <a href="#" class="btn btn-xs btn-info" role="button"><icon id="hand-right"></icon></a>  -\\\-> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 	</div> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 	<\\\!-- div media -\\\-> -\\-> -\-> -->
+
+	<!-- <\!-- 					<\\!-- 	<\\\!-- <div class="caption" ng-class="['caption' , task.kanbanClass]"> -\\\-> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 	<\\\!-- <div ng-class="['caption' , task.kanbanClass, 'bg-info']"> -\\\-> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 	<div ng-class="['caption' , 'bg-info']"> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 		<p> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 			<\\\!-- <h5>Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet</h5> -\\\-> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 			<h5>{{task.name}}</h5> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 		</p> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 	</div> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 	<\\\!-- div caption -\\\-> -\\-> -\-> -->
+
+	<!-- <\!-- 					<\\!-- 	<div class="row"> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 		<div class="col-xs-12"> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 			<a href="#" class="pull-left" > -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 				<span tooltip="Move back" ng-show="!statusKeyToggles[statusKey].leftIsOpen && !statusKeyToggles[statusKey].rightIsOpen"><icon id="hand-left" ng-click="toggleLeft(statusKey)"></icon></span> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 				<span tooltip="Cancel" ng-show="!!statusKeyToggles[statusKey].leftIsOpen"><icon id="remove" ng-click="toggleLeft(statusKey)"></icon></span> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 			</a> -\\-> -\-> -->
+
+	<!-- <\!-- 					<\\!-- 			<a href="#" class="pull-right" > -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 				<span tooltip="Move forward" ng-show="!statusKeyToggles[statusKey].rightIsOpen && !statusKeyToggles[statusKey].leftIsOpen"><icon id="hand-right" ng-click="toggleRight(statusKey)"></icon></span> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 				<span tooltip="Cancel" ng-show="!!statusKeyToggles[statusKey].rightIsOpen"><icon id="remove" ng-click="toggleRight(statusKey)"></icon></span> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 			</a> -\\-> -\-> -->
+
+	<!-- <\!-- 					<\\!-- 			<\\\!-- <a href="#" tooltip="Move forward" class="pull-right" ><icon id="hand-right" ng-click="toggleRight(statusKey)" ng-show="!statusKeyToggles[statusKey].leftIsOpen"></icon></a> -\\\-> -\\-> -\-> -->
+
+	<!-- <\!-- 					<\\!-- 			<\\\!-- <action-icon icon="hand-left" action="" tip="Move back" class="pull-left" ng-click="statusKeyToggles[statusKey].leftIsOpen"></action-icon> -\\\-> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 			<\\\!-- <action-icon icon="hand-right" action="" tip="Move forward" class="pull-right" ng-click="statusKeyToggles[statusKey].rightIsOpen"></action-icon> -\\\-> -\\-> -\-> -->
+
+	<!-- <\!-- 					<\\!-- 			<\\\!-- <div class="btn-toolbar" role="toolbar"> -\\\-> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 			<\\\!-- 	<\\\\!-- <button class="btn btn-xs btn-default pull-left"><icon id="hand-left"></icon></button> -\\\\-> -\\\-> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 			<\\\!-- 	<\\\\!-- <button class="btn btn-xs btn-default pull-right"><icon id="hand-right"></icon></button> -\\\\-> -\\\-> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 			<\\\!-- </div> -\\\-> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 		</div> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 		<\\\!-- div col -\\\-> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 	</div> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 	<\\\!-- div row -\\\-> -\\-> -\-> -->
+
+	<!-- <\!-- 					<\\!-- 	<div class="row" ng-show="statusKeyToggles[statusKey].rightIsOpen || statusKeyToggles[statusKey].leftIsOpen"> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 		<div class="col-xs-10 col-xs-offset-1"> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 			<br /> -\\-> -\-> -->
+
+	<!-- <\!-- 					<\\!-- 			<div class="form-group" ng-show="statusKeyToggles[statusKey].rightIsOpen"> -\\-> -\-> -->
+ 	<!-- <\!-- 					<\\!-- 				<div class="input-group input-group-sm"> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 					<span class="input-group-addon">@</span> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 					<\\\!-- <select class="form-control" placeholder="Username" focus-me="statusKeyToggles[statusKey].rightIsOpen"> -\\\-> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 					<select class="form-control" placeholder="Username"> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 						<option value="" selected disabled>Select Username</option> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 						<option value="1">1</option> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 						<option value="2">2</option> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 						<option value="3">3</option> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 						<option value="4">4</option> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 						<option value="5">5</option> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 					</select> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 					<\\\!-- <input type="text" class="form-control" placeholder="Username" focus-me="statusKeyToggles[statusKey].rightIsOpen" > -\\\-> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 				</div> -\\-> -\-> -->
+
+	<!-- <\!-- 					<\\!-- 				<br /> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 				<div class="input-group input-group-sm"> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 					<span class="input-group-addon">&</span> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 					<select class="form-control" placeholder="Status"> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 						<option value="" selected disabled>Select Status</option> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 						<option value="1">1</option> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 						<option value="2">2</option> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 						<option value="3">3</option> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 						<option value="4">4</option> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 						<option value="5">5</option> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 					</select> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 					<\\\!-- <input type="text" class="form-control" placeholder="Status"> -\\\-> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 				</div> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 			</div> -\\-> -\-> -->
+
+	<!-- <\!-- 					<\\!-- 			<\\\!-- <div class="row form-group" ng-show="statusKeyToggles[statusKey].leftIsOpen"> -\\\-> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 			<\\\!-- 	<div class="input-group input-group-sm"> -\\\-> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 			<\\\!-- 		<span class="input-group-addon">@</span> -\\\-> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 			<\\\!-- 		<input type="text" class="form-control" placeholder="Username" focus-me="statusKeyToggles[statusKey].leftIsOpen" > -\\\-> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 			<\\\!-- 	</div> -\\\-> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 			<\\\!-- 	<div class="input-group input-group-sm"> -\\\-> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 			<\\\!-- 		<span class="input-group-addon">$</span> -\\\-> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 			<\\\!-- 		<input type="text" class="form-control" placeholder="Status"> -\\\-> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 			<\\\!-- 	</div> -\\\-> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 			<\\\!-- </div> -\\\-> -\\-> -\-> -->
+									
+	<!-- <\!-- 					<\\!-- 			<div class="form-group" ng-show="statusKeyToggles[statusKey].leftIsOpen"> -\\-> -\-> -->
+ 	<!-- <\!-- 					<\\!-- 				<div class="input-group input-group-sm"> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 					<span class="input-group-addon">@</span> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 					<\\\!-- <select class="form-control" placeholder="Username" focus-me="statusKeyToggles[statusKey].leftIsOpen"> -\\\-> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 					<select class="form-control" placeholder="Username"> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 						<option value="" selected disabled>Select Username</option> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 						<option value="1">1</option> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 						<option value="2">2</option> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 						<option value="3">3</option> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 						<option value="4">4</option> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 						<option value="5">5</option> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 					</select> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 					<\\\!-- <input type="text" class="form-control" placeholder="Username" focus-me="statusKeyToggles[statusKey].leftIsOpen" > -\\\-> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 				</div> -\\-> -\-> -->
+
+	<!-- <\!-- 					<\\!-- 				<br /> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 				<div class="input-group input-group-sm"> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 					<span class="input-group-addon">&</span> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 					<select class="form-control" placeholder="Status"> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 						<option value="" selected disabled>Select Status</option> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 						<option value="1">1</option> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 						<option value="2">2</option> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 						<option value="3">3</option> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 						<option value="4">4</option> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 						<option value="5">5</option> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 					</select> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 					<\\\!-- <input type="text" class="form-control" placeholder="Status"> -\\\-> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 				</div> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 			</div> -\\-> -\-> -->
+
+	<!-- <\!-- 					<\\!-- 		</div> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 		<\\\!-- div col -\\\-> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 	</div> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 	<\\\!-- div row -\\\-> -\\-> -\-> -->
+							
+	<!-- <\!-- 					<\\!-- 	<div class="row"> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 		<div class="col-xs-12"> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 			<a href="#" class="pull-left" > -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 				<span tooltip="Move back" ng-show="statusKeyToggles[statusKey].leftIsOpen"><icon id="hand-left" ng-click="toggleLeft(statusKey)"></icon></span> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 			</a> -\\-> -\-> -->
+
+	<!-- <\!-- 					<\\!-- 			<a href="#" class="pull-right" > -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 				<span tooltip="Move forward" ng-show="statusKeyToggles[statusKey].rightIsOpen"><icon id="hand-right" ng-click="toggleRight(statusKey)"></icon></span> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 			</a> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 		</div> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 		<\\\!-- div col -\\\-> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 	</div> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- 	<\\\!-- div row -\\\-> -\\-> -\-> -->
+
+	<!-- <\!-- 					<\\!-- </div> -\\-> -\-> -->
+	<!-- <\!-- 					<\\!-- <\\\!-- <div class="thumbnail"> -\\\-> -\\-> -\-> -->
+
+	<!-- <\!-- 				</td> -\-> -->
+	<!-- <\!-- 			</tr> -\-> -->
+
+	<!-- <\!-- 		</tbody> -\-> -->
+	<!-- <\!-- </table> -\-> -->
+    <!--     </div> -->
+    <!--     <\!-- <div class="modal-footer"> -\-> -->
+	<!-- 	<\!-- 	<button type="button" class="close" ng-click="done()"></button> -\-> -->
+    <!--     <\!--     <\\!-- <button class="btn btn-primary" ng-click="done()"><icon id="remove"></icon></button> -\\-> -\-> -->
+    <!--     <\!--     <\\!-- <button class="btn btn-warning" ng-click="cancel()">Cancel</button> -\\-> -\-> -->
+    <!--     <\!-- </div> -\-> -->
+    <!-- </script> -->
+
+	<!-- <div class="panel panel-default"> -->
+	<!-- 	<div class="panel-heading"> -->
+	<!-- 		<\!-- <button class="btn btn-default pull-right-soft" ng-click="kanbanOpen('hg')" tooltip="Fullscreen"><icon id="fullscreen"></icon></button> -\-> -->
+	<!-- 		<span class="pull-right hover-pointer" ng-click="kanbanOpen('hg')" tooltip="Fullscreen"><icon id="fullscreen"></icon></span> -->
+	<!-- 		Kanban board -->
+	<!-- 	</div> -->
+	<!-- 	<\!-- div panel heading -\-> -->
+	<!-- 	<div class="panel-body kanban-panel"> -->
+	<!-- 		<\!-- <button class="btn btn-default" ng-click="kanbanOpen()">Open me!</button> -\-> -->
+	<!-- 		<\!-- <button class="btn btn-default" ng-click="kanbanOpen('sm')">Small modal</button> -\-> -->
+	<!-- 		<\!-- <button class="btn btn-default" ng-click="kanbanOpen('lg')">Large modal</button> -\-> -->
+	<!-- 		<\!-- <button class="btn btn-default" ng-click="kanbanOpen('hg')" tooltip="Fullscreen"><icon id="fullscreen"></icon></button> -\-> -->
+	<!-- 		<\!-- <div ng-show="selected">Selection from a modal: {{ selected }}</div> -\-> -->
+
+	<!-- 		<kanban-board -->
+	<!-- 			items="tasks" -->
+	<!-- 			users="teamMembers" -->
+	<!-- 			resourceconf="tasksKanbanConf" -->
+	<!-- 			fetchingitems="fetchingTasks" -->
+	<!-- 			widget-title="Tasks Kanban" -->
+	<!-- 			root-div-class="col-xs-12" -->
+	<!-- 			reload-kanban-fn="reloadMainKanban = fn" -->
+	<!-- 		/> -->
+
+	<!-- <\!-- <table class="table table-condensed table-bordered table-responsive"> -\-> -->
+	<!-- <\!-- 	<thead> -\-> -->
+	<!-- <\!-- 		<tr> -\-> -->
+	<!-- <\!-- 			<th ng-repeat="statusKey in sortedStatusKeys"> -\-> -->
+	<!-- <\!-- 				{{statusKey}} <span class="badge pull-right">{{kanbanData[statusKey].length}}</span> -\-> -->
+	<!-- <\!-- 			</th> -\-> -->
+	<!-- <\!-- 		</tr> -\-> -->
+	<!-- <\!-- 		<tbody> -\-> -->
+	<!-- <\!-- 			<tr> -\-> -->
+	<!-- <\!-- 				<td ng-repeat="statusKey in sortedStatusKeys"> -\-> -->
+	<!-- <\!-- 					<div class="thumbnail thumbnail-kanban" ng-repeat="task in kanbanData[statusKey]"> -\-> -->
+	<!-- <\!-- 						<\\!-- <div class="thumbnail bg-info"> -\\-> -\-> -->
+	<!-- <\!-- 						<div class="media"> -\-> -->
+	<!-- <\!-- 							<\\!-- <img class="media-object pull-left photo-xs" src="/static/img/foouser.png"> -\\-> -\-> -->
+	<!-- <\!-- 							<\\!-- <img class="media-object pull-left photo-xs img-circle" src="/static/img/foouser_old.jpg"> -\\-> -\-> -->
+	<!-- <\!-- 							<img class="media-object pull-left photo-xs" src="/static/img/foouser_old.jpg"> -\-> -->
+	<!-- <\!-- 							<div class="media-body"> -\-> -->
+	<!-- <\!-- 								<div class="media-heading"> -\-> -->
+	<!-- <\!-- 									<p> -\-> -->
+	<!-- <\!-- 										<span class="text-muted">@loremipsum</span> -\-> -->
+	<!-- <\!-- 										<span class="text-muted pull-right"><icon id="pushpin"></icon></span> -\-> -->
+	<!-- <\!-- 									</p> -\-> -->
+	<!-- <\!-- 								</div> -\-> -->
+	<!-- <\!-- 							</div> -\-> -->
+	<!-- <\!-- 							<\\!-- div media-body -\\-> -\-> -->
+	<!-- <\!-- 							<\\!-- div media-heading -\\-> -\-> -->
+	<!-- <\!-- 							<\\!-- <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p> -\\-> -\-> -->
+	<!-- <\!-- 							<\\!-- <a href="#" class="btn btn-xs btn-default" role="button"><icon id="hand-left"></icon></a> -\\-> -\-> -->
+	<!-- <\!-- 							<\\!-- <a href="#" class="btn btn-xs btn-info" role="button"><icon id="hand-right"></icon></a>  -\\-> -\-> -->
+	<!-- <\!-- 						</div> -\-> -->
+	<!-- <\!-- 						<\\!-- div media -\\-> -\-> -->
+
+	<!-- <\!-- 						<\\!-- <div class="caption" ng-class="['caption' , task.kanbanClass]"> -\\-> -\-> -->
+	<!-- <\!-- 						<\\!-- <div ng-class="['caption' , task.kanbanClass, 'bg-info']"> -\\-> -\-> -->
+	<!-- <\!-- 						<div ng-class="['caption' , 'bg-info']"> -\-> -->
+	<!-- <\!-- 							<p> -\-> -->
+	<!-- <\!-- 								<\\!-- <h5>Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet</h5> -\\-> -\-> -->
+	<!-- <\!-- 								<h5>{{task.name}}</h5> -\-> -->
+	<!-- <\!-- 							</p> -\-> -->
+	<!-- <\!-- 						</div> -\-> -->
+	<!-- <\!-- 						<\\!-- div caption -\\-> -\-> -->
+
+	<!-- <\!-- 						<div class="row"> -\-> -->
+	<!-- <\!-- 							<div class="col-xs-12"> -\-> -->
+	<!-- <\!-- 								<a href="#" class="pull-left" > -\-> -->
+	<!-- <\!-- 									<span tooltip="Move back" ng-show="!statusKeyToggles[statusKey].leftIsOpen && !statusKeyToggles[statusKey].rightIsOpen"><icon id="hand-left" ng-click="toggleLeft(statusKey)"></icon></span> -\-> -->
+	<!-- <\!-- 									<span tooltip="Cancel" ng-show="!!statusKeyToggles[statusKey].leftIsOpen"><icon id="remove" ng-click="toggleLeft(statusKey)"></icon></span> -\-> -->
+	<!-- <\!-- 								</a> -\-> -->
+
+	<!-- <\!-- 								<a href="#" class="pull-right" > -\-> -->
+	<!-- <\!-- 									<span tooltip="Move forward" ng-show="!statusKeyToggles[statusKey].rightIsOpen && !statusKeyToggles[statusKey].leftIsOpen"><icon id="hand-right" ng-click="toggleRight(statusKey)"></icon></span> -\-> -->
+	<!-- <\!-- 									<span tooltip="Cancel" ng-show="!!statusKeyToggles[statusKey].rightIsOpen"><icon id="remove" ng-click="toggleRight(statusKey)"></icon></span> -\-> -->
+	<!-- <\!-- 								</a> -\-> -->
+
+	<!-- <\!-- 								<\\!-- <a href="#" tooltip="Move forward" class="pull-right" ><icon id="hand-right" ng-click="toggleRight(statusKey)" ng-show="!statusKeyToggles[statusKey].leftIsOpen"></icon></a> -\\-> -\-> -->
+
+	<!-- <\!-- 								<\\!-- <action-icon icon="hand-left" action="" tip="Move back" class="pull-left" ng-click="statusKeyToggles[statusKey].leftIsOpen"></action-icon> -\\-> -\-> -->
+	<!-- <\!-- 								<\\!-- <action-icon icon="hand-right" action="" tip="Move forward" class="pull-right" ng-click="statusKeyToggles[statusKey].rightIsOpen"></action-icon> -\\-> -\-> -->
+
+	<!-- <\!-- 								<\\!-- <div class="btn-toolbar" role="toolbar"> -\\-> -\-> -->
+	<!-- <\!-- 								<\\!-- 	<\\\!-- <button class="btn btn-xs btn-default pull-left"><icon id="hand-left"></icon></button> -\\\-> -\\-> -\-> -->
+	<!-- <\!-- 								<\\!-- 	<\\\!-- <button class="btn btn-xs btn-default pull-right"><icon id="hand-right"></icon></button> -\\\-> -\\-> -\-> -->
+	<!-- <\!-- 								<\\!-- </div> -\\-> -\-> -->
+	<!-- <\!-- 							</div> -\-> -->
+	<!-- <\!-- 							<\\!-- div col -\\-> -\-> -->
+	<!-- <\!-- 						</div> -\-> -->
+	<!-- <\!-- 						<\\!-- div row -\\-> -\-> -->
+
+	<!-- <\!-- 						<div class="row" ng-show="statusKeyToggles[statusKey].rightIsOpen || statusKeyToggles[statusKey].leftIsOpen"> -\-> -->
+	<!-- <\!-- 							<div class="col-xs-10 col-xs-offset-1"> -\-> -->
+	<!-- <\!-- 								<br /> -\-> -->
+
+	<!-- <\!-- 								<div class="form-group" ng-show="statusKeyToggles[statusKey].rightIsOpen"> -\-> -->
+ 	<!-- <\!-- 									<div class="input-group input-group-sm"> -\-> -->
+	<!-- <\!-- 										<span class="input-group-addon">@</span> -\-> -->
+	<!-- <\!-- 										<\\!-- <select class="form-control" placeholder="Username" focus-me="statusKeyToggles[statusKey].rightIsOpen"> -\\-> -\-> -->
+	<!-- <\!-- 										<select class="form-control" placeholder="Username"> -\-> -->
+	<!-- <\!-- 											<option value="" selected disabled>Select Username</option> -\-> -->
+	<!-- <\!-- 											<option value="1">1</option> -\-> -->
+	<!-- <\!-- 											<option value="2">2</option> -\-> -->
+	<!-- <\!-- 											<option value="3">3</option> -\-> -->
+	<!-- <\!-- 											<option value="4">4</option> -\-> -->
+	<!-- <\!-- 											<option value="5">5</option> -\-> -->
+	<!-- <\!-- 										</select> -\-> -->
+	<!-- <\!-- 										<\\!-- <input type="text" class="form-control" placeholder="Username" focus-me="statusKeyToggles[statusKey].rightIsOpen" > -\\-> -\-> -->
+	<!-- <\!-- 									</div> -\-> -->
+
+	<!-- <\!-- 									<br /> -\-> -->
+	<!-- <\!-- 									<div class="input-group input-group-sm"> -\-> -->
+	<!-- <\!-- 										<span class="input-group-addon">&</span> -\-> -->
+	<!-- <\!-- 										<select class="form-control" placeholder="Status"> -\-> -->
+	<!-- <\!-- 											<option value="" selected disabled>Select Status</option> -\-> -->
+	<!-- <\!-- 											<option value="1">1</option> -\-> -->
+	<!-- <\!-- 											<option value="2">2</option> -\-> -->
+	<!-- <\!-- 											<option value="3">3</option> -\-> -->
+	<!-- <\!-- 											<option value="4">4</option> -\-> -->
+	<!-- <\!-- 											<option value="5">5</option> -\-> -->
+	<!-- <\!-- 										</select> -\-> -->
+	<!-- <\!-- 										<\\!-- <input type="text" class="form-control" placeholder="Status"> -\\-> -\-> -->
+	<!-- <\!-- 									</div> -\-> -->
+	<!-- <\!-- 								</div> -\-> -->
+
+	<!-- <\!-- 								<\\!-- <div class="row form-group" ng-show="statusKeyToggles[statusKey].leftIsOpen"> -\\-> -\-> -->
+	<!-- <\!-- 								<\\!-- 	<div class="input-group input-group-sm"> -\\-> -\-> -->
+	<!-- <\!-- 								<\\!-- 		<span class="input-group-addon">@</span> -\\-> -\-> -->
+	<!-- <\!-- 								<\\!-- 		<input type="text" class="form-control" placeholder="Username" focus-me="statusKeyToggles[statusKey].leftIsOpen" > -\\-> -\-> -->
+	<!-- <\!-- 								<\\!-- 	</div> -\\-> -\-> -->
+	<!-- <\!-- 								<\\!-- 	<div class="input-group input-group-sm"> -\\-> -\-> -->
+	<!-- <\!-- 								<\\!-- 		<span class="input-group-addon">$</span> -\\-> -\-> -->
+	<!-- <\!-- 								<\\!-- 		<input type="text" class="form-control" placeholder="Status"> -\\-> -\-> -->
+	<!-- <\!-- 								<\\!-- 	</div> -\\-> -\-> -->
+	<!-- <\!-- 								<\\!-- </div> -\\-> -\-> -->
+									
+	<!-- <\!-- 								<div class="form-group" ng-show="statusKeyToggles[statusKey].leftIsOpen"> -\-> -->
+ 	<!-- <\!-- 									<div class="input-group input-group-sm"> -\-> -->
+	<!-- <\!-- 										<span class="input-group-addon">@</span> -\-> -->
+	<!-- <\!-- 										<\\!-- <select class="form-control" placeholder="Username" focus-me="statusKeyToggles[statusKey].leftIsOpen"> -\\-> -\-> -->
+	<!-- <\!-- 										<select class="form-control" placeholder="Username"> -\-> -->
+	<!-- <\!-- 											<option value="" selected disabled>Select Username</option> -\-> -->
+	<!-- <\!-- 											<option value="1">1</option> -\-> -->
+	<!-- <\!-- 											<option value="2">2</option> -\-> -->
+	<!-- <\!-- 											<option value="3">3</option> -\-> -->
+	<!-- <\!-- 											<option value="4">4</option> -\-> -->
+	<!-- <\!-- 											<option value="5">5</option> -\-> -->
+	<!-- <\!-- 										</select> -\-> -->
+	<!-- <\!-- 										<\\!-- <input type="text" class="form-control" placeholder="Username" focus-me="statusKeyToggles[statusKey].leftIsOpen" > -\\-> -\-> -->
+	<!-- <\!-- 									</div> -\-> -->
+
+	<!-- <\!-- 									<br /> -\-> -->
+	<!-- <\!-- 									<div class="input-group input-group-sm"> -\-> -->
+	<!-- <\!-- 										<span class="input-group-addon">&</span> -\-> -->
+	<!-- <\!-- 										<select class="form-control" placeholder="Status"> -\-> -->
+	<!-- <\!-- 											<option value="" selected disabled>Select Status</option> -\-> -->
+	<!-- <\!-- 											<option value="1">1</option> -\-> -->
+	<!-- <\!-- 											<option value="2">2</option> -\-> -->
+	<!-- <\!-- 											<option value="3">3</option> -\-> -->
+	<!-- <\!-- 											<option value="4">4</option> -\-> -->
+	<!-- <\!-- 											<option value="5">5</option> -\-> -->
+	<!-- <\!-- 										</select> -\-> -->
+	<!-- <\!-- 										<\\!-- <input type="text" class="form-control" placeholder="Status"> -\\-> -\-> -->
+	<!-- <\!-- 									</div> -\-> -->
+	<!-- <\!-- 								</div> -\-> -->
+
+	<!-- <\!-- 							</div> -\-> -->
+	<!-- <\!-- 							<\\!-- div col -\\-> -\-> -->
+	<!-- <\!-- 						</div> -\-> -->
+	<!-- <\!-- 						<\\!-- div row -\\-> -\-> -->
+							
+	<!-- <\!-- 						<div class="row"> -\-> -->
+	<!-- <\!-- 							<div class="col-xs-12"> -\-> -->
+	<!-- <\!-- 								<a href="#" class="pull-left" > -\-> -->
+	<!-- <\!-- 									<span tooltip="Move back" ng-show="statusKeyToggles[statusKey].leftIsOpen"><icon id="hand-left" ng-click="toggleLeft(statusKey)"></icon></span> -\-> -->
+	<!-- <\!-- 								</a> -\-> -->
+
+	<!-- <\!-- 								<a href="#" class="pull-right" > -\-> -->
+	<!-- <\!-- 									<span tooltip="Move forward" ng-show="statusKeyToggles[statusKey].rightIsOpen"><icon id="hand-right" ng-click="toggleRight(statusKey)"></icon></span> -\-> -->
+	<!-- <\!-- 								</a> -\-> -->
+	<!-- <\!-- 							</div> -\-> -->
+	<!-- <\!-- 							<\\!-- div col -\\-> -\-> -->
+	<!-- <\!-- 						</div> -\-> -->
+	<!-- <\!-- 						<\\!-- div row -\\-> -\-> -->
+
+	<!-- <\!-- 					</div> -\-> -->
+	<!-- <\!-- 					<\\!-- <div class="thumbnail"> -\\-> -\-> -->
+
+	<!-- <\!-- 				</td> -\-> -->
+	<!-- <\!-- 			</tr> -\-> -->
+
+
+	<!-- <\!-- 		</tbody> -\-> -->
+	<!-- <\!-- </table> -\-> -->
+
+
+	<!-- 	</div> -->
+	<!-- 	<\!-- div panel body -\-> -->
+
+	<!-- </div> -->
+	<!-- <\!-- div panel -\-> -->
+
+	<burn-down-chart items="tasks" fetchingitems="fetchingTasks" chart-config="burnDownChartConfig" chart-data="taskBurnDownData"></burn-down-chart>
 
 	<div class="panel panel-default">
 		<tabset justified="true" type="pills" vertical="true">
 		<!-- <tabset type="pills" vertical="true"> -->
 			<tab heading="Dashboard">
-				<div class="panel-body">
+				<!-- <div class="panel-body"> -->
+				<accordion close-others="true">
+					<!-- -------------------------------------------------- -->
+					<!-- Pie Charts -->
+					<!-- -------------------------------------------------- -->
+					<accordion-group is-open="pieAccord.pieOpen" panel-class="warning" ng-init="pieAccord = {pieOpen: true}">
+						<accordion-heading>
+							<span class="hover-pointer">Break Downs</span>
+							<span class="pull-right hover-pointer" ng-show="!pieAccord.pieOpen"><icon id="chevron-down"></icon></span>
+							<span class="pull-right hover-pointer" ng-show="pieAccord.pieOpen"><icon id="chevron-up"></icon></span>
+						</accordion-heading>
+ 						<pie-chart items="tasks" fetchingitems="fetchingTasks" chart-config="pieChartConfig"></pie-chart>
+						<span class="pull-right hover-pointer" ng-show="pieAccord.pieOpen" ng-click="pieAccord.pieOpen = false"><icon id="chevron-up"></icon></span>
+					</accordion-group>
+					
+					<!-- <accordion-group is-open="pieOpen" panel-class="warning" ng-init="pieOpen = true"> -->
+					<!-- 	<accordion-heading> -->
+					<!-- 		Break Downs -->
+					<!-- 		<span class="pull-right hover-pointer" ng-show="!pieOpen"><icon id="chevron-down"></icon></span> -->
+					<!-- 		<span class="pull-right hover-pointer" ng-show="pieOpen"><icon id="chevron-up"></icon></span> -->
+					<!-- 	</accordion-heading> -->
+ 					<!-- 	<pie-chart items="tasks" fetchingitems="fetchingTasks" chart-config="pieChartConfig"></pie-chart> -->
+					<!-- 	<\!-- <span class="pull-right hover-pointer" ng-show="pieAccord.pieOpen" ng-click="pieAccord.pieOpen = false"><icon id="chevron-up"></icon></span> -\-> -->
+					<!-- </accordion-group> -->
+<!-- >>>>>>> Stashed changes -->
 
-					<accordion close-others="true">
+					<!-- <accordion-group-chevron heading="Break Downs" panel-class="warning"> -->
+					<!-- 	<pie-chart items="tasks" fetchingitems="fetchingTasks" chart-config="pieChartConfig"></pie-chart> -->
+					<!-- </accordion-group-chevron> -->
 
-						<!-- Pie Charts -->
-						<accordion-group is-open="pieOpen" panel-class="warning" ng-init="pieOpen = true">
-							<accordion-heading>
-								Break Downs
-								<span class="pull-right hover-pointer" ng-show="!pieOpen"><icon id="chevron-down"></icon></span>
-								<span class="pull-right hover-pointer" ng-show="pieOpen"><icon id="chevron-up"></icon></span>
-							</accordion-heading>
-							<pie-chart items="tasks" fetchingitems="fetchingTasks" chart-config="pieChartConfig"></pie-chart>
-						</accordion-group>
-						<!-- <accordion-group-chevron heading="Break Downs" panel-class="warning"> -->
-						<!-- 	<pie-chart items="tasks" fetchingitems="fetchingTasks" chart-config="pieChartConfig"></pie-chart> -->
-						<!-- </accordion-group-chevron> -->
+					<!-- <\!-- -------------------------------------------------- -\-> -->
+					<!-- <\!-- Burn down Charts -\-> -->
+					<!-- <\!-- -------------------------------------------------- -\-> -->
+					<!-- <accordion-group is-open="burnDownAccord.burnDownOpen" panel-class="warning" ng-init="burnDownAccord = {burnDownOpen: false}"> -->
+					<!-- 	<accordion-heading> -->
+					<!-- 		<span class="hover-pointer">Burn Downs</span> -->
+					<!-- 		<span class="pull-right hover-pointer" ng-show="!burnDownAccord.burnDownOpen"><icon id="chevron-down"></icon></span> -->
+					<!-- 		<span class="pull-right hover-pointer" ng-show="burnDownAccord.burnDownOpen"><icon id="chevron-up"></icon></span> -->
+					<!-- 	</accordion-heading> -->
+					<!-- 	<burn-down-chart items="tasks" fetchingitems="fetchingTasks" chart-config="burnDownChartConfig" chart-data="taskBurnDownData"></burn-down-chart> -->
+					<!-- 	<span class="pull-right hover-pointer" ng-show="burnDownAccord.burnDownOpen" ng-click="burnDownAccord.burnDownOpen = false"><icon id="chevron-up"></icon></span> -->
+					<!-- </accordion-group> -->
+					
+					<!-- <accordion-group is-open="burndownOpen" panel-class="warning" ng-init="burndownOpen = false"> -->
+					<!-- 	<accordion-heading> -->
+ 					<!-- 		Burn Downs -->
+					<!-- 		<span class="pull-right hover-pointer" ng-show="!burndownOpen"><icon id="chevron-down"></icon></span> -->
+					<!-- 		<span class="pull-right hover-pointer" ng-show="burndownOpen"><icon id="chevron-up"></icon></span> -->
+					<!-- 	</accordion-heading> -->
+					<!-- 	<\!-- <burn-down-chart items="tasks" fetchingitems="fetchingTasks" chart-config="burnDownChartConfig"></burn-down-chart> -\-> -->
+					<!-- </accordion-group> -->
 
-						<!-- Burn down Charts -->
-						<accordion-group is-open="burndownOpen" panel-class="warning" ng-init="burndownOpen = false">
-							<accordion-heading>
- 								Burn Downs
-								<span class="pull-right hover-pointer" ng-show="!burndownOpen"><icon id="chevron-down"></icon></span>
-								<span class="pull-right hover-pointer" ng-show="burndownOpen"><icon id="chevron-up"></icon></span>
-							</accordion-heading>
-							<!-- <burn-down-chart items="tasks" fetchingitems="fetchingTasks" chart-config="burnDownChartConfig"></burn-down-chart> -->
-						</accordion-group>
-						<!-- <accordion-group-chevron heading="Burn Downs" panel-class="warning"> -->
-						<!-- <burn-down-chart items="tasks" fetchingitems="fetchingTasks" chart-config="burnDownChartConfig"></burn-down-chart> -->
-						<!-- </accordion-group-chevron> -->
+					<!-- <accordion-group-chevron heading="Burn Downs" panel-class="warning"> -->
+					<!-- <burn-down-chart items="tasks" fetchingitems="fetchingTasks" chart-config="burnDownChartConfig"></burn-down-chart> -->
+					<!-- </accordion-group-chevron> -->
 
-						<!-- Kanban Board -->
-						<accordion-group is-open="kanbanOpen" panel-class="warning" ng-init="kanbanOpen = false">
-							<accordion-heading>
-								Kanban
-								<span class="pull-right hover-pointer" ng-show="!kanbanOpen"><icon id="chevron-down"></icon></span>
-								<span class="pull-right hover-pointer" ng-show="kanbanOpen"><icon id="chevron-up"></icon></span>
-							</accordion-heading>
-							<!-- <kanban items="tasks" fetchingitems="fetchingTasks" kanban-config="kanbanConfig"></kanban> -->
-						</accordion-group>
-						<!-- <accordion-group-chevron heading="Kanban" panel-class="warning"> -->
-						<!-- </accordion-group-chevron> -->
+					<!-- -------------------------------------------------- -->
+					<!-- Kanban Board -->
+					<!-- -------------------------------------------------- -->
+					<accordion-group is-open="kanbanAccord.kanbanOpen" panel-class="warning" ng-init="kanbanAccord = {kanbanOpen: false}">
+						<accordion-heading>
+							<span class="hover-pointer">Kanban</span>
+							<span class="pull-right hover-pointer" ng-show="!kanbanAccord.kanbanOpen"><icon id="chevron-down"></icon></span>
+							<span class="pull-right hover-pointer" ng-show="kanbanAccord.kanbanOpen"><icon id="chevron-up"></icon></span>
+						</accordion-heading>
+						<!-- <kanban items="tasks" fetchingitems="fetchingTasks" kanban-config="kanbanConfig"></kanban> -->
 
+						<!-- <table class="table table-condensed"> -->
+						<!-- 	<thead> -->
+						<!-- 		<tr> -->
+						<!-- 			<th ng-repeat="statusKey in sortedStatusKeys">{{statusKey}}</th> -->
+						<!-- 		</tr> -->
+						<!-- 		<tbody> -->
+						<!-- 			<\!-- <tr ng-repeat="project in projects"> -\-> -->
+						<!-- 			<\!-- 	<td ng-click="viewProject(project)">{{project.name}}</td> -\-> -->
+						<!-- 			<\!-- 	<td ng-click="viewProject(project)">{{project.description}}</td> -\-> -->
+						<!-- 			<\!-- 	<\\!-- <td>{{ getMyRoles(project) }}</td> -\\-> -\-> -->
+						<!-- 			<\!-- 	<\\!-- <td> -\\-> -\-> -->
+						<!-- 			<\!-- 	<\\!-- 	<a ng-click="manageBacklog(project)">Product backlog</a> -\\-> -\-> -->
+						<!-- 			<\!-- 	<\\!-- 	<a ng-click="manageSprints(project)">Sprints</a> -\\-> -\-> -->
+						<!-- 			<\!-- 	<\\!-- </td> -\\-> -\-> -->
+						<!-- 			<\!-- </tr> -\-> -->
+						<!-- 		</tbody> -->
+						<!-- </table> -->
+						<span class="pull-right hover-pointer" ng-show="kanbanAccord.kanbanOpen" ng-click="kanbanAccord.kanbanOpen = false"><icon id="chevron-up"></icon></span>
+					</accordion-group>
+					
+					<!-- <accordion-group is-open="kanbanOpen" panel-class="warning" ng-init="kanbanOpen = false"> -->
+					<!-- 	<accordion-heading> -->
+					<!-- 		Kanban -->
+					<!-- 		<span class="pull-right hover-pointer" ng-show="!kanbanOpen"><icon id="chevron-down"></icon></span> -->
+					<!-- 		<span class="pull-right hover-pointer" ng-show="kanbanOpen"><icon id="chevron-up"></icon></span> -->
+					<!-- 	</accordion-heading> -->
+					<!-- 	<\!-- <kanban items="tasks" fetchingitems="fetchingTasks" kanban-config="kanbanConfig"></kanban> -\-> -->
+					<!-- </accordion-group> -->
 
-						<!-- Gantt Charts -->
-						<accordion-group is-open="ganttOpen" panel-class="warning" ng-init="ganttOpen = false">
-							<accordion-heading>
-								Time Lines
-								<span class="pull-right hover-pointer" ng-show="!ganttOpen"><icon id="chevron-down"></icon></span>
-								<span class="pull-right hover-pointer" ng-show="ganttOpen"><icon id="chevron-up"></icon></span>
-							</accordion-heading>
-							<div class="panel panel-default">
-								<gantt-chart
-									 items="sprints"
-									 resourceconf="sprintsGanttConf"
-									 fetchingitems="fetchingSprints"
-									 update-validator="sprintsGanttUpdateValidator(item, update)"
-									 title="Sprints"
-									 >
-								</gantt-chart>
+					<!-- <accordion-group-chevron heading="Kanban" panel-class="warning"> -->
+					<!-- </accordion-group-chevron> -->
+
+					<!-- -------------------------------------------------- -->
+					<!-- Gantt Charts -->
+					<!-- -------------------------------------------------- -->
+					<accordion-group is-open="ganttAccord.ganttOpen" panel-class="warning" ng-init="ganttAccord = {ganttOpen: false}">
+						<accordion-heading>
+							<span class="hover-pointer">Time Lines</span>
+							<span class="pull-right hover-pointer" ng-show="!ganttAccord.ganttOpen"><icon id="chevron-down"></icon></span>
+							<span class="pull-right hover-pointer" ng-show="ganttAccord.ganttOpen"><icon id="chevron-up"></icon></span>
+						</accordion-heading>
+
+						<div class="panel panel-default">
+							<gantt-chart
+								 items="sprints"
+								 resourceconf="sprintsGanttConf"
+								 fetchingitems="fetchingSprints"
+								 title="Sprints"
+								 >
+							</gantt-chart>
+						</div>
+						<!-- div panel -->
+
+						<div class="panel panel-default">
+							<gantt-chart
+								 items="tasks"
+								 resourceconf="tasksGanttConf"
+								 fetchingitems="fetchingTasks"
+								 title="Task Time Estimates"
+								 >
+							</gantt-chart>
+						</div>
+						<!-- div panel -->
+
+						<!-- <div class="panel panel-default"> -->
+						<!-- 	<gantt-chart -->
+						<!-- 		 items="tasks" -->
+						<!-- 		 resourceconf="tasksGanttConfTimer" -->
+						<!-- 		 item-to-task-data-source="taskData(item)" -->
+						<!-- 		 fetchingitems="fetchingTasks" -->
+						<!-- 	</gantt-chart> -->
+						<!-- </div> -->
+						<!-- div panel -->
+
+						<span class="pull-right hover-pointer" ng-show="ganttAccord.ganttOpen" ng-click="ganttAccord.ganttOpen = false"><icon id="chevron-up"></icon></span>
+					</accordion-group>
+					
+					<!-- <accordion-group is-open="ganttOpen" panel-class="warning" ng-init="ganttOpen = false"> -->
+					<!-- 	<accordion-heading> -->
+					<!-- 		Time Lines -->
+					<!-- 		<span class="pull-right hover-pointer" ng-show="!ganttOpen"><icon id="chevron-down"></icon></span> -->
+					<!-- 		<span class="pull-right hover-pointer" ng-show="ganttOpen"><icon id="chevron-up"></icon></span> -->
+					<!-- 	</accordion-heading> -->
+					<!-- 	<div class="panel panel-default"> -->
+					<!-- 		<gantt-chart -->
+					<!-- 			 items="sprints" -->
+					<!-- 			 resourceconf="sprintsGanttConf" -->
+					<!-- 			 fetchingitems="fetchingSprints" -->
+					<!-- 			 update-validator="sprintsGanttUpdateValidator(item, update)" -->
+					<!-- 			 title="Sprints" -->
+					<!-- 			 > -->
+					<!-- 		</gantt-chart> -->
+					<!-- 	</div> -->
+					<!-- 	<\!-- div panel -\-> -->
+
+					<!-- 	<div class="panel panel-default"> -->
+					<!-- 		<gantt-chart -->
+					<!-- 			 items="tasks" -->
+					<!-- 			 resourceconf="tasksGanttConf" -->
+					<!-- 			 fetchingitems="fetchingTasks" -->
+					<!-- 			 update-validator="tasksGanttUpdateValidator(item, update)" -->
+					<!-- 			 title="Tasks" -->
+					<!-- 			 > -->
+					<!-- 		</gantt-chart> -->
+					<!-- 	</div> -->
+					<!-- 	<\!-- div panel -\-> -->
+
+					<!-- 	<\!-- <div class="panel panel-default"> -\-> -->
+					<!-- 	<\!-- 	<gantt-chart -\-> -->
+					<!-- 	<\!-- 		 items="tasks" -\-> -->
+					<!-- 	<\!-- 		 resourceconf="tasksGanttConf2" -\-> -->
+					<!-- 	<\!-- 		 item-to-task-data-source="taskData(item)" -\-> -->
+					<!-- 	<\!-- 		 fetchingitems="fetchingTasks" -\-> -->
+					<!-- 	<\!-- 		 update-validator="tasksGanttUpdateValidator(item, update)" -\-> -->
+					<!-- 	<\!-- 	</gantt-chart> -\-> -->
+					<!-- 	<\!-- </div> -\-> -->
+					<!-- 	<\!-- div panel -\-> -->
+					<!-- </accordion-group> -->
+
+					<!-- <accordion-group-chevron heading="Time Lines" panel-class="warning"> -->
+					<!-- 	<div class="panel panel-default"> -->
+					<!-- 		<gantt-chart -->
+					<!-- 			 items="sprints" -->
+					<!-- 			 resourceconf="sprintsGanttConf" -->
+					<!-- 			 fetchingitems="fetchingSprints" -->
+					<!-- 			 update-validator="sprintsGanttUpdateValidator(item, update)" -->
+					<!-- 			 title="Sprints" -->
+					<!-- 			 > -->
+					<!-- 		</gantt-chart> -->
+					<!-- 	</div> -->
+					<!-- 	<\!-- div panel -\-> -->
+
+					<!-- 	<div class="panel panel-default"> -->
+					<!-- 		<gantt-chart -->
+					<!-- 			 items="tasks" -->
+					<!-- 			 resourceconf="tasksGanttConf" -->
+					<!-- 			 fetchingitems="fetchingTasks" -->
+					<!-- 			 update-validator="tasksGanttUpdateValidator(item, update)" -->
+					<!-- 			 title="Tasks" -->
+					<!-- 			 > -->
+					<!-- 		</gantt-chart> -->
+					<!-- 	</div> -->
+					<!-- </accordion-group-chevron> -->
+
+					<!-- -------------------------------------------------- -->
+					<!-- Scrum Updates -->
+					<!-- -------------------------------------------------- -->
+					<accordion-group is-open="scrumAccord.scrumOpen" panel-class="warning" ng-init="scrumAccord = {scrumOpen: false}">
+						<accordion-heading>
+							<span class="hover-pointer">Scrum Updates</span>
+							<span class="pull-right hover-pointer" ng-show="!scrumAccord.scrumOpen"><icon id="chevron-down"></icon></span>
+							<span class="pull-right hover-pointer" ng-show="scrumAccord.scrumOpen"><icon id="chevron-up"></icon></span>
+						</accordion-heading>
+						<!-- Adding scrum update -->
+						<div class="row">
+							<div class="col-md-8">
+								<datecombofromto
+									 name="dateCombo"
+									 from-date="scrumDates.startdate"
+									 to-date="scrumDates.enddate"
+									 from-date-label="Start Date"
+									 to-date-label="End Date"
+									 from-date-required="true"
+									 to-date-required="true">
+								</datecombofromto>
 							</div>
-							<!-- div panel -->
-
-							<div class="panel panel-default">
-								<gantt-chart
-									 items="tasks"
-									 resourceconf="tasksGanttConf"
-									 fetchingitems="fetchingTasks"
-									 update-validator="tasksGanttUpdateValidator(item, update)"
-									 title="Tasks"
-									 >
-								</gantt-chart>
+							<div class="col-md-4">
+								<label>Select User</label>
+								<select class="form-control" ng-model="scrumDates.chosenUser">
+									<option value="showall" selected="selected">Show All</option>
+									<option ng-repeat="user in scrumusers" value="{{user.$id()}}"> {{user.username}} </option> 
+								</select>
 							</div>
-							<!-- div panel -->
+						</div>
 
-							<!-- <div class="panel panel-default"> -->
-							<!-- 	<gantt-chart -->
-							<!-- 		 items="tasks" -->
-							<!-- 		 resourceconf="tasksGanttConf2" -->
-							<!-- 		 item-to-task-data-source="taskData(item)" -->
-							<!-- 		 fetchingitems="fetchingTasks" -->
-							<!-- 		 update-validator="tasksGanttUpdateValidator(item, update)" -->
-							<!-- 	</gantt-chart> -->
-							<!-- </div> -->
-							<!-- div panel -->
-						</accordion-group>
-						<!-- <accordion-group-chevron heading="Time Lines" panel-class="warning"> -->
-						<!-- 	<div class="panel panel-default"> -->
-						<!-- 		<gantt-chart -->
-						<!-- 			 items="sprints" -->
-						<!-- 			 resourceconf="sprintsGanttConf" -->
-						<!-- 			 fetchingitems="fetchingSprints" -->
-						<!-- 			 update-validator="sprintsGanttUpdateValidator(item, update)" -->
-						<!-- 			 title="Sprints" -->
-						<!-- 			 > -->
-						<!-- 		</gantt-chart> -->
-						<!-- 	</div> -->
-						<!-- 	<\!-- div panel -\-> -->
-
-						<!-- 	<div class="panel panel-default"> -->
-						<!-- 		<gantt-chart -->
-						<!-- 			 items="tasks" -->
-						<!-- 			 resourceconf="tasksGanttConf" -->
-						<!-- 			 fetchingitems="fetchingTasks" -->
-						<!-- 			 update-validator="tasksGanttUpdateValidator(item, update)" -->
-						<!-- 			 title="Tasks" -->
-						<!-- 			 > -->
-						<!-- 		</gantt-chart> -->
-						<!-- 	</div> -->
-						<!-- </accordion-group-chevron> -->
-
-						<!-- Scrum Updates -->
-						<accordion-group is-open="scrumOpen" panel-class="warning" ng-init="scrumOpen = false" style="overflow: visible;">
-							<accordion-heading>
-								Scrum Updates
-								<span class="pull-right hover-pointer" ng-show="!scrumOpen"><icon id="chevron-down"></icon></span>
-								<span class="pull-right hover-pointer" ng-show="scrumOpen"><icon id="chevron-up"></icon></span>
-							</accordion-heading>
-							<!--
-								Adding scrum update
-							-->
-							<div class="row">
-								<div class="col-md-8">
-									<datecombofromto
-										name="dateCombo"
-										from-date="scrumDates.startdate"
-										to-date="scrumDates.enddate"
-										from-date-label="Start Date"
-										to-date-label="End Date"
-										from-date-required="true"
-										to-date-required="true">
-									</datecombofromto>
-								</div>
-								<div class="col-md-4">
-									<label>Select User</label>
-									<select class="form-control" ng-model="scrumDates.chosenUser">
-										<option value="showall" selected="selected">Show All</option>
-										<option ng-repeat="user in scrumusers" value="{{user.$id()}}"> {{user.username}} </option> 
-									</select>
-								</div>
+						<div class="row" ng-show="scrumDates.chosenUser && scrumDates.chosenUser != 'showall'">
+							<div class="col-md-3">
+								<img style="width: 100%;height: 100%;"class="media-object photo-small pull-left" src="/hive/get-user-photo/{{user.userName}}">
 							</div>
-							<div class="row" ng-show="scrumDates.chosenUser && scrumDates.chosenUser != 'showall'">
-								<div class="col-md-3">
-									<img style="width: 100%;height: 100%;"class="media-object photo-small pull-left" src="/hive/get-user-photo/{{user.userName}}">
-								</div>
-								<div class="col-md-9">
-									<table>
-										<tr>
-											<scrumupdatecalendar
-												label="Scrum Status"
-												update="updateStatus"
-												datechosen="scrumDates.chosenDate">
-											</scrumupdatecalendar>
-										</tr>
-									</table>
-								</div>
+							<div class="col-md-9">
+								<table>
+									<tr>
+										<scrumupdatecalendar
+											 label="Scrum Status"
+											 update="updateStatus"
+											 datechosen="scrumDates.chosenDate">
+										</scrumupdatecalendar>
+									</tr>
+								</table>
 							</div>
+						</div>
 
-							<div class="row">
-								<div class="col-md-4">
-									<label class="checkbox-inline">
-										<input type="checkbox" ng-model="planVal">Show Plan
-									</label>
-								</div>
-								<div class="col-md-4">
-									<label class="checkbox-inline">
-										<input type="checkbox" ng-model="updateVal">Show Update
-									</label>
-								</div>
-								<div class="col-md-4">
-									<label class="checkbox-inline">
-										<input type="checkbox" ng-model="impedimentVal">Show Impediments
-									</label>
-								</div>
+						<div class="row">
+							<div class="col-md-4">
+								<label class="checkbox-inline">
+									<input type="checkbox" ng-model="planVal">Show Plan
+								</label>
 							</div>
-							<div class="row">
-								<div class="col-md-4" >
-									<div ng-show="planVal">
-										<div class="media" ng-repeat="dateGroup in groupedScrumUpdates">
-											<div class="media-heading">
-												<span class = "text-primary">
-													{{dateGroup.key | momentsAgo}}
-												</span>
-											</div>
-											<div class="media-body">
-												<div class="media" ng-repeat="update in dateGroup.values">
-													<div class="media-heading">
-														<span ng-if="update.text != 'undefined'">
-															{{update.text}}
-														</span>
-														<span ng-if="taskGroup.key == 'undefined'">
-															No Update
-														</span>
-													</div>
+							<div class="col-md-4">
+								<label class="checkbox-inline">
+									<input type="checkbox" ng-model="updateVal">Show Update
+								</label>
+							</div>
+							<div class="col-md-4">
+								<label class="checkbox-inline">
+									<input type="checkbox" ng-model="impedimentVal">Show Impediments
+								</label>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-4" >
+								<div ng-show="planVal">
+									<div class="media" ng-repeat="dateGroup in groupedScrumUpdates">
+										<div class="media-heading">
+											<span class = "text-primary">
+												{{dateGroup.key | momentsAgo}}
+											</span>
+										</div>
+										<div class="media-body">
+											<div class="media" ng-repeat="update in dateGroup.values">
+												<div class="media-heading">
+													<span ng-if="update.text != 'undefined'">
+														{{update.text}}
+													</span>
+													<span ng-if="taskGroup.key == 'undefined'">
+														No Update
+													</span>
 												</div>
 											</div>
 										</div>
 									</div>
 								</div>
-								<div class="col-md-4" >
-									<div ng-show="updateVal">
-										<div class="media" ng-repeat="dateGroup in groupedScrumUpdates">
-											<div class="media-heading">
-												<span class = "text-primary">
-													{{dateGroup.key | momentsAgo}}
-												</span>
-											</div>
-											<div class="media-body">
-												<div class="media" ng-repeat="update in dateGroup.values">
-													<div class="media-heading">
-														<span ng-if="update.plan != undefined">
-															{{update.plan}}
-														</span>
-														<span ng-if="update.plan == undefined">
-															No Update
-														</span>
-													</div>
-												</div>
-											</div>
+							</div>
+
+							<div class="col-md-4" >
+								<div ng-show="updateVal">
+									<div class="media" ng-repeat="dateGroup in groupedScrumUpdates">
+										<div class="media-heading">
+											<span class = "text-primary">
+												{{dateGroup.key | momentsAgo}}
+											</span>
 										</div>
-									</div>
-								</div>
-								<div class="col-md-4" >
-									<div ng-show="impedimentVal">
-										<div class="media" ng-repeat="dateGroup in groupedScrumUpdates">
-											<div class="media-heading">
-												<span class = "text-primary">
-													{{dateGroup.key | momentsAgo}}
-												</span>
-											</div>
-											<div class="media-body">
-												<div class="media" ng-repeat="update in dateGroup.values">
-													<div class="media-heading">
-														<span ng-if="update.impediments != undefined">
-															{{update.impediments}}
-														</span>
-														<span ng-if="update.impediments == undefined">
-															No Update
-														</span>
-													</div>
+										<div class="media-body">
+											<div class="media" ng-repeat="update in dateGroup.values">
+												<div class="media-heading">
+													<span ng-if="update.plan != undefined">
+														{{update.plan}}
+													</span>
+													<span ng-if="update.plan == undefined">
+														No Update
+													</span>
 												</div>
 											</div>
 										</div>
 									</div>
 								</div>
 							</div>
-							<!-- <comment resource-id="{{project.$id()}}" for-resource="projects" user-id="{{security.currentUser.ID}}"></comment> -->
-							<span class="pull-right hover-pointer" ng-show="scrumOpen"><icon id="chevron-up"></icon></span>
-						</accordion-group>
-						<!-- <accordion-group-chevron heading="Scrum Updates" panel-class="warning"> -->
-						<!-- </accordion-group-chevron> -->
 
-					</accordion>
+							<div class="col-md-4" >
+								<div ng-show="impedimentVal">
+									<div class="media" ng-repeat="dateGroup in groupedScrumUpdates">
+										<div class="media-heading">
+											<span class = "text-primary">
+												{{dateGroup.key | momentsAgo}}
+											</span>
+										</div>
+										<div class="media-body">
+											<div class="media" ng-repeat="update in dateGroup.values">
+												<div class="media-heading">
+													<span ng-if="update.impediments != undefined">
+														{{update.impediments}}
+													</span>
+													<span ng-if="update.impediments == undefined">
+														No Update
+													</span>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
 
-				</div>
-				<!-- div panel body -->
+						</div>
+						<!-- <div class="row"> -->
+
+						<!-- <scrum items="tasks" fetchingitems="fetchingTasks" scrum-config="scrumConfig"></scrum> -->
+						<span class="pull-right hover-pointer" ng-show="scrumAccord.scrumOpen" ng-click="scrumAccord.scrumOpen = false"><icon id="chevron-up"></icon></span>
+					</accordion-group>
+
+					<!-- <accordion-group is-open="scrumOpen" panel-class="warning" ng-init="scrumOpen = false"> -->
+					<!-- 	<accordion-heading> -->
+					<!-- 		Scrum Updates -->
+					<!-- 		<span class="pull-right hover-pointer" ng-show="!scrumOpen"><icon id="chevron-down"></icon></span> -->
+					<!-- 		<span class="pull-right hover-pointer" ng-show="scrumOpen"><icon id="chevron-up"></icon></span> -->
+					<!-- 	</accordion-heading> -->
+					<!-- 	<\!-- <comment resource-id="{{project.$id()}}" for-resource="projects" user-id="{{security.currentUser.ID}}"></comment> -\-> -->
+					<!-- 	<span class="pull-right hover-pointer" ng-show="scrumOpen"><icon id="chevron-up"></icon></span> -->
+					<!-- </accordion-group> -->
+
+					<!-- <accordion-group-chevron heading="Scrum Updates" panel-class="warning"> -->
+					<!-- </accordion-group-chevron> -->
+
+				</accordion>
+
+				<!-- </div> -->
+				<!-- <\!-- div panel body -\-> -->
 			</tab>
 
 			<tab heading="Product Backlog">

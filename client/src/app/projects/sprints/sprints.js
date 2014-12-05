@@ -168,82 +168,56 @@ angular.module('sprints', [
 		_
 	){
 
+		$scope.sprint = sprint;
+		$scope.project = project;
 
-		// /**************************************************
-		//  * gantt experiment
-		//  **************************************************/
+		$scope.sprintsCrudHelpers = {};
+		angular.extend($scope.sprintsCrudHelpers, crudListMethods('/projects/'+project.$id()+'/sprints'));
 
+		// $scope.manageSprints = function () {
+		// 	$location.path('/projects/'+project.$id()+'/sprints');
+		// };
 
-		$scope.tasksGanttConf = {
-			resource : {
-				key : 'tasks',
-				prettyName : 'Tasks',
-				altPrettyName : 'Tasks',
-				link : $scope.manageTasks,
-				rootDivClass : 'panel-body',
-				itemsCrudHelpers : $scope.tasksCrudHelpers,
-				color: "#F1C232"
+		$scope.editToolTip = function () {
+			return ($scope.sprint.isExpired()) ? "Cannot edit an expired sprint" : "Edit Sprint";
+		}
+
+		$scope.sprint.attributesToDisplay = {
+			status : {
+				name : 'Status',
+				// value : sprint.status,
+				value : sprint.getStatusPretty(),
+				glyphiconclass : 'glyphicon glyphicon-sound-stereo',
+				icon : 'sound-stereo',
+				ordering : 1
 			},
-			ganttFieldMap : {
-				row: [
-					{
-						key : 'name',
-						ganttKey: 'description'
-					}
-				],
-				task: [
-					{
-						key : 'userStatus',
-						ganttKey: 'subject'
-					},
-					{
-						key : 'start',
-						type: 'date',
-						ganttKey : 'from'
-					},
-					{
-						key : 'stop',
-						type: 'date',
-						ganttKey : 'to'
-					}
-				],
-				colorMap: function (taskBurst) {
-					return taskBurst.color;
-				}
+			capacity : {
+				name : 'Capacity',
+				value : sprint.capacity,
+				glyphiconclass : 'glyphicon glyphicon-user',
+				icon : 'user',
+				ordering : 2
+			},
+			startdate : {
+				name : 'Start Date',
+				value : dateFilter(sprint.startdate, 'shortDate'),
+				glyphiconclass : 'glyphicon glyphicon-chevron-right',
+				icon : 'chevron-right',
+				ordering : 3
+			},
+			enddate : {
+				name : 'End Date',
+				value : dateFilter(sprint.enddate, 'shortDate'),
+				glyphiconclass : 'glyphicon glyphicon-chevron-left',
+				icon : 'chevron-left',
+				ordering : 4
 			}
 		};
 
-		$scope.taskData = function (task) {
-			var data = [];
-			angular.forEach(task.bursts, function(burst) {
-				data.push({
-					userStatus: burst.data.status + ", " + burst.data.userId,
-					start: burst.start,
-					stop: burst.stop || Date.now(),
-					// stop: burst.stop,
-					color: task.getStatusDef(burst.data.status).color
-				});
-			});
-			return data;
-		};
-
-		$scope.tasksGanttUpdateValidator = function (item, update) {
-			var task = item;
-			return 1;
-		};
-
-		$scope.taskToGanttData = function (task) {
-
-		};
-
-		$scope.sprint = sprint;
-
-		// /**************************************************
-		//  * gantt experiment end
-		//  **************************************************/
+		$scope.sprint.attributeValuesToDisplay = _.values($scope.sprint.attributesToDisplay);
 
 		/**************************************************
-		 * Fetch sprints
+		 * Sprints gantt conf
 		 **************************************************/
 
 		$scope.fetchingSprints = false;
@@ -255,14 +229,6 @@ angular.module('sprints', [
 		console.log(sprint2ndHalf);
 		$scope.sprints = [sprint];
 		var currentDate = new Date();
-
-		$scope.sprintsCrudHelpers = {};
-		angular.extend($scope.sprintsCrudHelpers, crudListMethods('/projects/'+project.$id()+'/sprints'));
-
-		$scope.manageSprints = function () {
-			$location.path('/projects/'+project.$id()+'/sprints');
-		};
-
 
 		$scope.sprintsGanttConf = {
 			resource : {
@@ -325,24 +291,24 @@ angular.module('sprints', [
 			}
 		};
 
-		$scope.sprintsGanttUpdateValidator = function (item, update) {
-			var sprint = item;
-			if( sprint.isExpired() ){
-				return {
-					onError: function () {
-						i18nNotifications.pushForCurrentRoute('crud.sprints.expired.error', 'error', {});
-					}
-				};
-			}
-			return 1;
-		};
+		// $scope.sprintsGanttUpdateValidator = function (item, update) {
+		// 	var sprint = item;
+		// 	if( sprint.isExpired() ){
+		// 		return {
+		// 			onError: function () {
+		// 				i18nNotifications.pushForCurrentRoute('crud.sprints.expired.error', 'error', {});
+		// 			}
+		// 		};
+		// 	}
+		// 	return 1;
+		// };
 
 		$scope.sprintData = function (task) {
 			var data = [];
-			console.log("task=");
-			console.log(task);
-			var startdate = new Date(task.startdate);
-			var endate = new Date(task.enddate);
+			console.log("sprint=");
+			console.log(sprint);
+			var startdate = new Date(sprint.startdate);
+			var endate = new Date(sprint.enddate);
 			var currentdate = new Date();
 			if(currentdate <  endate && currentdate > startdate){
 				data.push({
@@ -382,9 +348,10 @@ angular.module('sprints', [
 			return data;
 		};
 
-		// /**************************************************
-		//  * gantt experiment
-		//  **************************************************/
+		/**************************************************
+		 * Backlog Items in Sprint
+		 **************************************************/
+
 		$scope.backlogItem = [];
 		$scope.backlogItemsGanttConf = {
 			resource : {
@@ -476,61 +443,13 @@ angular.module('sprints', [
 			}
 		);
 
-		$scope.taskToGanttData = function (task) {
-
-		};
-
-		// /**************************************************
-		//  * gantt experiment end
-		//  **************************************************/
-
-
-		$scope.project = project;
-
-		$scope.sprintsCrudHelpers = {};
-		angular.extend($scope.sprintsCrudHelpers, crudListMethods('/projects/'+project.$id()+'/sprints'));
-
-		$scope.editToolTip = function () {
-			return ($scope.sprint.isExpired()) ? "Cannot edit an expired sprint" : "Edit Sprint";
-		}
-
-		$scope.sprint.attributesToDisplay = {
-			status : {
-				name : 'Status',
-				// value : sprint.status,
-				value : sprint.getStatusPretty(),
-				glyphiconclass : 'glyphicon glyphicon-sound-stereo',
-				icon : 'sound-stereo',
-				ordering : 1
-			},
-			capacity : {
-				name : 'Capacity',
-				value : sprint.capacity,
-				glyphiconclass : 'glyphicon glyphicon-user',
-				icon : 'user',
-				ordering : 2
-			},
-			startdate : {
-				name : 'Start Date',
-				value : dateFilter(sprint.startdate, 'shortDate'),
-				glyphiconclass : 'glyphicon glyphicon-chevron-right',
-				icon : 'chevron-right',
-				ordering : 3
-			},
-			enddate : {
-				name : 'End Date',
-				value : dateFilter(sprint.enddate, 'shortDate'),
-				glyphiconclass : 'glyphicon glyphicon-chevron-left',
-				icon : 'chevron-left',
-				ordering : 4
-			}
-		};
-
-		$scope.sprint.attributeValuesToDisplay = _.values($scope.sprint.attributesToDisplay);
+		// $scope.taskToGanttData = function (task) {
+		// };
 
 		/**************************************************
-		 * Fetch task and crud helpers
+		 * Tasks in Sprint
 		 **************************************************/
+
 		$scope.fetchingTasks = true;
 		$scope.tasks = [];
 
@@ -558,6 +477,11 @@ angular.module('sprints', [
 				console.log(response);
 			}
 		);
+
+
+		/**************************************************
+		 * Tasks table active
+		 **************************************************/
 
 		$scope.tasksConf = {
 			resource : {
@@ -604,6 +528,76 @@ angular.module('sprints', [
 				}
 			]
 		};
+
+		/**************************************************
+		 * Tasks gantt conf
+		 **************************************************/
+
+		$scope.tasksGanttConf = {
+			resource : {
+				key : 'tasks',
+				prettyName : 'Tasks',
+				altPrettyName : 'Tasks',
+				link : $scope.manageTasks,
+				rootDivClass : 'panel-body',
+				itemsCrudHelpers : $scope.tasksCrudHelpers,
+				color: "#F1C232"
+			},
+			ganttFieldMap : {
+				row: [
+					{
+						key : 'name',
+						ganttKey: 'description'
+					}
+				],
+				task: [
+					{
+						key : 'userStatus',
+						ganttKey: 'subject'
+					},
+					{
+						key : 'start',
+						type: 'date',
+						ganttKey : 'from'
+					},
+					{
+						key : 'stop',
+						type: 'date',
+						ganttKey : 'to'
+					}
+				],
+				colorMap: function (taskBurst) {
+					return taskBurst.color;
+				}
+			}
+		};
+
+		$scope.taskData = function (task) {
+			var data = [];
+			angular.forEach(task.bursts, function(burst) {
+				data.push({
+					userStatus: burst.data.status + ", " + burst.data.userId,
+					start: burst.start,
+					stop: burst.stop || Date.now(),
+					// stop: burst.stop,
+					color: task.getStatusDef(burst.data.status).color
+				});
+			});
+			return data;
+		};
+
+		$scope.tasksGanttUpdateValidator = function (item, update) {
+			var task = item;
+			return 1;
+		};
+
+		$scope.taskToGanttData = function (task) {
+
+		};
+
+		/**************************************************
+		 * Tasks pie chart conf
+		 **************************************************/
 
 		$scope.pieChartConfig = {
 			title: 'Tasks',

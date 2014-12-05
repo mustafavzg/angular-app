@@ -260,10 +260,64 @@ angular.module('productbacklog', [
 		_
 	){
 
+		$scope.backlogItem = backlogItem;
+		console.log("Backlog Item=");
+		console.log(backlogItem);
+		$scope.project = project;
 
-		// /**************************************************
-		//  * gantt experiment
-		//  **************************************************/
+		$scope.backlogItemsCrudHelpers = {};
+		angular.extend($scope.backlogItemsCrudHelpers, crudListMethods('/projects/'+project.$id()+'/productbacklog'));
+
+		$scope.backlogItem.attributesToDisplay = {
+			priority : {
+				name : 'Priority',
+				value : backlogItem.priority,
+				glyphiconclass : 'glyphicon glyphicon-star',
+				icon : 'star',
+				ordering : 1
+			},
+			estimation : {
+				name : 'Estimation',
+				value : backlogItem.estimation,
+				glyphiconclass : 'glyphicon glyphicon-time',
+				icon : 'time',
+				ordering : 2
+			}
+		};
+
+		$scope.backlogItem.attributeValuesToDisplay = _.values($scope.backlogItem.attributesToDisplay);
+
+		/**************************************************
+		 * Fetch tasks
+		 **************************************************/
+		$scope.fetchingTasks = true;
+		$scope.tasks = [];
+
+		$scope.tasksCrudHelpers = {};
+		angular.extend($scope.tasksCrudHelpers, crudListMethods('/projects/'+project.$id()+'/tasks'));
+
+		$scope.manageTasks = function () {
+			$location.path('/projects/'+project.$id()+'/tasks');
+		};
+
+		Tasks.forProductBacklogItemId(
+			backlogItem.$id(),
+			function (tasks, responsestatus, responseheaders, responseconfig) {
+				$scope.tasks = tasks;
+				$scope.fetchingTasks = false;
+				// getPieCharts($scope.tasks);
+				// getPieChartsNew($scope.tasks, $scope.pieChartConfigSample);
+				// $scope.groupedTasks = groupByFilter($scope.tasks, "status");
+				// console.log("grouped tasks");
+				// console.log($scope.groupedTasks);
+				console.log("Succeeded to fetch tasks");
+			},
+			function (response, responsestatus, responseheaders, responseconfig) {
+				$scope.fetchingTasks = false;
+				console.log("Failed to fetch tasks");
+				console.log(response);
+			}
+		);
 
 		$scope.tasksConf = {
 			resource : {
@@ -288,6 +342,11 @@ angular.module('productbacklog', [
 					prettyName : 'Name',
 					widthClass : 'col-md-4'
 				},
+				// {
+				// 	key : 'description',
+				// 	prettyName : 'Description',
+				// 	widthClass : 'col-md-4'
+				// },
 				{
 					key : 'estimatedStartDate',
 					type: 'date',
@@ -371,126 +430,6 @@ angular.module('productbacklog', [
 			return data;
 		};
 
-		$scope.tasksGanttUpdateValidator = function (item, update) {
-			var task = item;
-			return 1;
-		};
-
-		$scope.taskToGanttData = function (task) {
-
-		};
-
-		// /**************************************************
-		//  * gantt experiment end
-		//  **************************************************/
-
-
-
-		$scope.backlogItem = backlogItem;
-		console.log("Backlog Item=");
-		console.log(backlogItem);
-		$scope.project = project;
-
-		$scope.backlogItemsCrudHelpers = {};
-		angular.extend($scope.backlogItemsCrudHelpers, crudListMethods('/projects/'+project.$id()+'/productbacklog'));
-
-		$scope.backlogItem.attributesToDisplay = {
-			priority : {
-				name : 'Priority',
-				value : backlogItem.priority,
-				glyphiconclass : 'glyphicon glyphicon-star',
-				icon : 'star',
-				ordering : 1
-			},
-			estimation : {
-				name : 'Estimation',
-				value : backlogItem.estimation,
-				glyphiconclass : 'glyphicon glyphicon-time',
-				icon : 'time',
-				ordering : 2
-			}
-		};
-
-		$scope.backlogItem.attributeValuesToDisplay = _.values($scope.backlogItem.attributesToDisplay);
-
-		/**************************************************
-		 * Fetch tasks
-		 **************************************************/
-		$scope.fetchingTasks = true;
-		$scope.tasks = [];
-
-		$scope.tasksCrudHelpers = {};
-		angular.extend($scope.tasksCrudHelpers, crudListMethods('/projects/'+project.$id()+'/tasks'));
-
-		$scope.manageTasks = function () {
-			$location.path('/projects/'+project.$id()+'/tasks');
-		};
-
-		Tasks.forProductBacklogItemId(
-			backlogItem.$id(),
-			function (tasks, responsestatus, responseheaders, responseconfig) {
-				$scope.tasks = tasks;
-				$scope.fetchingTasks = false;
-				// getPieCharts($scope.tasks);
-				// getPieChartsNew($scope.tasks, $scope.pieChartConfigSample);
-				// $scope.groupedTasks = groupByFilter($scope.tasks, "status");
-				// console.log("grouped tasks");
-				// console.log($scope.groupedTasks);
-				console.log("Succeeded to fetch tasks");
-			},
-			function (response, responsestatus, responseheaders, responseconfig) {
-				$scope.fetchingTasks = false;
-				console.log("Failed to fetch tasks");
-				console.log(response);
-			}
-		);
-
-		$scope.tasksConf = {
-			resource : {
-				key : 'tasks',
-				prettyName : 'Tasks',
-				altPrettyName : 'Tasks',
-				link : $scope.manageTasks,
-				rootDivClass : 'panel-body',
-				itemsCrudHelpers : $scope.tasksCrudHelpers
-			},
-			pagination : {
-				currentPage : 1,
-				itemsPerPage : 20
-			},
-			sortinit : {
-				fieldKey : 'name',
-				reverse : false
-			},
-			tableColumns : [
-				{
-					key : 'name',
-					prettyName : 'Name',
-					widthClass : 'col-md-2'
-				},
-				{
-					key : 'description',
-					prettyName : 'Description',
-					widthClass : 'col-md-4'
-				},
-				{
-					key : 'priority',
-					prettyName : 'Priority',
-					widthClass : 'col-md-1'
-				},
-				{
-					key : 'estimation',
-					prettyName : 'Estimation',
-					widthClass : 'col-md-1'
-				},
-				{
-					key : 'status',
-					prettyName : 'Status',
-					widthClass : 'col-md-1'
-				}
-			]
-		};
-
 		$scope.pieChartConfig = {
 			title: 'Tasks',
 			groupBy: [
@@ -536,62 +475,60 @@ angular.module('productbacklog', [
 				}
 			],
 			count: 1,
-			// collapse: 0
-			collapse: 0,
+			collapse: 1,
 			cumulative: 0
 		};
 
-		$scope.burnDownChartConfig = {
-			title: 'Tasks',
-			groupBy: [
-				{
-					prettyName: 'Status',
-					key: 'status',
-					ordering: 1,
-					colorMap: function (item) {
-						return item.getStatusDef().color;
-					},
-					groupByOrder: function (item) {
-						// console.log("ordering is");
-						// console.log(item.getStatusDef().ordering);
-						return item.getStatusDef().ordering;
-						// return item.getStatusDef().ordering || 0;
+		// $scope.burnDownChartConfig = {
+		// 	title: 'Tasks',
+		// 	groupBy: [
+		// 		{
+		// 			prettyName: 'Status',
+		// 			key: 'status',
+		// 			ordering: 1,
+		// 			colorMap: function (item) {
+		// 				return item.getStatusDef().color;
+		// 			},
+		// 			groupByOrder: function (item) {
+		// 				// console.log("ordering is");
+		// 				// console.log(item.getStatusDef().ordering);
+		// 				return item.getStatusDef().ordering;
+		// 				// return item.getStatusDef().ordering || 0;
 
-					}
-				},
-				{
-					prettyName: 'Type',
-					key: 'type',
-					ordering: 2,
-					colorMap: function (item) {
-						return item.getTypeDef().color;
-					},
-					groupByOrder: function (item) {
-						return item.getTypeDef().ordering;
-						// return item.getTypeDef().ordering || 0;
-					}
-				}
-			],
-			summary: [
-				{
-					prettyName: 'Estimation',
-					prettyNameSuffix: "for",
-					key: 'estimation',
-					ordering: 1
-				},
-				{
-					prettyName: 'Remaining estimation',
-					prettyNameSuffix: "for",
-					key: 'remaining',
-					ordering: 2
-				}
-			],
-			count: 1,
-			// collapse: 0
-			collapse: 0,
-			cumulative: 0
-		};
-
+		// 			}
+		// 		},
+		// 		{
+		// 			prettyName: 'Type',
+		// 			key: 'type',
+		// 			ordering: 2,
+		// 			colorMap: function (item) {
+		// 				return item.getTypeDef().color;
+		// 			},
+		// 			groupByOrder: function (item) {
+		// 				return item.getTypeDef().ordering;
+		// 				// return item.getTypeDef().ordering || 0;
+		// 			}
+		// 		}
+		// 	],
+		// 	summary: [
+		// 		{
+		// 			prettyName: 'Estimation',
+		// 			prettyNameSuffix: "for",
+		// 			key: 'estimation',
+		// 			ordering: 1
+		// 		},
+		// 		{
+		// 			prettyName: 'Remaining estimation',
+		// 			prettyNameSuffix: "for",
+		// 			key: 'remaining',
+		// 			ordering: 2
+		// 		}
+		// 	],
+		// 	count: 1,
+		// 	// collapse: 0
+		// 	collapse: 0,
+		// 	cumulative: 0
+		// };
 
 	}
 ]);

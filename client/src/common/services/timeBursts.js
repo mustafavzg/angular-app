@@ -21,6 +21,8 @@ angular.module('services.timeBursts').factory('timeBursts', [
 				if( angular.isObject(args) ){
 					if( angular.isArray(args.lookUp) ){
 						this.lookUp = {};
+						// lookup based on each attribute
+						// status, username etc
 						angular.forEach(args.lookUp, function(lookUpAttr, index) {
 							this.lookUp[lookUpAttr] = resourceDictionary(
 								lookUpAttr,

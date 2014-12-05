@@ -1,0 +1,17 @@
+<div ng-class="rootDivClass" class="kanban-panel" >
+	<!-- <span class="pull-right hover-pointer" ng-click="kanbanOpen('hg')" tooltip="Fullscreen"> -->
+	<!-- 	<\!-- <span ng-show="modalOpening">Loading Data ... <img src="/static/img/spinner.gif"></span> -\-> -->
+	<!-- 	<icon id="fullscreen"></icon> -->
+	<!-- </span> -->
+
+	<kanban-board
+		 items="items"
+		 users="users"
+		 resourceconf="resourceconf"
+		 fetchingitems="fetchingitems"
+		 widget-title="{{widgetTitle}}"
+		 modal-open="kanbanOpen('hg')"
+		 root-div-class="col-xs-12"
+		 reload-kanban-fn="reloadMainKanban = fn"
+		 />
+</div>

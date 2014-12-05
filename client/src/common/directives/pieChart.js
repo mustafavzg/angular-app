@@ -639,6 +639,9 @@ angular.module('directives.pieChart', [
 					$scope.defaultPieOptions = {
 						gridPadding: {top:30, bottom:20, left:0, right:0},
 						// seriesColors:['#85802b', '#00749F', '#73C774', '#C7754C', '#17BDB8', '#C7754C'],
+						animate: true,
+						// Will animate plot on calls to plot1.replot({resetAxes:true})
+						animateReplot: true,
 						seriesDefaults:{
 							shadow: false,
 							renderer: jQuery.jqplot.PieRenderer,

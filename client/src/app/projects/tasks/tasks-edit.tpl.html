@@ -55,6 +55,40 @@
 			<!-- div row -->
 
 			<div class="panel panel-default">
+				<div class="panel-body" ng-class="{'bg-danger': statusLogging, 'bg-warning': !statusLogging}">
+					<div class="media" ng-class="{'text-danger': statusLogging, 'text-muted': !statusLogging}">
+						<div class="media-object pull-left">
+							<!-- <button class="btn btn-success btn-lg" id="playpause" ng-show="!statusLogging" ng-click="startLogger(beforeLoggerStart)"><icon id="play"></icon></button> -->
+							<!-- <button class="btn btn-danger btn-lg" id="playpause" ng-show="statusLogging" ng-click="logStatus(beforeLogStatus)"><icon id="stop"></icon></button> -->
+
+							<!-- <button class="btn btn-success btn-lg" id="playpause" ng-show="!statusLogging" ng-click="logStatus(task.status)"><icon id="play"></icon></button> -->
+							<!-- <button class="btn btn-danger btn-lg" id="playpause" ng-show="statusLogging" ng-click="logStatus(task.status)"><icon id="stop"></icon></button> -->
+
+							<!-- <button class="btn btn-default btn-lg" ng-click="addSamples()"><icon id="pause"></icon></button> -->
+
+							<span class="timer text-center">
+ 								<span ng-show="!!logger">{{logger | stopWatch}}</span>
+								<span ng-show="statusLogging"><img src="/static/img/spinner.gif"></span>
+ 								<!-- {{timer | date:'yyyy MM dd HH::mm::ss .sss'}} -->
+ 								<!-- {{timer}} -->
+							</span>
+						</div>
+
+						<!-- <div class="media-object pull-right"> -->
+						<!-- 	<span class="timer"> -->
+						<!-- 		<icon id="time"></icon> {{clock | date:'mediumTime'}} -->
+						<!-- 	</span> -->
+
+						<!-- </div> -->
+					</div>
+					<!-- div media -->
+
+				</div>
+				<!-- div panel body -->
+			</div>
+			<!-- div panel -->
+
+			<div class="panel panel-default">
 				<div class="panel-heading">
 					<label>Set Status</label>
 				</div>
@@ -63,7 +97,8 @@
 					<div class="row">
 						<div class="col-md-2" ng-repeat="status in statusDef | orderBy:'ordering'">
 							<!-- <button class="btn btn-block" ng-click="setTaskStatus(status)" ng-class="{'btn-primary': isTaskStatus(status)}"> -->
-							<button class="btn btn-block" ng-click="setTaskStatus(status)" ng-class="setBtnClasses(status)">
+							<!-- <button class="btn btn-block" ng-click="setTaskStatus(status)" ng-class="setBtnClasses(status)"> -->
+							<button class="btn btn-block" ng-click="logStatus(status)" ng-class="setBtnClasses(status)">
 								{{status.name}} 
 							</button>
 						</div>
@@ -74,6 +109,7 @@
 				<!-- div panel body -->
 			</div>
 			<!-- div panel -->
+
 
 			<div class="panel panel-default">
 				<div class="panel-heading">

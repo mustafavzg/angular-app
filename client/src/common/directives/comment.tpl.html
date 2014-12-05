@@ -9,7 +9,11 @@
 		
 		<div class="media" ng-repeat="comment in comments">
 
-			<img class="media-object photo-small pull-left" src="/hive/get-user-photo/{{user.userName}}">
+			<!-- <img class="media-object photo-small pull-left" src="/hive/get-user-photo/{{user.userName}}"> -->
+			<img class="media-object photo-small pull-left" src="/static/img/foouser.png">
+			<!-- <div class='btn-group pull-right'> -->
+			<!-- 	<button type="button" class="btn btn-default" ng-click="deleteComment(comment)"  tooltip="Delete Comment" tooltip-placement='top'><icon id="trash"></icon></button> -->
+			<!-- </div>	 -->
 			<div class="media-body"> 
 				<div class="media-heading"> 
 					<span class = "text-primary">
@@ -18,10 +22,13 @@
 					<span class="text-muted small">
 						{{comment.timeStampDate | date : 'yyyy-MM-dd HH:mm:ss' : IST}}
 					</span>
+					<span class="small">
+						<a href="#" ng-click="deleteComment(comment)">Delete</a>
+					</span>
 				</div>											      
 				<p class="pre-wrap" ng-bind-html="comment.text"></p>
-
 			</div>
+
 		</div>
 		
 		<div class="row">
@@ -37,13 +44,8 @@
 				<textarea class="form-control" ng-model="newcomment" placeholder="Add your comments here" cols="8" rows="" id="comments" >
 				</textarea>
 			</div>
-			<p>
-				<div class='form-group block'>			
-					<textarea class="form-control" ng-model="newcomment" placeholder="Add your comments here" cols="8" rows="1" id="comments" >
-					</textarea>
-				</div>
-			</p>
-			
+		</p>
+		
 		
 	</div>
 	<!-- div col -->

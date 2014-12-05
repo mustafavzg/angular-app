@@ -115,11 +115,11 @@ angular.module('directives.ganttChart', [
 							toolTip: 'Fixed Height'
 						},
 						{
-							maxHeight: 300,
+							maxHeight: 500,
 							toolTip: 'Expand Height'
 						}
 					];
-					$scope.heightToggle = $scope.heightToggleStates[0];
+					$scope.heightToggle = $scope.heightToggleStates[1];
 					$scope.toggleHeight = function () {
 						// var heights = [0, 300];
 						// var toolTips = ['Fix Height', 'Expand Height'];
@@ -331,13 +331,15 @@ angular.module('directives.ganttChart', [
 						if( !task.to ){
 							i18nNotifications.pushForCurrentRoute('gantt.task.data.error', 'error', task);
 						}
-
 						return task;
 					};
 
 					/**************************************************
 					 * Get the updated data for the item when a gantt
 					 * task is modified
+					 *
+					 * TODO: We need to handle the case for mulitple
+					 * gantt tasks
 					 **************************************************/
 					var getItemData = function (ganttTask) {
 						var excludeGanttKeys = ['subject'];
@@ -579,27 +581,27 @@ angular.module('directives.ganttChart', [
 
 					$scope.rowEvent = function(event) {
 						// A row has been added, updated or clicked. Use this event to save back the updated row e.g. after a user re-ordered it.
-						console.log('Row event (by user: ' + event.userTriggered + '): ' + event.date + ' '  + event.row.description + ' (Custom data: ' + event.row.data + ')');
-						console.log(event);
+						// console.log('Row event (by user: ' + event.userTriggered + '): ' + event.date + ' '  + event.row.description + ' (Custom data: ' + event.row.data + ')');
+						// console.log(event);
 					};
 
 					$scope.scrollEvent = function(event) {
 						if (angular.equals(event.direction, "left")) {
 							// Raised if the user scrolled to the left side of the Gantt. Use this event to load more data.
-							console.log('Scroll event: Left');
+							// console.log('Scroll event: Left');
 						} else if (angular.equals(event.direction, "right")) {
 							// Raised if the user scrolled to the right side of the Gantt. Use this event to load more data.
-							console.log('Scroll event: Right');
+							// console.log('Scroll event: Right');
 						}
 					};
 
 					$scope.taskEvent = function(event) {
 						// A task has been updated or clicked.
-						console.log('Task event (by user: ' + event.userTriggered + '): ' + event.task.subject + ' (Custom data: ' + event.task.data + ')');
-						console.log(event);
+						// console.log('Task event (by user: ' + event.userTriggered + '): ' + event.task.subject + ' (Custom data: ' + event.task.data + ')');
+						// console.log(event);
 						var updatedItemData = getItemData(event.task);
-						console.log("updated data");
-						console.log(updatedItemData);
+						// console.log("updated data");
+						// console.log(updatedItemData);
 						updateOrRevertItem(event, updatedItemData);
 					};
 

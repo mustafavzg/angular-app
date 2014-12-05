@@ -1,0 +1,19 @@
+<div class="modal-header">
+    <button class="close" ng-click="done()"><icon id="remove"></icon></button>
+    <!-- <button class="close" ng-click="kanbanModalDone()"><icon id="remove"></icon></button> -->
+	<h4 class="modal-title">Kanban board</h4>
+</div>
+<div class="modal-body">
+	<!-- <kanban-board -->
+	<!-- 	 items="items" -->
+	<!-- 	 users="users" -->
+	<!-- 	 resourceconf="resourceconf" -->
+	<!-- 	 modal="{{true}}" -->
+	<!-- 	 /> -->
+	<kanban-board
+		 items="items"
+		 users="users"
+		 resourceconf="itemsKanbanConf"
+		 modal="{{true}}"
+		 />
+</div>

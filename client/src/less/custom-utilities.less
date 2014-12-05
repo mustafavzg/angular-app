@@ -214,13 +214,20 @@ textarea {
 
  .photo
  {
-   width: 120px;
+   width: 125px;
  }
 
  .photo-small
  {
    width: 50px;
  }
+
+ .photo-xs
+ {
+   width: 30px;
+   padding-bottom: 5px;   
+ }
+
 .thumbnails-users{margin:0 -19px 0px -25px;overflow:hidden}
 
 .thumbnails-users-list{padding-left:0;list-style:none}
@@ -240,9 +247,12 @@ textarea {
   // background-color:#d9edf7;
   background-color:#EFF7FB;
   cursor:pointer;
-  -webkit-box-shadow: 0 8px 6px -6px black;
-  -moz-box-shadow: 0 8px 6px -6px black;
-  box-shadow: 0 8px 6px -6px black;
+  -webkit-box-shadow: -5px 5px 6px -6px black;
+  -moz-box-shadow: -5px 5px 6px -6px black;
+  box-shadow: -5px 5px 6px -6px black;
+  // -webkit-box-shadow: 0 8px 6px -6px black;
+  // -moz-box-shadow: 0 8px 6px -6px black;
+  // box-shadow: 0 8px 6px -6px black;
 }
 
 .thumbnail-user > img,
@@ -310,12 +320,12 @@ textarea {
 //   background-color:#563d7c;
 // }
 
-* {
+// no rounded elements
+.tile {
   -webkit-border-radius: 0 !important;
      -moz-border-radius: 0 !important;
           border-radius: 0 !important;
 }
-
 
 // .bs-glyphicons{margin:0 -19px 20px -16px;overflow:hidden}
 // .bs-glyphicons-list{padding-left:0;list-style:none}
@@ -358,7 +368,7 @@ body {
 }
 
 .timer {
-    font-size: 32px; 	   	   
+    font-size: 28px; 	   	   
 }
 
 .scrum-updated-later {
@@ -369,11 +379,137 @@ body {
     background-color: #f00;
 }
 
-.
 .scrum-holiday {
     background-color: #ff0;
 }
 
+
+/*
+* kanban board
+*/
+
+.kanban-board {
+  // display: inline-block;
+  // float:left;
+  // float:none !important;
+  position: absolute;
+  z-index: 10;   
+  // width: 250px;
+  // margin:5px;
+  // text-align: center;
+  // word-wrap:normal
+}
+
+.thumbnail-kanban {
+  display: inline-block;
+  // float:left;
+  // float:none !important;
+  font-size:12px;
+  width: 250px;
+  margin:5px;
+  // text-align: center;
+  word-wrap:normal;
+}
+
+.thumbnail-kanban:hover {
+  // background-color:#d9edf7;
+  // background-color:#EFF7FB;
+  cursor:pointer;
+  -webkit-box-shadow: -5px 5px 6px -6px black;
+  -moz-box-shadow: -5px 5px 6px -6px black;
+  box-shadow: -5px 5px 6px -6px black;
+}
+
+// .thumbnail-kanban #caption {
+//   font-size:12px;
+//   padding-bottom:10px !important;
+//   word-wrap:normal;
+// }
+
+.thumbnail-kanban .toggles {
+  padding-top:5px;
+  padding-bottom:5px;
+}
+
+.kanban-table {
+  table-layout: fixed;
+}
+
+.kanban-th {
+  // display: inline-block;
+  // float:left;
+  // float:none !important;
+  // font-size:12px;
+  -webkit-column-width: 270px;
+  -moz-column-width: 270px;
+  column-width: 270px;
+  // width: 270px !important;
+  // margin:5px;
+  // text-align: center;
+  // word-wrap:normal;
+}
+
+.kanban-panel {
+  // display: inline-block;
+  // float:left;
+  // float:none !important;
+  overflow: auto;
+  // height: auto;
+  max-height: 500px;
+  // max-height: 200px;
+  // z-index: 10;   
+  // width: 250px;
+  // margin:5px;
+  // text-align: center;
+  // word-wrap:normal;
+}
+
+// .example-animate-container {
+//   background:white;
+//   border:1px solid black;
+//   list-style:none;
+//   margin:0;
+//   padding:0 10px;
+// }
+
+// .kanban-animate {
+//   line-height:40px;
+//   list-style:none;
+//   box-sizing:border-box;
+// }
+
+.kanban-animate.ng-move,
+.kanban-animate.ng-enter,
+.kanban-animate.ng-leave {
+  -webkit-transition:all linear 0.5s;
+  transition:all linear 0.5s;
+}
+
+.kanban-animate.ng-leave.ng-leave-active,
+.kanban-animate.ng-move,
+.kanban-animate.ng-enter {
+  opacity:0;
+  max-height:0;
+}
+
+.kanban-animate.ng-leave,
+.kanban-animate.ng-move.ng-move-active,
+.kanban-animate.ng-enter.ng-enter-active {
+  opacity:1;
+  max-height:40px;
+}
+
+.pull-right-soft {
+  float: right;
+}
+
+.pull-left-soft {
+  float: left;
+}
+
+/*
+* drop down multi select 
+*/
 
 /*
 * Don't modify things marked with ! - unless you know what you're doing

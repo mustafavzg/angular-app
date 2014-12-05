@@ -1,7 +1,7 @@
 angular.module('workflows-edit',[
   'services.crud',
   'services.i18nNotifications',
-  'underscore',
+  'underscore'
 ])
 
 .controller('WorkflowsEditCtrl', [
@@ -19,7 +19,7 @@ angular.module('workflows-edit',[
 		angular.extend($scope.userscrudhelpers, crudListMethods('/workflows'));
 		angular.extend($scope, crudEditHandlers('workflow'));
 
-		// create a state 
+		// create a state
 		// returns an id of 1
 		//		when the first time when it is called
 		//		increments id by 1 and returns it during subsequent calls.
@@ -31,7 +31,7 @@ angular.module('workflows-edit',[
 			};
 		}();
 
-		// create a state 
+		// create a state
 		// which contains:
 		// 	a name.
 		// 	an object which points to the next state.
@@ -61,7 +61,7 @@ angular.module('workflows-edit',[
 		startState.nextButton = button;
 
 		// TransitionMap
-		// 		a hash object which map each state with the list of 
+		// 		a hash object which map each state with the list of
 		//	allowable states.
 		var trasitionMap = {};
 		// stateNameMap

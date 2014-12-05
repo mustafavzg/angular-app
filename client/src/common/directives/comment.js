@@ -5,11 +5,13 @@ angular.module('directives.comment', [
 	'resources.comment',
 	'resources.projects',
 	'resources.users',
+	'services.crud',
 	'projectsitemview',
 	'productbacklog',
 	'sprints',
 	'tasksnew',
-	'users'
+	'users',
+	'underscore'
 ])
 .directive('comment', [
 	function() {
@@ -23,7 +25,7 @@ angular.module('directives.comment', [
 				forResource : '@',
 				resourceId : '@',
 				date: '='
-				},
+			},
 			controller: [
 				'$scope',
 				'$element',
@@ -31,9 +33,20 @@ angular.module('directives.comment', [
 				'Comments',
 				'security',
 				'$q',
-
-				function ($scope, $element, $attrs,Comments,security,$q) {
-					$scope.fetchingComments = true;
+				'i18nNotifications',
+				'crudEditHandlers',
+				'_',
+				function (
+					$scope,
+					$element,
+					$attrs,
+					Comments,
+					security,
+					$q,
+					i18nNotifications,
+					crudEditHandlers,
+					_
+				) {
 					if(!$scope.comments)
 					{
 						$scope.comments = [];
@@ -57,13 +70,13 @@ angular.module('directives.comment', [
 							comment = {};
 							comment.timeStampDate = new Date(new Date().setMinutes(new Date().getMinutes()-new Date().getTimezoneOffset()));
 							var firstPartOfUrl = window.location.pathname.match(/\/projects\/.*\//);
-							if (commentVal.indexOf("#") != -1 ) 
+							if (commentVal.indexOf("#") != -1 )
 									{
 										for (var i=0; i<commentVal.length;i++)
 										{
 											if(commentVal[i] === "#" && commentVal[i-1] != ">")
 											{
-												
+
 												switch(commentVal.charAt(i+1))
 												{
 													case 'T' : {
@@ -106,10 +119,10 @@ angular.module('directives.comment', [
 												}
 											}
 										}
-																	
+
 									}
-								
-							if (commentVal.indexOf("@") != -1 ) 
+
+							if (commentVal.indexOf("@") != -1 )
 									{
 										for (var i=0; i<commentVal.length;i++)
 										{
@@ -142,7 +155,7 @@ angular.module('directives.comment', [
 							var failurecb = function(){
 								console.log("could not save");
 							};
-							
+
 							commentObj.$save(successcb, failurecb);
 						}
 
@@ -160,7 +173,6 @@ angular.module('directives.comment', [
 			 				$scope.fetchingComments = false;
 							console.log("comments fetched");
 							console.log($scope.comments);
-							
 						},
 						function (response) {
 
@@ -170,10 +182,26 @@ angular.module('directives.comment', [
 						$scope.newcomment = "";
 					};
 
+					$scope.crudNotifications = crudEditHandlers('comments');
+
+					$scope.deleteComment = function(comment){
+						comment.$remove(
+							function () {
+								var notification = $scope.crudNotifications.onRemove(comment);
+								i18nNotifications.pushForCurrentRoute(notification.key, notification.type, notification.context);
+
+								// delete the comment from $scope.comments
+								var commentAt = _.indexOf($scope.comments, comment);
+								$scope.comments.splice(commentAt, 1);
+
+							},
+							function () {
+
+							}
+						);
+					};
 
 				}
-
-
 			]
 		};
 	}

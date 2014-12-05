@@ -11,6 +11,7 @@ angular.module('projectsitemview', [
 	'resources.scrumUpdates',
 	'services.crud',
 	'services.i18nNotifications',
+	'services.statusLog',
 	'ui.bootstrap',
 	'security.authorization',
 	'filters.pagination',
@@ -23,13 +24,18 @@ angular.module('projectsitemview', [
 	'directives.scrum',
 	'directives.document',
 	'directives.ganttChart',
+	'directives.kanbanBoard',
+	'directives.kanbanCard',
+	'directives.kanbanBoardWithModal',
 	'directives.pieChart',
 	'directives.accordionGroupChevron',
+	'directives.focusMe',
 	'underscore',
 	'gantt',
 	'filters.groupBy',
 	'filters.momentsAgo',
-	'directives.datelookup'
+	'directives.datelookup',
+	'moment'
 ])
 
 .config([
@@ -104,6 +110,11 @@ angular.module('projectsitemview', [
 	'$timeout',
 	'_',
 	'groupByFilter',
+	'moment',
+	'statusLog',
+	'$interpolate',
+	'$modal',
+	'$log',
 	function (
 		$scope,
 		$location,
@@ -124,7 +135,12 @@ angular.module('projectsitemview', [
 		paginationFilter,
 		$timeout,
 		_,
-		groupByFilter
+		groupByFilter,
+		moment,
+		statusLog,
+		$interpolate,
+		$modal,
+		$log
 	) {
 
 		$scope.project = project;
@@ -172,14 +188,14 @@ angular.module('projectsitemview', [
 				glyphiconclass : 'glyphicon glyphicon-chevron-left',
 				icon : 'chevron-left',
 				ordering : 4
-			},
-			projectprofile : {
-				name : 'Project Profile',
-				value : $scope.project.projectProfile.ID,
-				glyphiconclass : 'glyphicon glyphicon-wrench',
-				icon : 'wrench',
-				ordering : 5
 			}
+			// projectprofile : {
+			// 	name : 'Project Profile',
+			// 	value : $scope.project.projectProfile.ID,
+			// 	glyphiconclass : 'glyphicon glyphicon-wrench',
+			// 	icon : 'wrench',
+			// 	ordering : 5
+			// }
 		};
 
 		$scope.project.attributeValuesToDisplay = _.values($scope.project.attributesToDisplay);
@@ -253,7 +269,7 @@ angular.module('projectsitemview', [
 			},
 			pagination : {
 				currentPage : 1,
-				itemsPerPage : 10
+				itemsPerPage : 50
 			},
 			sortinit : {
 				fieldKey : 'priority',
@@ -323,7 +339,7 @@ angular.module('projectsitemview', [
 			},
 			pagination : {
 				currentPage : 1,
-				itemsPerPage : 10
+				itemsPerPage : 50
 			},
 			sortinit : {
 				fieldKey : 'name',
@@ -414,24 +430,24 @@ angular.module('projectsitemview', [
 			}
 		};
 
-		$scope.sprintsGanttUpdateValidator = function (item, update) {
-			var sprint = item;
-			if( sprint.isExpired() ){
-				return {
-					onError: function () {
-						i18nNotifications.pushForCurrentRoute('crud.sprints.expired.error', 'error', {});
-					}
-				};
-			}
-			return 1;
-		};
+		// NOTE: As of now we have disabled updates in gantt charts
+		// $scope.sprintsGanttUpdateValidator = function (item, update) {
+		// 	var sprint = item;
+		// 	if( sprint.isExpired() ){
+		// 		return {
+		// 			onError: function () {
+		// 				i18nNotifications.pushForCurrentRoute('crud.sprints.expired.error', 'error', {});
+		// 			}
+		// 		};
+		// 	}
+		// 	return 1;
+		// };
 
 		/**************************************************
 		 * Fetch tasks
 		 **************************************************/
 		$scope.fetchingTasks = true;
 		$scope.tasks = [];
-		// console.log("==========================Tasks====================");
 		$scope.tasksCrudHelpers = {};
 		angular.extend($scope.tasksCrudHelpers, crudListMethods('/projects/'+project.$id()+'/tasks'));
 
@@ -439,14 +455,27 @@ angular.module('projectsitemview', [
 			$location.path('/projects/'+project.$id()+'/tasks');
 		};
 
+		$scope.taskBurnDownData = {};
+
 		Tasks.forProject(
 			project.$id(),
 			function (tasks, responsestatus, responseheaders, responseconfig) {
 				$scope.tasks = tasks;
-				// console.log("Tasks=");
-				// console.log(tasks);
 				$scope.fetchingTasks = false;
-				// console.log("Succeeded to fetch tasks");
+				var clonedTasks = generateBurnDownData($scope.tasks);
+				// getStatusLogs(clonedTasks, 'created');
+				$scope.taskBurnDownData['data'] = getBurnDownData(clonedTasks, 'created');
+				$scope.kanbanData = getKanbanData($scope.tasks);
+				console.log("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
+				console.log("kanban data");
+				console.log($scope.kanbanData);
+
+
+				console.log("====================================================================================================");
+				console.log(clonedTasks.length);
+				console.log($scope.tasks.length);
+				console.log("Succeeded to fetch tasks");
+				console.log($scope.tasks);
 			},
 			function (response, responsestatus, responseheaders, responseconfig) {
 				$scope.fetchingTasks = false;
@@ -476,7 +505,8 @@ angular.module('projectsitemview', [
 				{
 					key : 'name',
 					prettyName : 'Name',
-					widthClass : 'col-md-4'
+					widthClass : 'col-md-4',
+					icon : ""
 				},
 				// {
 				// 	key : 'description',
@@ -513,7 +543,7 @@ angular.module('projectsitemview', [
 			]
 		};
 
-		
+
 
 		$scope.tasksGanttConf = {
 			resource : {
@@ -554,7 +584,7 @@ angular.module('projectsitemview', [
 			}
 		};
 
-		$scope.tasksGanttConf2 = {
+		$scope.tasksGanttConfTimer = {
 			resource : {
 				key : 'tasks',
 				prettyName : 'Tasks',
@@ -607,21 +637,6 @@ angular.module('projectsitemview', [
 			return data;
 		};
 
-		$scope.tasksGanttUpdateValidator = function (item, update) {
-			var task = item;
-			// if( task.isExpired() ){
-			// 	return {
-			// 		onError: function () {
-			// 			i18nNotifications.pushForCurrentRoute('crud.tasks.expired.error', 'error', {});
-			// 		}
-			// 	};
-			// }
-			return 1;
-		};
-
-		$scope.taskToGanttData = function (task) {
-
-		};
 
 		$scope.pieChartConfig = {
 			title: 'Tasks',
@@ -669,9 +684,299 @@ angular.module('projectsitemview', [
 				}
 			],
 			count: 1,
-			// collapse: 0
 			collapse: 1,
 			cumulative: 0
+		};
+
+		$scope.burnDownChartConfig = {
+			title: 'Tasks',
+			groupBy: [
+				{
+					prettyName: 'Status',
+					key: 'status',
+					ordering: 1,
+					colorMap: function (item) {
+						return item.getStatusDef().color;
+					},
+					groupByOrder: function (item) {
+						// console.log("ordering is");
+						// console.log(item.getStatusDef().ordering);
+						return item.getStatusDef().ordering;
+						// return item.getStatusDef().ordering || 0;
+
+					}
+				}
+				// {
+				// 	prettyName: 'Type',
+				// 	key: 'type',
+				// 	ordering: 2,
+				// 	colorMap: function (item) {
+				// 		return item.getTypeDef().color;
+				// 	},
+				// 	groupByOrder: function (item) {
+				// 		return item.getTypeDef().ordering;
+				// 		// return item.getTypeDef().ordering || 0;
+				// 	}
+				// }
+			],
+			summary: [
+				// {
+				// 	prettyName: 'Estimation',
+				// 	prettyNameSuffix: "for",
+				// 	key: 'estimation',
+				// 	ordering: 1
+				// },
+				// {
+				// 	prettyName: 'Remaining estimation',
+				// 	prettyNameSuffix: "for",
+				// 	key: 'remaining',
+				// 	ordering: 2
+				// }
+			],
+			count: 1,
+			collapse: 1,
+			cumulative: 0
+		};
+
+		/**************************************************
+		 * Burndown chart
+		 **************************************************/
+
+		var getRandomInt = function (min, max) {
+			return Math.floor(Math.random() * (max - min)) + min;
+		}
+
+		var addStatusLog = function (task, status, date) {
+			task.statusLogs = task.statusLogs || [];
+			task.statusLogs.push({
+				start: date,
+				data: {
+					status: status
+				}
+			});
+		};
+
+		var generateBurnDownData = function (tasks) {
+			var clonedTasks1 = _.clone(tasks);
+			var clonedTasks2 = _.clone(tasks);
+			var clonedTasks = _.flatten(clonedTasks1, clonedTasks2);
+			angular.forEach(clonedTasks, function(task) {
+				// get random days
+				var randomDaysAgoCreated = getRandomInt(1, 30);
+				var randomDaysAgoClosed = getRandomInt(1, randomDaysAgoCreated);
+				// var randomDateCreated = moment().subtract(randomDaysAgoCreated, 'days').toDate().getTime();
+				// var randomDateClosed = moment().subtract(randomDaysAgoClosed, 'days').toDate().getTime();
+				var randomDateCreated = moment().subtract(randomDaysAgoCreated, 'days').toDate();
+				var randomDateClosed = moment().subtract(randomDaysAgoClosed, 'days').toDate();
+				addStatusLog(task, 'created', randomDateCreated);
+				addStatusLog(task, 'closed', randomDateClosed)
+			});
+			return clonedTasks;
+		};
+
+		var getStatusLogs = function (tasks, status) {
+			var statusLogs = [];
+			angular.forEach(tasks, function(task) {
+				console.log('status logs are what the !! ==================================================');
+				var taskStatuLog = statusLog(task.statusLogs, {lookUp: ['status']});
+				// console.log(taskStatuLog.getLookUp('status'));
+				statusLogs.push(angular.extend({id: task.$id()}, taskStatuLog.getLookUp('status')[status]));
+			});
+			console.log('burndown source data !! ==================================================');
+			console.log(statusLogs);
+			return statusLogs;
+		};
+
+		var _getBurnDownData = function (tasks, status, offset) {
+			var statusLogs = getStatusLogs(tasks, status);
+			var datemap = {};
+			angular.forEach(statusLogs, function(statusLog) {
+				var datestring = moment(statusLog.start).format("YYYY-MM-DD");
+				datemap[datestring] = (!datemap[datestring])? 0 : datemap[datestring];
+				datemap[datestring]++;
+			});
+			console.log('date map !! ==================================================');
+			console.log(datemap);
+			var burnDownData = [];
+			var sortedDates = _.chain(datemap).keys().sortBy(function (key) { return key; }).value();
+			// angular.forEach(datemap, function(taskCount, date) {
+			// 	burnDownData.push([date, taskCount]);
+			// });
+
+			var daysago = 31, today = 1;
+			var allDays = [];
+			for(; --daysago >= today;){
+				allDays.push(moment().subtract(daysago, 'days').format("YYYY-MM-DD"));
+			}
+
+			var totalTasks = (offset)? offset : 0;
+			angular.forEach(allDays, function(datestring) {
+				totalTasks += (datemap[datestring])? datemap[datestring] : 0;
+				burnDownData.push([datestring + " 10:00AM", totalTasks]);
+			});
+
+			console.log('final burndown data !! ==================================================');
+			console.log(burnDownData);
+			return burnDownData;
+		};
+
+		var getBurnDownData = function (tasks) {
+			var totalTasks = _getBurnDownData(tasks, 'created', 20);
+			var totalClosedTasks = _getBurnDownData(tasks, 'closed');
+			var openTasks = [];
+			angular.forEach(totalTasks, function(createdData, index) {
+				var openCount = createdData[1] - totalClosedTasks[index][1];
+				openTasks.push([createdData[0], openCount]);
+			});
+
+			return [totalClosedTasks, openTasks, totalTasks];
+		};
+
+		/**************************************************
+		 * Kanban
+		 **************************************************/
+
+		$scope.tasksKanbanConf = {
+			resource : {
+				key : 'tasks',
+				prettyName : 'Tasks',
+				altPrettyName : 'Tasks',
+				link : $scope.manageTasks,
+				rootDivClass : 'panel-body',
+				itemsCrudHelpers : $scope.tasksCrudHelpers
+			}
+		};
+
+		/**************************************************
+		 * Kanban Modal Data Sources
+		 **************************************************/
+
+		var getKanbanData = function (tasks) {
+			// var groupedTasks = _.groupBy(
+			// 	tasks,
+			// 	function (task) {
+			// 		return task.getStatusDef().key;
+			// 	}
+			// );
+
+			var groupedTasks = _.chain(tasks)
+			.each(
+				function (task) {
+					task.kanbanClass = "kanban_" + task.getStatusDef().key.toLowerCase();
+				}
+			)
+			.groupBy(
+				function (task) {
+					return task.getStatusDef().key;
+				}
+			)
+			.value();
+
+			return groupedTasks;
+		};
+
+		$scope.sortedStatusKeys = _.chain(Tasks.getStatusDef())
+			.sortBy(function (statusDef) { return statusDef.ordering })
+			.map(function (statusDef) { return statusDef.key })
+			.value();
+
+		console.log("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
+		console.log("sorted status keys");
+		console.log($scope.sortedStatusKeys);
+		// $scope.statusLeftRight =
+
+		// $scope.indexedStatusDef = _.chain(Tasks.getStatusDef())
+		// 	.each(function (statusDef) { statusDef.kanbanClass = "kanban_" + statusDef.key.toLowerCase(); })
+		// 	.indexBy('key')
+		// 	.value();
+
+		$scope.indexedStatusDef = _.indexBy(Tasks.getStatusDef(), 'key');
+		console.log("indexed status def");
+		console.log($scope.indexedStatusDef);
+
+		var getKanbanClassCSS = $interpolate(".kanban_{{statusKey}} { color: {{color}} }");
+
+		$scope.kanbanCSS = _.chain(Tasks.getStatusDef())
+		.map(
+			function (statusDef) {
+				return getKanbanClassCSS({
+					statusKey: statusDef.key.toLowerCase(),
+					color: statusDef.color
+				});
+			}
+		)
+		.value()
+		.join("\n");
+
+		// $scope.getKanbanClass = function (task) {
+		// 	return "kanban_" + task.getStatusDef().key.toLowerCase();
+		// }
+		console.log("kanban css");
+		console.log($scope.kanbanCSS);
+
+		$scope.statusKeyToggles = {};
+		// $scope.statusKeyToggles = _.chain($scope.sortedStatusKeys)
+		_.each($scope.sortedStatusKeys, function (statusKey) {
+			$scope.statusKeyToggles[statusKey] = {
+				leftIsOpen: false,
+				rightIsOpen: false
+			};
+		});
+
+		$scope.toggleLeft = function (statusKey) {
+			$scope.statusKeyToggles[statusKey].rightIsOpen = false;
+			$scope.statusKeyToggles[statusKey].leftIsOpen = !$scope.statusKeyToggles[statusKey].leftIsOpen
+		};
+
+		$scope.toggleRight = function (statusKey) {
+			$scope.statusKeyToggles[statusKey].leftIsOpen = false;
+			$scope.statusKeyToggles[statusKey].rightIsOpen = !$scope.statusKeyToggles[statusKey].rightIsOpen
+		};
+
+		/**************************************************
+		 * Kanban modal dialog
+		 **************************************************/
+		$scope.items = ['item1', 'item2', 'item3'];
+
+		$scope.kanbanOpen = function (size) {
+			var modalInstance = $modal.open({
+				templateUrl: 'kanbanBoardModal.html',
+				controller: 'KanbanBoardCtrl',
+				size: size,
+				resolve: {
+					// items: function () {
+					// 	return $scope.items;
+					// },
+					tasks: function () {
+						return $scope.tasks;
+					},
+					users: function () {
+						return $scope.teamMembers;
+					},
+					crudHelpers : function  () {
+						return $scope.tasksCrudHelpers;
+					}
+
+					// kanbanData: function () {
+					// 	return getKanbanData($scope.tasks);
+					// }
+				}
+			});
+
+			modalInstance.result.then(
+				function (tasks) {
+					console.log("items returned from modal");
+					console.log(tasks);
+					$scope.tasks = tasks;
+					$scope.reloadMainKanban();
+
+					// $log.info('Modal Item selected: ' + selectedItem + ' at ' + new Date());
+					// $scope.selected = selectedItem;
+				},
+				function () {
+					$log.info('Modal dismissed at: ' + new Date());
+				}
+			);
 		};
 
 		/**************************************************
@@ -838,7 +1143,7 @@ angular.module('projectsitemview', [
 					}
 				}
 
-				var filteredUpdates = [];
+				// var filteredUpdates = [];
 				var startDate = new Date($scope.scrumDates.startdate);
 				var endDate = new Date($scope.scrumDates.enddate);
 
@@ -891,7 +1196,7 @@ angular.module('projectsitemview', [
 				console.log("Chosen user is\n");
 				console.log($scope.scrumDates.chosenUser);
 				if($scope.scrumDates.chosenUser != 'showall' && $scope.scrumDates.chosenUser != ''){
-					$scope.scrumupdates = $scope.userscrumhash[$scope.scrumDates.chosenUser];	
+					$scope.scrumupdates = $scope.userscrumhash[$scope.scrumDates.chosenUser];
 				}
 				else{
 					$scope.scrumupdates = $scope.allScrumUpdates;
@@ -903,7 +1208,7 @@ angular.module('projectsitemview', [
 					if(currentDate >= $scope.scrumDates.startdate && currentDate <= $scope.scrumDates.enddate){
 						$scope.updateStatus[currentDate.toDateString()] = true;
 					}
-				}			
+				}
 			}
 		});
 
@@ -971,5 +1276,169 @@ angular.module('projectsitemview', [
 		/**************************************************
 		 * ScrumUpdates End.
 		 **************************************************/
+	}
+])
+
+// .controller('KanbanBoardCtrl', [
+// 	'$scope',
+// 	'$modalInstance',
+// 	'$interpolate',
+// 	// 'items',
+// 	'Tasks',
+// 	'tasks',
+// 	'users',
+// 	'_',
+// 	function (
+// 		$scope,
+// 		$modalInstance,
+// 		$interpolate,
+// 		// items,
+// 		Tasks,
+// 		tasks,
+// 		users,
+// 		_
+// 	) {
+
+// 		// $scope.items = items;
+// 		// $scope.selected = {
+// 		// 	item: $scope.items[0]
+// 		// };
+
+// 		$scope.tasks = tasks;
+// 		$scope.users = users;
+// 		var getKanbanData = function (tasks) {
+// 			// var groupedTasks = _.groupBy(
+// 			// 	tasks,
+// 			// 	function (task) {
+// 			// 		return task.getStatusDef().key;
+// 			// 	}
+// 			// );
+
+// 			var groupedTasks = _.chain(tasks)
+// 			.each(
+// 				function (task) {
+// 					task.kanbanClass = "kanban_" + task.getStatusDef().key.toLowerCase();
+// 				}
+// 			)
+// 			.groupBy(
+// 				function (task) {
+// 					return task.getStatusDef().key;
+// 				}
+// 			)
+// 			.value();
+
+// 			return groupedTasks;
+// 		};
+
+// 		$scope.kanbanData = getKanbanData($scope.tasks);
+
+// 		$scope.sortedStatusKeys = _.chain(Tasks.getStatusDef())
+// 			.sortBy(function (statusDef) { return statusDef.ordering })
+// 			.map(function (statusDef) { return statusDef.key })
+// 			.value();
+
+// 		console.log("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
+// 		console.log("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM");
+// 		console.log("sorted status keys");
+// 		console.log($scope.sortedStatusKeys);
+// 		// $scope.statusLeftRight =
+
+// 		$scope.indexedStatusDef = _.indexBy(Tasks.getStatusDef(), 'key');
+// 		console.log("indexed status def");
+// 		console.log($scope.indexedStatusDef);
+
+// 		$scope.statusKeyToggles = {};
+// 		// $scope.statusKeyToggles = _.chain($scope.sortedStatusKeys)
+// 		_.each($scope.sortedStatusKeys, function (statusKey) {
+// 			$scope.statusKeyToggles[statusKey] = {
+// 				leftIsOpen: false,
+// 				rightIsOpen: false
+// 			};
+// 		});
+
+// 		var getKanbanClassCSS = $interpolate(".kanban_{{statusKey}} { color: {{color}} }");
+
+// 		$scope.kanbanCSS = _.chain(Tasks.getStatusDef())
+// 		.map(
+// 			function (statusDef) {
+// 				return getKanbanClassCSS({
+// 					statusKey: statusDef.key.toLowerCase(),
+// 					color: statusDef.color
+// 				});
+// 			}
+// 		)
+// 		.value()
+// 		.join("\n");
+
+// 		// $scope.getKanbanClass = function (task) {
+// 		// 	return "kanban_" + task.getStatusDef().key.toLowerCase();
+// 		// }
+// 		console.log("kanban css");
+// 		console.log($scope.kanbanCSS);
+
+// 		$scope.toggleLeft = function (statusKey) {
+// 			$scope.statusKeyToggles[statusKey].rightIsOpen = false;
+// 			$scope.statusKeyToggles[statusKey].leftIsOpen = !$scope.statusKeyToggles[statusKey].leftIsOpen
+// 		};
+
+// 		$scope.toggleRight = function (statusKey) {
+// 			$scope.statusKeyToggles[statusKey].leftIsOpen = false;
+// 			$scope.statusKeyToggles[statusKey].rightIsOpen = !$scope.statusKeyToggles[statusKey].rightIsOpen
+// 		};
+
+// 		$scope.done = function () {
+// 			// $modalInstance.close($scope.selected.item);
+// 			$modalInstance.dismiss();
+// 		};
+
+// 		$scope.cancel = function () {
+// 			$modalInstance.dismiss('cancel');
+// 		};
+// 	}
+// ]);
+
+.controller('KanbanBoardCtrl', [
+	'$scope',
+	'$modalInstance',
+	'$interpolate',
+	// 'items',
+	'crudHelpers',
+	'Tasks',
+	'tasks',
+	'users',
+	'_',
+	function (
+		$scope,
+		$modalInstance,
+		$interpolate,
+		// items,
+		crudHelpers,
+		Tasks,
+		tasks,
+		users,
+		_
+	) {
+		$scope.tasks = tasks;
+		$scope.users = users;
+		$scope.crudHelpers = crudHelpers;
+
+		$scope.tasksKanbanConf = {
+			resource : {
+				key : 'tasks',
+				prettyName : 'Tasks',
+				altPrettyName : 'Tasks',
+				rootDivClass : 'panel-body',
+				itemsCrudHelpers : $scope.crudHelpers
+			}
+		};
+
+		$scope.done = function () {
+			// $modalInstance.close($scope.selected.item);
+			$modalInstance.close($scope.tasks);
+		};
+
+		$scope.cancel = function () {
+			$modalInstance.dismiss('cancel');
+		};
 	}
 ]);

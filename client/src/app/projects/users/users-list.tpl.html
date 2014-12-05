@@ -4,18 +4,35 @@
 
 <table class="table table-condensed table-striped table-hover">
     <thead>
-        <tr>
-            <th class="col-md-3">&nbsp;</th>
-            <th class="col-md-3">Username</th>
-            <th class="col-md-3">Last Name</th>
-            <th class="col-md-3">First Name</th>
-        </tr>
+        <!-- <tr> -->
+        <!--     <th class="col-md-3">&nbsp;</th> -->
+        <!--     <th class="col-md-3">Username</th> -->
+        <!--     <th class="col-md-3">Last Name</th> -->
+        <!--     <th class="col-md-3">First Name</th> -->
+        <!-- </tr> -->
     <tbody>
         <tr ng-repeat="user in users" ng-click="view(user.$id())">
-            <td><gravatar email="user.username" size="50" default-image="/hive/get-user-photo/{{user.userName}}"></gravatar></td>
-            <td>{{user.username}}</td>
-            <td>{{user.lastName}}</td>
-            <td>{{user.firstName}}</td>
+			<td>
+				<div class="media">
+					<!-- <div class="media-object pull-left"><img src="/static/img/foouser.png" class="photo"/></div> -->
+					<div class="media-object pull-left"><img src="/hive/get-user-photo/{{user.userName}}" class="photo"/></div>
+					<div class="media-body">
+						<div class="media-heading">
+							<h4>{{user.firstName}} {{user.lastName}}</h4>
+							<p class="text-muted">@{{user.username}}</p>
+						</div>
+						<!-- div media-heading -->
+						{{user.about}}
+					</div>
+					<!-- div media-body -->
+				</div>
+			</td>
+			<!-- div media -->
+            <!-- <\!-- <td><gravatar email="user.username" size="50" default-image="'monsterid'"></gravatar></td> -\-> -->
+            <!-- <td><img src="/static/img/foouser.png" class="photo"/></td> -->
+            <!-- <td>{{user.username}}</td> -->
+            <!-- <td>{{user.lastName}}</td> -->
+            <!-- <td>{{user.firstName}}</td> -->
         </tr>
     </tbody>
 </table>

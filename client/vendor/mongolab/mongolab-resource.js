@@ -71,10 +71,11 @@ angular.module('mongolabResource', [
 							// var httpPromiseRetry = $http.get(response.config);
 							return thenFactoryMethod(httpPromiseRetry, scb, ecb, isArray);
 							return undefined;
+							// return $q.reject("405 Retry failed !");
 						}
 						else if (response.data.message === 'Document not found') {
 							ecb(response, response.status, response.headers, response.config);
-							return $q.reject("The entity you were looking for does not exist. It could be a deleted item");
+							return $q.reject("The entity you were looking for, does not exist. It could be a deleted item");
 						}
 						else {
 							// ecb(undefined, response.status, response.headers, response.config);
@@ -84,9 +85,10 @@ angular.module('mongolabResource', [
 							console.log(JSON.stringify(response.data));
 
 							ecb(response, response.status, response.headers, response.config);
-							return undefined;
+							// return undefined;
+							// return $q.reject("There seems to be some unknown error");
+							return $q.reject(JSON.stringify(response.data) || "There seems to be some unknown error");
 						}
-
 					}
 				);
 			};
@@ -258,7 +260,10 @@ angular.module('mongolabResource', [
 			 **************************************************/
 			Resource.updateMultiple = function (query, update, successcb, errorcb) {
 				var params = {m: "true", q:JSON.stringify(query)};
-				var updateJson = JSON.stringify(update);
+				// var updateJson = JSON.stringify(update);
+				var updateJson = JSON.stringify({$set: update});
+				console.log("update json is:");
+				console.log(updateJson);
 				var httpPromise = $http.put(url, updateJson, {params:angular.extend({}, defaultParams, params)});
 				// cacheService.setDirty(itemUrl);
 				cacheService.setDirty('GLOBAL'); // this is temporary until cache dependencies are implemented
