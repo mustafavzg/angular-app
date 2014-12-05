@@ -1,0 +1,60 @@
+<div class="media">
+	<div class="media-body">
+		Document Types : 
+		<select ng-model="document.documentType" ><option value="">-- Choose a Document Type --</option><option value="" ng-click="OnItemClick('Text')">Text</option><option value="" ng-click="OnItemClick('Wiki Node')">Wiki Node</option><option value="" ng-click="OnItemClick('Hydra Task')">Hydra Task</option></select><br>
+
+		<!-- <p>{{documentType}}</p> -->
+		<br>
+		<br>
+		<div class="row">
+			<div class="col-md-12">
+				<div class='btn-group pull-right'>
+					<button type="button" class="btn btn-default" ng-click="saveDocument(document)"  tooltip="Save document" tooltip-placement='bottom'><icon id="plus-sign"></icon></button>
+					<button type="button" class="btn btn-default" ng-click="clearDocument()"  tooltip="Clear Changes" tooltip-placement='bottom'><icon id="unchecked"></icon></button>
+				</div>	
+			</div>
+		</div>
+		<p>
+		<div class='form-group block'>	
+			<input type='text' ng-model= 'document.name' ng-hide ="namefield" placeholder = "Type a name"/>
+			<p>
+			<br ng-hide = "urlfield">
+			<textarea class="form-control" placeholder='Attach Document ID..' ng-model='document.url' cols="8" rows="1" ng-hide = "urlfield"/>
+			<textarea class="form-control" ng-model="document.text" placeholder="Add documents as text here..." cols="8" rows="7" id="documents" ng-hide = "textarea">
+			</textarea>
+			</p>
+			<br>
+		</div>
+		</p>
+
+		<strong>Attached Documents</strong>
+	
+		<div class='form-group block'>
+				<span class="col-md-12" ng-show="fetchingDocuments">Fetching Documents...
+						<a href="#"><img src="/static/img/spinner.gif"></a>
+					</span>	
+					<span class="col-md-12" ng-show="!document.length && !fetchingDocuments">
+						No Documents found
+					</span>
+			<div class="media" ng-repeat="doc in document">
+			<div class="media-body"> 
+				<div class="media-heading"> 
+					<span>
+						<ul type='disc'>
+						<li><strong>Name :</strong> {{doc.name}}<action-icon icon="edit" tip="Edit Document" action="editDocument(doc)"></action-icon></li>
+						<strong>DocumentType :</strong> {{doc.documentType}}
+						<div ng-if="doc.url">
+						<strong>Link : </strong><span class = "text-primary" ng-bind-html="doc.url"/>
+						</div>
+						<div ng-if="doc.text">
+						<strong>Text Document : </strong><span ng-bind-html="doc.text"/>
+						</div>
+					</ul>
+					</span>
+				</div>
+			</div>
+		</div>
+		</div>
+
+	</div>
+</div>

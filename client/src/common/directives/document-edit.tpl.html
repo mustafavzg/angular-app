@@ -1,0 +1,25 @@
+<div class="media">
+	<form name="form" crud-edit="document">
+<div class="media-body">
+		Document Types : 
+		<select ng-model="document.documentType" ><option value="">-- Choose a Document Type --</option><option value="" ng-click="OnItemClick('Text')">Text</option><option value="" ng-click="OnItemClick('Wiki Node')">Wiki Node</option><option value="" ng-click="OnItemClick('Hydra Task')">Hydra Task</option></select><br>
+		<p>
+		<p>
+		<div class='form-group block'>	
+			<input type='text' ng-model= 'document.name' ng-hide ="namefield" placeholder = "Type a name"/>
+			<p>
+			<br ng-hide = "urlfield">
+			<textarea class="form-control" placeholder='Attach Document ID..' ng-model='document.url' cols="8" rows="1" ng-hide = "urlfield"/>
+			<textarea class="form-control" ng-model="document.text" placeholder="Add documents as text here..." cols="8" rows="7" id="documents" ng-hide = "textarea">
+			</textarea>
+			</p>
+			<br>
+		</div>
+		</p>
+		<div class="panel-footer">
+			<crud-buttons ng-readonly = false></crud-buttons>
+		</div>
+		</p>
+	</div>
+</form>
+</div>

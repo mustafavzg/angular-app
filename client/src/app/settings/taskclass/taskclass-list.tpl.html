@@ -1,0 +1,36 @@
+<button type="button" class="btn btn-primary" ng-click="new()">New TaskClass</button>
+<hr />
+<table class="table table-condensed table-striped table-hover">
+	<thead>
+		<tr>
+			<th class="col-md-2">Name</th>
+			<th class="col-md-2">Schema</th>
+			<th class="col-md-2">Task TableName</th>
+			<th class="col-md-2">TaskTable Type Key</th>
+			<th class="col-md-2">TaskType TableName</th>
+			<th class="col-md-2">TaskType Key</th>
+			<th class="col-md-2">TaskTable StatusKey</th>
+			<th class="col-md-2">TaskStatus TableName</th>
+			<th class="col-md-2">TaskStatus Key</th>
+			<th class="col-md-2">TaskType GroupID</th>
+			<th class="col-md-2">TaskStatus GroupID</th>
+			<th class="col-md-2">BacklogItem Map Table</th>
+		</tr>
+	</thead>
+	 <tbody>
+		<tr ng-repeat="class in taskclass">
+			<td ng-click= "taskclassCrudHelpers.edit(class.$id())">{{class.name}}</td>
+			<td ng-click= "taskclassCrudHelpers.edit(class.$id())">{{class.schema}}</td>
+			<td ng-click= "taskclassCrudHelpers.edit(class.$id())">{{class.taskTableName}}</td>
+			<td ng-click= "taskclassCrudHelpers.edit(class.$id())">{{class.taskTableTypeKey}}</td>
+			<td ng-click= "taskclassCrudHelpers.edit(class.$id())">{{class.taskTypeTableName}}</td>
+			<td ng-click= "taskclassCrudHelpers.edit(class.$id())">{{class.taskTypeKey}}</td>
+			<td ng-click= "taskclassCrudHelpers.edit(class.$id())">{{class.taskTableStatusKey}}</td>
+			<td ng-click= "taskclassCrudHelpers.edit(class.$id())">{{class.taskStatusTableName}}</td>
+			<td ng-click= "taskclassCrudHelpers.edit(class.$id())">{{class.taskStatusKey}}</td>
+			<td ng-click= "taskclassCrudHelpers.edit(class.$id())">{{class.taskTypeGroupId}}</td>
+			<td ng-click= "taskclassCrudHelpers.edit(class.$id())">{{class.taskStatusGroupId}}</td>
+			<td ng-click= "taskclassCrudHelpers.edit(class.$id())">{{class.backlogItemMapTable}}</td>
+			</tr>
+	</tbody>
+</table>

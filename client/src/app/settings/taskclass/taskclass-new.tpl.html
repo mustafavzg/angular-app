@@ -1,0 +1,76 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <strong>
+            Task Class
+        </strong>
+    </div>
+    <form name="form" crud-edit="taskclass">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input type="text" name="NAME" ng-model="taskclass.NAME" class="form-control" required autofocus>
+                    </div>
+                    <div class="form-group">
+                        <label>Schema</label>
+                        <input type="text" name="SCHEMA" ng-model="taskclass.SCHEMA" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Task TableName</label>
+                        <input type="text" name="TASKTABLENAME" ng-model="taskclass.TASKTABLENAME" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Task Table Type Key</label>
+                        <input type="text" name="TASKTABLETYPEKEY" ng-model="taskclass.TASKTABLETYPEKEY" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>TaskType TableName</label>
+                        <input type="text" name="TASKTYPETABLENAME" ng-model="taskclass.TASKTYPETABLENAME" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>TaskType Key</label>
+                        <input type="text" name="TASKTYPEKEY" ng-model="taskclass.TASKTYPEKEY" class="form-control" required>
+                    </div>
+                    
+
+                </div>
+                <div class="col-md-6">
+                    
+                    <div class="form-group">
+                        <label>Task Table Status Key</label>
+                        <input type="text" name="TASKTABLESTATUSKEY" ng-model="taskclass.TASKTABLESTATUSKEY" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Task Status TableName</label>
+                        <input type="text" name="TASKSTATUSTABLENAME" ng-model="taskclass.TASKSTATUSTABLENAME" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>TaskStatus Key</label>
+                        <input type="text" name="TASKSTATUSKEY" ng-model="taskclass.TASKSTATUSKEY" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>TaskType GroupID</label>
+                        <input type="text" name="TASKTYPEGROUPID" ng-model="taskclass.TASKTYPEGROUPID" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>TaskStatus GroupID</label>
+                        <input type="text" name="TASKSTATUSGROUPID" ng-model="taskclass.TASKSTATUSGROUPID" class="form-control" required>
+                    </div>
+                    <!-- <div class="form-group">
+                        <label>Task Map Table Prefix</label>
+                        <input type="text" name="taskmaptableprefix" ng-model="taskclass.taskmaptableprefix" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Project Map Table Prefix</label>
+                        <input type="text" name="projectmaptableprefix" ng-model="taskclass.projectmaptableprefix" class="form-control" required>
+                    </div> -->
+                    
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer">
+            <crud-buttons></crud-buttons>
+        </div>
+    </form>
+</div>

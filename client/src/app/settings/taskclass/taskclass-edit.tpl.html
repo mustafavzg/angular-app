@@ -1,0 +1,80 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <strong>
+            Task Class
+        </strong>
+    </div>
+    <form name="form" crud-edit="taskclass">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input type="text" name="name" ng-model="taskclass.name" class="form-control" required autofocus>
+                    </div>
+                    <div class="form-group">
+                        <label>Schema</label>
+                        <input type="text" name="schema" ng-model="taskclass.schema" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Task TableName</label>
+                        <input type="text" name="taskTableName" ng-model="taskclass.taskTableName" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Task Table Type Key</label>
+                        <input type="text" name="taskTableTypeKey" ng-model="taskclass.taskTableTypeKey" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>TaskType TableName</label>
+                        <input type="text" name="taskTypeTableName" ng-model="taskclass.taskTypeTableName" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>TaskType Key</label>
+                        <input type="text" name="taskTypeKey" ng-model="taskclass.taskTypeKey" class="form-control" required>
+                    </div>
+                    
+
+                </div>
+                <div class="col-md-6">
+                    
+                    <div class="form-group">
+                        <label>Task Table Status Key</label>
+                        <input type="text" name="taskTableStatusKey" ng-model="taskclass.taskTableStatusKey" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Task Status TableName</label>
+                        <input type="text" name="taskStatusTableName" ng-model="taskclass.taskStatusTableName" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>TaskStatus Key</label>
+                        <input type="text" name="taskStatusKey" ng-model="taskclass.taskStatusKey" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>TaskType GroupID</label>
+                        <input type="text" name="taskTypeGroupId" ng-model="taskclass.taskTypeGroupId" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>TaskStatus GroupID</label>
+                        <input type="text" name="taskStatusGroupId" ng-model="taskclass.taskStatusGroupId" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>BacklogItem Map Table</label>
+                        <input type="text" name="backlogItemMapTable" ng-model="taskclass.backlogItemMapTable" class="form-control" required>
+                    </div>
+                    <!-- <div class="form-group">
+                        <label>Task Map Table Prefix</label>
+                        <input type="text" name="taskmaptableprefix" ng-model="taskclass.taskmaptableprefix" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Project Map Table Prefix</label>
+                        <input type="text" name="projectmaptableprefix" ng-model="taskclass.projectmaptableprefix" class="form-control" required>
+                    </div> -->
+                    
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer">
+            <crud-buttons></crud-buttons>
+        </div>
+    </form>
+</div>
