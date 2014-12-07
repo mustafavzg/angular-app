@@ -684,7 +684,7 @@ angular.module('projectsitemview', [
 				}
 			],
 			count: 1,
-			collapse: 1,
+			collapse: 0,
 			cumulative: 0
 		};
 

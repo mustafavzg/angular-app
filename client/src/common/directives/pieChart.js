@@ -835,7 +835,9 @@ angular.module('directives.pieChart', [
 					if( $scope.items.length ){
 						// getPieCharts($scope.items, $scope.chartConfig);
 						getPieCharts($scope.items, $scope.pieChartConfigInstance);
+						console.log("initialized pie charts : iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
 					}
+
 
 					$scope.$watchCollection('items', function (newObj, oldObj) {
 						if( !angular.equals(newObj, oldObj) ){
@@ -873,6 +875,9 @@ angular.module('directives.pieChart', [
 					// 	}
 					// });
 
+					// $timeout(function () {
+					// 	getPieCharts($scope.items, $scope.pieChartConfigInstance);
+					// }, 5000);
 				}
 			]
 		};

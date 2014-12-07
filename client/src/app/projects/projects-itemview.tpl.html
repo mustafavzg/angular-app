@@ -37,6 +37,440 @@
 	</div>
 
 	<!-- -------------------------------------------------- -->
+	<!-- Dashboard -->
+	<!-- -------------------------------------------------- -->
+	<accordion close-others="false">
+		<accordion-group is-open="dashboardAccord.dashboardOpen" panel-class="warning" ng-init="dashboardAccord = {dashboardOpen: true}">
+			<accordion-heading>
+				<span class="hover-pointer">Dashboard</span>
+				<span class="pull-right hover-pointer" ng-show="!dashboardAccord.dashboardOpen"><icon id="chevron-down"></icon></span>
+				<span class="pull-right hover-pointer" ng-show="dashboardAccord.dashboardOpen"><icon id="chevron-up"></icon></span>
+			</accordion-heading>
+
+			<tabset justified="true" type="pills">
+				<tab heading="Preview">
+					<burn-down-chart items="tasks" fetchingitems="fetchingTasks" chart-config="burnDownChartConfig" chart-data="taskBurnDownData"></burn-down-chart>
+ 					<pie-chart items="tasks" fetchingitems="fetchingTasks" chart-config="pieChartConfig"></pie-chart>
+				</tab>
+
+				<tab heading="Burn Downs">
+					<burn-down-chart items="tasks" fetchingitems="fetchingTasks" chart-config="burnDownChartConfig" chart-data="taskBurnDownData"></burn-down-chart>
+				</tab>
+
+				<tab heading="Break Downs">
+					<pie-chart items="tasks" fetchingitems="fetchingTasks" chart-config="pieChartConfig"></pie-chart>
+				</tab>
+
+				<tab heading="Kanban">
+					<kanban-board-with-modal
+						 items="tasks"
+						 users="teamMembers"
+						 resourceconf="tasksKanbanConf"
+						 items-crud-helpers="tasksCrudHelpers"
+						 fetchingitems="fetchingTasks"
+						 widget-title="Tasks Kanban"
+						 root-div-class="panel-body"
+						 />
+				</tab>
+
+				<tab heading="Time Lines">
+					<div class="panel-body">
+						<div class="panel panel-default">
+							<gantt-chart
+								 items="sprints"
+								 resourceconf="sprintsGanttConf"
+								 fetchingitems="fetchingSprints"
+								 title="Sprints"
+								 >
+							</gantt-chart>
+						</div>
+						<!-- div panel -->
+
+						<div class="panel panel-default">
+							<gantt-chart
+								 items="tasks"
+								 resourceconf="tasksGanttConf"
+								 fetchingitems="fetchingTasks"
+								 title="Task Time Estimates"
+								 >
+							</gantt-chart>
+						</div>
+						<!-- div panel -->
+
+						<!-- <div class="panel panel-default"> -->
+						<!-- 	<gantt-chart -->
+						<!-- 		 items="tasks" -->
+						<!-- 		 resourceconf="tasksGanttConfTimer" -->
+						<!-- 		 item-to-task-data-source="taskData(item)" -->
+						<!-- 		 fetchingitems="fetchingTasks" -->
+						<!-- 	</gantt-chart> -->
+						<!-- </div> -->
+						<!-- div panel -->
+					</div>
+					<!-- div panel body -->
+				</tab>
+
+				<tab heading="Scrum Updates">
+					<div class="panel-body">
+						<!-- Adding scrum update -->
+						<div class="row">
+							<div class="col-md-8">
+								<datecombofromto
+									 name="dateCombo"
+									 from-date="scrumDates.startdate"
+									 to-date="scrumDates.enddate"
+									 from-date-label="Start Date"
+									 to-date-label="End Date"
+									 from-date-required="true"
+									 to-date-required="true">
+								</datecombofromto>
+							</div>
+							<div class="col-md-4">
+								<label>Select User</label>
+								<select class="form-control" ng-model="scrumDates.chosenUser">
+									<option value="showall" selected="selected">Show All</option>
+									<option ng-repeat="user in scrumusers" value="{{user.$id()}}"> {{user.username}} </option> 
+								</select>
+							</div>
+						</div>
+
+						<div class="row" ng-show="scrumDates.chosenUser && scrumDates.chosenUser != 'showall'">
+							<div class="col-md-3">
+								<img style="width: 100%;height: 100%;"class="media-object photo-small pull-left" src="/hive/get-user-photo/{{user.userName}}">
+							</div>
+							<div class="col-md-9">
+								<table>
+									<tr>
+										<scrumupdatecalendar
+											 label="Scrum Status"
+											 update="updateStatus"
+											 datechosen="scrumDates.chosenDate">
+										</scrumupdatecalendar>
+									</tr>
+								</table>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-4">
+								<label class="checkbox-inline">
+									<input type="checkbox" ng-model="planVal">Show Plan
+								</label>
+							</div>
+							<div class="col-md-4">
+								<label class="checkbox-inline">
+									<input type="checkbox" ng-model="updateVal">Show Update
+								</label>
+							</div>
+							<div class="col-md-4">
+								<label class="checkbox-inline">
+									<input type="checkbox" ng-model="impedimentVal">Show Impediments
+								</label>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-4" >
+								<div ng-show="planVal">
+									<div class="media" ng-repeat="dateGroup in groupedScrumUpdates">
+										<div class="media-heading">
+											<span class = "text-primary">
+												{{dateGroup.key | momentsAgo}}
+											</span>
+										</div>
+										<div class="media-body">
+											<div class="media" ng-repeat="update in dateGroup.values">
+												<div class="media-heading">
+													<span ng-if="update.text != 'undefined'">
+														{{update.text}}
+													</span>
+													<span ng-if="taskGroup.key == 'undefined'">
+														No Update
+													</span>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-md-4" >
+								<div ng-show="updateVal">
+									<div class="media" ng-repeat="dateGroup in groupedScrumUpdates">
+										<div class="media-heading">
+											<span class = "text-primary">
+												{{dateGroup.key | momentsAgo}}
+											</span>
+										</div>
+										<div class="media-body">
+											<div class="media" ng-repeat="update in dateGroup.values">
+												<div class="media-heading">
+													<span ng-if="update.plan != undefined">
+														{{update.plan}}
+													</span>
+													<span ng-if="update.plan == undefined">
+														No Update
+													</span>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-md-4" >
+								<div ng-show="impedimentVal">
+									<div class="media" ng-repeat="dateGroup in groupedScrumUpdates">
+										<div class="media-heading">
+											<span class = "text-primary">
+												{{dateGroup.key | momentsAgo}}
+											</span>
+										</div>
+										<div class="media-body">
+											<div class="media" ng-repeat="update in dateGroup.values">
+												<div class="media-heading">
+													<span ng-if="update.impediments != undefined">
+														{{update.impediments}}
+													</span>
+													<span ng-if="update.impediments == undefined">
+														No Update
+													</span>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+						</div>
+						<!-- <div class="row"> -->
+					</div>
+					<!-- div panel body -->
+				</tab>
+
+			</tabset>
+
+			<span class="pull-right hover-pointer" ng-show="dashboardAccord.dashboardOpen" ng-click="dashboardAccord.dashboardOpen = false"><icon id="chevron-up"></icon></span>
+		</accordion-group>
+
+		<!-- <accordion-group-chevron heading="Dashboards" panel-class="success"> -->
+		<!-- 	<dashboard resource-id="{{project.$id()}}" for-resource="projects" user-id="{{security.currentUser.ID}}"></dashboard> -->
+		<!-- </accordion-group-chevron> -->
+	</accordion>
+
+
+	<!-- <\!-- -------------------------------------------------- -\-> -->
+	<!-- <\!-- Dashboard -\-> -->
+	<!-- <\!-- -------------------------------------------------- -\-> -->
+	<!-- <div class="panel panel-default"> -->
+	<!-- 	<tabset justified="true" type="pills"> -->
+	<!-- 		<tab heading="Dashboard"> -->
+	<!-- 			<div class="panel-body"> -->
+	<!-- 				<burn-down-chart items="tasks" fetchingitems="fetchingTasks" chart-config="burnDownChartConfig" chart-data="taskBurnDownData"></burn-down-chart> -->
+ 	<!-- 				<pie-chart items="tasks" fetchingitems="fetchingTasks" chart-config="pieChartConfig"></pie-chart> -->
+	<!-- 			</div> -->
+	<!-- 			<\!-- div panel body -\-> -->
+	<!-- 		</tab> -->
+
+	<!-- 		<tab heading="Burn Downs"> -->
+	<!-- 			<burn-down-chart items="tasks" fetchingitems="fetchingTasks" chart-config="burnDownChartConfig" chart-data="taskBurnDownData"></burn-down-chart> -->
+	<!-- 		</tab> -->
+
+	<!-- 		<tab heading="Break Downs"> -->
+	<!-- 			<pie-chart items="tasks" fetchingitems="fetchingTasks" chart-config="pieChartConfig"></pie-chart> -->
+	<!-- 		</tab> -->
+
+	<!-- 		<tab heading="Kanban"> -->
+	<!-- 			<kanban-board-with-modal -->
+	<!-- 				 items="tasks" -->
+	<!-- 				 users="teamMembers" -->
+	<!-- 				 resourceconf="tasksKanbanConf" -->
+	<!-- 				 items-crud-helpers="tasksCrudHelpers" -->
+	<!-- 				 fetchingitems="fetchingTasks" -->
+	<!-- 				 widget-title="Tasks Kanban" -->
+	<!-- 				 root-div-class="panel-body" -->
+	<!-- 				 /> -->
+	<!-- 		</tab> -->
+
+	<!-- 		<tab heading="Time Lines"> -->
+	<!-- 			<div class="panel-body"> -->
+	<!-- 				<div class="panel panel-default"> -->
+	<!-- 					<gantt-chart -->
+	<!-- 						 items="sprints" -->
+	<!-- 						 resourceconf="sprintsGanttConf" -->
+	<!-- 						 fetchingitems="fetchingSprints" -->
+	<!-- 						 title="Sprints" -->
+	<!-- 						 > -->
+	<!-- 					</gantt-chart> -->
+	<!-- 				</div> -->
+	<!-- 				<\!-- div panel -\-> -->
+
+	<!-- 				<div class="panel panel-default"> -->
+	<!-- 					<gantt-chart -->
+	<!-- 						 items="tasks" -->
+	<!-- 						 resourceconf="tasksGanttConf" -->
+	<!-- 						 fetchingitems="fetchingTasks" -->
+	<!-- 						 title="Task Time Estimates" -->
+	<!-- 						 > -->
+	<!-- 					</gantt-chart> -->
+	<!-- 				</div> -->
+	<!-- 				<\!-- div panel -\-> -->
+
+	<!-- 				<\!-- <div class="panel panel-default"> -\-> -->
+	<!-- 				<\!-- 	<gantt-chart -\-> -->
+	<!-- 				<\!-- 		 items="tasks" -\-> -->
+	<!-- 				<\!-- 		 resourceconf="tasksGanttConfTimer" -\-> -->
+	<!-- 				<\!-- 		 item-to-task-data-source="taskData(item)" -\-> -->
+	<!-- 				<\!-- 		 fetchingitems="fetchingTasks" -\-> -->
+	<!-- 				<\!-- 	</gantt-chart> -\-> -->
+	<!-- 				<\!-- </div> -\-> -->
+	<!-- 				<\!-- div panel -\-> -->
+	<!-- 			</div> -->
+	<!-- 			<\!-- div panel body -\-> -->
+	<!-- 		</tab> -->
+
+	<!-- 		<tab heading="Scrum Updates"> -->
+	<!-- 			<div class="panel-body"> -->
+	<!-- 				<\!-- Adding scrum update -\-> -->
+	<!-- 				<div class="row"> -->
+	<!-- 					<div class="col-md-8"> -->
+	<!-- 						<datecombofromto -->
+	<!-- 							 name="dateCombo" -->
+	<!-- 							 from-date="scrumDates.startdate" -->
+	<!-- 							 to-date="scrumDates.enddate" -->
+	<!-- 							 from-date-label="Start Date" -->
+	<!-- 							 to-date-label="End Date" -->
+	<!-- 							 from-date-required="true" -->
+	<!-- 							 to-date-required="true"> -->
+	<!-- 						</datecombofromto> -->
+	<!-- 					</div> -->
+	<!-- 					<div class="col-md-4"> -->
+	<!-- 						<label>Select User</label> -->
+	<!-- 						<select class="form-control" ng-model="scrumDates.chosenUser"> -->
+	<!-- 							<option value="showall" selected="selected">Show All</option> -->
+	<!-- 							<option ng-repeat="user in scrumusers" value="{{user.$id()}}"> {{user.username}} </option>  -->
+	<!-- 						</select> -->
+	<!-- 					</div> -->
+	<!-- 				</div> -->
+
+	<!-- 				<div class="row" ng-show="scrumDates.chosenUser && scrumDates.chosenUser != 'showall'"> -->
+	<!-- 					<div class="col-md-3"> -->
+	<!-- 						<img style="width: 100%;height: 100%;"class="media-object photo-small pull-left" src="/hive/get-user-photo/{{user.userName}}"> -->
+	<!-- 					</div> -->
+	<!-- 					<div class="col-md-9"> -->
+	<!-- 						<table> -->
+	<!-- 							<tr> -->
+	<!-- 								<scrumupdatecalendar -->
+	<!-- 									 label="Scrum Status" -->
+	<!-- 									 update="updateStatus" -->
+	<!-- 									 datechosen="scrumDates.chosenDate"> -->
+	<!-- 								</scrumupdatecalendar> -->
+	<!-- 							</tr> -->
+	<!-- 						</table> -->
+	<!-- 					</div> -->
+	<!-- 				</div> -->
+
+	<!-- 				<div class="row"> -->
+	<!-- 					<div class="col-md-4"> -->
+	<!-- 						<label class="checkbox-inline"> -->
+	<!-- 							<input type="checkbox" ng-model="planVal">Show Plan -->
+	<!-- 						</label> -->
+	<!-- 					</div> -->
+	<!-- 					<div class="col-md-4"> -->
+	<!-- 						<label class="checkbox-inline"> -->
+	<!-- 							<input type="checkbox" ng-model="updateVal">Show Update -->
+	<!-- 						</label> -->
+	<!-- 					</div> -->
+	<!-- 					<div class="col-md-4"> -->
+	<!-- 						<label class="checkbox-inline"> -->
+	<!-- 							<input type="checkbox" ng-model="impedimentVal">Show Impediments -->
+	<!-- 						</label> -->
+	<!-- 					</div> -->
+	<!-- 				</div> -->
+
+	<!-- 				<div class="row"> -->
+	<!-- 					<div class="col-md-4" > -->
+	<!-- 						<div ng-show="planVal"> -->
+	<!-- 							<div class="media" ng-repeat="dateGroup in groupedScrumUpdates"> -->
+	<!-- 								<div class="media-heading"> -->
+	<!-- 									<span class = "text-primary"> -->
+	<!-- 										{{dateGroup.key | momentsAgo}} -->
+	<!-- 									</span> -->
+	<!-- 								</div> -->
+	<!-- 								<div class="media-body"> -->
+	<!-- 									<div class="media" ng-repeat="update in dateGroup.values"> -->
+	<!-- 										<div class="media-heading"> -->
+	<!-- 											<span ng-if="update.text != 'undefined'"> -->
+	<!-- 												{{update.text}} -->
+	<!-- 											</span> -->
+	<!-- 											<span ng-if="taskGroup.key == 'undefined'"> -->
+	<!-- 												No Update -->
+	<!-- 											</span> -->
+	<!-- 										</div> -->
+	<!-- 									</div> -->
+	<!-- 								</div> -->
+	<!-- 							</div> -->
+	<!-- 						</div> -->
+	<!-- 					</div> -->
+
+	<!-- 					<div class="col-md-4" > -->
+	<!-- 						<div ng-show="updateVal"> -->
+	<!-- 							<div class="media" ng-repeat="dateGroup in groupedScrumUpdates"> -->
+	<!-- 								<div class="media-heading"> -->
+	<!-- 									<span class = "text-primary"> -->
+	<!-- 										{{dateGroup.key | momentsAgo}} -->
+	<!-- 									</span> -->
+	<!-- 								</div> -->
+	<!-- 								<div class="media-body"> -->
+	<!-- 									<div class="media" ng-repeat="update in dateGroup.values"> -->
+	<!-- 										<div class="media-heading"> -->
+	<!-- 											<span ng-if="update.plan != undefined"> -->
+	<!-- 												{{update.plan}} -->
+	<!-- 											</span> -->
+	<!-- 											<span ng-if="update.plan == undefined"> -->
+	<!-- 												No Update -->
+	<!-- 											</span> -->
+	<!-- 										</div> -->
+	<!-- 									</div> -->
+	<!-- 								</div> -->
+	<!-- 							</div> -->
+	<!-- 						</div> -->
+	<!-- 					</div> -->
+
+	<!-- 					<div class="col-md-4" > -->
+	<!-- 						<div ng-show="impedimentVal"> -->
+	<!-- 							<div class="media" ng-repeat="dateGroup in groupedScrumUpdates"> -->
+	<!-- 								<div class="media-heading"> -->
+	<!-- 									<span class = "text-primary"> -->
+	<!-- 										{{dateGroup.key | momentsAgo}} -->
+	<!-- 									</span> -->
+	<!-- 								</div> -->
+	<!-- 								<div class="media-body"> -->
+	<!-- 									<div class="media" ng-repeat="update in dateGroup.values"> -->
+	<!-- 										<div class="media-heading"> -->
+	<!-- 											<span ng-if="update.impediments != undefined"> -->
+	<!-- 												{{update.impediments}} -->
+	<!-- 											</span> -->
+	<!-- 											<span ng-if="update.impediments == undefined"> -->
+	<!-- 												No Update -->
+	<!-- 											</span> -->
+	<!-- 										</div> -->
+	<!-- 									</div> -->
+	<!-- 								</div> -->
+	<!-- 							</div> -->
+	<!-- 						</div> -->
+	<!-- 					</div> -->
+
+	<!-- 				</div> -->
+	<!-- 				<\!-- <div class="row"> -\-> -->
+	<!-- 			</div> -->
+	<!-- 			<\!-- div panel body -\-> -->
+	<!-- 		</tab> -->
+
+	<!-- 	</tabset> -->
+	<!-- </div> -->
+
+	<!-- -------------------------------------------------- -->
 	<!-- Comments -->
 	<!-- -------------------------------------------------- -->
 	<accordion close-others="false">
@@ -55,10 +489,14 @@
 		<!-- </accordion-group-chevron> -->
 	</accordion>
 
+
+	<!-- -------------------------------------------------- -->
+	<!-- Attachements -->
+	<!-- -------------------------------------------------- -->
 	<accordion close-others="false">
 		<accordion-group is-open="documentAccord.documentOpen" panel-class="success" ng-init="documentAccord = {documentOpen: false}">
 			<accordion-heading>
-				<span class="hover-pointer">Attach a Document</span>
+				<span class="hover-pointer">Attachements</span>
 				<span class="pull-right hover-pointer" ng-show="!documentAccord.documentOpen"><icon id="chevron-down"></icon></span>
 				<span class="pull-right hover-pointer" ng-show="documentAccord.documentOpen"><icon id="chevron-up"></icon></span>
 			</accordion-heading>
@@ -67,20 +505,99 @@
 		</accordion-group>
 	</accordion>
 
-	<div class="panel panel-default">
-		<div class="panel-heading">
-			Kanban board
-		</div>
-		<kanban-board-with-modal
-			 items="tasks"
-			 users="teamMembers"
-			 resourceconf="tasksKanbanConf"
-			 items-crud-helpers="tasksCrudHelpers"
-			 fetchingitems="fetchingTasks"
-			 widget-title="Tasks Kanban"
-			 root-div-class="panel-body"
-			 />
-	</div>
+	<!-- -------------------------------------------------- -->
+	<!-- Teams -->
+	<!-- -------------------------------------------------- -->
+	<accordion close-others="false">
+		<accordion-group is-open="teamAccord.teamOpen" panel-class="warning" ng-init="teamAccord = {teamOpen: false}">
+			<accordion-heading>
+				<span class="hover-pointer">Team</span>
+				<span class="pull-right hover-pointer" ng-show="!teamAccord.teamOpen"><icon id="chevron-down"></icon></span>
+				<span class="pull-right hover-pointer" ng-show="teamAccord.teamOpen"><icon id="chevron-up"></icon></span>
+			</accordion-heading>
+
+			<!-- Scrum Master and Team Members -->
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<div class="col-md-4">
+						<users
+							 label="Scrum Master"
+							 users="[scrumMaster]"
+							 collectionName="scrumMaster"
+							 init-options="usersConf"
+							 fetching-users="fetchingScrumMaster"
+							 >
+						</users>
+					</div>
+					<!-- div col -->
+					<div class="col-md-8">
+						<users
+							 label="Team"
+							 users="teamMembers"
+							 collectionName="teamMembers"
+							 init-options="usersConf"
+							 fetching-users="fetchingTeamMembers"
+							 >
+						</users>
+					</div>
+					<!-- div col -->
+				</div>
+				<!-- div panel body -->
+			</div>
+			<!-- div panel -->
+
+			<!-- Product Owner and Stake Holders -->
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<div class="col-md-4">
+						<users
+							 label="Product Owner"
+							 users="[productOwner]"
+							 collectionName="productOwner"
+							 init-options="usersConf"
+							 fetching-users="fetchingProductOwner"
+							 >
+						</users>
+					</div>
+					<!-- div col -->
+					<div class="col-md-8">
+						<users
+							 label="Stake Holders"
+							 users="stakeHolders"
+							 collectionName="stakeHolders"
+							 init-options="usersConf"
+							 fetching-users="fetchingStakeHolders"
+							 >
+						</users>
+					</div>
+					<!-- div col -->
+				</div>
+				<!-- div panel body -->
+			</div>
+			<!-- div panel -->
+
+			<span class="pull-right hover-pointer" ng-show="teamAccord.teamOpen" ng-click="teamAccord.teamOpen = false"><icon id="chevron-up"></icon></span>
+		</accordion-group>
+
+		<!-- <accordion-group-chevron heading="Teams" panel-class="success"> -->
+		<!-- 	<team resource-id="{{project.$id()}}" for-resource="projects" user-id="{{security.currentUser.ID}}"></team> -->
+		<!-- </accordion-group-chevron> -->
+	</accordion>
+
+	<!-- <div class="panel panel-default"> -->
+	<!-- 	<div class="panel-heading"> -->
+	<!-- 		Kanban board -->
+	<!-- 	</div> -->
+	<!-- 	<kanban-board-with-modal -->
+	<!-- 		 items="tasks" -->
+	<!-- 		 users="teamMembers" -->
+	<!-- 		 resourceconf="tasksKanbanConf" -->
+	<!-- 		 items-crud-helpers="tasksCrudHelpers" -->
+	<!-- 		 fetchingitems="fetchingTasks" -->
+	<!-- 		 widget-title="Tasks Kanban" -->
+	<!-- 		 root-div-class="panel-body" -->
+	<!-- 		 /> -->
+	<!-- </div> -->
 
 	<!-- -------------------------------------------------- -->
 	<!-- Other Entities -->
@@ -510,387 +1027,386 @@
 	<!-- </div> -->
 	<!-- <\!-- div panel -\-> -->
 
-	<burn-down-chart items="tasks" fetchingitems="fetchingTasks" chart-config="burnDownChartConfig" chart-data="taskBurnDownData"></burn-down-chart>
-
 	<div class="panel panel-default">
-		<tabset justified="true" type="pills" vertical="true">
+		<tabset justified="true" type="pills">
 		<!-- <tabset type="pills" vertical="true"> -->
-			<tab heading="Dashboard">
-				<!-- <div class="panel-body"> -->
-				<accordion close-others="true">
-					<!-- -------------------------------------------------- -->
-					<!-- Pie Charts -->
-					<!-- -------------------------------------------------- -->
-					<accordion-group is-open="pieAccord.pieOpen" panel-class="warning" ng-init="pieAccord = {pieOpen: true}">
-						<accordion-heading>
-							<span class="hover-pointer">Break Downs</span>
-							<span class="pull-right hover-pointer" ng-show="!pieAccord.pieOpen"><icon id="chevron-down"></icon></span>
-							<span class="pull-right hover-pointer" ng-show="pieAccord.pieOpen"><icon id="chevron-up"></icon></span>
-						</accordion-heading>
- 						<pie-chart items="tasks" fetchingitems="fetchingTasks" chart-config="pieChartConfig"></pie-chart>
-						<span class="pull-right hover-pointer" ng-show="pieAccord.pieOpen" ng-click="pieAccord.pieOpen = false"><icon id="chevron-up"></icon></span>
-					</accordion-group>
+
+<!-- 			<tab heading="Dashboard"> -->
+<!-- 				<\!-- <div class="panel-body"> -\-> -->
+<!-- 				<accordion close-others="true"> -->
+<!-- 					<\!-- -------------------------------------------------- -\-> -->
+<!-- 					<\!-- Pie Charts -\-> -->
+<!-- 					<\!-- -------------------------------------------------- -\-> -->
+<!-- 					<accordion-group is-open="pieAccord.pieOpen" panel-class="warning" ng-init="pieAccord = {pieOpen: true}"> -->
+<!-- 						<accordion-heading> -->
+<!-- 							<span class="hover-pointer">Break Downs</span> -->
+<!-- 							<span class="pull-right hover-pointer" ng-show="!pieAccord.pieOpen"><icon id="chevron-down"></icon></span> -->
+<!-- 							<span class="pull-right hover-pointer" ng-show="pieAccord.pieOpen"><icon id="chevron-up"></icon></span> -->
+<!-- 						</accordion-heading> -->
+<!--  						<pie-chart items="tasks" fetchingitems="fetchingTasks" chart-config="pieChartConfig"></pie-chart> -->
+<!-- 						<span class="pull-right hover-pointer" ng-show="pieAccord.pieOpen" ng-click="pieAccord.pieOpen = false"><icon id="chevron-up"></icon></span> -->
+<!-- 					</accordion-group> -->
 					
-					<!-- <accordion-group is-open="pieOpen" panel-class="warning" ng-init="pieOpen = true"> -->
-					<!-- 	<accordion-heading> -->
-					<!-- 		Break Downs -->
-					<!-- 		<span class="pull-right hover-pointer" ng-show="!pieOpen"><icon id="chevron-down"></icon></span> -->
-					<!-- 		<span class="pull-right hover-pointer" ng-show="pieOpen"><icon id="chevron-up"></icon></span> -->
-					<!-- 	</accordion-heading> -->
- 					<!-- 	<pie-chart items="tasks" fetchingitems="fetchingTasks" chart-config="pieChartConfig"></pie-chart> -->
-					<!-- 	<\!-- <span class="pull-right hover-pointer" ng-show="pieAccord.pieOpen" ng-click="pieAccord.pieOpen = false"><icon id="chevron-up"></icon></span> -\-> -->
-					<!-- </accordion-group> -->
-<!-- >>>>>>> Stashed changes -->
+<!-- 					<\!-- <accordion-group is-open="pieOpen" panel-class="warning" ng-init="pieOpen = true"> -\-> -->
+<!-- 					<\!-- 	<accordion-heading> -\-> -->
+<!-- 					<\!-- 		Break Downs -\-> -->
+<!-- 					<\!-- 		<span class="pull-right hover-pointer" ng-show="!pieOpen"><icon id="chevron-down"></icon></span> -\-> -->
+<!-- 					<\!-- 		<span class="pull-right hover-pointer" ng-show="pieOpen"><icon id="chevron-up"></icon></span> -\-> -->
+<!-- 					<\!-- 	</accordion-heading> -\-> -->
+<!--  					<\!-- 	<pie-chart items="tasks" fetchingitems="fetchingTasks" chart-config="pieChartConfig"></pie-chart> -\-> -->
+<!-- 					<\!-- 	<\\!-- <span class="pull-right hover-pointer" ng-show="pieAccord.pieOpen" ng-click="pieAccord.pieOpen = false"><icon id="chevron-up"></icon></span> -\\-> -\-> -->
+<!-- 					<\!-- </accordion-group> -\-> -->
+<!-- <\!-- >>>>>>> Stashed changes -\-> -->
 
-					<!-- <accordion-group-chevron heading="Break Downs" panel-class="warning"> -->
-					<!-- 	<pie-chart items="tasks" fetchingitems="fetchingTasks" chart-config="pieChartConfig"></pie-chart> -->
-					<!-- </accordion-group-chevron> -->
+<!-- 					<\!-- <accordion-group-chevron heading="Break Downs" panel-class="warning"> -\-> -->
+<!-- 					<\!-- 	<pie-chart items="tasks" fetchingitems="fetchingTasks" chart-config="pieChartConfig"></pie-chart> -\-> -->
+<!-- 					<\!-- </accordion-group-chevron> -\-> -->
 
-					<!-- <\!-- -------------------------------------------------- -\-> -->
-					<!-- <\!-- Burn down Charts -\-> -->
-					<!-- <\!-- -------------------------------------------------- -\-> -->
-					<!-- <accordion-group is-open="burnDownAccord.burnDownOpen" panel-class="warning" ng-init="burnDownAccord = {burnDownOpen: false}"> -->
-					<!-- 	<accordion-heading> -->
-					<!-- 		<span class="hover-pointer">Burn Downs</span> -->
-					<!-- 		<span class="pull-right hover-pointer" ng-show="!burnDownAccord.burnDownOpen"><icon id="chevron-down"></icon></span> -->
-					<!-- 		<span class="pull-right hover-pointer" ng-show="burnDownAccord.burnDownOpen"><icon id="chevron-up"></icon></span> -->
-					<!-- 	</accordion-heading> -->
-					<!-- 	<burn-down-chart items="tasks" fetchingitems="fetchingTasks" chart-config="burnDownChartConfig" chart-data="taskBurnDownData"></burn-down-chart> -->
-					<!-- 	<span class="pull-right hover-pointer" ng-show="burnDownAccord.burnDownOpen" ng-click="burnDownAccord.burnDownOpen = false"><icon id="chevron-up"></icon></span> -->
-					<!-- </accordion-group> -->
+<!-- 					<\!-- <\\!-- -------------------------------------------------- -\\-> -\-> -->
+<!-- 					<\!-- <\\!-- Burn down Charts -\\-> -\-> -->
+<!-- 					<\!-- <\\!-- -------------------------------------------------- -\\-> -\-> -->
+<!-- 					<\!-- <accordion-group is-open="burnDownAccord.burnDownOpen" panel-class="warning" ng-init="burnDownAccord = {burnDownOpen: false}"> -\-> -->
+<!-- 					<\!-- 	<accordion-heading> -\-> -->
+<!-- 					<\!-- 		<span class="hover-pointer">Burn Downs</span> -\-> -->
+<!-- 					<\!-- 		<span class="pull-right hover-pointer" ng-show="!burnDownAccord.burnDownOpen"><icon id="chevron-down"></icon></span> -\-> -->
+<!-- 					<\!-- 		<span class="pull-right hover-pointer" ng-show="burnDownAccord.burnDownOpen"><icon id="chevron-up"></icon></span> -\-> -->
+<!-- 					<\!-- 	</accordion-heading> -\-> -->
+<!-- 					<\!-- 	<burn-down-chart items="tasks" fetchingitems="fetchingTasks" chart-config="burnDownChartConfig" chart-data="taskBurnDownData"></burn-down-chart> -\-> -->
+<!-- 					<\!-- 	<span class="pull-right hover-pointer" ng-show="burnDownAccord.burnDownOpen" ng-click="burnDownAccord.burnDownOpen = false"><icon id="chevron-up"></icon></span> -\-> -->
+<!-- 					<\!-- </accordion-group> -\-> -->
 					
-					<!-- <accordion-group is-open="burndownOpen" panel-class="warning" ng-init="burndownOpen = false"> -->
-					<!-- 	<accordion-heading> -->
- 					<!-- 		Burn Downs -->
-					<!-- 		<span class="pull-right hover-pointer" ng-show="!burndownOpen"><icon id="chevron-down"></icon></span> -->
-					<!-- 		<span class="pull-right hover-pointer" ng-show="burndownOpen"><icon id="chevron-up"></icon></span> -->
-					<!-- 	</accordion-heading> -->
-					<!-- 	<\!-- <burn-down-chart items="tasks" fetchingitems="fetchingTasks" chart-config="burnDownChartConfig"></burn-down-chart> -\-> -->
-					<!-- </accordion-group> -->
+<!-- 					<\!-- <accordion-group is-open="burndownOpen" panel-class="warning" ng-init="burndownOpen = false"> -\-> -->
+<!-- 					<\!-- 	<accordion-heading> -\-> -->
+<!--  					<\!-- 		Burn Downs -\-> -->
+<!-- 					<\!-- 		<span class="pull-right hover-pointer" ng-show="!burndownOpen"><icon id="chevron-down"></icon></span> -\-> -->
+<!-- 					<\!-- 		<span class="pull-right hover-pointer" ng-show="burndownOpen"><icon id="chevron-up"></icon></span> -\-> -->
+<!-- 					<\!-- 	</accordion-heading> -\-> -->
+<!-- 					<\!-- 	<\\!-- <burn-down-chart items="tasks" fetchingitems="fetchingTasks" chart-config="burnDownChartConfig"></burn-down-chart> -\\-> -\-> -->
+<!-- 					<\!-- </accordion-group> -\-> -->
 
-					<!-- <accordion-group-chevron heading="Burn Downs" panel-class="warning"> -->
-					<!-- <burn-down-chart items="tasks" fetchingitems="fetchingTasks" chart-config="burnDownChartConfig"></burn-down-chart> -->
-					<!-- </accordion-group-chevron> -->
+<!-- 					<\!-- <accordion-group-chevron heading="Burn Downs" panel-class="warning"> -\-> -->
+<!-- 					<\!-- <burn-down-chart items="tasks" fetchingitems="fetchingTasks" chart-config="burnDownChartConfig"></burn-down-chart> -\-> -->
+<!-- 					<\!-- </accordion-group-chevron> -\-> -->
 
-					<!-- -------------------------------------------------- -->
-					<!-- Kanban Board -->
-					<!-- -------------------------------------------------- -->
-					<accordion-group is-open="kanbanAccord.kanbanOpen" panel-class="warning" ng-init="kanbanAccord = {kanbanOpen: false}">
-						<accordion-heading>
-							<span class="hover-pointer">Kanban</span>
-							<span class="pull-right hover-pointer" ng-show="!kanbanAccord.kanbanOpen"><icon id="chevron-down"></icon></span>
-							<span class="pull-right hover-pointer" ng-show="kanbanAccord.kanbanOpen"><icon id="chevron-up"></icon></span>
-						</accordion-heading>
-						<!-- <kanban items="tasks" fetchingitems="fetchingTasks" kanban-config="kanbanConfig"></kanban> -->
+<!-- 					<\!-- -------------------------------------------------- -\-> -->
+<!-- 					<\!-- Kanban Board -\-> -->
+<!-- 					<\!-- -------------------------------------------------- -\-> -->
+<!-- 					<accordion-group is-open="kanbanAccord.kanbanOpen" panel-class="warning" ng-init="kanbanAccord = {kanbanOpen: false}"> -->
+<!-- 						<accordion-heading> -->
+<!-- 							<span class="hover-pointer">Kanban</span> -->
+<!-- 							<span class="pull-right hover-pointer" ng-show="!kanbanAccord.kanbanOpen"><icon id="chevron-down"></icon></span> -->
+<!-- 							<span class="pull-right hover-pointer" ng-show="kanbanAccord.kanbanOpen"><icon id="chevron-up"></icon></span> -->
+<!-- 						</accordion-heading> -->
+<!-- 						<\!-- <kanban items="tasks" fetchingitems="fetchingTasks" kanban-config="kanbanConfig"></kanban> -\-> -->
 
-						<!-- <table class="table table-condensed"> -->
-						<!-- 	<thead> -->
-						<!-- 		<tr> -->
-						<!-- 			<th ng-repeat="statusKey in sortedStatusKeys">{{statusKey}}</th> -->
-						<!-- 		</tr> -->
-						<!-- 		<tbody> -->
-						<!-- 			<\!-- <tr ng-repeat="project in projects"> -\-> -->
-						<!-- 			<\!-- 	<td ng-click="viewProject(project)">{{project.name}}</td> -\-> -->
-						<!-- 			<\!-- 	<td ng-click="viewProject(project)">{{project.description}}</td> -\-> -->
-						<!-- 			<\!-- 	<\\!-- <td>{{ getMyRoles(project) }}</td> -\\-> -\-> -->
-						<!-- 			<\!-- 	<\\!-- <td> -\\-> -\-> -->
-						<!-- 			<\!-- 	<\\!-- 	<a ng-click="manageBacklog(project)">Product backlog</a> -\\-> -\-> -->
-						<!-- 			<\!-- 	<\\!-- 	<a ng-click="manageSprints(project)">Sprints</a> -\\-> -\-> -->
-						<!-- 			<\!-- 	<\\!-- </td> -\\-> -\-> -->
-						<!-- 			<\!-- </tr> -\-> -->
-						<!-- 		</tbody> -->
-						<!-- </table> -->
-						<span class="pull-right hover-pointer" ng-show="kanbanAccord.kanbanOpen" ng-click="kanbanAccord.kanbanOpen = false"><icon id="chevron-up"></icon></span>
-					</accordion-group>
+<!-- 						<\!-- <table class="table table-condensed"> -\-> -->
+<!-- 						<\!-- 	<thead> -\-> -->
+<!-- 						<\!-- 		<tr> -\-> -->
+<!-- 						<\!-- 			<th ng-repeat="statusKey in sortedStatusKeys">{{statusKey}}</th> -\-> -->
+<!-- 						<\!-- 		</tr> -\-> -->
+<!-- 						<\!-- 		<tbody> -\-> -->
+<!-- 						<\!-- 			<\\!-- <tr ng-repeat="project in projects"> -\\-> -\-> -->
+<!-- 						<\!-- 			<\\!-- 	<td ng-click="viewProject(project)">{{project.name}}</td> -\\-> -\-> -->
+<!-- 						<\!-- 			<\\!-- 	<td ng-click="viewProject(project)">{{project.description}}</td> -\\-> -\-> -->
+<!-- 						<\!-- 			<\\!-- 	<\\\!-- <td>{{ getMyRoles(project) }}</td> -\\\-> -\\-> -\-> -->
+<!-- 						<\!-- 			<\\!-- 	<\\\!-- <td> -\\\-> -\\-> -\-> -->
+<!-- 						<\!-- 			<\\!-- 	<\\\!-- 	<a ng-click="manageBacklog(project)">Product backlog</a> -\\\-> -\\-> -\-> -->
+<!-- 						<\!-- 			<\\!-- 	<\\\!-- 	<a ng-click="manageSprints(project)">Sprints</a> -\\\-> -\\-> -\-> -->
+<!-- 						<\!-- 			<\\!-- 	<\\\!-- </td> -\\\-> -\\-> -\-> -->
+<!-- 						<\!-- 			<\\!-- </tr> -\\-> -\-> -->
+<!-- 						<\!-- 		</tbody> -\-> -->
+<!-- 						<\!-- </table> -\-> -->
+<!-- 						<span class="pull-right hover-pointer" ng-show="kanbanAccord.kanbanOpen" ng-click="kanbanAccord.kanbanOpen = false"><icon id="chevron-up"></icon></span> -->
+<!-- 					</accordion-group> -->
 					
-					<!-- <accordion-group is-open="kanbanOpen" panel-class="warning" ng-init="kanbanOpen = false"> -->
-					<!-- 	<accordion-heading> -->
-					<!-- 		Kanban -->
-					<!-- 		<span class="pull-right hover-pointer" ng-show="!kanbanOpen"><icon id="chevron-down"></icon></span> -->
-					<!-- 		<span class="pull-right hover-pointer" ng-show="kanbanOpen"><icon id="chevron-up"></icon></span> -->
-					<!-- 	</accordion-heading> -->
-					<!-- 	<\!-- <kanban items="tasks" fetchingitems="fetchingTasks" kanban-config="kanbanConfig"></kanban> -\-> -->
-					<!-- </accordion-group> -->
+<!-- 					<\!-- <accordion-group is-open="kanbanOpen" panel-class="warning" ng-init="kanbanOpen = false"> -\-> -->
+<!-- 					<\!-- 	<accordion-heading> -\-> -->
+<!-- 					<\!-- 		Kanban -\-> -->
+<!-- 					<\!-- 		<span class="pull-right hover-pointer" ng-show="!kanbanOpen"><icon id="chevron-down"></icon></span> -\-> -->
+<!-- 					<\!-- 		<span class="pull-right hover-pointer" ng-show="kanbanOpen"><icon id="chevron-up"></icon></span> -\-> -->
+<!-- 					<\!-- 	</accordion-heading> -\-> -->
+<!-- 					<\!-- 	<\\!-- <kanban items="tasks" fetchingitems="fetchingTasks" kanban-config="kanbanConfig"></kanban> -\\-> -\-> -->
+<!-- 					<\!-- </accordion-group> -\-> -->
 
-					<!-- <accordion-group-chevron heading="Kanban" panel-class="warning"> -->
-					<!-- </accordion-group-chevron> -->
+<!-- 					<\!-- <accordion-group-chevron heading="Kanban" panel-class="warning"> -\-> -->
+<!-- 					<\!-- </accordion-group-chevron> -\-> -->
 
-					<!-- -------------------------------------------------- -->
-					<!-- Gantt Charts -->
-					<!-- -------------------------------------------------- -->
-					<accordion-group is-open="ganttAccord.ganttOpen" panel-class="warning" ng-init="ganttAccord = {ganttOpen: false}">
-						<accordion-heading>
-							<span class="hover-pointer">Time Lines</span>
-							<span class="pull-right hover-pointer" ng-show="!ganttAccord.ganttOpen"><icon id="chevron-down"></icon></span>
-							<span class="pull-right hover-pointer" ng-show="ganttAccord.ganttOpen"><icon id="chevron-up"></icon></span>
-						</accordion-heading>
+<!-- 					<\!-- -------------------------------------------------- -\-> -->
+<!-- 					<\!-- Gantt Charts -\-> -->
+<!-- 					<\!-- -------------------------------------------------- -\-> -->
+<!-- 					<accordion-group is-open="ganttAccord.ganttOpen" panel-class="warning" ng-init="ganttAccord = {ganttOpen: false}"> -->
+<!-- 						<accordion-heading> -->
+<!-- 							<span class="hover-pointer">Time Lines</span> -->
+<!-- 							<span class="pull-right hover-pointer" ng-show="!ganttAccord.ganttOpen"><icon id="chevron-down"></icon></span> -->
+<!-- 							<span class="pull-right hover-pointer" ng-show="ganttAccord.ganttOpen"><icon id="chevron-up"></icon></span> -->
+<!-- 						</accordion-heading> -->
 
-						<div class="panel panel-default">
-							<gantt-chart
-								 items="sprints"
-								 resourceconf="sprintsGanttConf"
-								 fetchingitems="fetchingSprints"
-								 title="Sprints"
-								 >
-							</gantt-chart>
-						</div>
-						<!-- div panel -->
+<!-- 						<div class="panel panel-default"> -->
+<!-- 							<gantt-chart -->
+<!-- 								 items="sprints" -->
+<!-- 								 resourceconf="sprintsGanttConf" -->
+<!-- 								 fetchingitems="fetchingSprints" -->
+<!-- 								 title="Sprints" -->
+<!-- 								 > -->
+<!-- 							</gantt-chart> -->
+<!-- 						</div> -->
+<!-- 						<\!-- div panel -\-> -->
 
-						<div class="panel panel-default">
-							<gantt-chart
-								 items="tasks"
-								 resourceconf="tasksGanttConf"
-								 fetchingitems="fetchingTasks"
-								 title="Task Time Estimates"
-								 >
-							</gantt-chart>
-						</div>
-						<!-- div panel -->
+<!-- 						<div class="panel panel-default"> -->
+<!-- 							<gantt-chart -->
+<!-- 								 items="tasks" -->
+<!-- 								 resourceconf="tasksGanttConf" -->
+<!-- 								 fetchingitems="fetchingTasks" -->
+<!-- 								 title="Task Time Estimates" -->
+<!-- 								 > -->
+<!-- 							</gantt-chart> -->
+<!-- 						</div> -->
+<!-- 						<\!-- div panel -\-> -->
 
-						<!-- <div class="panel panel-default"> -->
-						<!-- 	<gantt-chart -->
-						<!-- 		 items="tasks" -->
-						<!-- 		 resourceconf="tasksGanttConfTimer" -->
-						<!-- 		 item-to-task-data-source="taskData(item)" -->
-						<!-- 		 fetchingitems="fetchingTasks" -->
-						<!-- 	</gantt-chart> -->
-						<!-- </div> -->
-						<!-- div panel -->
+<!-- 						<\!-- <div class="panel panel-default"> -\-> -->
+<!-- 						<\!-- 	<gantt-chart -\-> -->
+<!-- 						<\!-- 		 items="tasks" -\-> -->
+<!-- 						<\!-- 		 resourceconf="tasksGanttConfTimer" -\-> -->
+<!-- 						<\!-- 		 item-to-task-data-source="taskData(item)" -\-> -->
+<!-- 						<\!-- 		 fetchingitems="fetchingTasks" -\-> -->
+<!-- 						<\!-- 	</gantt-chart> -\-> -->
+<!-- 						<\!-- </div> -\-> -->
+<!-- 						<\!-- div panel -\-> -->
 
-						<span class="pull-right hover-pointer" ng-show="ganttAccord.ganttOpen" ng-click="ganttAccord.ganttOpen = false"><icon id="chevron-up"></icon></span>
-					</accordion-group>
+<!-- 						<span class="pull-right hover-pointer" ng-show="ganttAccord.ganttOpen" ng-click="ganttAccord.ganttOpen = false"><icon id="chevron-up"></icon></span> -->
+<!-- 					</accordion-group> -->
 					
-					<!-- <accordion-group is-open="ganttOpen" panel-class="warning" ng-init="ganttOpen = false"> -->
-					<!-- 	<accordion-heading> -->
-					<!-- 		Time Lines -->
-					<!-- 		<span class="pull-right hover-pointer" ng-show="!ganttOpen"><icon id="chevron-down"></icon></span> -->
-					<!-- 		<span class="pull-right hover-pointer" ng-show="ganttOpen"><icon id="chevron-up"></icon></span> -->
-					<!-- 	</accordion-heading> -->
-					<!-- 	<div class="panel panel-default"> -->
-					<!-- 		<gantt-chart -->
-					<!-- 			 items="sprints" -->
-					<!-- 			 resourceconf="sprintsGanttConf" -->
-					<!-- 			 fetchingitems="fetchingSprints" -->
-					<!-- 			 update-validator="sprintsGanttUpdateValidator(item, update)" -->
-					<!-- 			 title="Sprints" -->
-					<!-- 			 > -->
-					<!-- 		</gantt-chart> -->
-					<!-- 	</div> -->
-					<!-- 	<\!-- div panel -\-> -->
+<!-- 					<\!-- <accordion-group is-open="ganttOpen" panel-class="warning" ng-init="ganttOpen = false"> -\-> -->
+<!-- 					<\!-- 	<accordion-heading> -\-> -->
+<!-- 					<\!-- 		Time Lines -\-> -->
+<!-- 					<\!-- 		<span class="pull-right hover-pointer" ng-show="!ganttOpen"><icon id="chevron-down"></icon></span> -\-> -->
+<!-- 					<\!-- 		<span class="pull-right hover-pointer" ng-show="ganttOpen"><icon id="chevron-up"></icon></span> -\-> -->
+<!-- 					<\!-- 	</accordion-heading> -\-> -->
+<!-- 					<\!-- 	<div class="panel panel-default"> -\-> -->
+<!-- 					<\!-- 		<gantt-chart -\-> -->
+<!-- 					<\!-- 			 items="sprints" -\-> -->
+<!-- 					<\!-- 			 resourceconf="sprintsGanttConf" -\-> -->
+<!-- 					<\!-- 			 fetchingitems="fetchingSprints" -\-> -->
+<!-- 					<\!-- 			 update-validator="sprintsGanttUpdateValidator(item, update)" -\-> -->
+<!-- 					<\!-- 			 title="Sprints" -\-> -->
+<!-- 					<\!-- 			 > -\-> -->
+<!-- 					<\!-- 		</gantt-chart> -\-> -->
+<!-- 					<\!-- 	</div> -\-> -->
+<!-- 					<\!-- 	<\\!-- div panel -\\-> -\-> -->
 
-					<!-- 	<div class="panel panel-default"> -->
-					<!-- 		<gantt-chart -->
-					<!-- 			 items="tasks" -->
-					<!-- 			 resourceconf="tasksGanttConf" -->
-					<!-- 			 fetchingitems="fetchingTasks" -->
-					<!-- 			 update-validator="tasksGanttUpdateValidator(item, update)" -->
-					<!-- 			 title="Tasks" -->
-					<!-- 			 > -->
-					<!-- 		</gantt-chart> -->
-					<!-- 	</div> -->
-					<!-- 	<\!-- div panel -\-> -->
+<!-- 					<\!-- 	<div class="panel panel-default"> -\-> -->
+<!-- 					<\!-- 		<gantt-chart -\-> -->
+<!-- 					<\!-- 			 items="tasks" -\-> -->
+<!-- 					<\!-- 			 resourceconf="tasksGanttConf" -\-> -->
+<!-- 					<\!-- 			 fetchingitems="fetchingTasks" -\-> -->
+<!-- 					<\!-- 			 update-validator="tasksGanttUpdateValidator(item, update)" -\-> -->
+<!-- 					<\!-- 			 title="Tasks" -\-> -->
+<!-- 					<\!-- 			 > -\-> -->
+<!-- 					<\!-- 		</gantt-chart> -\-> -->
+<!-- 					<\!-- 	</div> -\-> -->
+<!-- 					<\!-- 	<\\!-- div panel -\\-> -\-> -->
 
-					<!-- 	<\!-- <div class="panel panel-default"> -\-> -->
-					<!-- 	<\!-- 	<gantt-chart -\-> -->
-					<!-- 	<\!-- 		 items="tasks" -\-> -->
-					<!-- 	<\!-- 		 resourceconf="tasksGanttConf2" -\-> -->
-					<!-- 	<\!-- 		 item-to-task-data-source="taskData(item)" -\-> -->
-					<!-- 	<\!-- 		 fetchingitems="fetchingTasks" -\-> -->
-					<!-- 	<\!-- 		 update-validator="tasksGanttUpdateValidator(item, update)" -\-> -->
-					<!-- 	<\!-- 	</gantt-chart> -\-> -->
-					<!-- 	<\!-- </div> -\-> -->
-					<!-- 	<\!-- div panel -\-> -->
-					<!-- </accordion-group> -->
+<!-- 					<\!-- 	<\\!-- <div class="panel panel-default"> -\\-> -\-> -->
+<!-- 					<\!-- 	<\\!-- 	<gantt-chart -\\-> -\-> -->
+<!-- 					<\!-- 	<\\!-- 		 items="tasks" -\\-> -\-> -->
+<!-- 					<\!-- 	<\\!-- 		 resourceconf="tasksGanttConf2" -\\-> -\-> -->
+<!-- 					<\!-- 	<\\!-- 		 item-to-task-data-source="taskData(item)" -\\-> -\-> -->
+<!-- 					<\!-- 	<\\!-- 		 fetchingitems="fetchingTasks" -\\-> -\-> -->
+<!-- 					<\!-- 	<\\!-- 		 update-validator="tasksGanttUpdateValidator(item, update)" -\\-> -\-> -->
+<!-- 					<\!-- 	<\\!-- 	</gantt-chart> -\\-> -\-> -->
+<!-- 					<\!-- 	<\\!-- </div> -\\-> -\-> -->
+<!-- 					<\!-- 	<\\!-- div panel -\\-> -\-> -->
+<!-- 					<\!-- </accordion-group> -\-> -->
 
-					<!-- <accordion-group-chevron heading="Time Lines" panel-class="warning"> -->
-					<!-- 	<div class="panel panel-default"> -->
-					<!-- 		<gantt-chart -->
-					<!-- 			 items="sprints" -->
-					<!-- 			 resourceconf="sprintsGanttConf" -->
-					<!-- 			 fetchingitems="fetchingSprints" -->
-					<!-- 			 update-validator="sprintsGanttUpdateValidator(item, update)" -->
-					<!-- 			 title="Sprints" -->
-					<!-- 			 > -->
-					<!-- 		</gantt-chart> -->
-					<!-- 	</div> -->
-					<!-- 	<\!-- div panel -\-> -->
+<!-- 					<\!-- <accordion-group-chevron heading="Time Lines" panel-class="warning"> -\-> -->
+<!-- 					<\!-- 	<div class="panel panel-default"> -\-> -->
+<!-- 					<\!-- 		<gantt-chart -\-> -->
+<!-- 					<\!-- 			 items="sprints" -\-> -->
+<!-- 					<\!-- 			 resourceconf="sprintsGanttConf" -\-> -->
+<!-- 					<\!-- 			 fetchingitems="fetchingSprints" -\-> -->
+<!-- 					<\!-- 			 update-validator="sprintsGanttUpdateValidator(item, update)" -\-> -->
+<!-- 					<\!-- 			 title="Sprints" -\-> -->
+<!-- 					<\!-- 			 > -\-> -->
+<!-- 					<\!-- 		</gantt-chart> -\-> -->
+<!-- 					<\!-- 	</div> -\-> -->
+<!-- 					<\!-- 	<\\!-- div panel -\\-> -\-> -->
 
-					<!-- 	<div class="panel panel-default"> -->
-					<!-- 		<gantt-chart -->
-					<!-- 			 items="tasks" -->
-					<!-- 			 resourceconf="tasksGanttConf" -->
-					<!-- 			 fetchingitems="fetchingTasks" -->
-					<!-- 			 update-validator="tasksGanttUpdateValidator(item, update)" -->
-					<!-- 			 title="Tasks" -->
-					<!-- 			 > -->
-					<!-- 		</gantt-chart> -->
-					<!-- 	</div> -->
-					<!-- </accordion-group-chevron> -->
+<!-- 					<\!-- 	<div class="panel panel-default"> -\-> -->
+<!-- 					<\!-- 		<gantt-chart -\-> -->
+<!-- 					<\!-- 			 items="tasks" -\-> -->
+<!-- 					<\!-- 			 resourceconf="tasksGanttConf" -\-> -->
+<!-- 					<\!-- 			 fetchingitems="fetchingTasks" -\-> -->
+<!-- 					<\!-- 			 update-validator="tasksGanttUpdateValidator(item, update)" -\-> -->
+<!-- 					<\!-- 			 title="Tasks" -\-> -->
+<!-- 					<\!-- 			 > -\-> -->
+<!-- 					<\!-- 		</gantt-chart> -\-> -->
+<!-- 					<\!-- 	</div> -\-> -->
+<!-- 					<\!-- </accordion-group-chevron> -\-> -->
 
-					<!-- -------------------------------------------------- -->
-					<!-- Scrum Updates -->
-					<!-- -------------------------------------------------- -->
-					<accordion-group is-open="scrumAccord.scrumOpen" panel-class="warning" ng-init="scrumAccord = {scrumOpen: false}">
-						<accordion-heading>
-							<span class="hover-pointer">Scrum Updates</span>
-							<span class="pull-right hover-pointer" ng-show="!scrumAccord.scrumOpen"><icon id="chevron-down"></icon></span>
-							<span class="pull-right hover-pointer" ng-show="scrumAccord.scrumOpen"><icon id="chevron-up"></icon></span>
-						</accordion-heading>
-						<!-- Adding scrum update -->
-						<div class="row">
-							<div class="col-md-8">
-								<datecombofromto
-									 name="dateCombo"
-									 from-date="scrumDates.startdate"
-									 to-date="scrumDates.enddate"
-									 from-date-label="Start Date"
-									 to-date-label="End Date"
-									 from-date-required="true"
-									 to-date-required="true">
-								</datecombofromto>
-							</div>
-							<div class="col-md-4">
-								<label>Select User</label>
-								<select class="form-control" ng-model="scrumDates.chosenUser">
-									<option value="showall" selected="selected">Show All</option>
-									<option ng-repeat="user in scrumusers" value="{{user.$id()}}"> {{user.username}} </option> 
-								</select>
-							</div>
-						</div>
+<!-- 					<\!-- -------------------------------------------------- -\-> -->
+<!-- 					<\!-- Scrum Updates -\-> -->
+<!-- 					<\!-- -------------------------------------------------- -\-> -->
+<!-- 					<accordion-group is-open="scrumAccord.scrumOpen" panel-class="warning" ng-init="scrumAccord = {scrumOpen: false}"> -->
+<!-- 						<accordion-heading> -->
+<!-- 							<span class="hover-pointer">Scrum Updates</span> -->
+<!-- 							<span class="pull-right hover-pointer" ng-show="!scrumAccord.scrumOpen"><icon id="chevron-down"></icon></span> -->
+<!-- 							<span class="pull-right hover-pointer" ng-show="scrumAccord.scrumOpen"><icon id="chevron-up"></icon></span> -->
+<!-- 						</accordion-heading> -->
+<!-- 						<\!-- Adding scrum update -\-> -->
+<!-- 						<div class="row"> -->
+<!-- 							<div class="col-md-8"> -->
+<!-- 								<datecombofromto -->
+<!-- 									 name="dateCombo" -->
+<!-- 									 from-date="scrumDates.startdate" -->
+<!-- 									 to-date="scrumDates.enddate" -->
+<!-- 									 from-date-label="Start Date" -->
+<!-- 									 to-date-label="End Date" -->
+<!-- 									 from-date-required="true" -->
+<!-- 									 to-date-required="true"> -->
+<!-- 								</datecombofromto> -->
+<!-- 							</div> -->
+<!-- 							<div class="col-md-4"> -->
+<!-- 								<label>Select User</label> -->
+<!-- 								<select class="form-control" ng-model="scrumDates.chosenUser"> -->
+<!-- 									<option value="showall" selected="selected">Show All</option> -->
+<!-- 									<option ng-repeat="user in scrumusers" value="{{user.$id()}}"> {{user.username}} </option>  -->
+<!-- 								</select> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
 
-						<div class="row" ng-show="scrumDates.chosenUser && scrumDates.chosenUser != 'showall'">
-							<div class="col-md-3">
-								<img style="width: 100%;height: 100%;"class="media-object photo-small pull-left" src="/hive/get-user-photo/{{user.userName}}">
-							</div>
-							<div class="col-md-9">
-								<table>
-									<tr>
-										<scrumupdatecalendar
-											 label="Scrum Status"
-											 update="updateStatus"
-											 datechosen="scrumDates.chosenDate">
-										</scrumupdatecalendar>
-									</tr>
-								</table>
-							</div>
-						</div>
+<!-- 						<div class="row" ng-show="scrumDates.chosenUser && scrumDates.chosenUser != 'showall'"> -->
+<!-- 							<div class="col-md-3"> -->
+<!-- 								<img style="width: 100%;height: 100%;"class="media-object photo-small pull-left" src="/hive/get-user-photo/{{user.userName}}"> -->
+<!-- 							</div> -->
+<!-- 							<div class="col-md-9"> -->
+<!-- 								<table> -->
+<!-- 									<tr> -->
+<!-- 										<scrumupdatecalendar -->
+<!-- 											 label="Scrum Status" -->
+<!-- 											 update="updateStatus" -->
+<!-- 											 datechosen="scrumDates.chosenDate"> -->
+<!-- 										</scrumupdatecalendar> -->
+<!-- 									</tr> -->
+<!-- 								</table> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
 
-						<div class="row">
-							<div class="col-md-4">
-								<label class="checkbox-inline">
-									<input type="checkbox" ng-model="planVal">Show Plan
-								</label>
-							</div>
-							<div class="col-md-4">
-								<label class="checkbox-inline">
-									<input type="checkbox" ng-model="updateVal">Show Update
-								</label>
-							</div>
-							<div class="col-md-4">
-								<label class="checkbox-inline">
-									<input type="checkbox" ng-model="impedimentVal">Show Impediments
-								</label>
-							</div>
-						</div>
+<!-- 						<div class="row"> -->
+<!-- 							<div class="col-md-4"> -->
+<!-- 								<label class="checkbox-inline"> -->
+<!-- 									<input type="checkbox" ng-model="planVal">Show Plan -->
+<!-- 								</label> -->
+<!-- 							</div> -->
+<!-- 							<div class="col-md-4"> -->
+<!-- 								<label class="checkbox-inline"> -->
+<!-- 									<input type="checkbox" ng-model="updateVal">Show Update -->
+<!-- 								</label> -->
+<!-- 							</div> -->
+<!-- 							<div class="col-md-4"> -->
+<!-- 								<label class="checkbox-inline"> -->
+<!-- 									<input type="checkbox" ng-model="impedimentVal">Show Impediments -->
+<!-- 								</label> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
 
-						<div class="row">
-							<div class="col-md-4" >
-								<div ng-show="planVal">
-									<div class="media" ng-repeat="dateGroup in groupedScrumUpdates">
-										<div class="media-heading">
-											<span class = "text-primary">
-												{{dateGroup.key | momentsAgo}}
-											</span>
-										</div>
-										<div class="media-body">
-											<div class="media" ng-repeat="update in dateGroup.values">
-												<div class="media-heading">
-													<span ng-if="update.text != 'undefined'">
-														{{update.text}}
-													</span>
-													<span ng-if="taskGroup.key == 'undefined'">
-														No Update
-													</span>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
+<!-- 						<div class="row"> -->
+<!-- 							<div class="col-md-4" > -->
+<!-- 								<div ng-show="planVal"> -->
+<!-- 									<div class="media" ng-repeat="dateGroup in groupedScrumUpdates"> -->
+<!-- 										<div class="media-heading"> -->
+<!-- 											<span class = "text-primary"> -->
+<!-- 												{{dateGroup.key | momentsAgo}} -->
+<!-- 											</span> -->
+<!-- 										</div> -->
+<!-- 										<div class="media-body"> -->
+<!-- 											<div class="media" ng-repeat="update in dateGroup.values"> -->
+<!-- 												<div class="media-heading"> -->
+<!-- 													<span ng-if="update.text != 'undefined'"> -->
+<!-- 														{{update.text}} -->
+<!-- 													</span> -->
+<!-- 													<span ng-if="taskGroup.key == 'undefined'"> -->
+<!-- 														No Update -->
+<!-- 													</span> -->
+<!-- 												</div> -->
+<!-- 											</div> -->
+<!-- 										</div> -->
+<!-- 									</div> -->
+<!-- 								</div> -->
+<!-- 							</div> -->
 
-							<div class="col-md-4" >
-								<div ng-show="updateVal">
-									<div class="media" ng-repeat="dateGroup in groupedScrumUpdates">
-										<div class="media-heading">
-											<span class = "text-primary">
-												{{dateGroup.key | momentsAgo}}
-											</span>
-										</div>
-										<div class="media-body">
-											<div class="media" ng-repeat="update in dateGroup.values">
-												<div class="media-heading">
-													<span ng-if="update.plan != undefined">
-														{{update.plan}}
-													</span>
-													<span ng-if="update.plan == undefined">
-														No Update
-													</span>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
+<!-- 							<div class="col-md-4" > -->
+<!-- 								<div ng-show="updateVal"> -->
+<!-- 									<div class="media" ng-repeat="dateGroup in groupedScrumUpdates"> -->
+<!-- 										<div class="media-heading"> -->
+<!-- 											<span class = "text-primary"> -->
+<!-- 												{{dateGroup.key | momentsAgo}} -->
+<!-- 											</span> -->
+<!-- 										</div> -->
+<!-- 										<div class="media-body"> -->
+<!-- 											<div class="media" ng-repeat="update in dateGroup.values"> -->
+<!-- 												<div class="media-heading"> -->
+<!-- 													<span ng-if="update.plan != undefined"> -->
+<!-- 														{{update.plan}} -->
+<!-- 													</span> -->
+<!-- 													<span ng-if="update.plan == undefined"> -->
+<!-- 														No Update -->
+<!-- 													</span> -->
+<!-- 												</div> -->
+<!-- 											</div> -->
+<!-- 										</div> -->
+<!-- 									</div> -->
+<!-- 								</div> -->
+<!-- 							</div> -->
 
-							<div class="col-md-4" >
-								<div ng-show="impedimentVal">
-									<div class="media" ng-repeat="dateGroup in groupedScrumUpdates">
-										<div class="media-heading">
-											<span class = "text-primary">
-												{{dateGroup.key | momentsAgo}}
-											</span>
-										</div>
-										<div class="media-body">
-											<div class="media" ng-repeat="update in dateGroup.values">
-												<div class="media-heading">
-													<span ng-if="update.impediments != undefined">
-														{{update.impediments}}
-													</span>
-													<span ng-if="update.impediments == undefined">
-														No Update
-													</span>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
+<!-- 							<div class="col-md-4" > -->
+<!-- 								<div ng-show="impedimentVal"> -->
+<!-- 									<div class="media" ng-repeat="dateGroup in groupedScrumUpdates"> -->
+<!-- 										<div class="media-heading"> -->
+<!-- 											<span class = "text-primary"> -->
+<!-- 												{{dateGroup.key | momentsAgo}} -->
+<!-- 											</span> -->
+<!-- 										</div> -->
+<!-- 										<div class="media-body"> -->
+<!-- 											<div class="media" ng-repeat="update in dateGroup.values"> -->
+<!-- 												<div class="media-heading"> -->
+<!-- 													<span ng-if="update.impediments != undefined"> -->
+<!-- 														{{update.impediments}} -->
+<!-- 													</span> -->
+<!-- 													<span ng-if="update.impediments == undefined"> -->
+<!-- 														No Update -->
+<!-- 													</span> -->
+<!-- 												</div> -->
+<!-- 											</div> -->
+<!-- 										</div> -->
+<!-- 									</div> -->
+<!-- 								</div> -->
+<!-- 							</div> -->
 
-						</div>
-						<!-- <div class="row"> -->
+<!-- 						</div> -->
+<!-- 						<\!-- <div class="row"> -\-> -->
 
-						<!-- <scrum items="tasks" fetchingitems="fetchingTasks" scrum-config="scrumConfig"></scrum> -->
-						<span class="pull-right hover-pointer" ng-show="scrumAccord.scrumOpen" ng-click="scrumAccord.scrumOpen = false"><icon id="chevron-up"></icon></span>
-					</accordion-group>
+<!-- 						<\!-- <scrum items="tasks" fetchingitems="fetchingTasks" scrum-config="scrumConfig"></scrum> -\-> -->
+<!-- 						<span class="pull-right hover-pointer" ng-show="scrumAccord.scrumOpen" ng-click="scrumAccord.scrumOpen = false"><icon id="chevron-up"></icon></span> -->
+<!-- 					</accordion-group> -->
 
-					<!-- <accordion-group is-open="scrumOpen" panel-class="warning" ng-init="scrumOpen = false"> -->
-					<!-- 	<accordion-heading> -->
-					<!-- 		Scrum Updates -->
-					<!-- 		<span class="pull-right hover-pointer" ng-show="!scrumOpen"><icon id="chevron-down"></icon></span> -->
-					<!-- 		<span class="pull-right hover-pointer" ng-show="scrumOpen"><icon id="chevron-up"></icon></span> -->
-					<!-- 	</accordion-heading> -->
-					<!-- 	<\!-- <comment resource-id="{{project.$id()}}" for-resource="projects" user-id="{{security.currentUser.ID}}"></comment> -\-> -->
-					<!-- 	<span class="pull-right hover-pointer" ng-show="scrumOpen"><icon id="chevron-up"></icon></span> -->
-					<!-- </accordion-group> -->
+<!-- 					<\!-- <accordion-group is-open="scrumOpen" panel-class="warning" ng-init="scrumOpen = false"> -\-> -->
+<!-- 					<\!-- 	<accordion-heading> -\-> -->
+<!-- 					<\!-- 		Scrum Updates -\-> -->
+<!-- 					<\!-- 		<span class="pull-right hover-pointer" ng-show="!scrumOpen"><icon id="chevron-down"></icon></span> -\-> -->
+<!-- 					<\!-- 		<span class="pull-right hover-pointer" ng-show="scrumOpen"><icon id="chevron-up"></icon></span> -\-> -->
+<!-- 					<\!-- 	</accordion-heading> -\-> -->
+<!-- 					<\!-- 	<\\!-- <comment resource-id="{{project.$id()}}" for-resource="projects" user-id="{{security.currentUser.ID}}"></comment> -\\-> -\-> -->
+<!-- 					<\!-- 	<span class="pull-right hover-pointer" ng-show="scrumOpen"><icon id="chevron-up"></icon></span> -\-> -->
+<!-- 					<\!-- </accordion-group> -\-> -->
 
-					<!-- <accordion-group-chevron heading="Scrum Updates" panel-class="warning"> -->
-					<!-- </accordion-group-chevron> -->
+<!-- 					<\!-- <accordion-group-chevron heading="Scrum Updates" panel-class="warning"> -\-> -->
+<!-- 					<\!-- </accordion-group-chevron> -\-> -->
 
-				</accordion>
+<!-- 				</accordion> -->
 
-				<!-- </div> -->
-				<!-- <\!-- div panel body -\-> -->
-			</tab>
+<!-- 				<\!-- </div> -\-> -->
+<!-- 				<\!-- <\\!-- div panel body -\\-> -\-> -->
+<!-- 			</tab> -->
 
 			<tab heading="Product Backlog">
 				<tableactive items="backlogItems" fetchingitems="fetchingBacklogItems" resourceconf="backlogItemsConf" ></tableactive>
@@ -904,72 +1420,72 @@
 				<tableactive items="tasks" fetchingitems="fetchingTasks" resourceconf="tasksConf" ></tableactive>
 			</tab>
 
-			<tab heading="Team">
-				<div class="panel-body">
+			<!-- <tab heading="Team"> -->
+			<!-- 	<div class="panel-body"> -->
 
-					<!-- Scrum Master and Team Members -->
-					<div class="panel panel-default">
-						<div class="panel-body">
-							<div class="col-md-4">
-								<users
-									 label="Scrum Master"
-									 users="[scrumMaster]"
-									 collectionName="scrumMaster"
-									 init-options="usersConf"
-									 fetching-users="fetchingScrumMaster"
-									 >
-								</users>
-							</div>
-							<!-- div col -->
-							<div class="col-md-8">
-								<users
-									 label="Team"
-									 users="teamMembers"
-									 collectionName="teamMembers"
-									 init-options="usersConf"
-									 fetching-users="fetchingTeamMembers"
-									 >
-								</users>
-							</div>
-							<!-- div col -->
-						</div>
-						<!-- div panel body -->
-					</div>
-					<!-- div panel -->
+			<!-- 		<\!-- Scrum Master and Team Members -\-> -->
+			<!-- 		<div class="panel panel-default"> -->
+			<!-- 			<div class="panel-body"> -->
+			<!-- 				<div class="col-md-4"> -->
+			<!-- 					<users -->
+			<!-- 						 label="Scrum Master" -->
+			<!-- 						 users="[scrumMaster]" -->
+			<!-- 						 collectionName="scrumMaster" -->
+			<!-- 						 init-options="usersConf" -->
+			<!-- 						 fetching-users="fetchingScrumMaster" -->
+			<!-- 						 > -->
+			<!-- 					</users> -->
+			<!-- 				</div> -->
+			<!-- 				<\!-- div col -\-> -->
+			<!-- 				<div class="col-md-8"> -->
+			<!-- 					<users -->
+			<!-- 						 label="Team" -->
+			<!-- 						 users="teamMembers" -->
+			<!-- 						 collectionName="teamMembers" -->
+			<!-- 						 init-options="usersConf" -->
+			<!-- 						 fetching-users="fetchingTeamMembers" -->
+			<!-- 						 > -->
+			<!-- 					</users> -->
+			<!-- 				</div> -->
+			<!-- 				<\!-- div col -\-> -->
+			<!-- 			</div> -->
+			<!-- 			<\!-- div panel body -\-> -->
+			<!-- 		</div> -->
+			<!-- 		<\!-- div panel -\-> -->
 
-					<!-- Product Owner and Stake Holders -->
-					<div class="panel panel-default">
-						<div class="panel-body">
-							<div class="col-md-4">
-								<users
-									 label="Product Owner"
-									 users="[productOwner]"
-									 collectionName="productOwner"
-									 init-options="usersConf"
-									 fetching-users="fetchingProductOwner"
-									 >
-								</users>
-							</div>
-							<!-- div col -->
-							<div class="col-md-8">
-								<users
-									 label="Stake Holders"
-									 users="stakeHolders"
-									 collectionName="stakeHolders"
-									 init-options="usersConf"
-									 fetching-users="fetchingStakeHolders"
-									 >
-								</users>
-							</div>
-							<!-- div col -->
-						</div>
-						<!-- div panel body -->
-					</div>
-					<!-- div panel -->
+			<!-- 		<\!-- Product Owner and Stake Holders -\-> -->
+			<!-- 		<div class="panel panel-default"> -->
+			<!-- 			<div class="panel-body"> -->
+			<!-- 				<div class="col-md-4"> -->
+			<!-- 					<users -->
+			<!-- 						 label="Product Owner" -->
+			<!-- 						 users="[productOwner]" -->
+			<!-- 						 collectionName="productOwner" -->
+			<!-- 						 init-options="usersConf" -->
+			<!-- 						 fetching-users="fetchingProductOwner" -->
+			<!-- 						 > -->
+			<!-- 					</users> -->
+			<!-- 				</div> -->
+			<!-- 				<\!-- div col -\-> -->
+			<!-- 				<div class="col-md-8"> -->
+			<!-- 					<users -->
+			<!-- 						 label="Stake Holders" -->
+			<!-- 						 users="stakeHolders" -->
+			<!-- 						 collectionName="stakeHolders" -->
+			<!-- 						 init-options="usersConf" -->
+			<!-- 						 fetching-users="fetchingStakeHolders" -->
+			<!-- 						 > -->
+			<!-- 					</users> -->
+			<!-- 				</div> -->
+			<!-- 				<\!-- div col -\-> -->
+			<!-- 			</div> -->
+			<!-- 			<\!-- div panel body -\-> -->
+			<!-- 		</div> -->
+			<!-- 		<\!-- div panel -\-> -->
 
-				</div>
-				<!-- div panel body -->
-			</tab>
+			<!-- 	</div> -->
+			<!-- 	<\!-- div panel body -\-> -->
+			<!-- </tab> -->
 
 		</tabset>
 	</div>
