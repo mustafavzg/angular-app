@@ -10,7 +10,7 @@
 				<action-icon icon="warning-sign" tip="Cannot edit an expired sprint" ng-show="sprint.isExpired()" invert="true"></action-icon>
 				<!-- <action-icon icon="edit" action="sprintsCrudHelpers.edit(sprint.$id())" tip="Edit Sprint" invert="true" ng-hide="sprint.isExpired()"></action-icon> -->
 				<action-icon icon="edit" action="sprintsCrudHelpers.edit(sprint.$id())" tip="Edit Sprint" invert="true"></action-icon>
- 				<!-- <button class="btn btn-primary" role="button" ng-click="sprintsCrudHelpers.edit(sprint.$id())" ng-hide="sprint.isExpired()" ng-cloak><icon id="edit"></icon> Edit Sprint</button> -->
+				<!-- <button class="btn btn-primary" role="button" ng-click="sprintsCrudHelpers.edit(sprint.$id())" ng-hide="sprint.isExpired()" ng-cloak><icon id="edit"></icon> Edit Sprint</button> -->
 			</span>
 		</div>
 	</div>
@@ -44,7 +44,7 @@
 					
 					<!-- <span class="media-object pull-right"> -->
 					<!-- 	<action-icon icon="warning-sign" tip="Cannot edit an expired sprint" ng-show="sprint.isExpired()"></action-icon> -->
- 					<!-- 	<button class="btn btn-primary" role="button" ng-click="sprintsCrudHelpers.edit(sprint.$id())" ng-hide="sprint.isExpired()" ng-cloak><icon id="edit"></icon> Edit Sprint</button> -->
+					<!-- 	<button class="btn btn-primary" role="button" ng-click="sprintsCrudHelpers.edit(sprint.$id())" ng-hide="sprint.isExpired()" ng-cloak><icon id="edit"></icon> Edit Sprint</button> -->
 					<!-- </span> -->
 				</div>					
 			</div>
@@ -53,6 +53,7 @@
 
 	<accordion close-others="false">
 		<accordion-group is-open="commentAccord.commentOpen" panel-class="success" ng-init="commentAccord = {commentOpen: false}">
+
 			<accordion-heading>
 				<span class="hover-pointer">Comments</span>
 				<span class="pull-right hover-pointer" ng-show="!commentAccord.commentOpen"><icon id="chevron-down"></icon></span>
@@ -61,9 +62,20 @@
 			<comment resource-id="{{sprint.$id()}}" for-resource="sprints" user-id="{{security.currentUser.ID}}"></comment>
 			<span class="pull-right hover-pointer" ng-show="commentAccord.commentOpen" ng-click="commentAccord.commentOpen = false"><icon id="chevron-up"></icon></span>
 		</accordion-group>
-		<!-- <accordion-group-chevron heading="Comments" panel-class="success"> -->
-		<!-- 	<comment resource-id="{{project.$id()}}" for-resource="projects" user-id="{{security.currentUser.ID}}"></comment> -->
-		<!-- </accordion-group-chevron> -->
+<!-- <accordion-group-chevron heading="Comments" panel-class="success"> -->
+<!-- 	<comment resource-id="{{project.$id()}}" for-resource="projects" user-id="{{security.currentUser.ID}}"></comment> -->
+<!-- </accordion-group-chevron> -->
+	</accordion>
+	<accordion close-others="false">
+	<accordion-group is-open="documentAccord.documentOpen" panel-class="success" ng-init="documentAccord = {documentOpen: false}">
+		<accordion-heading>
+		<span class="hover-pointer">Attach a Document</span>
+		<span class="pull-right hover-pointer" ng-show="!documentAccord.documentOpen"><icon id="chevron-down"></icon></span>
+		<span class="pull-right hover-pointer" ng-show="documentAccord.documentOpen"><icon id="chevron-up"></icon></span>
+		</accordion-heading>
+		<document resource-id="{{sprint.$id()}}" for-resource="sprints"></document>
+		<span class="pull-right hover-pointer" ng-show="documentAccord.documentOpen" ng-click="documentAccord.documentOpen = false"><icon id="chevron-up"></icon></span>
+	</accordion-group>
 	</accordion>
 
 	<!-- -------------------------------------------------- -->
@@ -171,5 +183,6 @@
 		</tabset>
 	</div>
 	<!-- Other Entities End -->
+
 
 </div>

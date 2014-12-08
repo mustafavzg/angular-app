@@ -61,6 +61,17 @@
 		<!-- 	<comment resource-id="{{backlogItem.$id()}}" for-resource="backlogItems" user-id="{{security.currentUser.ID}}"></comment> -->
 		<!-- </accordion-group-chevron> -->
 	</accordion>
+	<accordion close-others="false">
+	<accordion-group is-open="documentAccord.documentOpen" panel-class="success" ng-init="documentAccord = {documentOpen: false}">
+		<accordion-heading>
+		<span class="hover-pointer">Attach a Document</span>
+		<span class="pull-right hover-pointer" ng-show="!documentAccord.documentOpen"><icon id="chevron-down"></icon></span>
+		<span class="pull-right hover-pointer" ng-show="documentAccord.documentOpen"><icon id="chevron-up"></icon></span>
+		</accordion-heading>
+		<document resource-id="{{backlogItem.$id()}}" for-resource="productbacklog"></document>
+		<span class="pull-right hover-pointer" ng-show="documentAccord.documentOpen" ng-click="documentAccord.documentOpen = false"><icon id="chevron-up"></icon></span>
+	</accordion-group>
+	</accordion>
 
 	<!-- -------------------------------------------------- -->
 	<!-- Other Entities -->
@@ -69,6 +80,7 @@
 	<div class="panel panel-default">
 		<tabset justified="true" type="pills">
 			<tab heading="Dashboard">
+
 				<accordion close-others="true">
 
 					<!-- -------------------------------------------------- -->
@@ -139,8 +151,7 @@
 				</accordion>
 
 				<!-- <pie-chart items="tasks" fetchingitems="fetchingTasks" chart-config="pieChartConfig"></pie-chart> -->
- 				<!-- <burn-down-chart items="tasks" fetchingitems="fetchingTasks" chart-config="burnDownChartConfig"></burn-down-chart> -->
-
+ 				<!-- <burn-down-chart items="tasks" fetchingitems="fetchingTasks" chart-config="burnDownChartConfig"></burn-down-chart> -->			
 			</tab>
 			<tab heading="Tasks">
 				<tableactive items="tasks" fetchingitems="fetchingTasks" resourceconf="tasksConf" ></tableactive>

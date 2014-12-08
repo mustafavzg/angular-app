@@ -52,6 +52,17 @@
 		<!-- 	<comment resource-id="{{project.$id()}}" for-resource="projects" user-id="{{security.currentUser.ID}}"></comment> -->
 		<!-- </accordion-group-chevron> -->
 	</accordion>
+	<accordion close-others="false">
+	<accordion-group is-open="documentAccord.documentOpen" panel-class="success" ng-init="documentAccord = {documentOpen: false}">
+		<accordion-heading>
+		<span class="hover-pointer">Attach a Document</span>
+		<span class="pull-right hover-pointer" ng-show="!documentAccord.documentOpen"><icon id="chevron-down"></icon></span>
+		<span class="pull-right hover-pointer" ng-show="documentAccord.documentOpen"><icon id="chevron-up"></icon></span>
+		</accordion-heading>
+		<document resource-id="{{task.$id()}}" for-resource="tasks"></document>
+		<span class="pull-right hover-pointer" ng-show="documentAccord.documentOpen" ng-click="documentAccord.documentOpen = false"><icon id="chevron-up"></icon></span>
+	</accordion-group>
+	</accordion>
 
 	<!-- -------------------------------------------------- -->
 	<!-- Task Timer -->
@@ -92,21 +103,40 @@
 	<!-- TODO: Implement this with ng-repeat or in separate template files -->
 	<!-- -------------------------------------------------- -->
 	<div class="panel panel-default">
-		<tabset justified="true" type="pills">
-			<tab heading="Dashboard">
-					<accordion close-others="true">
+				<div class="panel-body">
+					<div class="col-md-6">
+						<div class="panel panel-default">
+							<div class="panel-body">
 
-						<!-- -------------------------------------------------- -->
-						<!-- Gantt Charts -->
-						<!-- -------------------------------------------------- -->
-						<accordion-group is-open="ganttAccord.ganttOpen" panel-class="warning" ng-init="ganttAccord = {ganttOpen: true}">
-							<accordion-heading>
-								<span class="hover-pointer">Time Lines</span>
-								<span class="pull-right hover-pointer" ng-show="!ganttAccord.ganttOpen"><icon id="chevron-down"></icon></span>
-								<span class="pull-right hover-pointer" ng-show="ganttAccord.ganttOpen"><icon id="chevron-up"></icon></span>
-							</accordion-heading>
-
-							<div class="panel panel-default">
+								<form role="form" class="form-inline pull-left">
+									<div class="form-group">
+										<!-- <span class="help-block">Action</span> -->
+										<div class="btn-group">
+											<!-- <button class="btn btn-default btn-lg" ng-show="!timerRunning" ng-click="startTimer()"><icon id="play"></icon></button> -->
+											<!-- <button class="btn btn-default btn-lg" ng-show="timerRunning" ng-click="stopTimer()"><icon id="stop"></icon></button> -->
+											<button class="btn btn-default btn-lg" ng-show="!timerRunning" ng-click="startTimer2(beforeTimerStart)"><icon id="play"></icon></button>
+											<button class="btn btn-default btn-lg" ng-show="timerRunning" ng-click="stopTimer2(beforeTimerStop)"><icon id="stop"></icon></button>
+											<span class="timer">
+ 												{{clock | date:'mediumTime'}}
+												<icon id="record"></icon>
+ 												<!-- {{timer | date:'yyyy MM dd HH::mm::ss .sss'}} -->
+ 												<!-- {{timer}} -->
+ 												<span ng-show="!!timer">{{timer | stopWatch}}</span>
+											</span>
+											<!-- <button class="btn btn-default btn-lg" ng-click="addSamples()"><icon id="pause"></icon></button> -->
+										</div>
+									</div>
+								</form>
+								
+							</div>
+							<!-- div panel body -->
+						</div>
+						<!-- div panel -->
+					</div>
+					<!-- div col -->
+					<div class="col-md-12">
+						<div class="panel panel-default">
+							<div class="panel-body">
 								<gantt-chart
 									 items="[task]"
 									 title="Timeline"

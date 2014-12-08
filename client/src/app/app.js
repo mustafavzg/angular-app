@@ -296,14 +296,14 @@ angular.module('app').controller('HeaderCtrl', [
 
 		$scope.isAuthenticated = security.isAuthenticated;
 		$scope.isAdmin = security.isAdmin;
-
-		$scope.home = function () {
-			if (security.isAuthenticated()) {
-				$location.path('/dashboard');
-			} else {
-				$location.path('/projectsinfo');
-			}
-		};
+		$scope.home = function () {};
+		// $scope.home = function () {
+		// 	if (security.isAuthenticated()) {
+		// 		$location.path('/dashboard');
+		// 	} else {
+		// 		$location.path('/projectsinfo');
+		// 	}
+		// };
 
 		$scope.back = function () {
 			locationHistory.prev();

@@ -80,25 +80,36 @@ angular.module('directives.document', [
                             $scope.textarea = 'true';
                             break;
                         }
+                        default : {
+                            $scope.namefield = 'true';
+                            $scope.urlfield = 'true';
+                            $scope.textarea = 'true';
+                        }
                     }
 
                 };
                 $scope.saveDocument = function(document){
+                    if($scope.documentTypeValue  && ((($scope.documentTypeValue == "Hydra Task" || $scope.documentTypeValue == "Wiki Node") && ( document.name && document.url)) || ($scope.documentTypeValue == "Text" && document.text)))
+                    {
                     var tagObj={};
                     var tagKey = Documents.getResourceKey(forResource);
                     tagObj[tagKey] = resourceId;
                     documentToSave ={};
                     documentToSave.documentTypeGroupId = '123';
+                    console.log("checking");
+                    console.log(document.text);
                     if(document.text)
                     {
                        documentToSave.text = document.text ;
+                       console.log("check");
+                       console.log(document);
                    }
                    if(document.url)
                    {
-                       documentToSave.url = (document.documentType == 'Hydra Task') ? "<a href='https://intranet.athenahealth.com/hydra/hydraframeset.esp?ID="+document.url+"'>"+document.url+"</a>" : "<a href = 'https://intranet.athenahealth.com/wiki/node.esp?ID="+document.url+"'>"+document.url+"</a>";
+                       documentToSave.url = ($scope.documentTypeValue == 'Hydra Task') ? "<a href='https://intranet.athenahealth.com/hydra/hydraframeset.esp?ID="+document.url+"'>"+document.url+"</a>" : "<a href = 'https://intranet.athenahealth.com/wiki/node.esp?ID="+document.url+"'>"+document.url+"</a>";
+                       documentToSave.name = document.name;
                    }
                    documentToSave.documentType = $scope.documentTypeValue;
-                   documentToSave.name = document.name;
                    angular.extend(documentToSave,tagObj);
                    var documentObj = new Documents(documentToSave);
                    var successcb = function(){
@@ -111,6 +122,12 @@ angular.module('directives.document', [
                    documentObj.$save(successcb, failurecb);
                    console.log("doc obj");
                    console.log(documentToSave);
+               }
+               else
+               {
+                    console.log("Empty value(s) not allowed");
+               }
+
                };
 
                $scope.editDocument = function(doc)
