@@ -54,9 +54,9 @@ angular.module('directives.document', [
             '$location',
             function ($scope, $element, $attrs, Documents, $location) {
                 $scope.fetchingDocuments = true;
-                $scope.namefield = 'true';
-                $scope.urlfield = 'true';
-                $scope.textarea = 'true';
+                $scope.namefield = true;
+                $scope.urlfield = true;
+                $scope.textarea = true;
                 var resourceId = $scope.resourceId;
                 var forResource = $scope.forResource;
                 $scope.showButton = true;
@@ -68,22 +68,22 @@ angular.module('directives.document', [
                     switch(SelectedOption)
                     {
                         case 'Text' : {
-                            $scope.textarea = 'false';
-                            $scope.namefield = 'true';
-                            $scope.urlfield = 'true';
+                            $scope.textarea = false;
+                            $scope.namefield = true;
+                            $scope.urlfield = true;
                             break;
                         }
                         case 'Wiki Node' : 
                         case 'Hydra Task' : {
-                            $scope.namefield = 'false';
-                            $scope.urlfield = 'false';
-                            $scope.textarea = 'true';
+                            $scope.namefield = false;
+                            $scope.urlfield = false;
+                            $scope.textarea = true;
                             break;
                         }
                         default : {
-                            $scope.namefield = 'true';
-                            $scope.urlfield = 'true';
-                            $scope.textarea = 'true';
+                            $scope.namefield = true;
+                            $scope.urlfield = true;
+                            $scope.textarea = true;
                         }
                     }
 
@@ -218,7 +218,7 @@ angular.module('directives.document', [
         $scope.OnItemClick= function(SelectedOption){
             console.log("click working");
             console.log(SelectedOption);
-            $scope.documentTypeValue = SelectedOption;
+            console.log("hi");
             switch(SelectedOption)
             {
                 case 'Text' : {
@@ -227,6 +227,7 @@ angular.module('directives.document', [
                     $scope.urlfield = 'true';
                     document.linkId = '';
                     document.name = '';
+                    console.log($scope.textarea);
                     break;
                 }
                 case 'Wiki Node' : 
@@ -238,6 +239,7 @@ angular.module('directives.document', [
                     break;
                 }
             }
+            $scope.documentTypeValue = SelectedOption;
 
         };
 
