@@ -17,7 +17,7 @@ angular.module('mongolabResource', [
 
 
 			var url = MONGOLAB_CONFIG.baseUrl + MONGOLAB_CONFIG.dbName + '/collections/' + collectionName;
-			console.log("resource url="+url);
+			// console.log("resource url="+url);
 			var defaultParams = {};
 			if (MONGOLAB_CONFIG.apiKey) {
 				defaultParams.apiKey = MONGOLAB_CONFIG.apiKey;

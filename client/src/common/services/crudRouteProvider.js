@@ -46,8 +46,8 @@
 
 			// Create the templateUrl for a route to our resource that does the specified operation.
 			var templateUrl = function(operation) {
-				console.log("Inside crudRouteProvider.js\n");
-				console.log(baseUrl + '/' + resourceName.toLowerCase() +'-'+operation.toLowerCase()+'.tpl.html');
+				// console.log("Inside crudRouteProvider.js\n");
+				// console.log(baseUrl + '/' + resourceName.toLowerCase() +'-'+operation.toLowerCase()+'.tpl.html');
 				return baseUrl + '/' + resourceName.toLowerCase() +'-'+operation.toLowerCase()+'.tpl.html';
 			};
 			// Create the controller name for a route to our resource that does the specified operation.
@@ -91,8 +91,8 @@
 					// });
 					routeBuilder.when(baseRoute+'/:itemId', {
 						redirectTo: function (routeParams, currentPath) {
-							console.log("redirecting to view");
-							console.log(routeParams);
+							// console.log("redirecting to view");
+							// console.log(routeParams);
 							return currentPath + "/view";
 						}
 					});

@@ -1,0 +1,84 @@
+<div class="media-object pull-left tree-icon" ng-click="toggleChildren(node)">
+<!-- <div class="media-object pull-left tree-icon" ng-click="showChildren = !showChildren"> -->
+	<!-- <span ng-show="!showChildren && nodeHasChildren(node)" ng-class="'text-info'"><icon id="plus-sign"></icon></span> -->
+	<!-- <span ng-show="!!showChildren || !nodeHasChildren(node)" ng-class="{'text-muted': !nodeHasChildren(node), 'text-info': nodeHasChildren(node)}"><icon id="minus-sign"></icon></span> -->
+
+   	<!-- <span ng-show="!showChildren(node) && nodeHasChildren(node)" ng-class="'text-info'"><icon id="plus-sign"></icon></span> -->
+	<!-- <span ng-show="!!showChildren(node) || !nodeHasChildren(node)" ng-class="{'text-muted': !nodeHasChildren(node), 'text-warning': nodeHasChildren(node)}"><icon id="minus-sign"></icon></span> -->
+
+   	<span ng-show="!showChildren(node) && nodeHasChildren(node)" ng-class="'text-info'">
+		<div class="opaque-icon"><icon id="plus-sign"></icon></div>
+	</span>
+	<span ng-show="!!showChildren(node) || !nodeHasChildren(node)" ng-class="{'text-muted': !nodeHasChildren(node), 'text-warning': nodeHasChildren(node)}">
+		<div class="opaque-icon"><icon id="minus-sign"></icon></div>
+	</span>
+
+   	<!-- <span ng-show="!showChildren(node) && nodeHasChildren(node)" ng-class="'text-info'"><icon id="plus"></icon></span> -->
+	<!-- <span ng-show="!!showChildren(node) || !nodeHasChildren(node)" ng-class="{'text-muted': !nodeHasChildren(node), 'text-warning': nodeHasChildren(node)}"><icon id="minus"></icon></span> -->
+	<!-- <button class="btn btn-xs btn-info" ng-show="!showChildren(node) && nodeHasChildren(node)" ng-class="'text-info'"><icon id="plus-sign"></icon></button> -->
+</div>
+
+<!-- <div class="media-object pull-right" ng-click="toggleDescendents(node)"> -->
+<!-- 	<span ng-show="!showDescendents(node) && nodeHasChildren(node)" ng-class="'text-success'"><icon id="circle-arrow-down"></icon></span> -->
+<!-- 	<span ng-show="!!showDescendents(node) || !nodeHasChildren(node)" ng-class="{'text-muted': !nodeHasChildren(node), 'text-warning': nodeHasChildren(node)}"><icon id="circle-arrow-up"></icon></span> -->
+
+<!-- 	<\!-- <div class="btn-group"> -\-> -->
+<!-- 	<\!-- 	<button class="btn btn-default" ng-click="itemsCrudHelpers.new()" tooltip="Create new {{resourcePrettyNameAlt || resourcePrettyName}}" tooltip-placement="top"> -\-> -->
+<!-- 	<\!-- 		<icon id="plus-sign"></icon> -\-> -->
+<!-- 	<\!-- 	</button> -\-> -->
+<!-- 	<\!-- </div> -\-> -->
+<!-- </div> -->
+
+<property-bar get-properties="getSortByProperties(node, itemsSort.sortField)" root-div-class="media-object pull-left" ></property-bar>
+<!-- <property-bar get-properties="getOtherProperties(node, itemsSort.sortField)" root-div-class="pull-right" reverse="{{true}}" ></property-bar> -->
+
+<div class="media-body">
+	<div class="tree-node-content" ng-class="{'bg-danger': isFilteredTreeNode(node)}">
+		<!-- <div class="media-heading" ng-class="{'bg-danger': isFilteredTreeNode(node)}"> -->
+		<div class="media-heading">
+			<!-- <a ng-href="itemsCrudHelpers.view(item.$id())">{{getMediaHeading(item)}}</a> -->
+			<a ng-href="{{itemsCrudHelpers.view(node.$id(), true)}}">
+				<h4>{{getNodeHeading(node)}}</h4>
+			</a>
+			<!-- {{node.label}} -->
+			<!-- <property-bar get-properties="getOtherProperties(node, itemsSort.sortField)" root-div-class="pull-right" reverse="{{true}}" ></property-bar> -->
+		</div>
+		<!-- media content -->
+
+		<p>
+			<span class="label label-default">{{node.$id()}}</span>
+			<!-- <span ng-bind-html="getMediaItemLabels(node)"></span> -->
+			
+			<span ng-bind-html="getTreeNodeLabels(node)"></span>
+
+			<span class="pull-right" ng-click="toggleDescendents(node)">
+				<!-- <span class="label label-default">{{getNodeChildrenCount(node)}} Children</span> -->
+				<!-- <span class="label label-default">{{getNodeDescendentsCount(node)}} Descendents</span> -->
+				<span class="badge badge-default" title="# of Children">{{getNodeChildrenCount(node)}} C</span>
+				<span class="badge badge-default" title="# of Descendents">{{getNodeDescendentsCount(node)}} D</span>
+
+				<span ng-show="!showDescendents(node) && nodeHasChildren(node)" ng-class="'text-success'" tooltip="Expand All" ><icon id="circle-arrow-down"></icon></span>
+				<span ng-show="!!showDescendents(node) || !nodeHasChildren(node)" ng-class="{'text-muted': !nodeHasChildren(node), 'text-warning': nodeHasChildren(node)}" tooltip="Collapse All"><icon id="circle-arrow-up"></icon></span>
+
+				<!-- <div class="btn-group"> -->
+				<!-- 	<button class="btn btn-default" ng-click="itemsCrudHelpers.new()" tooltip="Create new {{resourcePrettyNameAlt || resourcePrettyName}}" tooltip-placement="top"> -->
+				<!-- 		<icon id="plus-sign"></icon> -->
+				<!-- 	</button> -->
+				<!-- </div> -->
+			</span>
+			<!-- {{node.id}} -->
+		</p>
+	</div>
+
+	<!-- <ul class="media-list" ng-show="!!showChildren"> -->
+	<!-- 	<\!-- <li class="media" ng-repeat="node in getNodeChildren(node)" ng-include="'directives/tableactiveTreeNode.tpl.html'" ng-init="showChildren = false"></li> -\-> -->
+	<!-- 	<li class="media" ng-repeat="node in filterednodes = (getNodeChildren(node) | filter:{name:query} | orderBy:itemsSort.sortField:itemsSort.reverse) track by node.$id()" ng-include="'directives/tableactiveTreeNode.tpl.html'" ng-init="showChildren = false"></li> -->
+	<!-- </ul> -->
+
+	<ul class="media-list tree-node-children" ng-show="!!showChildren(node)">
+		<!-- <li class="media tree-node" ng-repeat="node in filterednodes = (getNodeChildren(node) | filter:{name:query} | orderBy:itemsSort.sortField:itemsSort.reverse) track by node.$id()" ng-include="'directives/tableactiveTreeNode.tpl.html'" ng-class="{'tree-node-highlight': isFilteredTreeNode(node)}"></li> -->
+		<li class="media tree-node" ng-repeat="node in filterednodes = (getNodeChildren(node) | orderBy:itemsSort.sortField:itemsSort.reverse) track by node.$id()" ng-include="'directives/tableactiveTreeNode.tpl.html'" ng-class="{'tree-node-highlight': isFilteredTreeNode(node)}"></li>
+	</ul>
+
+</div>
+<!-- div media-body -->

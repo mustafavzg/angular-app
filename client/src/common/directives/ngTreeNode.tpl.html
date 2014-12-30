@@ -1,0 +1,17 @@
+<div class="media-object pull-left tree-icon" ng-click="showChildren = !showChildren">
+	<span ng-show="!showChildren && node.children.length"><icon id="plus-sign"></icon></span>
+	<span ng-show="!!showChildren || !node.children.length" ng-class="{'text-muted': !node.children.length}"><icon id="minus-sign"></icon></span>
+</div>
+<div class="media-body">
+	<div class="media-heading">
+		{{node.label}}
+	</div>
+	<!-- media content -->
+	<p>
+		{{node.id}}
+	</p>
+	<ul class="media-list" id="children" ng-show="!!showChildren">
+		<li class="media" ng-repeat="node in node.children" ng-include="'directives/ngTreeNode.tpl.html'" ng-init="showChildren = false"></li>
+	</ul>
+</div>
+<!-- div media-body -->

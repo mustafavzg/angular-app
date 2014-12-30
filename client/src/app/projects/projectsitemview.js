@@ -498,7 +498,7 @@ angular.module('projectsitemview', [
 				itemsPerPage : 20
 			},
 			sortinit : {
-				fieldKey : 'name',
+				fieldKey : 'priority',
 				reverse : false
 			},
 			tableColumns : [
@@ -540,10 +540,96 @@ angular.module('projectsitemview', [
 					prettyName : 'Status',
 					widthClass : 'col-md-1'
 				}
-			]
+			],
+			mediaViewSpec: {
+				title: {
+					key : 'name',
+					prettyName : 'Name'
+				},
+				// labels: [
+				// 	{
+				// 		key : 'status',
+				// 		prettyName : 'Status',
+				// 		bclass: 'info'
+				// 	},
+				// 	{
+				// 		key : 'estimatedStartDate',
+				// 		type: 'date',
+				// 		prettyName : 'Start Date (Estimated)',
+				// 		icon : 'chevron-right',
+				// 		bclass: 'warning'
+				// 	},
+				// 	{
+				// 		key : 'estimatedEndDate',
+				// 		type: 'date',
+				// 		prettyName : 'End Date (Estimated)',
+				// 		icon : 'chevron-left',
+				// 		bclass: 'warning'
+				// 	}
+
+				// ],
+				// reverse: true,
+				properties: [
+					{
+						key : 'priority',
+						prettyName : 'Priority',
+						icon : 'star'
+					},
+					{
+						key : 'estimation',
+						prettyName : 'Estimation',
+						icon : 'time'
+					},
+					// {
+					// 	key : 'status',
+					// 	prettyName : 'Status',
+					// 	icon : 'sound-stereo'
+					// },
+					{
+						key : 'estimatedStartDate',
+						type: 'date',
+						prettyName : 'Start Date (Estimated)',
+						icon : 'chevron-right'
+					},
+					{
+						key : 'estimatedEndDate',
+						type: 'date',
+						prettyName : 'End Date (Estimated)',
+						icon : 'chevron-left'
+					}
+				]
+			},
+			treeViewSpec: {
+				title: {
+					key : 'name',
+					prettyName : 'Name'
+				},
+				labels: [
+					{
+						key : 'status',
+						prettyName : 'Status',
+						bclass: 'info'
+					},
+					{
+						key : 'estimatedStartDate',
+						type: 'date',
+						prettyName : 'Start Date (Estimated)',
+						icon : 'chevron-right',
+						bclass: 'warning'
+					},
+					{
+						key : 'estimatedEndDate',
+						type: 'date',
+						prettyName : 'End Date (Estimated)',
+						icon : 'chevron-left',
+						bclass: 'warning'
+					}
+				],
+				getNodeParentIdFn : function (node) {
+					return node.parent;
+				}
+			}
 		};
-
-
 
 		$scope.tasksGanttConf = {
 			resource : {
@@ -982,7 +1068,6 @@ angular.module('projectsitemview', [
 		/**************************************************
 		 * Crud helpers for users
 		 **************************************************/
-
 		$scope.usersCrudHelpers = {};
 		angular.extend($scope.usersCrudHelpers, crudListMethods('/projects/'+project.$id()+'/users'));
 

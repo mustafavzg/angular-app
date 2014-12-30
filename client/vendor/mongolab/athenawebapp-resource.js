@@ -173,9 +173,9 @@ angular.module('athenawebappResource', ['resourceCache'])
 
                 // var httpPromise = $http.get(url);
                 // var httpPromise = $http.get(url);
-                console.log("fetching the new get");
-                console.log("resource cache factory:");
-                console.log(resourceCache);
+                // console.log("fetching the new get");
+                // console.log("resource cache factory:");
+                // console.log(resourceCache);
 				var httpPromise = $http.get(url, {cache:resourceCache, params:angular.extend({}, defaultParams, params)});
                 // var httpPromise = $http.get(url, {params:angular.extend({}, defaultParams, params)});
 

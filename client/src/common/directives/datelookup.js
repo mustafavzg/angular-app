@@ -26,7 +26,7 @@ angular.module('directives.datelookup', [
 				scope.opened = false;
 				// Disable weekend selection
 				scope.disabled = function(date, mode) {
-					console.log("calling disabled");
+					// console.log("calling disabled");
 					return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
 				};
 

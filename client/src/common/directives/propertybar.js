@@ -12,11 +12,29 @@ angular.module('directives.propertybar', [
 			replace: true,
 			// require: '^form',
 			scope: {
-				properties: '=',
+				properties: '=?',
+				getProperties: '&?',
 				rootDivClass: '@?',
 				reverse: '@?',
 				vertical: '@?'
-			}
+			},
+			controller: [
+				'$scope',
+				'$element',
+				'$attrs',
+				'dateFilter',
+				function ($scope, $element, $attrs, dateFilter) {
+					$scope.propertiesFn = function () {
+						if( $attrs['properties'] ){
+							return $scope.properties;
+						}
+						if( $attrs['getProperties'] ){
+							return $scope.getProperties();
+						}
+						// return [];
+					};
+				}
+			]
 			// link: function(scope, element, attrs) {
 			// }
 		};

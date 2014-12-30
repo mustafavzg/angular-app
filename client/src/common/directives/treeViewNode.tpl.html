@@ -1,0 +1,37 @@
+<li class="media">
+	<!-- <div ng-class="rootDivClass"> -->
+	<!-- <property-bar get-properties="getSortByProperties(item, itemsSort.sortField)" root-div-class="media-object pull-left" ></property-bar> -->
+	<!-- <property-bar get-properties="getOtherProperties(item, itemsSort.sortField)" root-div-class="media-object pull-right" reverse="{{true}}" ></property-bar> -->
+	<div class="media-object pull-left tree-icon" ng-click="toggleChildren()">
+		<span ng-show="!showChildren && nodeHasChildren(node)"><icon id="plus-sign"></icon></span>
+		<span ng-show="!!showChildren || !nodeHasChildren(node)" ng-class="{'text-muted': !nodeHasChildren(node)}"><icon id="minus-sign"></icon></span>
+	</div>
+	<div class="media-body">
+		<div class="media-heading">
+		 	<!-- <a ng-href="itemsCrudHelpers.view(item.$id())">{{getMediaHeading(item)}}</a> -->
+		 	<!-- <a ng-href="{{itemsCrudHelpers.view(item.$id(), true)}}" > -->
+			<!-- 	{{getMediaHeading(item)}} -->
+			<!-- </a> -->
+			{{nodeLabel({node: node})}}
+		</div>
+		<!-- media content -->
+		<p>
+			<!-- <span class="badge">{{item.$id()}}</span> -->
+			<!-- <span ng-bind-html="getMediaItemLabels(item)"></span> -->
+			<!-- <span class="badge" ng-repeat="label in getMediaItemLabels(item) track by label.name"> -->
+			<!-- 	{{label.name}}: {{label.value}} -->
+			<!-- </span> -->
+			{{nodeBody({node: node})}}
+		</p>
+		<ul class="media-list" id="children" ng-show="!!showChildren">
+			<!-- <tree-node -->
+			<!-- 	 node="child" -->
+			<!-- 	 node-label="nodeLabel({node: node})" -->
+			<!-- 	 node-body="nodeBody({node: node})" -->
+			<!-- 	 ng-repeat="child in node.children" -->
+			<!-- 	 > -->
+			<!-- </tree-node> -->
+		</ul>
+		<!-- div media-body -->
+	</div>
+</li>

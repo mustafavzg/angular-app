@@ -12,7 +12,6 @@
 	<!-- 	</div> -->
 	<!-- </div> -->
 
-	<!-- Pagination -->
 	<div class="row">
 		<div class="col-md-12">
 			<span class="pull-left" ng-click="manageResources()">
@@ -20,20 +19,121 @@
 					{{resourcePrettyName}} <action-icon ng-show="!!manageResources" tip="Manage {{resourcePrettyNameAlt || resourcePrettyName}}" icon="edit" action="manageResources()"></action-icon>
 				</label>
 			</span>
+			
+			<!-- <span class="pull-right"> -->
+			<!-- 	<pagination boundary-links="true" total-items="filtereditems.length" items-per-page="itemsPerPage" ng-model="currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination> -->
 
-			<span class="pull-right">
-				<pagination boundary-links="true" total-items="filtereditems.length" items-per-page="itemsPerPage" ng-model="currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
-
-			</span>
+			<!-- </span> -->
 		</div>
 	</div>
 
 	<!-- Search field -->
-	<div class="form-group">
-		<input type="text" class="form-control" id="query" ng-model="query" ng-disabled="!items.length" placeholder="Search {{resourcePrettyNameAlt}} ... "/>
-	</div>
+	<form class="form-inline" >
+		<div class="form-group">
+			<div class="btn-group">
+				<button class="btn btn-default" ng-click="itemsCrudHelpers.new()" tooltip="Create new {{resourcePrettyNameAlt || resourcePrettyName}}" tooltip-placement="top">
+					<icon id="plus-sign"></icon>
+				</button>
+				<!-- <button class="btn btn-default" ng-click="modalOpen()" tooltip="Tabular view" ><icon id="align-justify"></icon></button> -->
+				<!-- <button class="btn btn-default" ng-click="reloadKanbanData()" tooltip="Thumbnail list view"><icon id="th-list"></icon></button> -->
+			</div>
+		</div>
+
+		<div class="form-group">
+			<input type="text" class="form-control" id="query" ng-model="query" ng-model-options="{ debounce: 200 }" ng-disabled="!items.length" placeholder="Search {{resourcePrettyNameAlt}}"/>
+		</div>
+
+		<div class="form-group">
+			<div class="input-group">
+				<div class="input-group-addon hover-pointer">
+					<span ng-show="itemsSort.reverse" ng-click="toggleReverseSort()" tooltip="Sort in ascending order" ><icon id="sort-by-attributes"></icon></span>
+					<span ng-show="!itemsSort.reverse" ng-click="toggleReverseSort()" tooltip="Sort in descending order"><icon id="sort-by-attributes-alt"></icon></span>
+				</div>
+				<!-- <input name="taskNameFilter" class="form-control" ng-model="taskNameFilter" placeholder="Search by name"/> -->
+				<select name="sortByFilter" class="form-control" ng-model="itemsSort.sortField" ng-options="column.key as column.prettyName for column in tableColumns">
+					<option value="" selected disabled>Sort By</option>
+				</select>
+			</div>
+		</div>
+
+		<!-- <div class="form-group pull-right"> -->
+		<!-- 	<div class="btn-group"> -->
+		<!-- 		<button class="btn btn-default" ng-click="toggleMediaView()" tooltip="{{mediaViewToggle.toolTip}}" tooltip-placement="top"> -->
+		<!-- 			<span ng-show="!!mediaViewToggle.isMediaView"><icon id="align-justify"></icon></span> -->
+		<!-- 			<span ng-show="!mediaViewToggle.isMediaView"><icon id="th-list"></icon></span> -->
+		<!-- 		</button> -->
+		<!-- 		<\!-- <button class="btn btn-default" ng-click="modalOpen()" tooltip="Tabular view" ><icon id="align-justify"></icon></button> -\-> -->
+		<!-- 		<\!-- <button class="btn btn-default" ng-click="reloadKanbanData()" tooltip="Thumbnail list view"><icon id="th-list"></icon></button> -\-> -->
+		<!-- 	</div> -->
+		<!-- </div> -->
+
+		<div class="form-group pull-right" ng-if="viewModes.length > 1">
+			<div class="btn-group" dropdown is-open="isOpenViewMode">
+				<button type="button" class="btn btn-default dropdown-toggle" tooltip="Select viewing mode" tooltip-placement="top" ng-click="isOpenViewMode = !isOpenViewMode">
+					<icon id="eye-open"></icon> View Mode <span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu" role="menu">
+					<li ng-repeat="viewMode in viewModes" ng-click="selectViewMode(viewMode.key)" ng-class="{'active': isActiveViewMode(viewMode.key)}">
+						<!-- <a href="#"> <icon id="ok" ng-show="isActiveViewMode(viewMode.key)"></icon> {{viewMode.prettyName}}</a> -->
+						<a href="#"> <icon id="{{viewMode.icon}}"></icon> {{viewMode.prettyName}}</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<!-- <div class="form-group pull-right" ng-show="isActiveViewMode('tree')"> -->
+		<!-- 	<div class="btn-group"> -->
+		<!-- 		<button class="btn btn-default" ng-click="toggleDescendents()" ng-show="!showDescendents(node) && nodeHasChildren(node)" ng-class="'text-success'" tooltip="Expand All" ><icon id="circle-arrow-down"></icon></button> -->
+		<!-- 		<button class="btn btn-default" ng-click="toggleDescendents()" ng-show="!!showDescendents(node) || !nodeHasChildren(node)" ng-class="'text-warning'" tooltip="Collapse All"><icon id="circle-arrow-up"></icon></button> -->
+		<!-- 	</div> -->
+		<!-- </div> -->
+
+		<div class="form-group" ng-show="isActiveViewMode('tree')">
+			<div class="btn-group">
+				<!-- <button class="btn" ng-class="{'btn-success': !expandTreeToggle.isExpandTree, 'btn-warning': !!expandTreeToggle.isExpandTree}" ng-click="toggleExpandTree()" tooltip="{{expandTreeToggle.toolTip}}" tooltip-placement="top"> -->
+				<!-- 	<span ng-show="!!expandTreeToggle.isExpandTree"><icon id="circle-arrow-up"></icon></span> -->
+				<!-- 	<span ng-show="!expandTreeToggle.isExpandTree"><icon id="circle-arrow-down"></icon></span> -->
+				<!-- </button> -->
+				<button class="btn btn-default" ng-click="toggleExpandTree()" tooltip="{{expandTreeToggle.toolTip}}" tooltip-placement="top">
+					<span ng-show="!!expandTreeToggle.isExpandTree" class="text-warning"><icon id="circle-arrow-up"></icon></span>
+					<span ng-show="!expandTreeToggle.isExpandTree" class="text-success"><icon id="circle-arrow-down"></icon></span>
+				</button>
+ 			</div>
+		</div>
+
+	</form>
 
 	<hr />
+
+	<!-- Pagination -->
+	<div class="row">
+		<div class="col-md-12">
+			<form class="form-inline">
+				<div class="form-group">
+					<div class="input-group">
+						<div class="input-group-addon">
+							<span tooltip="Items per page" class="hover-pointer"><icon id="resize-vertical"></icon></span>
+						</div>
+						<select name="itemsPerPage" class="form-control" ng-model="itemsPerPage">
+							<option value="" selected disabled>Items per page</option>
+							<option value="10">10</option>
+							<option value="20">20</option>
+							<option value="50">50</option>
+							<option value="100">100</option>
+							<option value="500">500</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group pull-right">
+					<pagination boundary-links="true" total-items="filtereditems.length" items-per-page="itemsPerPage" ng-model="currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-show="!isActiveViewMode('tree')"></pagination>
+ 					<pagination boundary-links="true" total-items="topLevelNodes.length" items-per-page="itemsPerPage" ng-model="currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-show="isActiveViewMode('tree')"></pagination>
+					<!-- <pagination boundary-links="true" total-items="getTopLevelNodes().length" items-per-page="itemsPerPage" ng-model="currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-show="isActiveViewMode('tree')"></pagination> -->
+				</div>
+			</form>
+			<!-- <span class="pull-right"> -->
+
+			<!-- </span> -->
+		</div>
+	</div>
 
 	<!-- <div class="media"> -->
 	<!-- 	<div class="media-object pull-left"></div> -->
@@ -49,9 +149,9 @@
 	<!-- </div> -->
 	<!-- <\!-- div media -\-> -->
 
-
 	<!-- Display the table -->
-	<table class="table table-condensed table-striped table-hover table-sort">
+	<!-- <table class="table table-condensed table-striped table-hover table-sort" ng-show="!mediaViewToggle.isMediaView"> -->
+	<table class="table table-condensed table-striped table-hover table-sort" ng-show="isActiveViewMode('table')">
 		<thead>
 			<tr>
 				<th ng-repeat="column in tableColumns" class="column.widthClass" ng-click="itemsSort.sort(column.key)" >
@@ -63,7 +163,7 @@
 		</thead>
 
 		<tbody>
-			<tr ng-repeat="item in pageitems = ((filtereditems = (items | filter:{name:query} | orderBy:itemsSort.sortField:itemsSort.reverse)) | pagination:currentPage:itemsPerPage)" ng-click="itemsCrudHelpers.view(item.$id())">
+			<tr ng-repeat="item in pageitems = ((filtereditems = (items | filter:{name:query} | orderBy:itemsSort.sortField:itemsSort.reverse)) | pagination:currentPage:itemsPerPage) track by item.$id()" ng-click="itemsCrudHelpers.view(item.$id())">
 				<td ng-repeat="column in tableColumns">
 					<span ng-switch="column.type">
 						<span ng-switch-when="date">{{item[column.key] | date:'mediumDate'}}</span>
@@ -81,5 +181,119 @@
 			</tr>
 		</tbody>
 	</table>
+
+	<!-- <ul class="media-list table-active" ng-if="!!mediaViewSpec" ng-show="!!mediaViewToggle.isMediaView"> -->
+	<ul class="media-list table-active" ng-if="!!mediaViewSpec" ng-show="isActiveViewMode('list')">
+		<li class="media" ng-repeat="item in pageitems track by item.$id()">
+			<!-- <property-bar get-properties="getMediaProperties(item)" root-div-class="media-object pull-right" reverse="{{true}}" ></property-bar> -->
+			<property-bar get-properties="getSortByProperties(item, itemsSort.sortField)" root-div-class="media-object pull-left" ></property-bar>
+			<property-bar get-properties="getOtherProperties(item, itemsSort.sortField)" root-div-class="media-object pull-right" reverse="{{true}}" ></property-bar>
+			<!-- <div class="media-object pull-left"></div> -->
+			<div class="media-body">
+				<div class="media-heading">
+		 			<!-- <a ng-href="itemsCrudHelpers.view(item.$id())">{{getMediaHeading(item)}}</a> -->
+		 			<a ng-href="{{itemsCrudHelpers.view(item.$id(), true)}}" >
+						{{getMediaHeading(item)}}
+					</a>
+				</div>
+				<!-- media content -->
+				<p>
+					<!-- <span class="badge">{{item.$id()}}</span> -->
+					<span class="label label-default">{{item.$id()}}</span>
+					<!-- <span ng-bind-html="getMediaItemLabels(item)"></span> -->
+					<!-- <span class="badge" ng-repeat="label in getMediaItemLabels(item) track by label.name"> -->
+					<!-- 	{{label.name}}: {{label.value}} -->
+					<!-- </span> -->
+				</p>
+			</div>
+			<!-- div media-body -->
+		</li>
+		<!-- div media -->
+	</ul>
+
+	<!-- <ul class="media-list table-active" ng-if="!!mediaViewSpec" ng-show="!!mediaViewToggle.isMediaView"> -->
+	<ul class="media-list" ng-if="!!treeViewSpec" ng-show="isActiveViewMode('tree')">
+		<!-- <li class="media" ng-repeat="node in topLevelNodes track by node.$id()" ng-include="'directives/tableactiveTreeNode.tpl.html'" ng-init="showChildren = false"></li> -->
+		<!-- <li class="media" ng-repeat="node in pagenodes = ((filterednodes = (topLevelNodes | filter:{name:query} | orderBy:itemsSort.sortField:itemsSort.reverse)) | pagination:currentPage:itemsPerPage) track by node.$id()" ng-include="'directives/tableactiveTreeNode.tpl.html'" ng-init="showChildren = false"></li> -->
+
+		<!-- <li class="media tree-node" ng-repeat="node in pagenodes = ((filterednodes = (topLevelNodes | filter:{name:query} | orderBy:itemsSort.sortField:itemsSort.reverse)) | pagination:currentPage:itemsPerPage) track by node.$id()" ng-include="'directives/tableactiveTreeNode.tpl.html'" ng-class="{'tree-node-highlight': isFilteredTreeNode(node)}"></li> -->
+
+		<!-- <li class="media tree-node" ng-repeat="node in pagenodes = ((filterednodes = (topLevelNodes | orderBy:itemsSort.sortField:itemsSort.reverse)) | pagination:currentPage:itemsPerPage) track by node.$id()" ng-include="'directives/tableactiveTreeNode.tpl.html'" ng-class="{'tree-node-highlight': isFilteredTreeNode(node)}"></li> -->
+
+		<!-- <li class="media tree-node" ng-repeat="node in pagenodes = ((filterednodes = (getTopLevelNodes() | orderBy:itemsSort.sortField:itemsSort.reverse)) | pagination:currentPage:itemsPerPage) track by node.$id()" ng-include="'directives/tableactiveTreeNode.tpl.html'" ng-class="{'tree-node-highlight': isFilteredTreeNode(node)}"></li> -->
+
+		<li class="media tree-node" ng-repeat="node in pagenodes = ((filterednodes = (topLevelNodes | filter:isFilteredTopLevelNode | orderBy:itemsSort.sortField:itemsSort.reverse)) | pagination:currentPage:itemsPerPage) track by node.$id()" ng-include="'directives/tableactiveTreeNode.tpl.html'" ng-class="{'tree-node-highlight': isFilteredTreeNode(node)}"></li>
+
+		<!-- < ng-repeat="item in pagenodes = ((filterednodes = (topLevelNodes | filter:{name:query} | orderBy:itemsSort.sortField:nodesSort.reverse)) | pagination:currentPage:itemsPerPage) track by item.$id()" ng-click="itemsCrudHelpers.view(item.$id())"> -->
+	</ul>
+
+	<!-- <ul class="media-list table-active" ng-if="!!mediaViewSpec" ng-show="isActiveViewMode('tree')"> -->
+	<!-- 	<li class="media" ng-repeat="item in pageitems track by item.$id()"> -->
+	<!-- 		<\!-- <property-bar get-properties="getMediaProperties(item)" root-div-class="media-object pull-right" reverse="{{true}}" ></property-bar> -\-> -->
+	<!-- 		<property-bar get-properties="getSortByProperties(item, itemsSort.sortField)" root-div-class="media-object pull-left" ></property-bar> -->
+	<!-- 		<property-bar get-properties="getOtherProperties(item, itemsSort.sortField)" root-div-class="media-object pull-right" reverse="{{true}}" ></property-bar> -->
+	<!-- 		<\!-- <div class="media-object pull-left"></div> -\-> -->
+	<!-- 		<div class="media-body"> -->
+	<!-- 			<div class="media-heading"> -->
+	<!-- 	 			<\!-- <a ng-href="itemsCrudHelpers.view(item.$id())">{{getMediaHeading(item)}}</a> -\-> -->
+	<!-- 	 			<a ng-href="{{itemsCrudHelpers.view(item.$id(), true)}}" > -->
+	<!-- 					{{getMediaHeading(item)}} -->
+	<!-- 				</a> -->
+	<!-- 			</div> -->
+	<!-- 			<\!-- media content -\-> -->
+	<!-- 			<p> -->
+	<!-- 				<span class="badge">{{item.$id()}}</span> -->
+	<!-- 				<span ng-bind-html="getMediaItemLabels(item)"></span> -->
+	<!-- 				<\!-- <span class="badge" ng-repeat="label in getMediaItemLabels(item) track by label.name"> -\-> -->
+	<!-- 				<\!-- 	{{label.name}}: {{label.value}} -\-> -->
+	<!-- 				<\!-- </span> -\-> -->
+	<!-- 			</p> -->
+	<!-- 		</div> -->
+	<!-- 		<\!-- div media-body -\-> -->
+	<!-- 	</li> -->
+	<!-- 	<\!-- div media -\-> -->
+	<!-- </ul> -->
+
+	<!-- <ul class="media-list"> -->
+	<!-- 	<tree-node -->
+	<!-- 		 node="node" -->
+	<!-- 		 node-label="nodeLabel(node)" -->
+	<!-- 		 node-body="nodeBody(node)" -->
+	<!-- 		 ng-repeat="node in treedata" -->
+	<!-- 		 > -->
+	<!-- 	</tree-node> -->
+	<!-- </ul> -->
+
+	<!-- <\!-- dummy data -\-> -->
+	<!-- <tree-view -->
+	<!-- 	 nodes="treedatalist" -->
+	<!-- 	 node-label="nodeLabel(node)" -->
+	<!-- 	 node-body="nodeBody(node)" -->
+	<!-- 	 node-id-fn="getNodeId(node)" -->
+	<!-- 	 node-parent-id-fn="getNodeParentId(node)" -->
+	<!-- 	 > -->
+	<!-- </tree-view> -->
+
+	<!-- <span class="badge">Tasks tree view</span> -->
+	<!-- <tree-view -->
+	<!-- 	 nodes="sortedItems" -->
+	<!-- 	 node-label="itemLabel(node)" -->
+	<!-- 	 node-body="itemBody(node)" -->
+	<!-- 	 node-id-fn="getItemId(node)" -->
+	<!-- 	 node-parent-id-fn="getItemParentId(node)" -->
+	<!-- 	 > -->
+	<!-- </tree-view> -->
+
+	<!-- <span class="badge">NG tree view</span> -->
+	<!-- dummy data -->
+
+	<!-- <ng-tree -->
+	<!-- 	 nodes="treedata" -->
+	<!-- 	 node-label="itemLabel(node)" -->
+	<!-- 	 node-body="itemBody(node)" -->
+	<!-- 	 node-id-fn="getItemId(node)" -->
+	<!-- 	 node-parent-id-fn="getItemParentId(node)" -->
+	<!-- 	 > -->
+	<!-- </ng-tree> -->
 
 </div>
