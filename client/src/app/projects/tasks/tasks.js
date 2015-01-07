@@ -8,6 +8,7 @@ angular.module('tasksnew', [
 	'resources.projects',
 	'directives.userscombosearchadd',
 	'directives.datecombofromto',
+	'directives.tableactive',
 	'directives.pieChart',
 	'services.crud',
 	'services.resourceDictionary',
@@ -147,6 +148,220 @@ angular.module('tasksnew', [
 		var projectId = $route.current.params.projectId;
 		// var sprintId = $route.current.params.sprintId;
 		angular.extend($scope, crudListMethods('/projects/' + projectId + '/tasks'));
+
+		$scope.tasksCrudHelpers = {};
+		angular.extend($scope.tasksCrudHelpers, crudListMethods('/projects/'+ projectId +'/tasks'));
+
+		$scope.tasksConf = {
+			resource : {
+				key : 'tasks',
+				prettyName : 'Tasks',
+				altPrettyName : 'Tasks',
+				// link : $scope.manageTasks,
+				rootDivClass : 'panel-body',
+				itemsCrudHelpers : $scope.tasksCrudHelpers
+			},
+			pagination : {
+				currentPage : 1,
+				itemsPerPage : 100
+			},
+			sortinit : {
+				fieldKey : 'priority',
+				reverse : false
+			},
+			searchinit : {
+				field : {
+					key : 'name',
+					prettyName : 'Name',
+					icon : 'font'
+				}
+			},
+			tableViewSpec: {
+ 				description: {
+					key : 'description',
+					prettyDescription : 'Description'
+				},
+				columns : [
+					{
+						key : 'name',
+						prettyName : 'Name',
+						widthClass : 'col-md-4',
+						icon : ""
+					},
+					// {
+					// 	key : 'description',
+					// 	prettyName : 'Description',
+					// 	widthClass : 'col-md-4'
+					// },
+					{
+						key : 'estimatedStartDate',
+						type: 'date',
+						prettyName : 'Start Date (Estimated)',
+						widthClass : 'col-md-2',
+						skipSearch: true
+					},
+					{
+						key : 'estimatedEndDate',
+						type: 'date',
+						prettyName : 'End Date (Estimated)',
+						widthClass : 'col-md-2',
+						skipSearch: true
+					},
+					{
+						key : 'priority',
+						prettyName : 'Priority',
+						widthClass : 'col-md-1'
+					},
+					{
+						key : 'estimation',
+						prettyName : 'Estimation',
+						widthClass : 'col-md-1'
+					},
+					{
+						key : 'status',
+						prettyName : 'Status',
+						widthClass : 'col-md-1'
+					}
+				]
+			},
+			// tableColumns : [
+			// 	{
+			// 		key : 'name',
+			// 		prettyName : 'Name',
+			// 		widthClass : 'col-md-4',
+			// 		icon : ""
+			// 	},
+			// 	// {
+			// 	// 	key : 'description',
+			// 	// 	prettyName : 'Description',
+			// 	// 	widthClass : 'col-md-4'
+			// 	// },
+			// 	{
+			// 		key : 'estimatedStartDate',
+			// 		type: 'date',
+			// 		prettyName : 'Start Date (Estimated)',
+			// 		widthClass : 'col-md-2',
+			// 		skipSearch: true
+			// 	},
+			// 	{
+			// 		key : 'estimatedEndDate',
+			// 		type: 'date',
+			// 		prettyName : 'End Date (Estimated)',
+			// 		widthClass : 'col-md-2',
+			// 		skipSearch: true
+			// 	},
+			// 	{
+			// 		key : 'priority',
+			// 		prettyName : 'Priority',
+			// 		widthClass : 'col-md-1'
+			// 	},
+			// 	{
+			// 		key : 'estimation',
+			// 		prettyName : 'Estimation',
+			// 		widthClass : 'col-md-1'
+			// 	},
+			// 	{
+			// 		key : 'status',
+			// 		prettyName : 'Status',
+			// 		widthClass : 'col-md-1'
+			// 	}
+			// ],
+			mediaViewSpec: {
+				title: {
+					key : 'name',
+					prettyName : 'Name'
+				},
+ 				description: {
+					key : 'description',
+					prettyDescription : 'Description'
+				},
+				// labels: [
+				// 	{
+				// 		key : 'status',
+				// 		prettyName : 'Status',
+				// 		bclass: 'info'
+				// 	},
+				// 	{
+				// 		key : 'estimatedStartDate',
+				// 		type: 'date',
+				// 		prettyName : 'Start Date (Estimated)',
+				// 		icon : 'chevron-right',
+				// 		bclass: 'warning'
+				// 	},
+				// 	{
+				// 		key : 'estimatedEndDate',
+				// 		type: 'date',
+				// 		prettyName : 'End Date (Estimated)',
+				// 		icon : 'chevron-left',
+				// 		bclass: 'warning'
+				// 	}
+				// ],
+				// reverse: true,
+				properties: [
+					{
+						key : 'priority',
+						prettyName : 'Priority',
+						icon : 'star'
+					},
+					{
+						key : 'estimation',
+						prettyName : 'Estimation',
+						icon : 'time'
+					},
+					// {
+					// 	key : 'status',
+					// 	prettyName : 'Status',
+					// 	icon : 'sound-stereo'
+					// },
+					{
+						key : 'estimatedStartDate',
+						type: 'date',
+						prettyName : 'Start Date (Estimated)',
+						icon : 'chevron-right'
+					},
+					{
+						key : 'estimatedEndDate',
+						type: 'date',
+						prettyName : 'End Date (Estimated)',
+						icon : 'chevron-left'
+					}
+				]
+			},
+			treeViewSpec: {
+				title: {
+					key : 'name',
+					prettyName : 'Name'
+				},
+ 				description: {
+					key : 'description',
+					prettyDescription : 'Description'
+				},
+				labels: [
+					{
+						key : 'status',
+						prettyName : 'Status',
+						bclass: 'info'
+					},
+					{
+						key : 'estimatedStartDate',
+						type: 'date',
+						prettyName : 'Start Date (Estimated)',
+						icon : 'chevron-right',
+						bclass: 'warning'
+					},
+					{
+						key : 'estimatedEndDate',
+						type: 'date',
+						prettyName : 'End Date (Estimated)',
+						icon : 'chevron-left',
+						bclass: 'warning'
+					}
+				],
+				getNodeParentIdFn : function (node) {
+					return node.parent;
+				}
+			}
+		};
 	}
 ])
 
@@ -225,7 +440,6 @@ angular.module('tasksnew', [
 			}
 		};
 		$scope.task.attributeValuesToDisplay = _.values($scope.task.attributesToDisplay);
-
 
 		/**************************************************
 		 * Task timer data Gantt chart
@@ -1027,7 +1241,7 @@ angular.module('tasksnew', [
 			}
 		);
 
-		
+
 		$scope.viewProductBacklogItem = function (productBacklogItemId) {
 			$location.path('/projects/'+project.$id()+'/productbacklog/'+productBacklogItemId);
 		};

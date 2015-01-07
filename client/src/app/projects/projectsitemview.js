@@ -275,28 +275,91 @@ angular.module('projectsitemview', [
 				fieldKey : 'priority',
 				reverse : true
 			},
-			tableColumns : [
-				{
+			searchinit : {
+				field : {
 					key : 'name',
 					prettyName : 'Name',
-					widthClass : 'col-md-2'
-				},
-				{
-					key : 'description',
-					prettyName : 'Description',
-					widthClass : 'col-md-4'
-				},
-				{
-					key : 'priority',
-					prettyName : 'Priority',
-					widthClass : 'col-md-1'
-				},
-				{
-					key : 'estimation',
-					prettyName : 'Estimation',
-					widthClass : 'col-md-1'
+					icon : 'font'
 				}
-			]
+			},
+			tableViewSpec: {
+ 				description: {
+					key : 'description',
+					prettyDescription : 'Description'
+				},
+				columns : [
+					{
+						key : 'name',
+						prettyName : 'Name',
+						widthClass : 'col-xs-8'
+					},
+					// {
+					// 	key : 'description',
+					// 	prettyName : 'Description',
+					// 	widthClass : 'col-xs-4'
+					// },
+					{
+						key : 'priority',
+						prettyName : 'Priority',
+						widthClass : 'col-xs-2'
+					},
+					{
+						key : 'estimation',
+						prettyName : 'Estimation',
+						widthClass : 'col-xs-2'
+					}
+				]
+			},
+			mediaViewSpec: {
+				title: {
+					key : 'name',
+					prettyName : 'Name'
+				},
+ 				description: {
+					key : 'description',
+					prettyDescription : 'Description'
+				},
+				properties: [
+					{
+						key : 'priority',
+						prettyName : 'Priority',
+						icon : 'star'
+					},
+					{
+						key : 'estimation',
+						prettyName : 'Estimation',
+						icon : 'time'
+					}
+				]
+			},
+			treeViewSpec: {
+				title: {
+					key : 'name',
+					prettyName : 'Name'
+				},
+ 				description: {
+					key : 'description',
+					prettyDescription : 'Description'
+				},
+				labels: [
+					{
+						key : 'priority',
+						prettyName : 'Priority',
+						icon : 'star',
+						bclass: 'info'
+					},
+					{
+						key : 'estimation',
+						prettyName : 'Estimation',
+						icon : 'time',
+						bclass: 'info'
+					}
+				],
+				getNodeParentIdFn : function (node) {
+					return node.parent;
+				}
+			}
+
 		};
 
 		/**************************************************
@@ -345,30 +408,99 @@ angular.module('projectsitemview', [
 				fieldKey : 'name',
 				reverse : false
 			},
-			tableColumns : [
-				{
+			searchinit : {
+				field : {
 					key : 'name',
 					prettyName : 'Name',
-					widthClass : 'col-md-2'
-				},
-				{
-					key : 'startdate',
-					type: 'date',
-					prettyName : 'Start Date',
-					widthClass : 'col-md-2'
-				},
-				{
-					key : 'enddate',
-					type: 'date',
-					prettyName : 'End Date',
-					widthClass : 'col-md-2'
-				},
-				{
-					key : 'status',
-					prettyName : 'Status',
-					widthClass : 'col-md-2'
+					icon : 'font'
 				}
-			]
+			},
+			tableViewSpec: {
+				columns : [
+					{
+						key : 'name',
+						prettyName : 'Name',
+						widthClass : 'col-md-2'
+					},
+					{
+						key : 'startdate',
+						type: 'date',
+						prettyName : 'Start Date',
+						widthClass : 'col-md-2',
+						skipSearch: true
+					},
+					{
+						key : 'enddate',
+						type: 'date',
+						prettyName : 'End Date',
+						widthClass : 'col-md-2',
+						skipSearch: true
+					},
+					{
+						key : 'status',
+						prettyName : 'Status',
+						widthClass : 'col-md-2'
+					}
+				]
+			},
+			// tableColumns : [
+			// 	{
+			// 		key : 'name',
+			// 		prettyName : 'Name',
+			// 		widthClass : 'col-md-2'
+			// 	},
+			// 	{
+			// 		key : 'startdate',
+			// 		type: 'date',
+			// 		prettyName : 'Start Date',
+			// 		widthClass : 'col-md-2',
+			// 		skipSearch: true
+			// 	},
+			// 	{
+			// 		key : 'enddate',
+			// 		type: 'date',
+			// 		prettyName : 'End Date',
+			// 		widthClass : 'col-md-2',
+			// 		skipSearch: true
+			// 	},
+			// 	{
+			// 		key : 'status',
+			// 		prettyName : 'Status',
+			// 		widthClass : 'col-md-2'
+			// 	}
+			// ],
+			mediaViewSpec: {
+				title: {
+					key : 'name',
+					prettyName : 'Name'
+				},
+				labels: [
+					{
+						key : 'status',
+						prettyName : 'Status',
+						bclass: 'info'
+					}
+				],
+				properties: [
+					// {
+					// 	key : 'status',
+					// 	prettyName : 'Status',
+					// 	icon : 'sound-stereo'
+					// },
+					{
+						key : 'startdate',
+						type: 'date',
+						prettyName : 'Start Date',
+						icon : 'chevron-right'
+					},
+					{
+						key : 'enddate',
+						type: 'date',
+						prettyName : 'End Date',
+						icon : 'chevron-left'
+					}
+				]
+			}
 		};
 
 		$scope.sprintsGanttConf = {
@@ -501,46 +633,103 @@ angular.module('projectsitemview', [
 				fieldKey : 'priority',
 				reverse : false
 			},
-			tableColumns : [
-				{
+			searchinit : {
+				field : {
 					key : 'name',
 					prettyName : 'Name',
-					widthClass : 'col-md-4',
-					icon : ""
-				},
-				// {
-				// 	key : 'description',
-				// 	prettyName : 'Description',
-				// 	widthClass : 'col-md-4'
-				// },
-				{
-					key : 'estimatedStartDate',
-					type: 'date',
-					prettyName : 'Start Date (Estimated)',
-					widthClass : 'col-md-2'
-				},
-				{
-					key : 'estimatedEndDate',
-					type: 'date',
-					prettyName : 'End Date (Estimated)',
-					widthClass : 'col-md-2'
-				},
-				{
-					key : 'priority',
-					prettyName : 'Priority',
-					widthClass : 'col-md-1'
-				},
-				{
-					key : 'estimation',
-					prettyName : 'Estimation',
-					widthClass : 'col-md-1'
-				},
-				{
-					key : 'status',
-					prettyName : 'Status',
-					widthClass : 'col-md-1'
+					icon : 'font'
 				}
-			],
+			},
+			tableViewSpec: {
+ 				description: {
+					key : 'description',
+					prettyDescription : 'Description'
+				},
+				columns : [
+					{
+						key : 'name',
+						prettyName : 'Name',
+						widthClass : 'col-md-4',
+						icon : ""
+					},
+					// {
+					// 	key : 'description',
+					// 	prettyName : 'Description',
+					// 	widthClass : 'col-md-4'
+					// },
+					{
+						key : 'estimatedStartDate',
+						type: 'date',
+						prettyName : 'Start Date (Estimated)',
+						widthClass : 'col-md-2',
+						skipSearch: true
+					},
+					{
+						key : 'estimatedEndDate',
+						type: 'date',
+						prettyName : 'End Date (Estimated)',
+						widthClass : 'col-md-2',
+						skipSearch: true
+					},
+					{
+						key : 'priority',
+						prettyName : 'Priority',
+						widthClass : 'col-md-1'
+					},
+					{
+						key : 'estimation',
+						prettyName : 'Estimation',
+						widthClass : 'col-md-1'
+					},
+					{
+						key : 'status',
+						prettyName : 'Status',
+						widthClass : 'col-md-1'
+					}
+				]
+			},
+			// tableColumns : [
+			// 	{
+			// 		key : 'name',
+			// 		prettyName : 'Name',
+			// 		widthClass : 'col-md-4',
+			// 		icon : ""
+			// 	},
+			// 	// {
+			// 	// 	key : 'description',
+			// 	// 	prettyName : 'Description',
+			// 	// 	widthClass : 'col-md-4'
+			// 	// },
+			// 	{
+			// 		key : 'estimatedStartDate',
+			// 		type: 'date',
+			// 		prettyName : 'Start Date (Estimated)',
+			// 		widthClass : 'col-md-2',
+			// 		skipSearch: true
+			// 	},
+			// 	{
+			// 		key : 'estimatedEndDate',
+			// 		type: 'date',
+			// 		prettyName : 'End Date (Estimated)',
+			// 		widthClass : 'col-md-2',
+			// 		skipSearch: true
+			// 	},
+			// 	{
+			// 		key : 'priority',
+			// 		prettyName : 'Priority',
+			// 		widthClass : 'col-md-1'
+			// 	},
+			// 	{
+			// 		key : 'estimation',
+			// 		prettyName : 'Estimation',
+			// 		widthClass : 'col-md-1'
+			// 	},
+			// 	{
+			// 		key : 'status',
+			// 		prettyName : 'Status',
+			// 		widthClass : 'col-md-1'
+			// 	}
+			// ],
 			mediaViewSpec: {
 				title: {
 					key : 'name',
@@ -566,7 +755,6 @@ angular.module('projectsitemview', [
 				// 		icon : 'chevron-left',
 				// 		bclass: 'warning'
 				// 	}
-
 				// ],
 				// reverse: true,
 				properties: [
@@ -827,7 +1015,6 @@ angular.module('projectsitemview', [
 		/**************************************************
 		 * Burndown chart
 		 **************************************************/
-
 		var getRandomInt = function (min, max) {
 			return Math.floor(Math.random() * (max - min)) + min;
 		}
@@ -936,7 +1123,6 @@ angular.module('projectsitemview', [
 		/**************************************************
 		 * Kanban Modal Data Sources
 		 **************************************************/
-
 		var getKanbanData = function (tasks) {
 			// var groupedTasks = _.groupBy(
 			// 	tasks,
@@ -1174,7 +1360,6 @@ angular.module('projectsitemview', [
 		/**************************************************
 		 * Fetch scrumupdates and add it in the dashboard page.
 		 **************************************************/
-
 		// Initializing the values.
 		$scope.showAddButton = true;
 		$scope.scrumDates = {};

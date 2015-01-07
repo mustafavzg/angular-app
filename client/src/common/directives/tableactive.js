@@ -28,7 +28,7 @@ angular.module('directives.tableactive', [
 			scope: {
 				resourceconf: '=',
 				items: '=',
-				fetchingitems: '='
+				fetchingitems: '=?'
 			},
 			controller: [
 				'$scope',
@@ -50,17 +50,70 @@ angular.module('directives.tableactive', [
 					$scope.manageResources = conf.resource.link;
 					$scope.resourcePrettyName = conf.resource.prettyName;
 					$scope.resourcePrettyNameAlt = conf.resource.altPrettyName;
-					$scope.tableColumns = conf.tableColumns;
 
+					/**************************************************
+					 * Search Field
+					 **************************************************/
+					$scope.getItemId = function (item) {
+						return item.$id();
+					};
+
+					// $scope.searchByField = conf.searchinit.fieldKey;
+					$scope.itemIDField = {
+						key: '$id',
+						keyfn : $scope.getItemId,
+						type: 'item-id',
+						prettyName : 'ID',
+						widthClass : 'col-md-1'
+						// icon : 'font'
+					};
+
+					$scope.searchByField = (conf.searchinit)? conf.searchinit.field : {};
+					$scope.selectSearchField = function (selectedField) {
+						$scope.searchByField = selectedField;
+					};
+
+					$scope.getSearchFields = function (allFields) {
+						return _.chain(allFields).filter(function (field) {
+							return !field.skipSearch;
+						}).value();
+					};
+
+					$scope.isActiveSearchField = function (key) {
+						return (key === $scope.searchByField.key);
+					};
+
+					$scope.searchBy = function (searchByField, query) {
+						var queryObject;
+						if( searchByField.type === 'item-id' ){
+							queryObject = function (item) {
+								if( query ){
+									return (searchByField.keyfn(item) === query);
+								}
+								return true;
+							};
+						}
+						else {
+							queryObject = {};
+							queryObject[searchByField.key] = query;
+						}
+						return queryObject;
+					};
+
+					/**************************************************
+					 * Item Sort
+					 **************************************************/
 					$scope.itemsSort = {
-						sortField : conf.sortinit.fieldKey,
-						reverse : conf.sortinit.reverse,
+						// sortField : conf.sortinit.fieldKey,
+						// sortFieldorFn : conf.sortinit.fieldKeyFn || conf.sortinit.fieldKey,
+						// reverse : conf.sortinit.reverse,
 						sort : function(fieldname) {
 							if( this.sortField === fieldname){
 								this.reverse = !this.reverse;
 							}
 							else {
 								this.sortField = fieldname;
+								this.sortFieldOrFn = (fieldname === '$id')? $scope.itemIDField.keyfn : fieldname;
 								this.reverse = false;
 							}
 						},
@@ -68,12 +121,52 @@ angular.module('directives.tableactive', [
 							return (this.sortField === fieldname) && this.reverse;
 						},
 						isSortUp : function(fieldname) {
-						return (this.sortField === fieldname) && !this.reverse;
+							return (this.sortField === fieldname) && !this.reverse;
 						}
 					};
 
 					$scope.toggleReverseSort = function () {
 						$scope.itemsSort.reverse = !$scope.itemsSort.reverse;
+					};
+
+					$scope.isActiveSortField = function (key) {
+						return (key === $scope.itemsSort.sortField);
+					};
+
+					$scope.itemsSort.sort(conf.sortinit.fieldKey);
+
+					// $scope._getActiveSortField = function (key, allFields) {
+					// 	return _.filter(allFields, function (field) {
+					// 		return (field.key === key);
+					// 	});
+					// };
+
+					// $scope.getActiveSortField = function (key) {
+					// 	return (key === '$id')? $scope.itemIDField : $scope._getActiveSortField(key, $scope.tableViewSpec.columns);
+					// };
+
+					$scope.getActiveSortField = function (key, allFields) {
+						return (key === '$id')? $scope.itemIDField : _.chain(allFields).filter(function (field) {
+							return (field.key === key);
+						}).value()[0];
+					};
+
+					/**************************************************
+					 * Table View
+					 **************************************************/
+					// $scope.tableColumns = conf.tableColumns;
+					$scope.tableViewSpec = conf.tableViewSpec || {columns: conf.tableColumns};
+
+					$scope.itemDescriptionSpecDefined = function (spec) {
+						return !!spec.description;
+					};
+
+					$scope.getItemDescription = function (item, spec) {
+						return (spec.description)? item[spec.description.key] : "";
+					};
+
+					$scope.getItemViewLink = function (item) {
+						return $scope.itemsCrudHelpers.view(item.$id(), true);
 					};
 
 					/**************************************************
@@ -98,6 +191,9 @@ angular.module('directives.tableactive', [
 					/**************************************************
 					 * View Mode
 					 **************************************************/
+					$scope.viewModeMenu = {
+						isOpen: false
+					};
 
 					$scope.viewModes = [
 						{
@@ -157,9 +253,17 @@ angular.module('directives.tableactive', [
 
 					$scope.mediaViewSpec = conf.mediaViewSpec;
 
-					$scope.getMediaHeading = function (item) {
+					$scope.getMediaItemTitle = function (item) {
 						return item[$scope.mediaViewSpec.title.key];
 					};
+
+					// $scope.itemDescriptionSpecDefined = function () {
+					// 	return !!$scope.mediaViewSpec.description;
+					// };
+
+					// $scope.getMediaItemDescription = function (item) {
+					// 	return ($scope.mediaViewSpec.description)? item[$scope.mediaViewSpec.description.key] : "";
+					// };
 
 					$scope.itemsProperties = {};
 					$scope._getMediaProperties = function (item) {
@@ -237,7 +341,7 @@ angular.module('directives.tableactive', [
 								return labelFn({
 									name: labelSpec.prettyName,
 									value: item[labelSpec.key],
-									bclass: item[labelSpec.bclass]
+									bclass: labelSpec.bclass
 								});
 							}
 						).value().join("");
@@ -425,9 +529,10 @@ angular.module('directives.tableactive', [
 						if( $scope.treeViewSpec.getNodeParentIdFn ){
 							return $scope.treeViewSpec.getNodeParentIdFn(node);
 						}
-						return;
-						// return node.parent;
-						// return $scope.nodeParentIdFn({node: node});
+						else {
+							return node.parent;
+							// return $scope.nodeParentIdFn({node: node});
+						}
 					};
 
 					$scope._getNodeParent = function (node, getNodeParentIdFn) {
@@ -611,6 +716,7 @@ angular.module('directives.tableactive', [
 						$scope.descendentsLookUp = {};
 					};
 
+
 					$scope.initShowChildrenLookUp = function (items) {
 						angular.forEach(items, function(item, index) {
 							$scope.showChildrenLookUp[item.$id()] = false;
@@ -694,17 +800,39 @@ angular.module('directives.tableactive', [
 
 					};
 
-					$scope.$watchCollection('items', function (newItems, oldItems) {
-						if( !angular.equals(newItems, oldItems) ){
-							// $scope.initSortedItems(newItems);
-							$scope.sortedItems = $scope.sortItems(newItems);
+					$scope.collapseTree = function () {
+						$scope.expandTreeToggle = $scope.expandTreeToggleStates[0];
+						$scope.hideAllDescendents($scope.sortedItems);
+					};
+
+					$scope.initTreeViewData = function (items) {
+						if( $scope.treeViewSpec ){
+							$scope.sortedItems = $scope.sortItems(items);
 							$scope.initDescendentsLookUp($scope.sortedItems);
+							// random tree generator !!! to be removed
 							$scope.itemsRandomTree($scope.sortedItems);
 							$scope.initNodeLookUp($scope.sortedItems);
 							$scope.initChildrenLookUp($scope.sortedItems);
 							$scope.initShowChildrenLookUp($scope.sortedItems);
 							$scope.topLevelNodes = $scope.getTopLevelNodes();
 							$scope.initFilteredTopLevelNodes($scope.topLevelNodes);
+						}
+					};
+
+					$scope.initTreeViewData($scope.items);
+					$scope.$watchCollection('items', function (newItems, oldItems) {
+						if( !angular.equals(newItems, oldItems) ){
+							$scope.initTreeViewData(newItems);
+
+							// // $scope.initSortedItems(newItems);
+							// $scope.sortedItems = $scope.sortItems(newItems);
+							// $scope.initDescendentsLookUp($scope.sortedItems);
+							// $scope.itemsRandomTree($scope.sortedItems);
+							// $scope.initNodeLookUp($scope.sortedItems);
+							// $scope.initChildrenLookUp($scope.sortedItems);
+							// $scope.initShowChildrenLookUp($scope.sortedItems);
+							// $scope.topLevelNodes = $scope.getTopLevelNodes();
+							// $scope.initFilteredTopLevelNodes($scope.topLevelNodes);
 						}
 					});
 
@@ -768,6 +896,8 @@ angular.module('directives.tableactive', [
 						$scope.filteredNodesLookUp = _.indexBy(filteredNodes, function (node) {
 							return $scope.getNodeId(node);
 						});
+
+						$scope.collapseTree();
 						$scope.showAncestors(filteredNodes);
 						// angular.forEach(filteredNodes, function(node) {
 						// 	$scope.showAncestors(node);
@@ -784,8 +914,12 @@ angular.module('directives.tableactive', [
 
 					// filter the nodes that match the query and set the
 					// selection class
+					$scope.queryFilterObject = {};
 					$scope.$watch('query', function (newQuery, oldQuery) {
 						if( newQuery !== oldQuery ){
+							// $scope.queryFilterObject = {name: newQuery};
+							$scope.queryFilterObject = $scope.searchBy($scope.searchByField, newQuery);
+
 							var nameFilter = $filter('filter');
 							$scope.filteredNodesLookUp = {};
 							$scope.showChildrenLookUp = {};
@@ -803,57 +937,24 @@ angular.module('directives.tableactive', [
 						}
 					});
 
-					$scope.getItemId = function (item) {
-						return item.$id();
-					};
+					// $scope.getItemId = function (item) {
+					// 	return item.$id();
+					// };
 
-					$scope.getItemParentId = function (item) {
-						return item.parent;
-					};
+					// $scope.getItemParentId = function (item) {
+					// 	return item.parent;
+					// };
 
-					$scope.itemLabel = function (item) {
-						return item.name;
-					};
+					// $scope.itemLabel = function (item) {
+					// 	return item.name;
+					// };
 
-					$scope.itemBody = function (item) {
-						// return item.$id();
-						return item.description;
-					};
+					// $scope.itemBody = function (item) {
+					// 	// return item.$id();
+					// 	return item.description;
+					// };
 				}
 			]
-			// link: function(scope, element, attrs) {
-			// 	console.log("LINKING THE TABLEACTIVE!!!!");
-			// 	var conf = scope.resourceconf;
-			// 	scope.currentPage = conf.pagination.currentPage;
-			// 	scope.itemsPerPage = conf.pagination.itemsPerPage;
-			// 	scope.itemsCrudHelpers = conf.resource.itemsCrudHelpers;
-
-			// 	scope.rootDivClass = conf.resource.rootDivClass;
-			// 	scope.manageResources = conf.resource.link;
-			// 	scope.resourcePrettyName = conf.resource.prettyName;
-			// 	scope.resourcePrettyNameAlt = conf.resource.altPrettyName;
-			// 	scope.tableColumns = conf.tableColumns;
-
-			// 	scope.itemsSort = {
-			// 		sortField : conf.sortinit.fieldKey,
-			// 		reverse : conf.sortinit.reverse,
-			// 		sort : function(fieldname) {
-			// 			if( this.sortField === fieldname){
-			// 				this.reverse = !this.reverse;
-			// 			}
-			// 			else {
-			// 				this.sortField = fieldname;
-			// 				this.reverse = false;
-			// 			}
-			// 		},
-			// 		isSortDown : function(fieldname) {
-			// 			return (this.sortField === fieldname) && this.reverse;
-			// 		},
-			// 		isSortUp : function(fieldname) {
-			// 			return (this.sortField === fieldname) && !this.reverse;
-			// 		}
-			// 	};
-			// }
 		};
 	}
 ])

@@ -98,9 +98,12 @@ angular.module('projects', [
 		$scope.projects = projects;
 		console.log("projects");
 		console.log(projects);
-		security.requestCurrentUser();
+		// security.requestCurrentUser();
 
-		angular.extend($scope, crudListMethods('/projects'));
+		// angular.extend($scope, crudListMethods('/projects'));
+
+		// $scope.projectsCrudHelpers = {};
+		// angular.extend($scope.projectsCrudHelpers, crudListMethods('/projects'));
 
 		// /**************************************************
 		//  * Set the roles once we have the user
@@ -117,6 +120,9 @@ angular.module('projects', [
 		// 	}
 		// );
 
+		$scope.projectsCrudHelpers = {};
+		angular.extend($scope.projectsCrudHelpers, crudListMethods('/projects'));
+
 		$scope.projectsConf = {
 			resource : {
 				key : 'projects',
@@ -128,36 +134,86 @@ angular.module('projects', [
 			},
 			pagination : {
 				currentPage : 1,
-				itemsPerPage : 10
+				itemsPerPage : 100
 			},
 			sortinit : {
 				fieldKey : 'name',
 				reverse : false
 			},
-			tableColumns : [
-				{
+			searchinit : {
+				// fieldKey : 'name'
+				field : {
 					key : 'name',
 					prettyName : 'Name',
-					widthClass : 'col-md-2'
-				},
-				{
-					key : 'startdate',
-					type: 'date',
-					prettyName : 'Start Date',
-					widthClass : 'col-md-2'
-				},
-				{
-					key : 'enddate',
-					type: 'date',
-					prettyName : 'End Date',
-					widthClass : 'col-md-2'
-				},
-				{
-					key : 'status',
-					prettyName : 'Status',
-					widthClass : 'col-md-2'
+					icon : 'font'
 				}
-			]
+			},
+			tableViewSpec: {
+				title: {
+					key : 'name',
+					prettyName : 'Name'
+				},
+				description: {
+					key : 'description',
+					prettyDescription : 'Description'
+				},
+				showID: true,
+				columns : [
+					{
+						key : 'name',
+						type: 'item-view-link',
+						prettyName : 'Name',
+						widthClass : 'col-md-2',
+						icon : 'font'
+					},
+					// {
+					// 	key : 'startdate',
+					// 	type: 'date',
+					// 	prettyName : 'Start Date',
+					// 	widthClass : 'col-md-2'
+					// },
+					// {
+					// 	key : 'enddate',
+					// 	type: 'date',
+					// 	prettyName : 'End Date',
+					// 	widthClass : 'col-md-2'
+					// },
+					{
+						key : 'priority',
+						prettyName : 'Priority',
+						widthClass : 'col-md-1',
+						icon : 'star'
+					},
+					{
+						key : 'weight',
+						prettyName : 'Weight',
+						widthClass : 'col-md-1',
+						icon : 'tint'
+					}
+				]
+			},
+			mediaViewSpec: {
+				title: {
+					key : 'name',
+					prettyName : 'Name'
+				},
+ 				description: {
+					key : 'description',
+					prettyDescription : 'Description'
+				},
+				properties: [
+					{
+						key : 'priority',
+						prettyName : 'Priority',
+						icon : 'star'
+					},
+ 					{
+						key : 'weight',
+						prettyName : 'Weight',
+						icon : 'tint'
+					}
+				]
+			}
 		};
 
 		$scope.viewProject = function (project) {

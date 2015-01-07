@@ -1,25 +1,27 @@
-<button type="button" class="btn btn-primary btn-block" ng-click="new()">New Backlog Item</button>
+<tableactive items="backlogItems" resourceconf="backlogItemsConf" ></tableactive>
 
-<hr />
+<!-- <button type="button" class="btn btn-primary btn-block" ng-click="new()">New Backlog Item</button> -->
 
-<table class="table table-condensed table-striped table-hover">
-    <thead>
-    <tr>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Priority</th>
-        <th>Estimation</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr ng-repeat="backlogItem in backlog" ng-click="view(backlogItem.$id())">
-        <td>{{backlogItem.name}}</td>
-        <td>{{backlogItem.description}}</td>
-        <td>{{backlogItem.priority}}</td>
-        <td>{{backlogItem.estimation}}</td>
-    </tr>
-    <tr ng-show="!backlog.length">
-        <td colspan="4">No backlog items</td>
-    </tr>
-    </tbody>
-</table>
+<!-- <hr /> -->
+
+<!-- <table class="table table-condensed table-striped table-hover"> -->
+<!--     <thead> -->
+<!--     <tr> -->
+<!--         <th>Name</th> -->
+<!--         <th>Description</th> -->
+<!--         <th>Priority</th> -->
+<!--         <th>Estimation</th> -->
+<!--     </tr> -->
+<!--     </thead> -->
+<!--     <tbody> -->
+<!--     <tr ng-repeat="backlogItem in backlog" ng-click="view(backlogItem.$id())"> -->
+<!--         <td>{{backlogItem.name}}</td> -->
+<!--         <td>{{backlogItem.description}}</td> -->
+<!--         <td>{{backlogItem.priority}}</td> -->
+<!--         <td>{{backlogItem.estimation}}</td> -->
+<!--     </tr> -->
+<!--     <tr ng-show="!backlog.length"> -->
+<!--         <td colspan="4">No backlog items</td> -->
+<!--     </tr> -->
+<!--     </tbody> -->
+<!-- </table> -->

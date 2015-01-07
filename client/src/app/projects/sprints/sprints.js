@@ -8,6 +8,7 @@ angular.module('sprints', [
 	'directives.propertybar',
 	'directives.icon',
 	'directives.actionicon',
+	'directives.tableactive',
 	'directives.pieChart',
 	'directives.warningblock',
 	'directives.accordionGroupChevron',
@@ -57,8 +58,8 @@ angular.module('sprints', [
 				'$route',
 				'Sprints',
 				function($route, Sprints) {
-					// return Sprints.forProject($route.current.params.projectId);
-					return Sprints.all();
+					return Sprints.forProject($route.current.params.projectId);
+					// return Sprints.all();
 				}
 			]
 		})
@@ -137,10 +138,102 @@ angular.module('sprints', [
 
 		angular.extend($scope, crudListMethods('/projects/'+projectId+'/sprints'));
 
-		$scope.tasks = function (sprint, $event) {
-			$location.path('/projects/'+projectId+'/sprints/'+sprint.$id()+'/tasks');
+		// $scope.tasks = function (sprint, $event) {
+		// 	$location.path('/projects/'+projectId+'/sprints/'+sprint.$id()+'/tasks');
+		// };
+
+		angular.forEach($scope.sprints, function(sprint) {
+			sprint.status = sprint.getStatusPretty();
+		});
+
+		$scope.sprintsCrudHelpers = {};
+		angular.extend($scope.sprintsCrudHelpers, crudListMethods('/projects/'+ projectId +'/sprints'));
+
+		$scope.sprintsConf = {
+			resource : {
+				key : 'sprints',
+				prettyName : 'Sprints',
+				altPrettyName : 'Sprints',
+				// link : $scope.manageSprints,
+				rootDivClass : 'panel-body',
+				itemsCrudHelpers : $scope.sprintsCrudHelpers
+			},
+			pagination : {
+				currentPage : 1,
+				itemsPerPage : 50
+			},
+			sortinit : {
+				fieldKey : 'name',
+				reverse : false
+			},
+			searchinit : {
+				field : {
+					key : 'name',
+					prettyName : 'Name',
+					icon : 'font'
+				}
+			},
+			tableColumns : [
+				{
+					key : 'name',
+					prettyName : 'Name',
+					widthClass : 'col-md-2'
+				},
+				{
+					key : 'startdate',
+					type: 'date',
+					prettyName : 'Start Date',
+					widthClass : 'col-md-2',
+					skipSearch: true
+				},
+				{
+					key : 'enddate',
+					type: 'date',
+					prettyName : 'End Date',
+					widthClass : 'col-md-2',
+					skipSearch: true
+				},
+				{
+					key : 'status',
+					prettyName : 'Status',
+					widthClass : 'col-md-2'
+				}
+			],
+			mediaViewSpec: {
+				title: {
+					key : 'name',
+					prettyName : 'Name'
+				},
+				labels: [
+					{
+						key : 'status',
+						prettyName : 'Status',
+						bclass: 'info'
+					}
+				],
+				properties: [
+					// {
+					// 	key : 'status',
+					// 	prettyName : 'Status',
+					// 	icon : 'sound-stereo'
+					// },
+					{
+						key : 'startdate',
+						type: 'date',
+						prettyName : 'Start Date',
+						icon : 'chevron-right'
+					},
+					{
+						key : 'enddate',
+						type: 'date',
+						prettyName : 'End Date',
+						icon : 'chevron-left'
+					}
+				]
+			}
 		};
-	}])
+	}
+])
 
 .controller('SprintsItemViewCtrl', [
 	'$scope',
@@ -482,7 +575,6 @@ angular.module('sprints', [
 		/**************************************************
 		 * Tasks table active
 		 **************************************************/
-
 		$scope.tasksConf = {
 			resource : {
 				key : 'tasks',
@@ -500,33 +592,175 @@ angular.module('sprints', [
 				fieldKey : 'name',
 				reverse : false
 			},
-			tableColumns : [
-				{
+			searchinit : {
+				field : {
 					key : 'name',
 					prettyName : 'Name',
-					widthClass : 'col-md-2'
-				},
-				{
-					key : 'desc',
-					prettyName : 'Description',
-					widthClass : 'col-md-4'
-				},
-				{
-					key : 'priority',
-					prettyName : 'Priority',
-					widthClass : 'col-md-1'
-				},
-				{
-					key : 'estimation',
-					prettyName : 'Estimation',
-					widthClass : 'col-md-1'
-				},
-				{
-					key : 'status',
-					prettyName : 'Status',
-					widthClass : 'col-md-1'
+					icon : 'font'
 				}
-			]
+			},
+			tableViewSpec: {
+ 				description: {
+					key : 'description',
+					prettyDescription : 'Description'
+				},
+				columns : [
+					{
+						key : 'name',
+						prettyName : 'Name',
+						widthClass : 'col-md-4',
+						icon : ""
+					},
+					// {
+					// 	key : 'description',
+					// 	prettyName : 'Description',
+					// 	widthClass : 'col-md-4'
+					// },
+					{
+						key : 'estimatedStartDate',
+						type: 'date',
+						prettyName : 'Start Date (Estimated)',
+						widthClass : 'col-md-2',
+						skipSearch: true
+					},
+					{
+						key : 'estimatedEndDate',
+						type: 'date',
+						prettyName : 'End Date (Estimated)',
+						widthClass : 'col-md-2',
+						skipSearch: true
+					},
+					{
+						key : 'priority',
+						prettyName : 'Priority',
+						widthClass : 'col-md-1'
+					},
+					{
+						key : 'estimation',
+						prettyName : 'Estimation',
+						widthClass : 'col-md-1'
+					},
+					{
+						key : 'status',
+						prettyName : 'Status',
+						widthClass : 'col-md-1'
+					}
+				]
+			},
+			// tableColumns : [
+			// 	{
+			// 		key : 'name',
+			// 		prettyName : 'Name',
+			// 		widthClass : 'col-md-2'
+			// 	},
+			// 	{
+			// 		key : 'desc',
+			// 		prettyName : 'Description',
+			// 		widthClass : 'col-md-4'
+			// 	},
+			// 	{
+			// 		key : 'priority',
+			// 		prettyName : 'Priority',
+			// 		widthClass : 'col-md-1'
+			// 	},
+			// 	{
+			// 		key : 'estimation',
+			// 		prettyName : 'Estimation',
+			// 		widthClass : 'col-md-1'
+			// 	},
+			// 	{
+			// 		key : 'status',
+			// 		prettyName : 'Status',
+			// 		widthClass : 'col-md-1'
+			// 	}
+			// ]
+			mediaViewSpec: {
+				title: {
+					key : 'name',
+					prettyName : 'Name'
+				},
+				// labels: [
+				// 	{
+				// 		key : 'status',
+				// 		prettyName : 'Status',
+				// 		bclass: 'info'
+				// 	},
+				// 	{
+				// 		key : 'estimatedStartDate',
+				// 		type: 'date',
+				// 		prettyName : 'Start Date (Estimated)',
+				// 		icon : 'chevron-right',
+				// 		bclass: 'warning'
+				// 	},
+				// 	{
+				// 		key : 'estimatedEndDate',
+				// 		type: 'date',
+				// 		prettyName : 'End Date (Estimated)',
+				// 		icon : 'chevron-left',
+				// 		bclass: 'warning'
+				// 	}
+				// ],
+				// reverse: true,
+				properties: [
+					{
+						key : 'priority',
+						prettyName : 'Priority',
+						icon : 'star'
+					},
+					{
+						key : 'estimation',
+						prettyName : 'Estimation',
+						icon : 'time'
+					},
+					// {
+					// 	key : 'status',
+					// 	prettyName : 'Status',
+					// 	icon : 'sound-stereo'
+					// },
+					{
+						key : 'estimatedStartDate',
+						type: 'date',
+						prettyName : 'Start Date (Estimated)',
+						icon : 'chevron-right'
+					},
+					{
+						key : 'estimatedEndDate',
+						type: 'date',
+						prettyName : 'End Date (Estimated)',
+						icon : 'chevron-left'
+					}
+				]
+			},
+			treeViewSpec: {
+				title: {
+					key : 'name',
+					prettyName : 'Name'
+				},
+				labels: [
+					{
+						key : 'status',
+						prettyName : 'Status',
+						bclass: 'info'
+					},
+					{
+						key : 'estimatedStartDate',
+						type: 'date',
+						prettyName : 'Start Date (Estimated)',
+						icon : 'chevron-right',
+						bclass: 'warning'
+					},
+					{
+						key : 'estimatedEndDate',
+						type: 'date',
+						prettyName : 'End Date (Estimated)',
+						icon : 'chevron-left',
+						bclass: 'warning'
+					}
+				],
+				getNodeParentIdFn : function (node) {
+					return node.parent;
+				}
+			}
 		};
 
 		/**************************************************
@@ -1203,6 +1437,6 @@ angular.module('sprints', [
 
 
 
-				
+
 	}
 ]);
