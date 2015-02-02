@@ -53,17 +53,13 @@
 					<!-- 	</div> -->
 					<!-- </div> -->
 
-					<div class="btn-group">
-						<button class="btn btn-default" ng-click="toggleDonut()" tooltip="Reload" tooltip-placement="top">
-							<span ng-show="!!donutToggle.isDonut"><icon id="repeat"></icon></span>
-							<span ng-show="!donutToggle.isDonut"><icon id="repeat"></icon></span>
-						</button>
+					<!-- <div class="btn-group"> -->
+					<!-- 	<\!-- <button class="btn btn-default" ng-click="toggleCumulative()" tooltip="{{cumulativeToggle.toolTip}}" tooltip-placement="top"> -\-> -->
+					<!-- 	<\!-- 	<span ng-show="!!cumulativeToggle.isCumulative"><icon id="align-justify"></icon></span> -\-> -->
+					<!-- 	<\!-- 	<span ng-show="!cumulativeToggle.isCumulative"><icon id="link"></icon></span> -\-> -->
+					<!-- 	<\!-- </button> -\-> -->
+					<!-- </div> -->
 
-						<!-- <button class="btn btn-default" ng-click="toggleCumulative()" tooltip="{{cumulativeToggle.toolTip}}" tooltip-placement="top"> -->
-						<!-- 	<span ng-show="!!cumulativeToggle.isCumulative"><icon id="align-justify"></icon></span> -->
-						<!-- 	<span ng-show="!cumulativeToggle.isCumulative"><icon id="link"></icon></span> -->
-						<!-- </button> -->
-					</div>
 				</div>
 			</form>
 
@@ -72,32 +68,20 @@
 	</div>
 	<!-- div row -->
 
-	<div class="row" ng-show="items.length">
-		<div class="col-md-12">
-			<!-- <div ng-repeat="chart in burnDownCharts" ui-chart="chart.data" chart-options="chart.options"></div> -->
-			<!-- <div ng-repeat="chart in burnDownCharts"> -->
-			<!-- 	<div ui-chart="chart.data" chart-options="chart.options"></div> -->
-			<!-- 	<\!-- <div ui-chart="burnDownChart.data" chart-options="bundDownChart.options"></div> -\-> -->
-			<!-- </div> -->
-		</div>
-		<!-- div col -->
-	</div>
-	<!-- div row -->
- 
-	<!-- <div ui-chart="chartData['data']" chart-options="defaultBurnDownOptions"></div> -->
-	<div ui-chart="taskBurnDownData['data']" chart-options="defaultBurnDownOptions"></div>
-	<div ui-chart="taskInFlowOutFlowData['data']" chart-options="defaultInFlowOutFlowOptions"></div>
-
-
-	<!-- <div class="row"> -->
+	<!-- <div class="row" ng-show="items.length"> -->
 	<!-- 	<div class="col-md-12"> -->
-
-	<!-- 		<div ng-repeat="chart in chartData"> -->
-
-	<!-- 		</div> -->
+	<!-- 		<\!-- <div ng-repeat="chart in burnDownCharts" ui-chart="chart.data" chart-options="chart.options"></div> -\-> -->
+	<!-- 		<\!-- <div ng-repeat="chart in burnDownCharts"> -\-> -->
+	<!-- 		<\!-- 	<div ui-chart="chart.data" chart-options="chart.options"></div> -\-> -->
+	<!-- 		<\!-- 	<\\!-- <div ui-chart="burnDownChart.data" chart-options="bundDownChart.options"></div> -\\-> -\-> -->
+	<!-- 		<\!-- </div> -\-> -->
 	<!-- 	</div> -->
 	<!-- 	<\!-- div col -\-> -->
 	<!-- </div> -->
 	<!-- <\!-- div row -\-> -->
+ 
+	<!-- <div ui-chart="chartData['data']" chart-options="defaultBurnDownOptions"></div> -->
+	<div ui-chart="taskBurnDownData['data']" chart-options="defaultBurnDownOptions"></div>
+	<div ui-chart="taskInFlowOutFlowData['data']" chart-options="defaultInFlowOutFlowOptions"></div>
 
 </div>

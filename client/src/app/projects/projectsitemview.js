@@ -965,20 +965,6 @@ angular.module('projectsitemview', [
 		$scope.burnDownChartConfig = {
 			title: 'Tasks',
 			groupBy: [
-				// {
-				// 	prettyName: 'Status',
-				// 	key: 'status',
-				// 	ordering: 1,
-				// 	colorMap: function (item) {
-				// 		return item.getStatusDef().color;
-				// 	},
-				// 	groupByOrder: function (item) {
-				// 		// console.log("ordering is");
-				// 		// console.log(item.getStatusDef().ordering);
-				// 		return item.getStatusDef().ordering;
-				// 		// return item.getStatusDef().ordering || 0;
-				// 	}
-				// }
 				{
 					prettyName: 'Type',
 					key: 'type',
@@ -998,16 +984,10 @@ angular.module('projectsitemview', [
 				// 	prettyNameSuffix: "for",
 				// 	key: 'estimation',
 				// 	ordering: 1
-				// },
-				// {
-				// 	prettyName: 'Remaining estimation',
-				// 	prettyNameSuffix: "for",
-				// 	key: 'remaining',
-				// 	ordering: 2
 				// }
 			],
 			count: 1,
-			collapse: 1,
+			// collapse: 1,
 			cumulative: 0
 		};
 
