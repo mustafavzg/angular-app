@@ -37,7 +37,6 @@
 	<!-- -------------------------------------------------- -->
 	<!-- Comments -->
 	<!-- -------------------------------------------------- -->
-
 	<accordion close-others="false">
 		<accordion-group is-open="commentAccord.commentOpen" panel-class="success" ng-init="commentAccord = {commentOpen: false}">
 			<accordion-heading>
@@ -52,22 +51,25 @@
 		<!-- 	<comment resource-id="{{project.$id()}}" for-resource="projects" user-id="{{security.currentUser.ID}}"></comment> -->
 		<!-- </accordion-group-chevron> -->
 	</accordion>
+
+	<!-- -------------------------------------------------- -->
+	<!-- Attachments -->
+	<!-- -------------------------------------------------- -->
 	<accordion close-others="false">
-	<accordion-group is-open="documentAccord.documentOpen" panel-class="success" ng-init="documentAccord = {documentOpen: false}">
-		<accordion-heading>
-		<span class="hover-pointer">Attach a Document</span>
-		<span class="pull-right hover-pointer" ng-show="!documentAccord.documentOpen"><icon id="chevron-down"></icon></span>
-		<span class="pull-right hover-pointer" ng-show="documentAccord.documentOpen"><icon id="chevron-up"></icon></span>
-		</accordion-heading>
-		<document resource-id="{{task.$id()}}" for-resource="tasks"></document>
-		<span class="pull-right hover-pointer" ng-show="documentAccord.documentOpen" ng-click="documentAccord.documentOpen = false"><icon id="chevron-up"></icon></span>
-	</accordion-group>
+		<accordion-group is-open="documentAccord.documentOpen" panel-class="success" ng-init="documentAccord = {documentOpen: false}">
+			<accordion-heading>
+				<span class="hover-pointer">Attach a Document</span>
+				<span class="pull-right hover-pointer" ng-show="!documentAccord.documentOpen"><icon id="chevron-down"></icon></span>
+				<span class="pull-right hover-pointer" ng-show="documentAccord.documentOpen"><icon id="chevron-up"></icon></span>
+			</accordion-heading>
+			<document resource-id="{{task.$id()}}" for-resource="tasks"></document>
+			<span class="pull-right hover-pointer" ng-show="documentAccord.documentOpen" ng-click="documentAccord.documentOpen = false"><icon id="chevron-up"></icon></span>
+		</accordion-group>
 	</accordion>
 
 	<!-- -------------------------------------------------- -->
 	<!-- Task Timer -->
 	<!-- -------------------------------------------------- -->
-
 	<div class="panel panel-default">
 		<div class="panel-body" ng-class="{'bg-danger': timerRunning, 'bg-warning': !timerRunning}">
 			<div class="media" ng-class="{'text-danger': timerRunning, 'text-muted': !timerRunning}">
@@ -103,76 +105,84 @@
 	<!-- TODO: Implement this with ng-repeat or in separate template files -->
 	<!-- -------------------------------------------------- -->
 	<div class="panel panel-default">
-				<div class="panel-body">
-					<div class="col-md-6">
-						<div class="panel panel-default">
-							<div class="panel-body">
+		<div class="panel-body">
+			<div class="col-md-6">
+				<div class="panel panel-default">
+					<div class="panel-body">
 
-								<form role="form" class="form-inline pull-left">
-									<div class="form-group">
-										<!-- <span class="help-block">Action</span> -->
-										<div class="btn-group">
-											<!-- <button class="btn btn-default btn-lg" ng-show="!timerRunning" ng-click="startTimer()"><icon id="play"></icon></button> -->
-											<!-- <button class="btn btn-default btn-lg" ng-show="timerRunning" ng-click="stopTimer()"><icon id="stop"></icon></button> -->
-											<button class="btn btn-default btn-lg" ng-show="!timerRunning" ng-click="startTimer2(beforeTimerStart)"><icon id="play"></icon></button>
-											<button class="btn btn-default btn-lg" ng-show="timerRunning" ng-click="stopTimer2(beforeTimerStop)"><icon id="stop"></icon></button>
-											<span class="timer">
- 												{{clock | date:'mediumTime'}}
-												<icon id="record"></icon>
- 												<!-- {{timer | date:'yyyy MM dd HH::mm::ss .sss'}} -->
- 												<!-- {{timer}} -->
- 												<span ng-show="!!timer">{{timer | stopWatch}}</span>
-											</span>
-											<!-- <button class="btn btn-default btn-lg" ng-click="addSamples()"><icon id="pause"></icon></button> -->
-										</div>
-									</div>
-								</form>
-								
+						<form role="form" class="form-inline pull-left">
+							<div class="form-group">
+								<!-- <span class="help-block">Action</span> -->
+								<div class="btn-group">
+									<!-- <button class="btn btn-default btn-lg" ng-show="!timerRunning" ng-click="startTimer()"><icon id="play"></icon></button> -->
+									<!-- <button class="btn btn-default btn-lg" ng-show="timerRunning" ng-click="stopTimer()"><icon id="stop"></icon></button> -->
+									<button class="btn btn-default btn-lg" ng-show="!timerRunning" ng-click="startTimer2(beforeTimerStart)"><icon id="play"></icon></button>
+									<button class="btn btn-default btn-lg" ng-show="timerRunning" ng-click="stopTimer2(beforeTimerStop)"><icon id="stop"></icon></button>
+									<span class="timer">
+ 										{{clock | date:'mediumTime'}}
+										<icon id="record"></icon>
+ 										<!-- {{timer | date:'yyyy MM dd HH::mm::ss .sss'}} -->
+ 										<!-- {{timer}} -->
+ 										<span ng-show="!!timer">{{timer | stopWatch}}</span>
+									</span>
+									<!-- <button class="btn btn-default btn-lg" ng-click="addSamples()"><icon id="pause"></icon></button> -->
+								</div>
 							</div>
-							<!-- div panel body -->
-						</div>
-						<!-- div panel -->
+						</form>
+						
 					</div>
-					<!-- div col -->
-					<div class="col-md-12">
-						<div class="panel panel-default">
-							<div class="panel-body">
-								<gantt-chart
-									 items="[task]"
-									 title="Timeline"
-									 resourceconf="tasksGanttConf2"
-									 item-to-task-data-source="taskData(item)"
-									 fetchingitems="fetchingTasks"
-									 >
-								</gantt-chart>
-							</div>
-							<!-- div panel -->
+					<!-- div panel body -->
+				</div>
+				<!-- div panel -->
+			</div>
+			<!-- div col -->
+			<div class="col-md-12">
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<gantt-chart
+							 items="[task]"
+							 title="Timeline"
+							 resourceconf="tasksGanttConf2"
+							 item-to-task-data-source="taskData(item)"
+							 fetchingitems="fetchingTasks"
+							 >
+						</gantt-chart>
 
-						</accordion-group>
+					</div>
+					<!-- div panel body -->
+				</div>
+				<!-- div panel -->
+			</div>
+			<!-- div col -->
 
-						<!-- -------------------------------------------------- -->
-						<!-- Pie Charts -->
-						<!-- -------------------------------------------------- -->
-						<accordion-group is-open="pieAccord.pieOpen" panel-class="warning" ng-init="pieAccord = {pieOpen: false}">
-							<accordion-heading>
-								<span class="hover-pointer">Break Downs</span>
-								<span class="pull-right hover-pointer" ng-show="!pieAccord.pieOpen"><icon id="chevron-down"></icon></span>
-								<span class="pull-right hover-pointer" ng-show="pieAccord.pieOpen"><icon id="chevron-up"></icon></span>
-							</accordion-heading>
- 							<!-- <pie-chart items="tasks" fetchingitems="fetchingTasks" chart-config="pieChartConfig"></pie-chart> -->
-							<span class="pull-right hover-pointer" ng-show="pieAccord.pieOpen" ng-click="pieAccord.pieOpen = false"><icon id="chevron-up"></icon></span>
-						</accordion-group>
+			<!-- </div> -->
+			<!-- <\!-- div panel -\-> -->
 
-					</accordion>
+			<!-- 				</accordion-group> -->
 
-			</tab>
+			<!-- 				<\!-- -------------------------------------------------- -\-> -->
+			<!-- 				<\!-- Pie Charts -\-> -->
+			<!-- 				<\!-- -------------------------------------------------- -\-> -->
+			<!-- 				<accordion-group is-open="pieAccord.pieOpen" panel-class="warning" ng-init="pieAccord = {pieOpen: false}"> -->
+			<!-- 					<accordion-heading> -->
+			<!-- 						<span class="hover-pointer">Break Downs</span> -->
+			<!-- 						<span class="pull-right hover-pointer" ng-show="!pieAccord.pieOpen"><icon id="chevron-down"></icon></span> -->
+			<!-- 						<span class="pull-right hover-pointer" ng-show="pieAccord.pieOpen"><icon id="chevron-up"></icon></span> -->
+			<!-- 					</accordion-heading> -->
+ 			<!-- 					<\!-- <pie-chart items="tasks" fetchingitems="fetchingTasks" chart-config="pieChartConfig"></pie-chart> -\-> -->
+			<!-- 					<span class="pull-right hover-pointer" ng-show="pieAccord.pieOpen" ng-click="pieAccord.pieOpen = false"><icon id="chevron-up"></icon></span> -->
+			<!-- 				</accordion-group> -->
 
-			<!--<tab heading="Comments">
-				<tableactive items="task.comments" fetchingitems="fetchingComments" resourceconf="commentsConf" ></tableactive>
-			<!--</tab>-->
+			<!-- 			</accordion> -->
 
-		</tabset>
+			<!-- 	</tab> -->
+
+			<!-- 	<\!--<tab heading="Comments"> -->
+			<!-- 		<tableactive items="task.comments" fetchingitems="fetchingComments" resourceconf="commentsConf" ></tableactive> -->
+			<!-- 	<\!--</tab>-\-> -->
+
+			<!-- </tabset> -->
+		</div>
+		<!-- Other Entities End -->
+
 	</div>
-	<!-- Other Entities End -->
-
-</div>

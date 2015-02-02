@@ -61,7 +61,6 @@ angular.module('services.statusLog').factory('statusLog', [
 				return log;
 			};
 
-
 			statusLogService.prototype.getLookUp = function (lookUpKey) {
  				return this.lookUp[lookUpKey].getDictionary();
 			};

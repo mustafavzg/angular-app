@@ -1021,7 +1021,6 @@ angular.module('tasksnew', [
 				return $q.when(true);
 			}
 
-
 			// if( lastLog ){
 			// 	lastLog.stop = clickTime;
 			// 	statusLogs.push(lastLog);

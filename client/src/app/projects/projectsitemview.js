@@ -594,9 +594,9 @@ angular.module('projectsitemview', [
 			function (tasks, responsestatus, responseheaders, responseconfig) {
 				$scope.tasks = tasks;
 				$scope.fetchingTasks = false;
-				var clonedTasks = generateBurnDownData($scope.tasks);
-				// getStatusLogs(clonedTasks, 'created');
-				$scope.taskBurnDownData['data'] = getBurnDownData(clonedTasks, 'created');
+				// var clonedTasks = generateBurnDownData($scope.tasks);
+				// // getStatusLogs(clonedTasks, 'created');
+				// $scope.taskBurnDownData['data'] = getBurnDownData(clonedTasks, 'created');
 				$scope.kanbanData = getKanbanData($scope.tasks);
 				console.log("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
 				console.log("kanban data");
@@ -604,7 +604,7 @@ angular.module('projectsitemview', [
 
 
 				console.log("====================================================================================================");
-				console.log(clonedTasks.length);
+				// console.log(clonedTasks.length);
 				console.log($scope.tasks.length);
 				console.log("Succeeded to fetch tasks");
 				console.log($scope.tasks);
@@ -965,33 +965,32 @@ angular.module('projectsitemview', [
 		$scope.burnDownChartConfig = {
 			title: 'Tasks',
 			groupBy: [
-				{
-					prettyName: 'Status',
-					key: 'status',
-					ordering: 1,
-					colorMap: function (item) {
-						return item.getStatusDef().color;
-					},
-					groupByOrder: function (item) {
-						// console.log("ordering is");
-						// console.log(item.getStatusDef().ordering);
-						return item.getStatusDef().ordering;
-						// return item.getStatusDef().ordering || 0;
-
-					}
-				}
 				// {
-				// 	prettyName: 'Type',
-				// 	key: 'type',
-				// 	ordering: 2,
+				// 	prettyName: 'Status',
+				// 	key: 'status',
+				// 	ordering: 1,
 				// 	colorMap: function (item) {
-				// 		return item.getTypeDef().color;
+				// 		return item.getStatusDef().color;
 				// 	},
 				// 	groupByOrder: function (item) {
-				// 		return item.getTypeDef().ordering;
-				// 		// return item.getTypeDef().ordering || 0;
+				// 		// console.log("ordering is");
+				// 		// console.log(item.getStatusDef().ordering);
+				// 		return item.getStatusDef().ordering;
+				// 		// return item.getStatusDef().ordering || 0;
 				// 	}
 				// }
+				{
+					prettyName: 'Type',
+					key: 'type',
+					ordering: 2,
+					colorMap: function (item) {
+						return item.getTypeDef().color;
+					},
+					groupByOrder: function (item) {
+						return item.getTypeDef().ordering;
+						// return item.getTypeDef().ordering || 0;
+					}
+				}
 			],
 			summary: [
 				// {
@@ -1012,98 +1011,99 @@ angular.module('projectsitemview', [
 			cumulative: 0
 		};
 
-		/**************************************************
-		 * Burndown chart
-		 **************************************************/
-		var getRandomInt = function (min, max) {
-			return Math.floor(Math.random() * (max - min)) + min;
-		}
+		// /**************************************************
+		//  * Burndown chart
+		//  **************************************************/
+		// var getRandomInt = function (min, max) {
+		// 	return Math.floor(Math.random() * (max - min)) + min;
+		// }
 
-		var addStatusLog = function (task, status, date) {
-			task.statusLogs = task.statusLogs || [];
-			task.statusLogs.push({
-				start: date,
-				data: {
-					status: status
-				}
-			});
-		};
+		// var addStatusLog = function (task, status, date) {
+		// 	task.statusLogs = task.statusLogs || [];
+		// 	task.statusLogs.push({
+		// 		start: date,
+		// 		data: {
+		// 			status: status
+		// 		}
+		// 	});
+		// };
 
-		var generateBurnDownData = function (tasks) {
-			var clonedTasks1 = _.clone(tasks);
-			var clonedTasks2 = _.clone(tasks);
-			var clonedTasks = _.flatten(clonedTasks1, clonedTasks2);
-			angular.forEach(clonedTasks, function(task) {
-				// get random days
-				var randomDaysAgoCreated = getRandomInt(1, 30);
-				var randomDaysAgoClosed = getRandomInt(1, randomDaysAgoCreated);
-				// var randomDateCreated = moment().subtract(randomDaysAgoCreated, 'days').toDate().getTime();
-				// var randomDateClosed = moment().subtract(randomDaysAgoClosed, 'days').toDate().getTime();
-				var randomDateCreated = moment().subtract(randomDaysAgoCreated, 'days').toDate();
-				var randomDateClosed = moment().subtract(randomDaysAgoClosed, 'days').toDate();
-				addStatusLog(task, 'created', randomDateCreated);
-				addStatusLog(task, 'closed', randomDateClosed)
-			});
-			return clonedTasks;
-		};
+		// var generateBurnDownData = function (tasks) {
+		// 	var clonedTasks1 = _.clone(tasks);
+		// 	var clonedTasks2 = _.clone(tasks);
+		// 	var clonedTasks = _.flatten(clonedTasks1, clonedTasks2);
+		// 	angular.forEach(clonedTasks, function(task) {
+		// 		// get random days
+		// 		var randomDaysAgoCreated = getRandomInt(1, 30);
+		// 		var randomDaysAgoClosed = getRandomInt(1, randomDaysAgoCreated);
+		// 		// var randomDateCreated = moment().subtract(randomDaysAgoCreated, 'days').toDate().getTime();
+		// 		// var randomDateClosed = moment().subtract(randomDaysAgoClosed, 'days').toDate().getTime();
+		// 		var randomDateCreated = moment().subtract(randomDaysAgoCreated, 'days').toDate();
+		// 		var randomDateClosed = moment().subtract(randomDaysAgoClosed, 'days').toDate();
+		// 		addStatusLog(task, 'created', randomDateCreated);
+		// 		addStatusLog(task, 'closed', randomDateClosed)
+		// 	});
+		// 	return clonedTasks;
+		// };
 
-		var getStatusLogs = function (tasks, status) {
-			var statusLogs = [];
-			angular.forEach(tasks, function(task) {
-				console.log('status logs are what the !! ==================================================');
-				var taskStatuLog = statusLog(task.statusLogs, {lookUp: ['status']});
-				// console.log(taskStatuLog.getLookUp('status'));
-				statusLogs.push(angular.extend({id: task.$id()}, taskStatuLog.getLookUp('status')[status]));
-			});
-			console.log('burndown source data !! ==================================================');
-			console.log(statusLogs);
-			return statusLogs;
-		};
+		// var getStatusLogs = function (tasks, status) {
+		// 	var statusLogs = [];
+		// 	angular.forEach(tasks, function(task) {
+		// 		// console.log('status logs are what the !! ==================================================');
+		// 		var taskStatuLog = statusLog(task.statusLogs, {lookUp: ['status']});
+		// 		// console.log(taskStatuLog.getLookUp('status'));
+		// 		statusLogs.push(angular.extend({id: task.$id()}, taskStatuLog.getLookUp('status')[status]));
+		// 	});
 
-		var _getBurnDownData = function (tasks, status, offset) {
-			var statusLogs = getStatusLogs(tasks, status);
-			var datemap = {};
-			angular.forEach(statusLogs, function(statusLog) {
-				var datestring = moment(statusLog.start).format("YYYY-MM-DD");
-				datemap[datestring] = (!datemap[datestring])? 0 : datemap[datestring];
-				datemap[datestring]++;
-			});
-			console.log('date map !! ==================================================');
-			console.log(datemap);
-			var burnDownData = [];
-			var sortedDates = _.chain(datemap).keys().sortBy(function (key) { return key; }).value();
-			// angular.forEach(datemap, function(taskCount, date) {
-			// 	burnDownData.push([date, taskCount]);
-			// });
+		// 	console.log('burndown source data !! ==================================================');
+		// 	console.log(statusLogs);
+		// 	return statusLogs;
+		// };
 
-			var daysago = 31, today = 1;
-			var allDays = [];
-			for(; --daysago >= today;){
-				allDays.push(moment().subtract(daysago, 'days').format("YYYY-MM-DD"));
-			}
+		// var _getBurnDownData = function (tasks, status, offset) {
+		// 	var statusLogs = getStatusLogs(tasks, status);
+		// 	var datemap = {};
+		// 	angular.forEach(statusLogs, function(statusLog) {
+		// 		var datestring = moment(statusLog.start).format("YYYY-MM-DD");
+		// 		datemap[datestring] = (!datemap[datestring])? 0 : datemap[datestring];
+		// 		datemap[datestring]++;
+		// 	});
+		// 	console.log('date map !! ==================================================');
+		// 	console.log(datemap);
+		// 	var burnDownData = [];
+		// 	var sortedDates = _.chain(datemap).keys().sortBy(function (key) { return key; }).value();
+		// 	// angular.forEach(datemap, function(taskCount, date) {
+		// 	// 	burnDownData.push([date, taskCount]);
+		// 	// });
 
-			var totalTasks = (offset)? offset : 0;
-			angular.forEach(allDays, function(datestring) {
-				totalTasks += (datemap[datestring])? datemap[datestring] : 0;
-				burnDownData.push([datestring + " 10:00AM", totalTasks]);
-			});
+		// 	var daysago = 31, today = 1;
+		// 	var allDays = [];
+		// 	for(; --daysago >= today;){
+		// 		allDays.push(moment().subtract(daysago, 'days').format("YYYY-MM-DD"));
+		// 	}
 
-			console.log('final burndown data !! ==================================================');
-			console.log(burnDownData);
-			return burnDownData;
-		};
+		// 	var totalTasks = (offset)? offset : 0;
+		// 	angular.forEach(allDays, function(datestring) {
+		// 		totalTasks += (datemap[datestring])? datemap[datestring] : 0;
+		// 		burnDownData.push([datestring + " 10:00AM", totalTasks]);
+		// 	});
 
-		var getBurnDownData = function (tasks) {
-			var totalTasks = _getBurnDownData(tasks, 'created', 20);
-			var totalClosedTasks = _getBurnDownData(tasks, 'closed');
-			var openTasks = [];
-			angular.forEach(totalTasks, function(createdData, index) {
-				var openCount = createdData[1] - totalClosedTasks[index][1];
-				openTasks.push([createdData[0], openCount]);
-			});
+		// 	console.log('final burndown data !! ==================================================');
+		// 	console.log(burnDownData);
+		// 	return burnDownData;
+		// };
 
-			return [totalClosedTasks, openTasks, totalTasks];
-		};
+		// var getBurnDownData = function (tasks) {
+		// 	var totalTasks = _getBurnDownData(tasks, 'created', 20);
+		// 	var totalClosedTasks = _getBurnDownData(tasks, 'closed');
+		// 	var openTasks = [];
+		// 	angular.forEach(totalTasks, function(createdData, index) {
+		// 		var openCount = createdData[1] - totalClosedTasks[index][1];
+		// 		openTasks.push([createdData[0], openCount]);
+		// 	});
+
+		// 	return [totalClosedTasks, openTasks, totalTasks];
+		// };
 
 		/**************************************************
 		 * Kanban

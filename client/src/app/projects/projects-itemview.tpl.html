@@ -48,16 +48,19 @@
 
 			<tabset justified="true" type="pills">
 				<tab heading="Preview">
-					<burn-down-chart items="tasks" fetchingitems="fetchingTasks" chart-config="burnDownChartConfig" chart-data="taskBurnDownData"></burn-down-chart>
+					<!-- <burn-down-chart items="tasks" fetchingitems="fetchingTasks" chart-config="burnDownChartConfig" chart-data="taskBurnDownData"></burn-down-chart> -->
+					<!-- <burn-down-chart items="tasks" fetchingitems="fetchingTasks" chart-config="burnDownChartConfig"></burn-down-chart> -->
+					<burn-down-chart items="tasks" fetchingitems="fetchingTasks" chart-config="burnDownChartConfig" random-data="{{true}}" ></burn-down-chart>
  					<pie-chart items="tasks" fetchingitems="fetchingTasks" chart-config="pieChartConfig"></pie-chart>
 				</tab>
 
 				<tab heading="Burn Downs">
-					<burn-down-chart items="tasks" fetchingitems="fetchingTasks" chart-config="burnDownChartConfig" chart-data="taskBurnDownData"></burn-down-chart>
+					<!-- <\!-- <burn-down-chart items="tasks" fetchingitems="fetchingTasks" chart-config="burnDownChartConfig" chart-data="taskBurnDownData"></burn-down-chart> -\-> -->
+					<!-- <burn-down-chart items="tasks" fetchingitems="fetchingTasks" chart-config="burnDownChartConfig" random-data="{{true}}" ></burn-down-chart> -->
 				</tab>
 
 				<tab heading="Break Downs">
-					<pie-chart items="tasks" fetchingitems="fetchingTasks" chart-config="pieChartConfig"></pie-chart>
+					<!-- <pie-chart items="tasks" fetchingitems="fetchingTasks" chart-config="pieChartConfig"></pie-chart> -->
 				</tab>
 
 				<tab heading="Kanban">

@@ -84,16 +84,20 @@
 	</div>
 	<!-- div row -->
  
-	<div ui-chart="chartData['data']" chart-options="defaultBurnDownOptions"></div>
-	<div class="row">
-		<div class="col-md-12">
+	<!-- <div ui-chart="chartData['data']" chart-options="defaultBurnDownOptions"></div> -->
+	<div ui-chart="taskBurnDownData['data']" chart-options="defaultBurnDownOptions"></div>
+	<div ui-chart="taskInFlowOutFlowData['data']" chart-options="defaultInFlowOutFlowOptions"></div>
 
-			<div ng-repeat="chart in chartData">
 
-			</div>
-		</div>
-		<!-- div col -->
-	</div>
-	<!-- div row -->
+	<!-- <div class="row"> -->
+	<!-- 	<div class="col-md-12"> -->
+
+	<!-- 		<div ng-repeat="chart in chartData"> -->
+
+	<!-- 		</div> -->
+	<!-- 	</div> -->
+	<!-- 	<\!-- div col -\-> -->
+	<!-- </div> -->
+	<!-- <\!-- div row -\-> -->
 
 </div>

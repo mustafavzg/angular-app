@@ -381,29 +381,29 @@ angular.module('users-itemview',[
 			task.hasHistory = true;
 		};
 
-		$scope.$watchCollection('scrumDates', function(newObj, oldObj){
-			var startDate = new Date($scope.scrumDates.startdate);
-			var endDate = new Date($scope.scrumDates.enddate);
-			// Check equality just to be sure, as listeners are fired atleast
-			// once during initialization even if the object has not changed
-			if( !angular.equals(newObj, oldObj) ){
-				var filteredUpdates = [];
-				// Iterate through the scrum updates and filter only those updates which
-				// are in the current date range.
-				for(var taskIndex in allScrumUpdates){
-					var currentUpdate = allScrumUpdates[taskIndex];
-					var currentDate = new Date(currentUpdate.date);
-					if(currentDate >= startDate && currentDate <= endDate){
-						var dateString = currentDate.toLocaleDateString();
-						currentUpdate.dateString = dateString;
-						var timeString = currentDate.getHours()+":"+currentDate.getMinutes()+":"+currentDate.getSeconds();
-						currentUpdate.timeString = timeString;
-						filteredUpdates.push(currentUpdate);
-					}
-				}
-				$scope.scrumupdates = filteredUpdates;
-			}
-		});
+		// $scope.$watchCollection('scrumDates', function(newObj, oldObj){
+		// 	var startDate = new Date($scope.scrumDates.startdate);
+		// 	var endDate = new Date($scope.scrumDates.enddate);
+		// 	// Check equality just to be sure, as listeners are fired atleast
+		// 	// once during initialization even if the object has not changed
+		// 	if( !angular.equals(newObj, oldObj) ){
+		// 		var filteredUpdates = [];
+		// 		// Iterate through the scrum updates and filter only those updates which
+		// 		// are in the current date range.
+		// 		for(var taskIndex in allScrumUpdates){
+		// 			var currentUpdate = allScrumUpdates[taskIndex];
+		// 			var currentDate = new Date(currentUpdate.date);
+		// 			if(currentDate >= startDate && currentDate <= endDate){
+		// 				var dateString = currentDate.toLocaleDateString();
+		// 				currentUpdate.dateString = dateString;
+		// 				var timeString = currentDate.getHours()+":"+currentDate.getMinutes()+":"+currentDate.getSeconds();
+		// 				currentUpdate.timeString = timeString;
+		// 				filteredUpdates.push(currentUpdate);
+		// 			}
+		// 		}
+		// 		$scope.scrumupdates = filteredUpdates;
+		// 	}
+		// });
 
 		function dateCompReverse(obj1, obj2){
 			var date1 = new Date(obj1.date);

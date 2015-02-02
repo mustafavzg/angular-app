@@ -186,6 +186,9 @@ angular.module('directives.pieChart', [
 						return pieChartConfig.getAttributes(attrSpecs, options, 'prettyName');
 					};
 
+					/**************************************************
+					 * group by attributes
+					 **************************************************/
 					pieChartConfig.prototype.getGroupByAttributeSpecs = function (options) {
 						// return pieChartConfig.getAttributes(this.groupBy);
 						var that = this;
@@ -217,24 +220,18 @@ angular.module('directives.pieChart', [
 						}));
 					};
 
-					pieChartConfig.prototype.getGroupByAttributesPretty = function (customOrder) {
+					pieChartConfig.prototype.getGroupByAttributesPretty = function (options) {
 						// return pieChartConfig.getAttributeDisplayNames(this.groupBy);
 						var that = this;
-						if( _.isArray(customOrder) ){
-							return pieChartConfig.getAttributeDisplayNames(that.groupBy, {
-								customOrder: customOrder,
-								// customOrder: ['type', 'status'],
-								// customOrder: ['status', 'type'],
-								dictionary: that.groupByDictionary
-							});
-						}
-						else {
-							return pieChartConfig.getAttributeDisplayNames(that.groupBy, {
-								orderingKey: 'ordering'
-							});
-						}
+						return pieChartConfig.getAttributeDisplayNames(that.groupBy, angular.extend({}, options, {
+							dictionary: that.groupByDictionary,
+							orderingKey: 'ordering'
+						}));
 					};
 
+					/**************************************************
+					 * Summary attributes
+					 **************************************************/
 					pieChartConfig.prototype.getSummaryAttributeSpecs = function (options) {
 						var that = this;
 						return pieChartConfig.getAttributes(that.summary, angular.extend({}, options, {
@@ -243,43 +240,27 @@ angular.module('directives.pieChart', [
 						}));
 					};
 
-					pieChartConfig.prototype.getSummaryAttributes = function (customOrder) {
+					pieChartConfig.prototype.getSummaryAttributes = function (options) {
 						// return pieChartConfig.getAttributeKeys(this.summary);
 						var that = this;
-						if( _.isArray(customOrder) ){
-						// if( 1 ){
-							return pieChartConfig.getAttributeKeys(that.summary, {
-								customOrder: customOrder,
-								// customOrder: ['estimation', 'remaining'],
-								// customOrder: ['remaining', 'estimation'],
-								dictionary: that.summaryItemsDictionary
-							});
-						}
-						else {
-							return pieChartConfig.getAttributeKeys(that.summary, {
-								orderingKey: 'ordering'
-							});
-						}
+						return pieChartConfig.getAttributeKeys(that.summary, angular.extend({}, options, {
+							dictionary: that.summaryItemsDictionary,
+							orderingKey: 'ordering'
+						}));
 					};
 
-					pieChartConfig.prototype.getSummaryAttributesPretty = function (customOrder) {
+					pieChartConfig.prototype.getSummaryAttributesPretty = function (options) {
 						// return pieChartConfig.getAttributeDisplayNames(this.summary);
 						var that = this;
-						if( _.isArray(customOrder) ){
-							return pieChartConfig.getAttributeDisplayNames(that.summary, {
-								customOrder: customOrder,
-								// customOrder: ['type', 'status'],
-								// customOrder: ['status', 'type'],
-								dictionary: that.summaryItemsDictionary
-							});
-						}
-						else {
-							return pieChartConfig.getAttributeDisplayNames(that.summary, {
-								orderingKey: 'ordering'
-							});
-						}
+						return pieChartConfig.getAttributesDisplayNames(that.summary, angular.extend({}, options, {
+							dictionary: that.summaryItemsDictionary,
+							orderingKey: 'ordering'
+						}));
 					};
 
+					/**************************************************
+					 * Other properties
+					 **************************************************/
 					pieChartConfig.prototype.getColorMap = function (groupByKey) {
 						var groupBySpec = this.groupByDictionary.lookUpItem(groupByKey);
 						return (!angular.isDefined(groupBySpec) || !angular.isDefined(groupBySpec.colorMap))? angular.noop : groupBySpec.colorMap;
@@ -319,11 +300,11 @@ angular.module('directives.pieChart', [
 					/**************************************************
 					 * More helpers ...
 					 **************************************************/
-
 					pieChartConfig.prototype.getCount = function () {
 						return this.count;
 					};
 
+					// collapsed charts imply donut charts
 					pieChartConfig.prototype.collapseCharts = function (setCollapse) {
 						if( angular.isDefined(setCollapse) ){
 							this.collapse = setCollapse;
