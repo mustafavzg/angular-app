@@ -4,7 +4,7 @@
 
 ## Purpose
 
-This project evolved out of the [crud application demo](http://github.com/angular-app/angular-app). Although, the parent (http://github.com/angular-app/angular-app), was intended as a learning tool, our focus was to add features that we thought would add further value.
+This project evolved out of the [crud application demo](http://github.com/angular-app/angular-app). Although, the [parent](http://github.com/angular-app/angular-app), was intended as a learning tool, our focus was to add features that we thought would add further value.
 
 Please note that this is still a work in progress. As of now this is a fork of the parent, but down the line we might be making it a stand alone repository.
 
@@ -23,11 +23,11 @@ Please note that this is still a work in progress. As of now this is a fork of t
 * [jqPlot](http://www.jqplot.com/) for visualizations
 * [Bootstrap](http://getbootstrap.com/) for layout and iconography
 * [angular-bootstrap](http://github.com/angular-ui/bootstrap) for ui container components and bootstrap styled widgets
-* [momentjs](http://momentjs.com/)
 * [Gantt charts](http://github.com/mustafavzg/angular-gantt) for item timelines
+* [momentjs](http://momentjs.com/)
 * [underscorejs](http://underscorejs.org/)
 
 <!-- <a href="http://goo.gl/gKEsIo"><img src="http://www.packtpub.com/sites/default/files/1820OS.jpg"></a> -->
 
-
+<img src="https://lh6.googleusercontent.com/-a8yAxcuW9zU/VNGskgN2IJI/AAAAAAAAG38/MOWePiJCnHQ/s512/IMG_20150204_101335.jpg">
 
