@@ -89,8 +89,8 @@ Please note that this is still a work in progress. As of now this is a fork of t
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/03-breakdown-02.PNG">
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/03-breakdown-03.PNG">
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/03-breakdown-04.PNG">
-<img src="http://dl.dropboxusercontent.com/u/76278255/hive/03-breakdown-05.PNG">
 ### Donut charts
+<img src="http://dl.dropboxusercontent.com/u/76278255/hive/03-breakdown-05.PNG">
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/03-breakdown-06.png">
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/03-breakdown-07.png">
 ### Cummulative views
