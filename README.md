@@ -32,10 +32,10 @@ Please note that this is still a work in progress. As of now this is a fork of t
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/01-project-02.PNG">
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/01-project-03.png">
 
-## Find your project ...
+### Find your project ...
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/01-project-04.PNG">
 
-## Your Project Dashboard
+### Your Project Dashboard
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/01-project-05.PNG">
 
 ## Build Your Team
@@ -56,24 +56,22 @@ Please note that this is still a work in progress. As of now this is a fork of t
 ## Manage your Product Backlog, Sprints and Tasks
 
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/02-backlog-sprints-tasks-01.PNG">
-## Hierarchical views
+### Hierarchical views
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/02-backlog-sprints-tasks-02.PNG">
-## Searchable Hierarchical views
+### Searchable Hierarchical views
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/02-backlog-sprints-tasks-03.PNG">
-## Customizable search
+### Customizable search
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/02-backlog-sprints-tasks-04.png">
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/02-backlog-sprints-tasks-05.png">
-## Multiple views
+### Multiple views
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/02-backlog-sprints-tasks-06.png">
-## List view
+### List view
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/02-backlog-sprints-tasks-07.png">
-## Tabular view
+### Tabular view
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/02-backlog-sprints-tasks-08.png">
 
 
-<h2>Burndown for your tasks</h2>
-<hr class="star-primary">
-<!-- <hr class="star-light"> -->
+## Burndown for your tasks
 
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/02-burndown.PNG">
 <!-- <img src="http://dl.dropboxusercontent.com/u/76278255/hive/01-team-02.PNG"> -->
@@ -84,71 +82,61 @@ Please note that this is still a work in progress. As of now this is a fork of t
 <!-- <img src="http://dl.dropboxusercontent.com/u/76278255/hive/01-team-07.PNG"> -->
 
 
-<h2>Your project by tasks</h2>
-<!-- <hr class="star-primary"> -->
-<hr class="star-light">
+## Your project by tasks
 
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/03-breakdown-01.PNG">
-<h3>Configurable visualizations</h3>
+### Configurable visualizations
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/03-breakdown-02.PNG">
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/03-breakdown-03.PNG">
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/03-breakdown-04.PNG">
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/03-breakdown-05.PNG">
-<h3>Donut charts</h3>
+### Donut charts
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/03-breakdown-06.png">
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/03-breakdown-07.png">
-<h3>Cummulative views</h3>
+### Cummulative views
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/03-breakdown-08.PNG">
 
-<h2>Plan your sprints</h2>
-<!-- <hr class="star-primary"> -->
-<hr class="star-light">
+## Plan your sprints
 
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/06-sprintplanning-01.PNG">
-<h3>Product owner adds backlog items to the sprint</h3>
+### Product owner adds backlog items to the sprint
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/06-sprintplanning-02.PNG">
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/06-sprintplanning-03.PNG">
-<h3>Scrum master/Team break up the backlog items into actionable tasks</h3>
+### Scrum master/Team break up the backlog items into actionable tasks
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/06-sprintplanning-04.PNG">
 <!-- <img src="http://dl.dropboxusercontent.com/u/76278255/hive/06-sprintplanning-05.PNG"> -->
 <!-- <img src="http://dl.dropboxusercontent.com/u/76278255/hive/06-sprintplanning-06.png"> -->
 <!-- <img src="http://dl.dropboxusercontent.com/u/76278255/hive/06-sprintplanning-07.png"> -->
 <!-- <img src="http://dl.dropboxusercontent.com/u/76278255/hive/06-sprintplanning-08.PNG"> -->
 
-
-<h2>Your Kanban Board</h2>
-<hr class="star-primary">
-<!-- <hr class="star-light"> -->
+## Your Kanban Board
 
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/10-kanban-01.PNG">
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/10-kanban-02.PNG">
-<h3>Searchable</h3>
+### Searchable
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/10-kanban-03.PNG">
-<h3>Filter by user</h3>
+### Filter by user
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/10-kanban-04.PNG">
-<h3>Sortable</h3>
+### Sortable
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/10-kanban-05.PNG">
-<h3>Filter by Priority</h3>
+### Filter by Priority
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/10-kanban-06.PNG">
-<h3>Move tasks around users</h3>
+### Move tasks around users
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/10-kanban-07.png">
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/10-kanban-08.png">
-<h3>Move tasks around statuses</h3>
+### Move tasks around statuses
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/10-kanban-09.png">
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/10-kanban-10.png">
-<h3>Move tasks around in groups</h3>
+### Move tasks around in groups
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/10-kanban-11.png">
 
 
+## Timelines for your tasks
 
-<h2>Timelines for your tasks</h2>
-<!-- <hr class="star-primary"> -->
-<hr class="star-light">
-
-<h3>Sprint time lines</h3>
+### Sprint time lines
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/12-gantt-01.PNG">
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/12-gantt-02.PNG">
-<h3>Task estimates </h3>
+### Task estimates 
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/12-gantt-03.PNG">
 <!-- <img src="http://dl.dropboxusercontent.com/u/76278255/hive/12-gantt-04.PNG"> -->
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/12-gantt-05.PNG">
@@ -156,23 +144,20 @@ Please note that this is still a work in progress. As of now this is a fork of t
 <!-- <img src="http://dl.dropboxusercontent.com/u/76278255/hive/12-gantt-07.png"> -->
 <!-- <img src="http://dl.dropboxusercontent.com/u/76278255/hive/12-gantt-08.PNG"> -->
 
-
-<h2>Timers for your tasks</h2>
+## Timers for your tasks
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/task-timers-01.PNG">
-<h3>Start your timer</h3>
+### Start your timer
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/task-timers-02.PNG">
-<h3>Zoom-in on the time line</h3>
+### Zoom-in on the time line
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/task-timers-03.PNG">
-<h3>Find your timer logs</h3>
+### Find your timer logs
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/task-timers-04.PNG">
 <!-- <img src="http://dl.dropboxusercontent.com/u/76278255/hive/task-timers-05.PNG"> -->
 <!-- <img src="http://dl.dropboxusercontent.com/u/76278255/hive/task-timers-06.png"> -->
 <!-- <img src="http://dl.dropboxusercontent.com/u/76278255/hive/task-timers-07.png"> -->
 <!-- <img src="http://dl.dropboxusercontent.com/u/76278255/hive/task-timers-08.PNG"> -->
 
-<h2>Scrum updates for your tasks</h2>
-<!-- <hr class="star-primary"> -->
-<hr class="star-light">
+## Scrum updates for your tasks
 
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/16-scrum-updates-01.PNG">
 <!-- <img src="http://dl.dropboxusercontent.com/u/76278255/hive/16-scrum-updates-02.PNG"> -->
