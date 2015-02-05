@@ -14,7 +14,7 @@ Please note that this is still a work in progress. As of now this is a fork of t
 * Kanban board
 * Supports item hierarchies
 * Sprint planning based on resource and time constraints
-* Item timelines via [gantt charts]() 
+* Item timelines via [gantt charts](http://github.com/mustafavzg/angular-gantt) 
 * Task timers
 * Tool to capture daily scrum notes of the team
 * Completely revamped look (based on Bootstrap v3.1.1)
