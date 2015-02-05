@@ -1,4 +1,4 @@
-# Hive
+# Yet another agile project management tool
 
 ***
 
