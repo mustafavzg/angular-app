@@ -29,5 +29,5 @@ Please note that this is still a work in progress. As of now this is a fork of t
 
 <!-- <a href="http://goo.gl/gKEsIo"><img src="http://www.packtpub.com/sites/default/files/1820OS.jpg"></a> -->
 
-<img src="https://lh6.googleusercontent.com/-a8yAxcuW9zU/VNGskgN2IJI/AAAAAAAAG38/MOWePiJCnHQ/s512/IMG_20150204_101335.jpg">
+<img src="http://lh6.googleusercontent.com/-a8yAxcuW9zU/VNGskgN2IJI/AAAAAAAAG38/MOWePiJCnHQ/s512/IMG_20150204_101335.jpg">
 
