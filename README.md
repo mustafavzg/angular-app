@@ -16,8 +16,8 @@ Please note that this is still a work in progress. As of now this is a fork of t
 * Sprint planning based on resource and time constraints
 * Item timelines via [gantt charts](http://github.com/mustafavzg/angular-gantt) 
 * Task timers
-* Tool to capture daily scrum notes of the team
 * Completely revamped look (based on Bootstrap v3.1.1)
+* Tool to capture daily scrum notes of the team
 
 ### Dependencies
 * [jqPlot](http://www.jqplot.com/) for visualizations
