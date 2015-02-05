@@ -27,13 +27,6 @@ Please note that this is still a work in progress. As of now this is a fork of t
 * [momentjs](http://momentjs.com/)
 * [underscorejs](http://underscorejs.org/)
 
-<!-- <a href="http://goo.gl/gKEsIo"><img src="http://www.packtpub.com/sites/default/files/1820OS.jpg"></a> -->
-
-<img src="http://lh6.googleusercontent.com/-a8yAxcuW9zU/VNGskgN2IJI/AAAAAAAAG38/MOWePiJCnHQ/s512/IMG_20150204_101335.jpg">
-
-
-<img src="https://lh6.googleusercontent.com/-a8yAxcuW9zU/VNGskgN2IJI/AAAAAAAAG38/MOWePiJCnHQ/s512/IMG_20150204_101335.jpg">
-
 ## Your Projects
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/01-project-01.png">
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/01-project-02.PNG">
@@ -44,3 +37,18 @@ Please note that this is still a work in progress. As of now this is a fork of t
 
 ## Your Project Dashboard
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/01-project-05.PNG">
+
+## Build Your Team
+## Scrum roles
+<img src="http://dl.dropboxusercontent.com/u/76278255/hive/01-team-01.PNG">
+## Add team members
+<img src="http://dl.dropboxusercontent.com/u/76278255/hive/01-team-02.PNG">
+<img src="http://dl.dropboxusercontent.com/u/76278255/hive/01-team-03.PNG">
+<img src="http://dl.dropboxusercontent.com/u/76278255/hive/01-team-04.PNG">
+## Setup your scrum master
+<img src="http://dl.dropboxusercontent.com/u/76278255/hive/01-team-05.PNG">
+## Setup your prouct owner
+<img src="http://dl.dropboxusercontent.com/u/76278255/hive/01-team-06.PNG">
+## Add your stake holders
+<img src="http://dl.dropboxusercontent.com/u/76278255/hive/01-team-07.PNG">
+
