@@ -29,33 +29,32 @@ Please note that this is still a work in progress. As of now this is a fork of t
 
 # Some screenshots ...
 
-## Your Projects
+## Projects
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/01-project-01.png">
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/01-project-02.PNG">
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/01-project-03.png">
 
-### Find your project ...
+### Find a project ...
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/01-project-04.PNG">
 
-### Your Project Dashboard
+### Project Dashboard
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/01-project-05.PNG">
 
-## Build Your Team
+## Build a Team
 ### Scrum roles
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/01-team-01.PNG">
 ### Add team members
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/01-team-02.PNG">
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/01-team-03.PNG">
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/01-team-04.PNG">
-### Setup your scrum master
+### Setup a scrum master
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/01-team-05.PNG">
-### Setup your prouct owner
+### Setup a product owner
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/01-team-06.PNG">
-### Add your stake holders
+### Add stake holders
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/01-team-07.PNG">
 
-
-## Manage your Product Backlog, Sprints and Tasks
+## Manage Product Backlog, Sprints and Tasks
 
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/02-backlog-sprints-tasks-01.PNG">
 ### Hierarchical views
@@ -72,8 +71,7 @@ Please note that this is still a work in progress. As of now this is a fork of t
 ### Tabular view
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/02-backlog-sprints-tasks-08.png">
 
-
-## Burndown for your tasks
+## Burndown for tasks
 
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/02-burndown.PNG">
 <!-- <img src="http://dl.dropboxusercontent.com/u/76278255/hive/01-team-02.PNG"> -->
@@ -83,8 +81,7 @@ Please note that this is still a work in progress. As of now this is a fork of t
 <!-- <img src="http://dl.dropboxusercontent.com/u/76278255/hive/01-team-06.PNG"> -->
 <!-- <img src="http://dl.dropboxusercontent.com/u/76278255/hive/01-team-07.PNG"> -->
 
-
-## Your project by tasks
+## A Project by tasks
 
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/03-breakdown-01.PNG">
 ### Configurable visualizations
@@ -98,7 +95,7 @@ Please note that this is still a work in progress. As of now this is a fork of t
 ### Cummulative views
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/03-breakdown-08.PNG">
 
-## Plan your sprints
+## Plan sprints
 
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/06-sprintplanning-01.PNG">
 ### Product owner adds backlog items to the sprint
@@ -111,7 +108,7 @@ Please note that this is still a work in progress. As of now this is a fork of t
 <!-- <img src="http://dl.dropboxusercontent.com/u/76278255/hive/06-sprintplanning-07.png"> -->
 <!-- <img src="http://dl.dropboxusercontent.com/u/76278255/hive/06-sprintplanning-08.PNG"> -->
 
-## Your Kanban Board
+## Kanban Board
 
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/10-kanban-01.PNG">
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/10-kanban-02.PNG">
@@ -133,7 +130,7 @@ Please note that this is still a work in progress. As of now this is a fork of t
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/10-kanban-11.png">
 
 
-## Timelines for your tasks
+## Timelines for tasks
 
 ### Sprint time lines
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/12-gantt-01.PNG">
@@ -146,20 +143,20 @@ Please note that this is still a work in progress. As of now this is a fork of t
 <!-- <img src="http://dl.dropboxusercontent.com/u/76278255/hive/12-gantt-07.png"> -->
 <!-- <img src="http://dl.dropboxusercontent.com/u/76278255/hive/12-gantt-08.PNG"> -->
 
-## Timers for your tasks
+## Timers for tasks
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/task-timers-01.PNG">
-### Start your timer
+### Start the timer
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/task-timers-02.PNG">
 ### Zoom-in on the time line
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/task-timers-03.PNG">
-### Find your timer logs
+### Find the timer logs
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/task-timers-04.PNG">
 <!-- <img src="http://dl.dropboxusercontent.com/u/76278255/hive/task-timers-05.PNG"> -->
 <!-- <img src="http://dl.dropboxusercontent.com/u/76278255/hive/task-timers-06.png"> -->
 <!-- <img src="http://dl.dropboxusercontent.com/u/76278255/hive/task-timers-07.png"> -->
 <!-- <img src="http://dl.dropboxusercontent.com/u/76278255/hive/task-timers-08.PNG"> -->
 
-## Scrum updates for your tasks
+## Scrum updates for tasks
 
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/16-scrum-updates-01.PNG">
 <!-- <img src="http://dl.dropboxusercontent.com/u/76278255/hive/16-scrum-updates-02.PNG"> -->
