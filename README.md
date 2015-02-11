@@ -17,7 +17,6 @@ Please note that this is still a work in progress. As of now this is a fork of t
 * Item timelines via [gantt charts](http://github.com/mustafavzg/angular-gantt) 
 * Task timers
 * Completely revamped look (based on Bootstrap v3.1.1)
-* Tool to capture daily scrum notes of the team
 
 ### Dependencies
 * [jqPlot](http://www.jqplot.com/) for visualizations
@@ -154,14 +153,3 @@ Please note that this is still a work in progress. As of now this is a fork of t
 <!-- <img src="http://dl.dropboxusercontent.com/u/76278255/hive/task-timers-06.png"> -->
 <!-- <img src="http://dl.dropboxusercontent.com/u/76278255/hive/task-timers-07.png"> -->
 <!-- <img src="http://dl.dropboxusercontent.com/u/76278255/hive/task-timers-08.PNG"> -->
-
-## Scrum updates for tasks
-
-<img src="http://dl.dropboxusercontent.com/u/76278255/hive/16-scrum-updates-01.PNG">
-<!-- <img src="http://dl.dropboxusercontent.com/u/76278255/hive/16-scrum-updates-02.PNG"> -->
-<!-- <img src="http://dl.dropboxusercontent.com/u/76278255/hive/16-scrum-updates-03.PNG"> -->
-<!-- <img src="http://dl.dropboxusercontent.com/u/76278255/hive/16-scrum-updates-04.PNG"> -->
-<!-- <img src="http://dl.dropboxusercontent.com/u/76278255/hive/16-scrum-updates-05.PNG"> -->
-<!-- <img src="http://dl.dropboxusercontent.com/u/76278255/hive/16-scrum-updates-06.png"> -->
-<!-- <img src="http://dl.dropboxusercontent.com/u/76278255/hive/16-scrum-updates-07.png"> -->
-<!-- <img src="http://dl.dropboxusercontent.com/u/76278255/hive/16-scrum-updates-08.PNG"> -->
