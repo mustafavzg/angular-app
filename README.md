@@ -4,19 +4,25 @@
 
 ## Purpose
 
-HIVE is a project management tool with focus on agile practices. Hive enables the scrum approach and provides an array of tools that aid in making timely decisions for your project. 
+HIVE is a project management tool with focus on agile practices. Hive enables the scrum approach and provides an array of tools that provide both micro level and macro level control over your tasks and projects. 
 
 ### Features
 * Scrum
   * Setup your team according to scrum roles : Product Owner, Stake Holders, Scrum Master and Team Members
 * Burndown charts
+  * Burndown charts give you a hgh level timeseries view of the status of your tasks and project completion status
 * Kanban board
+  * Track the flow of your tasks in various status buckets 
 * Visualizations (Pie charts, etc)
+  * Visualizations with drill downs to slice and dice and analyize your project 
 * Supports item hierarchies
+  * Hierarchical tasks and projects 
 * Sprint planning based on resource and time constraints
+  * Plan your sprints based on your team size and task estimates 
 * Item timelines via [gantt charts](http://github.com/mustafavzg/angular-gantt) 
+  * Gantt charts to visualize your project timeline
 * Task timers
-* Completely revamped look (based on Bootstrap v3.1.1)
+  * Task timers to accurately keep track of time spent on each task 
 
 ### Dependencies
 * [jqPlot](http://www.jqplot.com/) for visualizations
