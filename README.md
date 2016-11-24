@@ -32,6 +32,8 @@ HIVE is a project management tool with focus on agile practices. Hive enables th
 * [momentjs](http://momentjs.com/)
 * [underscorejs](http://underscorejs.org/)
 
+This project evolved out of the [crud application demo](http://github.com/angular-app/angular-app). Although, the [parent](http://github.com/angular-app/angular-app), was intended as a learning tool, our focus was to add features that we thought would add further value.
+
 # Some Screenshots
 
 ## Projects
