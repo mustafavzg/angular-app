@@ -32,7 +32,7 @@ HIVE is a project management tool with focus on agile practices. Hive enables th
 * [momentjs](http://momentjs.com/)
 * [underscorejs](http://underscorejs.org/)
 
-# Some screenshots ...
+# Some Screenshots
 
 ## Projects
 <img src="http://dl.dropboxusercontent.com/u/76278255/hive/01-project-01.png">
