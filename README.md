@@ -1,14 +1,14 @@
-# Yet another agile project management tool
+# HIVE - agile project management tool
 
 ***
 
 ## Purpose
 
-This project evolved out of the [crud application demo](http://github.com/angular-app/angular-app). Although, the [parent](http://github.com/angular-app/angular-app), was intended as a learning tool, our focus was to add features that we thought would add further value.
+HIVE is a project management tool with focus on agile practices. Hive enables the scrum approach and provides an array of tools that aid in making timely decisions for your project. 
 
-Please note that this is still a work in progress. As of now this is a fork of the parent, but down the line we might be making it a stand alone repository.
-
-### New features added
+### Features
+* Scrum
+  * Setup your team according to scrum roles : Product Owner, Stake Holders, Scrum Master and Team Members
 * Burndown charts
 * Kanban board
 * Visualizations (Pie charts, etc)
