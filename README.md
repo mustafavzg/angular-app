@@ -1,10 +1,10 @@
-# HIVE - agile project management tool
+# Yet another agile project management tool
 
 ***
 
 ## Purpose
 
-HIVE is a project management tool with focus on agile practices. Hive enables the scrum approach and provides an array of tools that provide both micro level and macro level control over your tasks and projects. 
+This is a project management tool with focus on agile practices. It enables the scrum approach and provides an array of tools that provide both micro level and macro level control over your tasks and projects. 
 
 ### Features
 * Scrum
