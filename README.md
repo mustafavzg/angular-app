@@ -10,11 +10,11 @@ HIVE is a project management tool with focus on agile practices. Hive enables th
 * Scrum
   * Setup your team according to scrum roles : Product Owner, Stake Holders, Scrum Master and Team Members
 * Burndown charts
-  * Burndown charts give you a hgh level timeseries view of the status of your tasks and project completion status
+  * Burndown charts give you a high level timeseries view of the status of your tasks and project
 * Kanban board
   * Track the flow of your tasks in various status buckets 
 * Visualizations (Pie charts, etc)
-  * Visualizations with drill downs to slice and dice and analyize your project 
+  * Visualizations with drill downs to slice and dice and analyze your project 
 * Supports item hierarchies
   * Hierarchical tasks and projects 
 * Sprint planning based on resource and time constraints
