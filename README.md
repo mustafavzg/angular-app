@@ -80,31 +80,19 @@ This project evolved out of the [crud application demo](http://github.com/angula
 <!-- <img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/01-team-06.PNG"> -->
 <!-- <img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/01-team-07.PNG"> -->
 
+## A Project by tasks
 
-## Projects
-<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/01-project-01.png">
-<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/01-project-02.PNG">
-<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/01-project-03.png">
-
-### Find a project ...
-<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/01-project-04.PNG">
-
-### Project Dashboard
-<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/01-project-05.PNG">
-
-## Build a Team
-### Scrum roles
-<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/01-team-01.PNG">
-### Add team members
-<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/01-team-02.PNG">
-<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/01-team-03.PNG">
-<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/01-team-04.PNG">
-### Setup a scrum master
-<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/01-team-05.PNG">
-### Setup a product owner
-<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/01-team-06.PNG">
-### Add stake holders
-<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/01-team-07.PNG">
+<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/03-breakdown-01.PNG">
+### Configurable visualizations
+<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/03-breakdown-02.PNG">
+<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/03-breakdown-03.PNG">
+<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/03-breakdown-04.PNG">
+### Donut charts
+<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/03-breakdown-05.PNG">
+<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/03-breakdown-06.png">
+<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/03-breakdown-07.png">
+### Cummulative views
+<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/03-breakdown-08.PNG">
 
 ## Manage Product Backlog, Sprints and Tasks
 
@@ -124,19 +112,35 @@ This project evolved out of the [crud application demo](http://github.com/angula
 <img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/02-backlog-sprints-tasks-08.png">
 
 
-## A Project by tasks
 
-<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/03-breakdown-01.PNG">
-### Configurable visualizations
-<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/03-breakdown-02.PNG">
-<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/03-breakdown-03.PNG">
-<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/03-breakdown-04.PNG">
-### Donut charts
-<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/03-breakdown-05.PNG">
-<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/03-breakdown-06.png">
-<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/03-breakdown-07.png">
-### Cummulative views
-<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/03-breakdown-08.PNG">
+
+## Projects
+<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/01-project-01.png">
+<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/01-project-02.PNG">
+<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/01-project-03.png">
+
+### Find a project ... ###
+
+<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/01-project-04.PNG">
+
+### Project Dashboard ###
+
+<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/01-project-05.PNG">
+
+## Build a Team
+### Scrum roles
+<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/01-team-01.PNG">
+### Add team members
+<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/01-team-02.PNG">
+<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/01-team-03.PNG">
+<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/01-team-04.PNG">
+### Setup a scrum master
+<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/01-team-05.PNG">
+### Setup a product owner
+<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/01-team-06.PNG">
+### Add stake holders
+<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/01-team-07.PNG">
+
 
 ## Plan sprints
 
