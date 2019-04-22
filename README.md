@@ -1,4 +1,4 @@
-# Yet another agile project management tool
+# Yet another agile project management tool (Yaap) #
 
 ## Purpose
 
@@ -34,6 +34,37 @@ This project evolved out of the [crud application demo](http://github.com/angula
 
 
 # Some Screenshots #
+
+## Kanban Board
+
+<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/10-kanban-01.PNG">
+<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/10-kanban-02.PNG">
+### Searchable
+<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/10-kanban-03.PNG">
+### Filter by user
+<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/10-kanban-04.PNG">
+### Sortable
+<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/10-kanban-05.PNG">
+### Filter by Priority
+<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/10-kanban-06.PNG">
+### Move tasks around users
+<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/10-kanban-07.png">
+<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/10-kanban-08.png">
+### Move tasks around statuses
+<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/10-kanban-09.png">
+<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/10-kanban-10.png">
+### Move tasks around in groups
+<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/10-kanban-11.png">
+
+## Burndown for tasks
+
+<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/02-burndown.PNG">
+<!-- <img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/01-team-02.PNG"> -->
+<!-- <img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/01-team-03.PNG"> -->
+<!-- <img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/01-team-04.PNG"> -->
+<!-- <img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/01-team-05.PNG"> -->
+<!-- <img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/01-team-06.PNG"> -->
+<!-- <img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/01-team-07.PNG"> -->
 
 
 ## Projects
@@ -78,15 +109,6 @@ This project evolved out of the [crud application demo](http://github.com/angula
 ### Tabular view
 <img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/02-backlog-sprints-tasks-08.png">
 
-## Burndown for tasks
-
-<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/02-burndown.PNG">
-<!-- <img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/01-team-02.PNG"> -->
-<!-- <img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/01-team-03.PNG"> -->
-<!-- <img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/01-team-04.PNG"> -->
-<!-- <img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/01-team-05.PNG"> -->
-<!-- <img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/01-team-06.PNG"> -->
-<!-- <img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/01-team-07.PNG"> -->
 
 ## A Project by tasks
 
@@ -115,26 +137,6 @@ This project evolved out of the [crud application demo](http://github.com/angula
 <!-- <img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/06-sprintplanning-07.png"> -->
 <!-- <img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/06-sprintplanning-08.PNG"> -->
 
-## Kanban Board
-
-<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/10-kanban-01.PNG">
-<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/10-kanban-02.PNG">
-### Searchable
-<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/10-kanban-03.PNG">
-### Filter by user
-<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/10-kanban-04.PNG">
-### Sortable
-<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/10-kanban-05.PNG">
-### Filter by Priority
-<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/10-kanban-06.PNG">
-### Move tasks around users
-<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/10-kanban-07.png">
-<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/10-kanban-08.png">
-### Move tasks around statuses
-<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/10-kanban-09.png">
-<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/10-kanban-10.png">
-### Move tasks around in groups
-<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/10-kanban-11.png">
 
 ## Timelines for tasks
 
