@@ -83,38 +83,69 @@ This project evolved out of the [crud application demo](http://github.com/angula
 ## A Project by tasks
 
 <img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/03-breakdown-01.PNG">
-### Configurable visualizations
+
+### Configurable visualizations ###
+
 <img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/03-breakdown-02.PNG">
 <img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/03-breakdown-03.PNG">
 <img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/03-breakdown-04.PNG">
-### Donut charts
+
+### Donut charts ###
+
 <img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/03-breakdown-05.PNG">
 <img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/03-breakdown-06.png">
 <img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/03-breakdown-07.png">
-### Cummulative views
+
+### Cummulative views ###
+
 <img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/03-breakdown-08.PNG">
 
 ## Manage Product Backlog, Sprints and Tasks
 
 <img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/02-backlog-sprints-tasks-01.PNG">
-### Hierarchical views
+
+### Hierarchical views ###
+
 <img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/02-backlog-sprints-tasks-02.PNG">
-### Searchable Hierarchical views
+
+### Searchable Hierarchical views ###
+
 <img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/02-backlog-sprints-tasks-03.PNG">
-### Customizable search
+
+### Customizable search ###
+
 <img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/02-backlog-sprints-tasks-04.png">
 <img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/02-backlog-sprints-tasks-05.png">
-### Multiple views
+
+### Multiple views ###
+
 <img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/02-backlog-sprints-tasks-06.png">
-### List view
+
+### List view ###
+
 <img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/02-backlog-sprints-tasks-07.png">
-### Tabular view
+
+### Tabular view ###
+
 <img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/02-backlog-sprints-tasks-08.png">
 
 
+## Timelines for tasks
+
+### Sprint time lines
+<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/12-gantt-01.PNG">
+<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/12-gantt-02.PNG">
+### Task estimates 
+<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/12-gantt-03.PNG">
+<!-- <img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/12-gantt-04.PNG"> -->
+<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/12-gantt-05.PNG">
+<!-- <img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/12-gantt-06.png"> -->
+<!-- <img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/12-gantt-07.png"> -->
+<!-- <img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/12-gantt-08.PNG"> -->
 
 
-## Projects
+## Projects ##
+
 <img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/01-project-01.png">
 <img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/01-project-02.PNG">
 <img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/01-project-03.png">
@@ -128,17 +159,27 @@ This project evolved out of the [crud application demo](http://github.com/angula
 <img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/01-project-05.PNG">
 
 ## Build a Team
-### Scrum roles
+
+### Scrum roles ###
+
 <img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/01-team-01.PNG">
-### Add team members
+
+### Add team members ###
+
 <img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/01-team-02.PNG">
 <img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/01-team-03.PNG">
 <img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/01-team-04.PNG">
-### Setup a scrum master
+
+### Setup a scrum master ###
+
 <img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/01-team-05.PNG">
-### Setup a product owner
+
+### Setup a product owner ###
+
 <img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/01-team-06.PNG">
-### Add stake holders
+
+### Add stake holders ###
+
 <img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/01-team-07.PNG">
 
 
@@ -156,18 +197,6 @@ This project evolved out of the [crud application demo](http://github.com/angula
 <!-- <img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/06-sprintplanning-08.PNG"> -->
 
 
-## Timelines for tasks
-
-### Sprint time lines
-<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/12-gantt-01.PNG">
-<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/12-gantt-02.PNG">
-### Task estimates 
-<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/12-gantt-03.PNG">
-<!-- <img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/12-gantt-04.PNG"> -->
-<img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/12-gantt-05.PNG">
-<!-- <img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/12-gantt-06.png"> -->
-<!-- <img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/12-gantt-07.png"> -->
-<!-- <img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/12-gantt-08.PNG"> -->
 
 ## Timers for tasks
 <img src="https://s3-ap-southeast-1.amazonaws.com/hivescrum456/task-timers-01.PNG">
